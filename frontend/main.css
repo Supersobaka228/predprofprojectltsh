@@ -9,7 +9,8 @@ body {
   font-family: "M PLUS Rounded 1c", sans-serif;
   font-weight: 400;
   font-style: normal;
-  background-color: #4A4A4A;
+  background: linear-gradient(135deg, #4A4A4A 0%, #6E594A 60%, #EC7859 100%);
+
 }
 
 .page {
@@ -21,6 +22,10 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+    background: radial-gradient(circle at center, 
+  rgba(236, 120, 89, 0.4) 10%, 
+  rgba(180, 90, 50, 0.25) 30%, 
+  #4A4A4A 80%);
 }
 
 .welcome {
@@ -29,6 +34,7 @@ body {
     width: 50%;
     min-width: 270px;
     max-width: 600px;
+    height: 5rem;
     border-radius: 24px;
     box-shadow:
         inset 0 0 0 1px rgba(0, 0, 0, 0.08),
