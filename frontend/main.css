@@ -9,7 +9,6 @@ body {
   font-family: "M PLUS Rounded 1c", sans-serif;
   font-weight: 400;
   font-style: normal;
-  background: linear-gradient(135deg, #4A4A4A 0%, #6E594A 60%, #EC7859 100%);
 
 }
 
@@ -246,4 +245,111 @@ body {
 }
 
 
+/* МЕНЮ */
 
+.menu_header {
+  justify-self: center;
+  align-items: center;
+  background-color: #45502d;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 1rem;
+  font-size: 1.25rem;
+  width: 100%;
+  flex: 0 0 auto;
+}
+.menu_page {
+  min-height: 100svh;
+  height: 100vh;
+  overflow: hidden;
+
+  display: flex;
+  flex-direction: column;
+  grid-template-rows: auto 1fr auto;
+  background: #4A4A4A;
+}
+
+.arrow_right {
+  width: clamp(24px, 10vw, 60px);
+  transform: scaleX(-1)
+}
+
+.arrow_left {
+  width: clamp(24px, 10vw, 60px);
+}
+
+.menu_date {
+  font-size: large;
+}
+
+
+.menu_footer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  background-color: #ed9d89;
+  height: 6rem;
+  align-items: center;
+  flex: 0 0 auto;
+}
+
+h2 {
+  font-size: small;
+}
+
+.footer_container {
+  border-radius: 20%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #45502d;
+  width: 5rem;
+  height: 5rem;
+}
+
+
+.menu_main {
+  flex: 1 1 auto;
+  overflow-y: auto;
+}
+.menu_section {
+  border-radius: 1rem;
+  padding: 1rem;
+  background-color: #637e29;
+  margin-top: 1.2rem;
+  margin-bottom: 1.2rem;
+  justify-self: center;
+  width: 85%;
+  display: flex;
+  flex-direction: column;
+}
+
+.menu_section_head {
+  font-size: clamp(10px, 2.5vw, 20px);
+  padding: 1rem;
+  background-color: #4A4A4A;
+  border-radius: 3rem;
+  align-items: center;
+  height: 3rem;
+  display: flex;
+  justify-content: space-around;
+}
+
+.menu_section_main {
+  font-weight: bold;
+  font-size: clamp(11px, 2.5vw, 18px);
+  height: 6rem;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.menu_items {
+  padding-left: 1.5rem;
+}
+
+.menu_allergens {
+  padding-left: 1.5rem;
+}
