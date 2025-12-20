@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MealHub</title>
-    <link rel="stylesheet" href="../users/templates/users/main.css">
+    <link rel="stylesheet" href="main.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c&display=swap" rel="stylesheet">
@@ -20,6 +20,10 @@
   <section class="login_box">
     <h1 class="title_h1">Регистрация</h1>
     <form class="login__form">
+        {% csrf_token %}
+        {{ form.email }}
+        {{ form.password }}
+        {{ form.password2 }}
 
       <div class="fields">
         <label class="field">
@@ -44,7 +48,6 @@
           Я согласен с условиями
         </span>
       </label>
-
     </form>
   </section>
   <button class="login_button">
