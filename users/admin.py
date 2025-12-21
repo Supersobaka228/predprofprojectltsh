@@ -33,7 +33,7 @@ class CustomUserAdmin(UserAdmin):
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('email', 'first_name', 'last_name', 'phone', 'role', 'grade'),
+            'fields': ('email', 'first_name', 'last_name', 'phone'),
         }),
     )
 
@@ -43,7 +43,7 @@ class CustomUserAdmin(UserAdmin):
 
     # Метод для отображения полного имени в админке
     def full_name(self, obj):
-        return f"{obj.last_name} {obj.first_name}"
+        return f"{obj.last_name} {obj.username}"
 
     full_name.short_description = ('Полное имя')
     full_name.admin_order_field = 'last_name'
