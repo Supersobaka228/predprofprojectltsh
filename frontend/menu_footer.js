@@ -6,24 +6,20 @@ const buttons = locator.querySelectorAll('.footer_container');
 
 function moveHighlight(button) {
   const buttonRect = button.getBoundingClientRect();
-  const locatorRect = locator.getBoundingClientRect();
+  const footerRect = footer.getBoundingClientRect();
 
-  // Позиция относительно контейнера footer_locator
-  const offsetX = -11; // смещение вправо в пикселях (подкорректируй под свои нужды)
-const left = buttonRect.left - locatorRect.left + offsetX;
-  const width = buttonRect.width * 1.5;
+  const highlightWidth = buttonRect.width * 1.6;
 
+  const buttonCenter =
+    buttonRect.left - footerRect.left + buttonRect.width / 2;
+
+  const left = buttonCenter - highlightWidth / 2;
+
+  highlight.style.width = `${highlightWidth}px`;
   highlight.style.left = `${left}px`;
-  highlight.style.width = `${width}px`;
-
-  // Чтобы по вертикали было точно по нижнему краю кнопок,
-  // выставим высоту и bottom:
-  // Так как highlight абсолютный в footer,
-  // можем подвинуть highlight на высоту футера минус высоту полоски
-
-  // При необходимости, можно сместить highlight по вертикали:
-  // highlight.style.bottom = '8px'; // например, если нужно чуть выше
 }
+
+
 
 // Ставим изначально подсветку на первый элемент
 moveHighlight(buttons[0]);
