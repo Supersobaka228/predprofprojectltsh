@@ -7,15 +7,13 @@ const buttons = locator.querySelectorAll('.footer_container');
 function moveHighlight(button) {
   const buttonRect = button.getBoundingClientRect();
   const footerRect = footer.getBoundingClientRect();
-
-  const highlightWidth = buttonRect.width * 1.6;
-
+  const highlightRect = highlight.getBoundingClientRect();
   const buttonCenter =
     buttonRect.left - footerRect.left + buttonRect.width / 2;
 
-  const left = buttonCenter - highlightWidth / 2;
+  const left = buttonCenter - highlightRect.width / 2;
 
-  highlight.style.width = `${highlightWidth}px`;
+  highlight.style.width = `${highlightRect.width}px`;
   highlight.style.left = `${left}px`;
 }
 
