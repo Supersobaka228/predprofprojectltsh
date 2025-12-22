@@ -4,9 +4,19 @@
   box-sizing: border-box;
 }
 
+
+html, body {
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
 html {
   font-size: 16px;
 }
+
 button,
 a,
 .custom-button,
@@ -309,6 +319,8 @@ body {
 }
 
 .menu_page {
+  min-height: 0;
+  flex: 1 1 auto;
   max-height: 100svh;
   height: 100vh;
   overflow: hidden;
@@ -350,7 +362,8 @@ body {
 
 
 .menu_date {
-  font-size: 0.7em;
+  font-size: 0.9em;
+  font-weight: 1000;
   white-space: nowrap;
 }
 
@@ -389,7 +402,7 @@ body {
 .footer_highlight {
   position: absolute;
   bottom: 10;
-  height: clamp(1.5rem, 8.3vh, 3rem); 
+  height: clamp(1.3rem, 7.7vh, 2.8rem); 
   background-color: #AED094;
   border-radius: clamp(0.5rem, 3vh, 2.5rem);
   transition: left 0.3s ease, width 0.3s ease;
@@ -487,7 +500,146 @@ body {
 
 /* Часть кошелька */
 
+.wallet_main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  flex: 1 1 auto;
+  justify-content: center;
+  overflow: hidden;
+}
 
+.balance {
+  margin-top: 5%;
+  width: 90vw;
+  height: clamp(2rem, 9vh, 10rem);
+  font-size: clamp(10px, 2.5vh, 20px);
+  border-radius: clamp(8px, 3vh, 50px);
+  display:flex;
+  justify-content: space-around;
+  align-items: center;
+  background-color: #AED094;
+  flex: 0 0 auto
+}
+
+.balance_box {
+  display: flex;
+  justify-content: space-around;
+}
+
+.balance_text {
+  font-size: 1.1em;
+  align-self: center;
+  font-weight: 500;
+}
+
+.balance_money {
+  margin-left: clamp(0.2rem, 4vw, 4rem);
+  font-size: 1.3em;
+  font-weight: 600;
+}
+
+.add_money_box {
+  all: unset;
+  color: inherit;
+  text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  border-radius: clamp(8px, 3vh, 50px);
+  background-color: #68A662;
+  height: 80%;
+  width: 40%;
+}
+
+.add_money_img {
+  width: 0.6em;
+  margin-right: 0.4em;
+} 
+
+.history {
+  width: 90%;
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 1em;
+  margin-bottom: 0.5em;
+  background-color: #AED094;
+  border-radius: clamp(8px, 3vh, 50px);
+  font-size: clamp(10px, 2.5vh, 20px);
+  overflow: hidden;
+  min-height: 0;
+}
+
+.history_title {
+  font-size: 1.3em;
+  margin: 0.4em;
+}
+
+.history_container {
+  width: 90%;
+  display: flex;
+  flex-direction: column;
+  justify-items: center;
+  flex: 1 1 auto;
+  overflow-y: auto;
+  min-height: 0;
+  margin-top: 0.4em;
+}
+
+.history_section {
+  border-radius: clamp(8px, 3vh, 50px);
+  font-size: 0.9rem;
+  padding: 0.7rem;
+  background-color: #68A662;
+  display: flex;
+  flex-direction: column;
+  flex: 0 0 auto;
+  margin-bottom: 1em;
+  min-height: 0;
+}
+
+.history_row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.history_item {
+  margin: 0.3em;
+}
+
+.history_scroll {
+  overflow-y: auto
+}
+
+.history_time {
+  font-weight: 700;
+  align-self: center;
+  font-size: 1.1em;
+  margin: 0.3em
+}
+
+.history_item {
+  align-self: center;
+}
+
+.history_price {
+  font-size: 1.1em;
+  font-weight: 700;
+  align-self: center;
+  margin: 0.3em
+
+}
+
+.history_day_title {
+  align-self: center;
+  justify-self: center;
+  margin: 0.2em;
+}
 
 @keyframes moveGradient {
   0% {
@@ -514,20 +666,23 @@ body {
 }
 
 .app_view {
+  overflow: hidden;
+  height: 100%;
   display: none;
   flex-direction: column;
   flex: 1 1 auto;
   min-height: 0;
-  overflow-y: auto;
   opacity: 0;
   transform: translateY(20px);
   transition: opacity 0.35s ease, transform 0.35s ease;
+  min-height: 0;
 }
 
 .app_view--active {
   display: flex;
   opacity: 1;
   transform: translateY(0);
+  min-height: 0;
 }
 
 
