@@ -12,20 +12,16 @@ input[type="checkbox"] {
   -webkit-tap-highlight-color: transparent;
 }
 
-
-
 body {
   margin: 0;
   font-family: "M PLUS Rounded 1c", sans-serif;
   font-weight: 400;
   font-style: normal;
-
 }
 
-
 .page {
-  min-height: 100svh;   /* лучше чем 100vh */
-  padding-top: 1rem;    /* большой отступ сверху */
+  min-height: 100svh;
+  padding-top: clamp(0.5rem, 2vh, 1rem);
   padding-left: 1rem;
   padding-right: 1rem;
 
@@ -33,25 +29,26 @@ body {
   justify-content: center;
   justify-items: center;
   align-items: center;
+
   background:
-  radial-gradient(
-    circle at 30% 30%,
-    rgba(225, 255, 202, 0.9) 0%,
-    rgba(245, 255, 238, 0.7) 35%,
-    rgba(255, 255, 255, 0.95) 70%
-  ),
-  radial-gradient(
-    circle at 70% 40%,
-    rgba(225, 255, 202, 0.6) 0%,
-    rgba(245, 255, 238, 0.5) 40%,
-    rgba(255, 255, 255, 0.9) 75%
-  ),
-  radial-gradient(
-    circle at 50% 70%,
-    rgba(225, 255, 202, 0.4) 0%,
-    rgba(248, 255, 245, 0.4) 45%,
-    rgba(255, 255, 255, 1) 80%
-  );
+    radial-gradient(
+      circle at 30% 30%,
+      rgba(225, 255, 202, 0.9) 0%,
+      rgba(245, 255, 238, 0.7) 35%,
+      rgba(255, 255, 255, 0.95) 70%
+    ),
+    radial-gradient(
+      circle at 70% 40%,
+      rgba(225, 255, 202, 0.6) 0%,
+      rgba(245, 255, 238, 0.5) 40%,
+      rgba(255, 255, 255, 0.9) 75%
+    ),
+    radial-gradient(
+      circle at 50% 70%,
+      rgba(225, 255, 202, 0.4) 0%,
+      rgba(248, 255, 245, 0.4) 45%,
+      rgba(255, 255, 255, 1) 80%
+    );
 
   background-size: 250% 250%;
   animation: floatBg 30s ease-in-out infinite alternate;
@@ -60,17 +57,21 @@ body {
 .welcome {
   align-self: center;
   justify-self: center;
-  margin-top: 1.3rem;
+  margin-top: clamp(0.5rem, 2vh, 1.3rem);
+
   background-color: #76B881;
   width: 35%;
   min-width: 270px;
   max-width: 500px;
-  height: 5rem;
+
+  height: clamp(3.2rem, 8vh, 5rem);
+  max-height: 84px;
+
   border-radius: 24px;
   box-shadow:
-      inset 0 0 0 1px rgba(0, 0, 0, 0.25),
-      0 8px 24px rgba(0, 0, 0, 0.25);
-  max-height: 84px;
+    inset 0 0 0 1px rgba(0, 0, 0, 0.25),
+    0 8px 24px rgba(0, 0, 0, 0.25);
+
   text-align: center;
   display: flex;
   flex-direction: column;
@@ -79,54 +80,63 @@ body {
 
 .welcome__title {
   margin: 0;
-  font-size: 1.7rem;
+  font-size: clamp(1.2rem, 4vw, 1.5rem);
   font-weight: 1200;
 }
 
 .welcome__text {
   margin: 0;
-  line-height: 1.5;
+  line-height: 1.4;
   font-weight: 600;
+  font-size: clamp(0.8rem, 2.8vw, 1rem);
 }
 
 .login_box {
-  margin-top: 6vh;
+  margin-top: clamp(1rem, 4vh, 6vh);
+
   background-color: #76B881;
   width: 50%;
   min-width: 300px;
   max-width: 600px;
+
   border-radius: 1.5rem;
   font-weight: 1000;
+
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding-bottom: 1rem;
+
+  padding-bottom: clamp(0.5rem, 2vh, 1rem);
+
   box-shadow:
-      inset 0 0 0 1px rgba(0, 0, 0, 0.25),
-      0 8px 24px rgba(0, 0, 0, 0.25);
+    inset 0 0 0 1px rgba(0, 0, 0, 0.25),
+    0 8px 24px rgba(0, 0, 0, 0.25);
 }
 
 .field {
-  margin-top: 1rem;
+  margin-top: clamp(0.5rem, 1.5vh, 1rem);
+  margin-bottom: clamp(0.5rem, 1.5vh, 1rem);
+
   font-size: large;
+
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin-bottom: 1rem;
 }
 
 .fields {
-  padding-bottom: 1rem;
+  padding-bottom: clamp(0.5rem, 2vh, 1rem);
 }
 
 .field__input {
   appearance: none;
   -webkit-appearance: none;
+
   margin-top: 0.4rem;
-  width: 14rem;
-  height: 2rem;
+  width: clamp(15rem, 50vw, 14rem);
+  height: clamp(1.7rem, 5vh, 2rem);
   padding: 0 0.75rem;
 
   border-radius: 0.7rem;
@@ -139,6 +149,10 @@ body {
     inset 0 0 0 1px rgba(0,0,0,0.3);
 
   transition: box-shadow 0.2s ease;
+}
+
+.field__label {
+  font-size: clamp(0.3rem, 4vw, 3rem);
 }
 
 .field__input:focus-visible {
@@ -162,8 +176,8 @@ body {
   appearance: none;
   -webkit-appearance: none;
 
-  width: 1.3rem;
-  height: 1.3rem;
+  width: clamp(1.1rem, 3vh, 1.3rem);
+  height: clamp(1.1rem, 3vh, 1.3rem);
 
   border-radius: 0.35rem;
   background-color: #BAD8A3;
@@ -180,8 +194,6 @@ body {
   transition:
     box-shadow 0.2s ease,
     background-color 0.2s ease;
-
-  cursor: pointer;
 }
 
 .checkbox__input::after {
@@ -204,16 +216,11 @@ body {
     inset 0 0 0 2px rgba(0,0,0,0.45);
 }
 
-
 .checkbox__input:checked::after {
   transform: rotate(-45deg) scale(1);
 }
 
-.checkbox__input:focus-visible {
-  box-shadow:
-    inset 0 0 0 2px rgba(0,0,0,0.3);
-}
-
+.checkbox__input:focus-visible,
 .checkbox__input:hover {
   box-shadow:
     inset 0 0 0 2px rgba(0,0,0,0.3);
@@ -221,15 +228,18 @@ body {
 
 .checkbox__text {
   margin-left: 0.5rem;
+  font-size: clamp(0.8rem, 3vw, 1rem);
 }
 
 .login_button {
-  margin-bottom: 6vh;
+  margin-bottom: clamp(1rem, 4vh, 6vh);
+
   align-self: center;
   justify-self: center;
+
   width: 60%;
   max-width: 14rem;
-  height: 4rem;
+  height: clamp(2.8rem, 8vh, 4rem);
 
   border-radius: 1.6rem;
   background-color: #BAD8A3;
@@ -242,7 +252,7 @@ body {
     0 4px 12px rgba(0,0,0,0.15);
 
   font-family: inherit;
-  font-size: 1rem;
+  font-size: clamp(0.85rem, 3vw, 1rem);
   font-weight: 600;
   color: rgba(0,0,0,0.85);
 
@@ -269,9 +279,8 @@ body {
   transform: scale(0.97);
 }
 
-
 .title_h1 {
-  font-size: 1.3rem;
+  font-size: clamp(1rem, 3.5vw, 1.3rem);
 }
 
 
