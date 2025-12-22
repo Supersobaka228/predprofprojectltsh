@@ -4,6 +4,9 @@
   box-sizing: border-box;
 }
 
+html {
+  font-size: 16px;
+}
 button,
 a,
 .custom-button,
@@ -59,7 +62,7 @@ body {
   justify-self: center;
   margin-top: clamp(0.5rem, 2vh, 1.3rem);
 
-  background-color: #76B881;
+  background-color: #68A662;
   width: 35%;
   min-width: 270px;
   max-width: 500px;
@@ -94,10 +97,10 @@ body {
 .login_box {
   margin-top: clamp(1rem, 4vh, 6vh);
 
-  background-color: #76B881;
-  width: 50%;
-  min-width: 300px;
-  max-width: 600px;
+  background-color: #68A662;
+  width: 50vw;
+  min-width: 250px;
+  max-width: 800px;
 
   border-radius: 1.5rem;
   font-weight: 1000;
@@ -113,6 +116,7 @@ body {
     inset 0 0 0 1px rgba(0, 0, 0, 0.25),
     0 8px 24px rgba(0, 0, 0, 0.25);
 }
+
 
 .field {
   margin-top: clamp(0.5rem, 1.5vh, 1rem);
@@ -135,12 +139,12 @@ body {
   -webkit-appearance: none;
 
   margin-top: 0.4rem;
-  width: clamp(15rem, 50vw, 14rem);
+  width: clamp(13rem, 40vw, 17rem);
   height: clamp(1.7rem, 5vh, 2rem);
   padding: 0 0.75rem;
 
   border-radius: 0.7rem;
-  background-color: #BAD8A3;
+  background-color: #AED094;
 
   border: none;
   outline: none;
@@ -152,7 +156,7 @@ body {
 }
 
 .field__label {
-  font-size: clamp(0.3rem, 4vw, 3rem);
+  font-size: 1em;
 }
 
 .field__input:focus-visible {
@@ -180,7 +184,7 @@ body {
   height: clamp(1.1rem, 3vh, 1.3rem);
 
   border-radius: 0.35rem;
-  background-color: #BAD8A3;
+  background-color: #AED094;
 
   border: none;
   outline: none;
@@ -242,7 +246,7 @@ body {
   height: clamp(2.8rem, 8vh, 4rem);
 
   border-radius: 1.6rem;
-  background-color: #BAD8A3;
+  background-color: #AED094;
 
   border: none;
   outline: none;
@@ -280,21 +284,22 @@ body {
 }
 
 .title_h1 {
-  font-size: clamp(1rem, 3.5vw, 1.3rem);
+  font-size: 1.5em;
 }
 
 
 /* МЕНЮ */
 
 .menu_header {
-  justify-self: center;
-  align-items: center;
-  background-color: #BAD8A3;
   display: flex;
-  flex-direction: row;
   justify-content: space-around;
+  align-items: center;
   width: 100%;
-  font-size: clamp(1.3rem, 3vw, 2.4rem);
+
+  height: clamp(2.4rem, 12vh, 4rem); 
+  font-size: clamp(1.15rem, 5vh, 1.5rem);
+  
+  background-color: #AED094;
   flex: 0 0 auto;
 }
 
@@ -309,7 +314,6 @@ body {
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  grid-template-rows: auto 1fr auto;
   background:
   radial-gradient(
     circle at 30% 30%,
@@ -336,7 +340,7 @@ body {
 
 .arrow_left,
 .arrow_right {
-  width: clamp(50px, 15vw, 150px);
+  width: 2.5em;
   aspect-ratio: 1 / 1;
 }
 
@@ -346,24 +350,25 @@ body {
 
 
 .menu_date {
-  font-size: clamp(0.3rem, 4vw, 10rem);
+  font-size: 0.7em;
   white-space: nowrap;
 }
 
 
 .menu_footer {
+  height: clamp(2.4rem, 12vh, 4rem); 
   position: relative;
   display: flex;
   flex-direction: row;
   justify-content: center;
-  background-color: #BAD8A3;
+  background-color: #AED094;
   align-items: center;
   flex: 0 0 auto;
-  padding: clamp(0.5rem, 2vw, 1rem);
+  padding: clamp(0.5rem, 3vh, 1rem);
 }
 
 .footer_locator {
-  height: clamp(2.5rem, 12vw, 5rem);
+  height: 90%;
   position: relative;
   width: 100%;
   display: flex;
@@ -376,21 +381,21 @@ body {
 .footer_background {
   position: absolute;
   inset: clamp(0.3rem, 1.4vw, 0.6rem);
-  background-color: #88BE83;
+  background-color: #68A662;
   z-index: 0;
-  border-radius: clamp(0.5rem, 6vw, 2rem);
+  border-radius: clamp(0.5rem, 3vh, 1.3rem);
 }
 
 .footer_highlight {
   position: absolute;
   bottom: 10;
-  height: clamp(2.6rem, 12vw, 5rem);
-  background-color: #6B9867;
-  border-radius: clamp(0.5rem, 6.5vw, 2.5rem);
+  height: clamp(1.5rem, 8.3vh, 3rem); 
+  background-color: #AED094;
+  border-radius: clamp(0.5rem, 3vh, 2.5rem);
   transition: left 0.3s ease, width 0.3s ease;
 
   pointer-events: none;
-  width: clamp(3rem, 20vw, 12rem);
+  width: clamp(3rem, 25vw, 12rem);
   left: 0;
   box-sizing: border-box;
 }
@@ -403,7 +408,7 @@ body {
   outline: none;
   user-select: none;
 
-  font-size: clamp(0.2rem, 1.5vw, 0.6rem);
+  font-size: clamp(0.17rem, 1vh, 0.35rem);
   border-radius: 20%;
   display: flex;
   flex-direction: column;
@@ -416,14 +421,14 @@ body {
 }
 
 .menu_footer_button_img {
-  width: clamp(2rem, 6vw, 3.6rem);
+  width: 5em;
   aspect-ratio: 1 / 1;
 
 }
 
 .menu_footer_button_text {
   font-weight: 600;
-  font-size: clamp(0.6rem, 2.8vw, 0.8rem);
+  font-size: 2em;
   margin: 0;
 }
 
@@ -436,7 +441,7 @@ body {
 .menu_section {
   border-radius: 1.7rem;
   padding: 0.6rem;
-  background-color: #BAD8A3;
+  background-color: #AED094;
   margin: clamp(0.7rem, 3vw, 3rem);
   justify-self: center;
   width: 85%;
@@ -449,7 +454,7 @@ body {
   font-size: clamp(10px, 3.3vw, 20px);
   font-weight: bolder;
   padding: clamp(10px, 1vw, 50px);
-  background-color: #88BE83;
+  background-color: #68A662;
   border-radius: 3rem;
   align-items: center;
   height: clamp(30px, 10vw, 3rem);
@@ -473,6 +478,14 @@ body {
 .menu_allergens {
   padding-left: clamp(20px, 2vw, 1.5rem);
 }
+
+.menu_pic {
+  width: 5em;
+}
+
+
+
+/* Часть кошелька */
 
 
 
@@ -499,3 +512,23 @@ body {
     background-position: 100% 100%, 0% 100%, 60% 30%;
   }
 }
+
+.app_view {
+  display: none;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.35s ease, transform 0.35s ease;
+}
+
+.app_view--active {
+  display: flex;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+
+
