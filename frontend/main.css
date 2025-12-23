@@ -13,8 +13,7 @@ html, body {
   font-style: normal;
 
   /* Важно для оверлея */
-  overflow-x: hidden;
-  overflow-y: auto;
+overflow: hidden;
   position: relative;
 
   display: block; /* Лучше убрать flex на body/html, если не критично */
