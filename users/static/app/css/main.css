@@ -4,46 +4,77 @@
   box-sizing: border-box;
 }
 
+button,
+a,
+.custom-button,
+.checkbox,
+input[type="checkbox"] {
+  -webkit-tap-highlight-color: transparent;
+}
+
+
+
 body {
   margin: 0;
   font-family: "M PLUS Rounded 1c", sans-serif;
   font-weight: 400;
   font-style: normal;
-  background: linear-gradient(135deg, #4A4A4A 0%, #6E594A 60%, #EC7859 100%);
 
 }
+
 
 .page {
   min-height: 100svh;   /* лучше чем 100vh */
-  padding-top: 4rem;    /* большой отступ сверху */
+  padding-top: 1rem;    /* большой отступ сверху */
   padding-left: 1rem;
   padding-right: 1rem;
 
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  justify-content: center;
+  justify-items: center;
   align-items: center;
-    background: radial-gradient(circle at center, 
-  rgba(236, 120, 89, 0.4) 10%, 
-  rgba(180, 90, 50, 0.25) 30%, 
-  #4A4A4A 80%);
+  background:
+  radial-gradient(
+    circle at 30% 30%,
+    rgba(225, 255, 202, 0.9) 0%,
+    rgba(245, 255, 238, 0.7) 35%,
+    rgba(255, 255, 255, 0.95) 70%
+  ),
+  radial-gradient(
+    circle at 70% 40%,
+    rgba(225, 255, 202, 0.6) 0%,
+    rgba(245, 255, 238, 0.5) 40%,
+    rgba(255, 255, 255, 0.9) 75%
+  ),
+  radial-gradient(
+    circle at 50% 70%,
+    rgba(225, 255, 202, 0.4) 0%,
+    rgba(248, 255, 245, 0.4) 45%,
+    rgba(255, 255, 255, 1) 80%
+  );
+
+  background-size: 250% 250%;
+  animation: floatBg 30s ease-in-out infinite alternate;
 }
 
 .welcome {
-    margin-top: 1.3rem;
-    background-color: #E67E22;
-    width: 50%;
-    min-width: 270px;
-    max-width: 600px;
-    height: 5rem;
-    border-radius: 24px;
-    box-shadow:
-        inset 0 0 0 1px rgba(0, 0, 0, 0.08),
-        0 8px 24px rgba(0, 0, 0, 0.08);
-    max-height: 84px;
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+  align-self: center;
+  justify-self: center;
+  margin-top: 1.3rem;
+  background-color: #76B881;
+  width: 35%;
+  min-width: 270px;
+  max-width: 500px;
+  height: 5rem;
+  border-radius: 24px;
+  box-shadow:
+      inset 0 0 0 1px rgba(0, 0, 0, 0.25),
+      0 8px 24px rgba(0, 0, 0, 0.25);
+  max-height: 84px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .welcome__title {
@@ -59,10 +90,10 @@ body {
 }
 
 .login_box {
-  margin-top: 7rem;
-  background-color: #EC7859;
-  width: 80%;
-  min-width: 270px;
+  margin-top: 6vh;
+  background-color: #76B881;
+  width: 50%;
+  min-width: 300px;
   max-width: 600px;
   border-radius: 1.5rem;
   font-weight: 1000;
@@ -71,6 +102,9 @@ body {
   justify-content: center;
   align-items: center;
   padding-bottom: 1rem;
+  box-shadow:
+      inset 0 0 0 1px rgba(0, 0, 0, 0.25),
+      0 8px 24px rgba(0, 0, 0, 0.25);
 }
 
 .field {
@@ -90,14 +124,13 @@ body {
 .field__input {
   appearance: none;
   -webkit-appearance: none;
-
   margin-top: 0.4rem;
   width: 14rem;
   height: 2rem;
   padding: 0 0.75rem;
 
   border-radius: 0.7rem;
-  background-color: #FF9B81;
+  background-color: #BAD8A3;
 
   border: none;
   outline: none;
@@ -111,7 +144,7 @@ body {
 .field__input:focus-visible {
   box-shadow:
     inset 0 0 0 2px rgba(0,0,0,0.4);
-  background-color: #ed9d89;
+  background-color: #b9d2a5;
 }
 
 .field__input::placeholder {
@@ -122,10 +155,10 @@ body {
   display: flex;
   align-items: center;
   gap: 0.6rem;
-  cursor: pointer;
 }
 
 .checkbox__input {
+  cursor: pointer;
   appearance: none;
   -webkit-appearance: none;
 
@@ -133,7 +166,7 @@ body {
   height: 1.3rem;
 
   border-radius: 0.35rem;
-  background-color: #FF9B81;
+  background-color: #BAD8A3;
 
   border: none;
   outline: none;
@@ -166,7 +199,7 @@ body {
 }
 
 .checkbox__input:active {
-  background-color: #ed9d89;
+  background-color: #849c71;
   box-shadow:
     inset 0 0 0 2px rgba(0,0,0,0.45);
 }
@@ -181,9 +214,9 @@ body {
     inset 0 0 0 2px rgba(0,0,0,0.3);
 }
 
-.checkbox:hover .checkbox__input {
+.checkbox__input:hover {
   box-shadow:
-    inset 0 0 0 2px rgba(0,0,0,0.2);
+    inset 0 0 0 2px rgba(0,0,0,0.3);
 }
 
 .checkbox__text {
@@ -191,14 +224,15 @@ body {
 }
 
 .login_button {
-  margin-top: 3rem;
-
+  margin-bottom: 6vh;
+  align-self: center;
+  justify-self: center;
   width: 60%;
   max-width: 14rem;
   height: 4rem;
 
   border-radius: 1.6rem;
-  background-color: #FF9B81;
+  background-color: #BAD8A3;
 
   border: none;
   outline: none;
@@ -227,7 +261,7 @@ body {
 }
 
 .login_button:active {
-  background-color: #F0866C;
+  background-color: #99b286;
   box-shadow:
     inset 0 0 0 2px rgba(0,0,0,0.45),
     0 3px 8px rgba(0,0,0,0.2);
@@ -240,18 +274,218 @@ body {
   font-size: 1.3rem;
 }
 
-@media (min-width: 768px) {
-  .page {
-    padding-top: 6rem;
-  }
 
-  .welcome {
-    padding: 2rem;
-    border-radius: 20px;
-  }
+/* МЕНЮ */
 
-  .welcome__title {
-    font-size: 1.75rem;
+.menu_header {
+  justify-self: center;
+  align-items: center;
+  background-color: #BAD8A3;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  width: 100%;
+  font-size: clamp(1.3rem, 3vw, 2.4rem);
+  flex: 0 0 auto;
+}
+
+.menu_header a {
+  display: flex;
+  align-items: center;
+}
+
+.menu_page {
+  max-height: 100svh;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  grid-template-rows: auto 1fr auto;
+  background:
+  radial-gradient(
+    circle at 30% 30%,
+    rgba(225, 255, 202, 0.9) 0%,
+    rgba(245, 255, 238, 0.7) 35%,
+    rgba(255, 255, 255, 0.95) 70%
+  ),
+  radial-gradient(
+    circle at 70% 40%,
+    rgba(225, 255, 202, 0.6) 0%,
+    rgba(245, 255, 238, 0.5) 40%,
+    rgba(255, 255, 255, 0.9) 75%
+  ),
+  radial-gradient(
+    circle at 50% 70%,
+    rgba(225, 255, 202, 0.4) 0%,
+    rgba(248, 255, 245, 0.4) 45%,
+    rgba(255, 255, 255, 1) 80%
+  );
+
+  background-size: 250% 250%;
+  animation: floatBg 30s ease-in-out infinite alternate;
+}
+
+.arrow_left,
+.arrow_right {
+  width: clamp(70px, 15vw, 150px);
+  aspect-ratio: 1 / 1;
+}
+
+.arrow_left {
+  transform: scaleX(-1);
+}
+
+
+.menu_date {
+  font-size: 1em;
+  white-space: nowrap;
+}
+
+
+.menu_footer {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  background-color: #BAD8A3;
+  align-items: center;
+  flex: 0 0 auto;
+  padding: clamp(0.5rem, 2vw, 1rem);
+}
+
+.footer_locator {
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  flex: 0 0 auto;
+}
+
+.footer_background {
+  position: absolute;
+  inset: clamp(0.3rem, 1.4vw, 0.6rem);
+  background-color: #88BE83;
+  z-index: 0;
+  border-radius: clamp(0.5rem, 6vw, 2rem);
+}
+
+.footer_highlight {
+  position: absolute;
+  bottom: 10;
+  height: clamp(3.4rem, 16vw, 5rem);
+  background-color: #6B9867;
+  border-radius: clamp(0.5rem, 6.5vw, 2.5rem);
+  transition: left 0.3s ease, width 0.3s ease;
+
+  pointer-events: none;
+  width: 0;
+  left: 0;
+  box-sizing: border-box;
+}
+
+
+.footer_container {
+  all: unset;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  outline: none;
+  user-select: none;
+
+  font-size: clamp(0.2rem, 1.5vw, 0.6rem);
+  border-radius: 20%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: clamp(3.5rem, 18vw, 5.5rem);
+  height: clamp(3.5rem, 18vw, 5.5rem);
+  box-sizing: border-box;
+  text-align: center;
+}
+
+.menu_footer_button_img {
+  width: clamp(2.3rem, 12vw, 3.6rem);
+  aspect-ratio: 1 / 1;
+
+}
+
+.menu_footer_button_text {
+  font-weight: 600;
+  font-size: clamp(0.6rem, 2.8vw, 0.8rem);
+  margin: 0;
+}
+
+
+.menu_main {
+  flex: 1 1 auto;
+  overflow: auto;
+  min-height: 0;
+}
+.menu_section {
+  border-radius: 1.7rem;
+  padding: 1rem;
+  background-color: #BAD8A3;
+  margin-top: 1.2rem;
+  margin-bottom: 1.2rem;
+  justify-self: center;
+  width: 85%;
+  display: flex;
+  flex-direction: column;
+}
+
+.menu_section_head {
+  font-size: clamp(10px, 3.3vw, 20px);
+  font-weight: bolder;
+  padding: 1rem;
+  background-color: #88BE83;
+  border-radius: 3rem;
+  align-items: center;
+  height: 3rem;
+  display: flex;
+  justify-content: space-around;
+}
+
+.menu_section_main {
+  font-weight: bold;
+  font-size: clamp(11px, 2.7vw, 20px);
+  height: 6rem;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.menu_items {
+  padding-left: 1.5rem;
+}
+
+.menu_allergens {
+  padding-left: 1.5rem;
+}
+
+
+
+@keyframes moveGradient {
+  0% {
+    background-position: 0% 0%;
+  }
+  50% {
+    background-position: 100% 30%;
+  }
+  100% {
+    background-position: 30% 100%;
   }
 }
 
+@keyframes floatBg {
+  0% {
+    background-position: 0% 0%, 100% 0%, 50% 50%;
+  }
+  50% {
+    background-position: 80% 40%, 20% 60%, 40% 70%;
+  }
+  100% {
+    background-position: 100% 100%, 0% 100%, 60% 30%;
+  }
+}

@@ -11,6 +11,7 @@ class Dish(models.Model):
     allergens = models.TextField(blank=True, null=True)
     calories = models.IntegerField()
     price = models.DecimalField(max_digits=10, decimal_places=2)
+    photo = models.ImageField(blank=True, null=True)
     is_available = models.BooleanField(default=True)
 
     def __str__(self):
@@ -21,6 +22,7 @@ class Menu(models.Model):
     MEAL_TYPE_CHOICES = [
         ('breakfast', 'Завтрак'),
         ('lunch', 'Обед'),
+        ('snack', 'Полдник')
     ]
 
     DAY_CHOICES = [
