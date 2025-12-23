@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MealHub</title>
+    <link rel="stylesheet" href="../../static/app/css/main.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c&display=swap" rel="stylesheet">
+</head>
+<body>
+<main class="page">
+  <section class="welcome">
+    <h1 class="welcome__title">Meal Hub</h1>
+    <p class="welcome__text">
+      Контроль питания учеников
+    </p>
+  </section>
+  <section class="login_box">
+    <h1 class="title_h1">Регистрация</h1>
+    <form class="login__form" method="post">
+        {% csrf_token %}
+      <div class="fields">
+        <div class="field">
+          <div class="field__label">Email</div>
+          <input class="field__input" type="email" name="email" value="{{ request.POST.email|default:'' }}"/>
+        </div>
+
+        <div class="field">
+          <div class="field__label">Пароль</div>
+          <input class="field__input" type="password" name="password" value="{{ request.POST.password|default:'' }}"/>
+        </div>
+
+        <div class="field">
+          <div class="field__label">Повторите пароль</div>
+          <input class="field__input" type="password" name="password2" value="{{ request.POST.password2|default:'' }}"/>
+        </div>
+      </div>
+
+      <div class="checkbox">
+        <input class="checkbox__input" type="checkbox" />
+        <div class="checkbox__text">
+          Я согласен с условиями
+        </div>
+      </div>
+
+    </form>
+  </section>
+  <button class="login_button">
+    Далее
+  </button>
+</main>
+
+</body>
+</html>
