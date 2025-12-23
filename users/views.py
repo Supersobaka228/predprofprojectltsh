@@ -9,6 +9,8 @@ from .forms import RegisterForm, LoginForm
 # Create your views here.
 def register(request):
     if request.method == "POST":
+        for key, value in request.POST.items():
+            print(f"  {key}: {value}")
         form = RegisterForm(request.POST)
         if form.is_valid():
             print(113)
