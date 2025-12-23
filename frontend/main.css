@@ -8,14 +8,19 @@
 html, body {
   height: 100%;
   margin: 0;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-}
+  font-family: "M PLUS Rounded 1c", sans-serif;
+  font-weight: 400;
+  font-style: normal;
 
-html {
+  /* Важно для оверлея */
+  overflow-x: hidden;
+  overflow-y: auto;
+  position: relative;
+
+  display: block; /* Лучше убрать flex на body/html, если не критично */
   font-size: 16px;
 }
+
 
 button,
 a,
@@ -25,12 +30,6 @@ input[type="checkbox"] {
   -webkit-tap-highlight-color: transparent;
 }
 
-body {
-  margin: 0;
-  font-family: "M PLUS Rounded 1c", sans-serif;
-  font-weight: 400;
-  font-style: normal;
-}
 
 .page {
   min-height: 100svh;
@@ -323,7 +322,6 @@ body {
   flex: 1 1 auto;
   max-height: 100svh;
   height: 100vh;
-  overflow: hidden;
   display: flex;
   flex-direction: column;
   background:
@@ -640,6 +638,68 @@ body {
   justify-self: center;
   margin: 0.2em;
 }
+
+
+
+
+/* sheet-overlay */
+
+.sheet-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  z-index: 9999;
+}
+
+.sheet-overlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.sheet {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 86vh;
+  background: #BAD8A3;
+  border-radius: 20px 20px 0 0;
+
+  transform: translateY(100%);
+  transition: transform 0.35s cubic-bezier(.22,.61,.36,1);
+
+  touch-action: none;
+}
+
+.sheet-overlay.active .sheet {
+  transform: translateY(0);
+}
+
+.sheet-close {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  border: none;
+  background: none;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.sheet-content {
+  height: 100%;
+  padding: 3rem 1.5rem 1.5rem;
+  overflow-y: auto;
+}
+
+
+
+
+/* anims */
 
 @keyframes moveGradient {
   0% {
