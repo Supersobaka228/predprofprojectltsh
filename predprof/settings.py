@@ -55,7 +55,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'users'
+    'users', 'menu'
 ]
 
 MIDDLEWARE = [
@@ -97,6 +97,10 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+STATICFILES_DIRS = [
+    BASE_DIR / "static",  # Глобальная папка static
+]
 
 LOGIN_URL = '/login/'
 AUTH_USER_MODEL = 'users.User'

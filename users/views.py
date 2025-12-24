@@ -45,7 +45,7 @@ def login(request):
 
             if next_url:
                 return redirect(next_url)
-            # return redirect('')
+            return redirect('menu')
     else:
         form = LoginForm(request=request)
 

@@ -1,4 +1,4 @@
-from django.db import models
+'''from django.db import models
 
 from predprof import settings
 
@@ -11,7 +11,6 @@ class Dish(models.Model):
     allergens = models.TextField(blank=True, null=True)
     calories = models.IntegerField()
     price = models.DecimalField(max_digits=10, decimal_places=2)
-    photo = models.ImageField(blank=True, null=True)
     is_available = models.BooleanField(default=True)
 
     def __str__(self):
@@ -45,7 +44,7 @@ class Review(models.Model):
     text = models.TextField()
     date = models.DateField()
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    dish = models.ForeignKey(settings.AUTH_DISH_MODEL, on_delete=models.CASCADE)
+    dish = models.ForeignKey(settings.AUTH_DISH_MODEL, on_delete=models.CASCADE)'''
 
 
 
