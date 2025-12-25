@@ -12,7 +12,7 @@ def menu(request):
 
 
 
-def menu_view(request):
-    today_weekday = datetime.today().isoweekday() # 1-7, пн-вс
-    try:
-        menu
+#def menu_view(request):
+#    today_weekday = datetime.today().isoweekday() # 1-7, пн-вс
+#    try:
+#        menu
