@@ -2,12 +2,15 @@ from django.core.exceptions import ValidationError
 from django.db import models
 from django import forms
 from django.forms.widgets import PasswordInput
+from pyexpat.errors import messages
+
 from .models import User
 
 
 from django.forms import ModelForm, TextInput
 
 class RegisterForm(ModelForm):
+    error_messages = []
     password2 = forms.CharField(
         label='Пароль',
         widget=PasswordInput(attrs={
@@ -23,7 +26,6 @@ class RegisterForm(ModelForm):
                    "password2": PasswordInput(attrs={"class": "field__input"}),
                    "phone": TextInput(attrs={"class": "field__input"})
                    }
-
 
 class LoginForm(forms.Form):
     username = forms.CharField(
@@ -46,6 +48,7 @@ class LoginForm(forms.Form):
     from django.contrib.auth import get_user_model
     model = get_user_model()
     fields = ['email', 'password']
+    error_messages = []
     widgets = {"email": TextInput(attrs={"class": "field__input"}), "password": PasswordInput(attrs={"class": "field__input"})}
 
     def __init__(self, request=None, *args, **kwargs):
@@ -102,10 +105,9 @@ class LoginForm(forms.Form):
             else:
                 return None
         try:
-            user = User.objects.get(password=password)
+            user = User.objects.get(password=password, email=username)
             p = User.objects.get(Q(email=username))
-            if p.password == password:
-                return user
+            return user
         except User.DoesNotExist:
             return None
 
@@ -132,6 +134,7 @@ class LoginForm(forms.Form):
             if self.user_cache is None:
                 print(115)
                 # Неправильные учетные данные
+                return None
                 raise ValidationError(
                     'Неверное имя пользователя или пароль',
                     code='invalid_login'
@@ -139,6 +142,7 @@ class LoginForm(forms.Form):
 
             # Дополнительная проверка активности пользователя
             if not self.user_cache.is_active:
+                return None
                 raise ValidationError(
                     'Аккаунт неактивен',
                     code='inactive'
@@ -164,3 +168,6 @@ class LoginForm(forms.Form):
 
     def get_remember_me(self):
         return self.cleaned_data.get('remember_me')
+
+    def set_error(self, a):
+        self.error_messages.append(a)
