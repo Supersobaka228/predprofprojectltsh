@@ -691,7 +691,7 @@ input[type="checkbox"] {
 }
 
 .sheet-content {
-  background: #BAD8A3;
+  background: #E7FFD4;
   border-radius: 20px 20px 0 0;
   height: 100%;
   padding: 0;
@@ -737,6 +737,7 @@ input[type="checkbox"] {
 
 .sheet_title {
   font-size: clamp(14px, 5vw, 26px);
+  margin: 0;
 }
 
 .sheet_text {
@@ -744,9 +745,14 @@ input[type="checkbox"] {
 }
 
 .sheet_main_img {
-  width: clamp(40px, 20vw, 100px);
+  width: clamp(40px, 40vw, 230px);
 }
 
+.sheet_order_btn1 {
+  width: 10rem;
+  height: 10rem;
+
+}
 .sheet_main {
   display: flex;
   justify-content: space-around;
@@ -755,6 +761,7 @@ input[type="checkbox"] {
 .sheet_info {
   margin: auto;
   margin-top: 1em;
+  margin-bottom: 0;
   width: 90%;
   background-color: #88BE83;
   display: flex;
@@ -762,12 +769,128 @@ input[type="checkbox"] {
   border-radius: 2em;
 }
 
-.sheet_title {
+
+.sheet_title_sost {
+  margin: 0;
+  left: 30%;
+  transform: translateX(13%);
+  font-size: clamp(14px, 5vw, 26px);
+}
+
+.sostav_list {
+  width: 90%;
+}
+
+.sheet_rating {
+  width: 90%;
+  margin: auto;
+  margin-top: 1rem;
+  background-color: #88BE83;
+  border-radius: 2em;
+  padding: 1rem 1rem 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.rating_box {
+  display: flex;
+  width: 63%;
+  justify-content: space-around;
+  align-items: center;
+  background-color: #BAD8A3;
+  border-radius: 1.2rem;
+  padding: 0.7rem;
+  gap: 0.4em;
+  font-size: clamp(8px, 2.8vw, 14px);
+  height: auto;
+}
+
+.rating_star {
+  width: 2.2em;
+  height: 2.2em;
+}
+
+.rate_container {
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+}
+
+.rate_button {
+  width: 35%;
+  all: unset;
+  text-align: center;
+  background-color: #BAD8A3;
+  border-radius: 1.2rem;
+  padding: 0.5em;
+  box-shadow:
+    inset 0 0 0 2px rgba(81, 81, 81, 0.4),
+    0 6px 16px rgba(60, 60, 60, 0.18);
+}
+
+.rate_button:hover {
+  box-shadow:
+    inset 0 0 0 2px rgba(0,0,0,0.4),
+    0 6px 16px rgba(0,0,0,0.18);
+}
+
+.rate_button:active {
+  background-color: #99b286;
+  box-shadow:
+    inset 0 0 0 2px rgba(0,0,0,0.45),
+    0 3px 8px rgba(0,0,0,0.1);
+
+  transform: scale(0.97);
+}
+
+.sheet_rating_text {
+  font-size: clamp(6px, 3.2vw, 20px);
   margin: 0;
 }
 
+.sheet_order_btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-self: center;
+  align-content: center;
+  text-align: center;
+  appearance: none;
+  background-color: #88BE83;
+  border: none;
+  border-radius: 15px;
+  box-sizing: border-box;
+  color: #000000;
+  cursor: pointer;
+  display: inline-block;
+  line-height: normal;
+  margin: 0;
+  min-height: 60px;
+  min-width: 0;
+  outline: none;
+  text-align: center;
+  text-decoration: none;
+  transition: all 300ms cubic-bezier(.23, 1, 0.32, 1);
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  width: 40%;
+  height: 50%;
+  will-change: transform;
+  box-shadow: rgba(0, 0, 0, 0.25) 0 8px 15px;
 
+}
 
+.sheet_order_btn:disabled {
+  pointer-events: none;
+}
+
+.sheet_order_btn:active {
+  box-shadow: none;
+  transform: translateY(2px);
+}
 /* anims */
 
 @keyframes moveGradient {
