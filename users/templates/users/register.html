@@ -50,6 +50,14 @@
           Я согласен с условиями
         </span>
       </label>
+        {% if form.error_messages %}
+        <div class="alert alert-danger">
+            <ul>
+                <li>Форма неверна</li>
+
+            </ul>
+        </div>
+    {% endif %}
     <button class="login_button" type="submit">
       Далее
     </button>

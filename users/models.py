@@ -49,7 +49,7 @@ class User(AbstractUser, PermissionsMixin):
     REQUIRED_FIELDS = []
     objects = UserManager()
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-
+    is_auth = models.BooleanField(default=False)
     first_name = models.CharField(_('first name'), max_length=255, default='')
     last_name = models.CharField(_('last name'), max_length=255, default='')
     email = models.EmailField(_('email address'), unique=True, db_index=True)
@@ -69,6 +69,17 @@ class User(AbstractUser, PermissionsMixin):
     def __str__(self):
         return self.email
 
+    @property
+    def get_is_auth(self):
+        if self.is_authenticated:
+            return True
+        else:
+            return False
+
+    def set_auth(self):
+        self.is_auth = True
+        self.save()
+
     def save(self, *args, **kwargs):
         if not self.username:
             self.username = self.email.split('@')[0]
@@ -78,6 +89,8 @@ class User(AbstractUser, PermissionsMixin):
                 self.username = f"{base_username}_{counter}"
                 counter += 1
         super().save(*args, **kwargs)
+
+
 
 
 
