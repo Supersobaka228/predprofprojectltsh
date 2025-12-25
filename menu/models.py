@@ -1,4 +1,4 @@
-from django.db import models
+'''from django.db import models
 
 from predprof import settings
 
@@ -21,6 +21,7 @@ class Menu(models.Model):
     MEAL_TYPE_CHOICES = [
         ('breakfast', 'Завтрак'),
         ('lunch', 'Обед'),
+        ('snack', 'Полдник')
     ]
 
     DAY_CHOICES = [
@@ -43,7 +44,7 @@ class Review(models.Model):
     text = models.TextField()
     date = models.DateField()
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    dish = models.ForeignKey(settings.AUTH_DISH_MODEL, on_delete=models.CASCADE)
+    dish = models.ForeignKey(settings.AUTH_DISH_MODEL, on_delete=models.CASCADE)'''
 
 
 

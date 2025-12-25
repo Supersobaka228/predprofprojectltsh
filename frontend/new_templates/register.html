@@ -22,40 +22,34 @@
     <form class="login__form" method="post">
         {% csrf_token %}
       <div class="fields">
-        <label class="field">
-          <span class="field__label">Email</span>
+        <div class="field">
+          <div class="field__label">Email</div>
           <input class="field__input" type="email" name="email" value="{{ request.POST.email|default:'' }}"/>
-        </label>
+        </div>
 
-        <label class="field">
-          <span class="field__label">Номер телефона</span>
-          <input class="field__input" type="text" name="phone" value="{{ request.POST.phone|default:'' }}"/>
-        </label>
-
-        <label class="field">
-          <span class="field__label">Пароль</span>
+        <div class="field">
+          <div class="field__label">Пароль</div>
           <input class="field__input" type="password" name="password" value="{{ request.POST.password|default:'' }}"/>
-        </label>
+        </div>
 
-        <label class="field">
-          <span class="field__label">Повторите пароль</span>
+        <div class="field">
+          <div class="field__label">Повторите пароль</div>
           <input class="field__input" type="password" name="password2" value="{{ request.POST.password2|default:'' }}"/>
-        </label>
-
+        </div>
       </div>
 
-      <label class="checkbox">
+      <div class="checkbox">
         <input class="checkbox__input" type="checkbox" />
-        <span class="checkbox__text">
+        <div class="checkbox__text">
           Я согласен с условиями
-        </span>
-      </label>
-    <button class="login_button" type="submit">
-      Далее
-    </button>
+        </div>
+      </div>
+
     </form>
   </section>
-
+  <button class="login_button">
+    Далее
+  </button>
 </main>
 
 </body>

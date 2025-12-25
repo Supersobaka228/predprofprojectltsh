@@ -19,25 +19,27 @@
   </section>
   <section class="login_box">
     <h1 class="title_h1">Вход</h1>
-    <form class="login__form">
+    <form class="login__form" method="post">
+        {% csrf_token %}
 
       <div class="fields">
         <label class="field">
           <span class="field__label">Email</span>
-          <input class="field__input" type="email" autocomplete="email" />
+          <input class="field__input" type="email" name="username"/>
         </label>
 
         <label class="field">
           <span class="field__label">Пароль</span>
-          <input class="field__input" type="password" />
+          <input class="field__input" type="password" name="password"/>
         </label>
       </div>
+    <button class="login_button" type="submit">
+    Далее
+    </button>
 
     </form>
   </section>
-  <button class="login_button">
-    Далее
-  </button>
+
 </main>
 
 </body>

@@ -17,9 +17,12 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
+import menu.views
 import users.views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('register/', users.views.register, name='register')
+    path('register/', users.views.register, name='register'),
+    path('login/', users.views.login, name='login'),
+    path('menu/', menu.views.menu, name='menu'),
 ]
