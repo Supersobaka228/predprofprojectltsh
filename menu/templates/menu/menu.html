@@ -1,160 +1,70 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../../static/app/css/main.css">
+    <link rel="stylesheet" href="../../static/menu/css/main.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c&display=swap" rel="stylesheet">
     <title>Меню</title>
 </head>
 
+<script src="../../static/menu/js/menu_footer.js"></script>
+<script src="../../static/menu/js/sheet.js"></script>
 <body>
     <div class="menu_page">
         <div class="app_view app_view--active" data-view="menu">
             <header class="menu_header">
-                <a href=""><img class="arrow_right" src="../../static/menu/icon/arrow.svg" alt=""></a>
+                <a href="?date={{ prev_date }}"><img class="arrow_right" src="../../static/menu/icon/arrow.svg" alt=""></a>
                 <h1 class="menu_date">
-                    20 дек. 2025, сб
+                    {{ date_display }}
                 </h1>
-                <a href=""><img class="arrow_left" src="../../static/menu/icon/arrow.svg" alt=""></a>
+                <a href="?date={{ next_date }}"><img class="arrow_left" src="../../static/menu/icon/arrow.svg" alt=""></a>
             </header>
             <main class="menu_main">
-                
-                <section class="menu_section">
-                    <div class="menu_section_head">
-                        <h3>Завтрак</h3>
-                        <h3>9:10-9:30</h3>
-                        <h3>261₽</h3>
-                    </div>
-                    <div class="menu_section_main">
-                        <img src="../../static/app/resources/arrow.svg" alt="" class="menu_pic">
-                        <ul class="menu_items">
-                            <li>Каша гречневая/молоко</li>
-                            <li>Сырники с джемом</li>
-                            <li>Чай чёрный</li>
-                        </ul>
 
-                        <ul class="menu_allergens">
-                            <div>Аллергены:</div>
-                            <li>Лактоза</li>
-                            <li>Клубника</li>
-                        </ul>
-                    </div>
-                </section>
+                {% for item in menu_items %}
+
 
                 <section class="menu_section">
                     <div class="menu_section_head">
-                        <h3>Завтрак</h3>
-                        <h3>9:10-9:30</h3>
-                        <h3>261₽</h3>
+                        <h3>
+                            {% if item.category == 'breakfast' %}
+                                Завтрак
+                            {% elif item.category == 'lunch' %}
+                                Обед
+                            {% else %}
+                                {{ item.category }}
+                            {% endif %}
+                        </h3>
+                        <h3>{{ item.time }}</h3>
+                        <h3>{{ item.price }}₽</h3>
                     </div>
                     <div class="menu_section_main">
-                        <button class="openSheet">Подробнее</button>
+                        <img src="{% static item.icon %}" alt="" class="menu_pic">
                         <ul class="menu_items">
-                            <li>Каша гречневая/молоко</li>
-                            <li>Сырники с джемом</li>
-                            <li>Чай чёрный</li>
+                            {% for desc in item.min_des %}
+                                <li>{{ desc }}</li>
+                            {% endfor %}
                         </ul>
 
                         <ul class="menu_allergens">
-                            <div>Аллергены:</div>
-                            <li>Лактоза</li>
-                            <li>Клубника</li>
+                            <div>
+                                Аллергены:
+                            </div>
+                            {% for allergen in item.allergens %}
+                                <li>{{ allergen }}</li>
+                            {% endfor %}
                         </ul>
                     </div>
                 </section>
+                {% empty %}
+                <p>На сегодня нет блюд.</p>
+                {% endfor %}
 
-                <section class="menu_section">
-                    <div class="menu_section_head">
-                        <h3>Завтрак</h3>
-                        <h3>9:10-9:30</h3>
-                        <h3>261₽</h3>
-                    </div>
-                    <div class="menu_section_main">
-                        <img src="../../static/app/resources/arrow.svg" alt="" class="menu_pic">
-                        <ul class="menu_items">
-                            <li>Каша гречневая/молоко</li>
-                            <li>Сырники с джемом</li>
-                            <li>Чай чёрный</li>
-                        </ul>
 
-                        <ul class="menu_allergens">
-                            <div>Аллергены:</div>
-                            <li>Лактоза</li>
-                            <li>Клубника</li>
-                        </ul>
-                    </div>
-                </section>
-
-                <section class="menu_section">
-                    <div class="menu_section_head">
-                        <h3>Завтрак</h3>
-                        <h3>9:10-9:30</h3>
-                        <h3>261₽</h3>
-                    </div>
-                    <div class="menu_section_main">
-                        <img src="../../static/app/resources/arrow.svg" alt="" class="menu_pic">
-                        <ul class="menu_items">
-                            <li>Каша гречневая/молоко</li>
-                            <li>Сырники с джемом</li>
-                            <li>Чай чёрный</li>
-                        </ul>
-
-                        <ul class="menu_allergens">
-                            <div>Аллергены:</div>
-                            <li>Лактоза</li>
-                            <li>Клубника</li>
-                        </ul>
-                    </div>
-                </section>
-
-                <section class="menu_section">
-                    <div class="menu_section_head">
-                        <h3>Завтрак</h3>
-                        <h3>9:10-9:30</h3>
-                        <h3>261₽</h3>
-                    </div>
-                    <div class="menu_section_main">
-                        <img src="../../static/app/resources/arrow.svg" alt="" class="menu_pic">
-                        <ul class="menu_items">
-                            <li>Каша гречневая/молоко</li>
-                            <li>Сырники с джемом</li>
-                            <li>Чай чёрный</li>
-                        </ul>
-
-                        <ul class="menu_allergens">
-                            <div>Аллергены:</div>
-                            <li>Лактоза</li>
-                            <li>Клубника</li>
-                        </ul>
-                    </div>
-                </section>
-
-                <section class="menu_section">
-                    <div class="menu_section_head">
-                        <h3>Завтрак</h3>
-                        <h3>9:10-9:30</h3>
-                        <h3>261₽</h3>
-                    </div>
-                    <div class="menu_section_main">
-                        <img src="../../static/app/resources/arrow.svg" alt="" class="menu_pic">
-                        <ul class="menu_items">
-                            <li>Каша гречневая/молоко</li>
-                            <li>Сырники с джемом</li>
-                            <li>Чай чёрный</li>
-                        </ul>
-
-                        <ul class="menu_allergens">
-                            <div>Аллергены:</div>
-                            <li>Лактоза</li>
-                            <li>Клубника</li>
-                        </ul>
-                    </div>
-                </section>
-
-                
             </main>
         </div>
 
@@ -172,7 +82,7 @@
                         <p class="balance_money">1488₽</p>
                     </div>
                     <a href="" class="add_money_box">
-                        <img src="../../static/app/resources/add.svg" alt="" class="add_money_img">
+                        <img src="../../static/menu/icon/add.svg" alt="" class="add_money_img">
                         <p class="balance_text">Пополнить</p>
                     </a>
                 </section>
@@ -390,7 +300,7 @@
             </header>
 
             <main class="settings_main">
-                
+
             </main>
         </div>
 
@@ -399,15 +309,15 @@
             <div class="footer_highlight"></div>
             <div class="footer_locator">
                 <button class="footer_container" data-view="menu">
-                    <img class="menu_footer_button_img" src="../../static/app/resources/menu.svg" alt="">
+                    <img class="menu_footer_button_img" src="../../static/menu/icon/menu.svg" alt="">
                     <p class="menu_footer_button_text">Меню</p>
                 </button>
                 <button class="footer_container" data-view="wallet">
-                    <img class="menu_footer_button_img" src="../../static/app/resources/wallet.svg" alt="">
+                    <img class="menu_footer_button_img" src="../../static/menu/icon/wallet.svg" alt="">
                     <p class="menu_footer_button_text">Кошелёк</p>
                 </button>
                 <button class="footer_container" data-view="settings">
-                    <img class="menu_footer_button_img" src="../../static/app/resources/options.svg" alt="">
+                    <img class="menu_footer_button_img" src="../../static/menu/icon/options.svg" alt="">
                     <p class="menu_footer_button_text">Настройки</p>
                 </button>
             </div>
@@ -415,23 +325,63 @@
     </div>
     <div class="sheet-overlay" id="overlay">
     <div class="sheet" id="sheet">
-
-        <button class="sheet-close" id="closeSheet">✕</button>
+        <div class="sheet_pipslide"></div>
+        <button class="sheet-close" id="closeSheet"></button>
 
         <div class="sheet-content">
-            <h2>Информация о товаре</h2>
-            <p>
-                Здесь уже может быть:
-                <br>— описание
-                <br>— галерея
-                <br>— кнопка «Купить»
-            </p>
+
+            <header class="sheet_header">
+                <p class="sheet_title_left">9:10-9:30</p>
+                <p class="sheet_name">Завтрак</p>
+                <p class="sheet_title_right">170₽</p>
+            </header>
+
+            <section class="sheet_main">
+                <img src="../../static/menu/icon/meal1.svg" alt="" class="sheet_main_img">
+                <button class="sheet_order_btn">
+                    <p class="sheet_title">Заказать</p>
+                    <p class="sheet_text">(для дальнейшего получения на кассе)</p>
+                </button>
+            </section>
+
+            <section class="sheet_info">
+                <div class="sheet_info_1">
+                    <h3 class="sheet_title_sost">Состав:</h3>
+                    <ol class="sostav_list">
+                        <li class="sheet_text">Каша гречневая с молоком: Молоко пастеризованное, крупа гречневая, сахар песок.</li>
+                        <li class="sheet_text">Сырники с джемом: Творог, яйца, мука высшего сорта, сахар песок, клубника.</li>
+                        <li class="sheet_text">Чай чёрный: Вода, чай чёрный пакетированный, сахар</li>
+                    </ol>
+                </div>
+                <div class="sheet_info_2">
+                    <h3 class="sheet_title">Аллергены:</h3>
+                    <ul>
+                        <li class="sheet_text">Лактоза</li>
+                        <li class="sheet_text">Клубника</li>
+                    </ul>
+                </div>
+            </section>
+            <section class="sheet_rating">
+                <p class="sheet_title">Отзывы</p>
+                <div class="rate_container">
+                    <div class="rating_box">
+                        <img src="../../static/menu/icon/Star%201.svg" alt="" class="rating_star">
+                        <img src="../../static/menu/icon/Star%201.svg" alt="" class="rating_star">
+                        <img src="../../static/menu/icon/Star%201.svg" alt="" class="rating_star">
+                        <img src="../../static/menu/icon/Star%201.svg" alt="" class="rating_star">
+                        <img src="../../static/menu/icon/Star%201.svg" alt="" class="rating_star">
+                        <p class="sheet_rating_text"> 4.5/5</p>
+                    </div>
+                    <button class="rate_button">
+                        <p class="sheet_rating_text">Оставить отзыв</p>
+                    </button>
+                </div>
+            </section>
+
         </div>
 
 
     </div>
 </div>
-<script src="../../static/app/js/menu_footer.js"></script>
-<script src="../../static/app/js/sheet.js"></script>
 </body>
 </html>
