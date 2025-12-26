@@ -1,4 +1,4 @@
-'''from django.db import models
+from django.db import models
 
 from predprof import settings
 
@@ -36,7 +36,7 @@ class Menu(models.Model):
     day = models.CharField(max_length=10, choices=DAY_CHOICES)
     meal_type = models.CharField(max_length=10, choices=MEAL_TYPE_CHOICES)
     date = models.DateField()
-    dishes = models.ManyToManyField(Dish, through='MenuDish')
+    dishes = models.ManyToManyField(Dish)
 
 
 class Review(models.Model):
@@ -44,7 +44,7 @@ class Review(models.Model):
     text = models.TextField()
     date = models.DateField()
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    dish = models.ForeignKey(settings.AUTH_DISH_MODEL, on_delete=models.CASCADE)'''
+    dish = models.ForeignKey(settings.AUTH_DISH_MODEL, on_delete=models.CASCADE)
 
 
 
