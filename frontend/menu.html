@@ -415,64 +415,81 @@
         </footer>
     </div>
     <div class="sheet-overlay" id="overlay">
-    <div class="sheet" id="sheet">
-        <div class="sheet_pipslide"></div>
-        <button class="sheet-close" id="closeSheet"></button>
+        <div class="sheet" id="sheet">
+            <div class="sheet_pipslide"></div>
+            <button class="sheet-close" id="closeSheet"></button>
 
-        <div class="sheet-content">
+            <div class="sheet-content">
 
-            <header class="sheet_header">
-                <p class="sheet_title_left">9:10-9:30</p>
-                <p class="sheet_name">Завтрак</p>
-                <p class="sheet_title_right">170₽</p>
-            </header>
+                <header class="sheet_header">
+                    <p class="sheet_title_left">9:10-9:30</p>
+                    <p class="sheet_name">Завтрак</p>
+                    <p class="sheet_title_right">170₽</p>
+                </header>
 
-            <section class="sheet_main">
-                <img src="resources/meal1.svg" alt="" class="sheet_main_img">
-                <button class="sheet_order_btn">
-                    <p class="sheet_title">Заказать</p>
-                    <p class="sheet_text">(для дальнейшего получения на кассе)</p>
-                </button>                
-            </section>
+                <section class="sheet_main">
+                    <img src="resources/meal1.svg" alt="" class="sheet_main_img">
+                    <button class="sheet_order_btn">
+                        <p class="sheet_title">Заказать</p>
+                        <p class="sheet_text">(для дальнейшего получения на кассе)</p>
+                    </button>                
+                </section>
 
-            <section class="sheet_info">
-                <div class="sheet_info_1">
-                    <h3 class="sheet_title_sost">Состав:</h3>
-                    <ol class="sostav_list">
-                        <li class="sheet_text">Каша гречневая с молоком: Молоко пастеризованное, крупа гречневая, сахар песок.</li>
-                        <li class="sheet_text">Сырники с джемом: Творог, яйца, мука высшего сорта, сахар песок, клубника.</li>
-                        <li class="sheet_text">Чай чёрный: Вода, чай чёрный пакетированный, сахар</li>
-                    </ol>
-                </div>
-                <div class="sheet_info_2">
-                    <h3 class="sheet_title">Аллергены:</h3>
-                    <ul>
-                        <li class="sheet_text">Лактоза</li>
-                        <li class="sheet_text">Клубника</li>
-                    </ul>
-                </div>
-            </section>
-            <section class="sheet_rating">
-                <p class="sheet_title">Отзывы</p>
-                <div class="rate_container">
-                    <div class="rating_box">
-                        <img src="resources/Star 1.svg" alt="" class="rating_star">
-                        <img src="resources/Star 1.svg" alt="" class="rating_star">
-                        <img src="resources/Star 1.svg" alt="" class="rating_star">
-                        <img src="resources/Star 1.svg" alt="" class="rating_star">
-                        <img src="resources/Star 1.svg" alt="" class="rating_star">
-                        <p class="sheet_rating_text"> 4.5/5</p>
+                <section class="sheet_info">
+                    <div class="sheet_info_1">
+                        <h3 class="sheet_title_sost">Состав:</h3>
+                        <ol class="sostav_list">
+                            <li class="sheet_text">Каша гречневая с молоком: Молоко пастеризованное, крупа гречневая, сахар песок.</li>
+                            <li class="sheet_text">Сырники с джемом: Творог, яйца, мука высшего сорта, сахар песок, клубника.</li>
+                            <li class="sheet_text">Чай чёрный: Вода, чай чёрный пакетированный, сахар</li>
+                        </ol>
                     </div>
-                    <button class="rate_button">
-                        <p class="sheet_rating_text">Оставить отзыв</p>
-                    </button>
-                </div>
-            </section>
+                    <div class="sheet_info_2">
+                        <h3 class="sheet_title">Аллергены:</h3>
+                        <ul>
+                            <li class="sheet_text">Лактоза</li>
+                            <li class="sheet_text">Клубника</li>
+                        </ul>
+                    </div>
+                </section>
+                <section class="sheet_rating">
+                    <p class="sheet_title">Отзывы</p>
+                    <div class="rate_container">
+                        <div class="rating_box">
+                            <img src="resources/Star 1.svg" alt="" class="rating_star">
+                            <img src="resources/Star 1.svg" alt="" class="rating_star">
+                            <img src="resources/Star 1.svg" alt="" class="rating_star">
+                            <img src="resources/Star 1.svg" alt="" class="rating_star">
+                            <img src="resources/Star 1.svg" alt="" class="rating_star">
+                            <p class="sheet_rating_text"> 4.5/5</p>
+                        </div>
+                        <button class="rate_button" id="openRate">
+                            <p class="sheet_rating_text">Оставить отзыв</p>
+                        </button>
+                    </div>
+                </section>
+
+            </div>
+
 
         </div>
-
-
     </div>
-</div>
+
+    <div class="rate-overlay" id="rateOverlay">
+        <div class="rate-card">
+            <h2 class="rate-title">Оставить отзыв</h2>
+
+            <textarea
+            class="rate-textarea"
+            placeholder="Ваш отзыв..."
+            ></textarea>
+
+            <div class="rate-actions">
+            <button class="rate-cancel" id="rateCancel">Отмена</button>
+            <button class="rate-submit">Отправить</button>
+            </div>
+        </div>
+    </div>
+
 </body>
 </html>

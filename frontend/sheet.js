@@ -3,6 +3,10 @@ document.addEventListener("DOMContentLoaded", () => {
   const sheet = document.getElementById("sheet");
   const closeBtn = document.getElementById("closeSheet");
   const openButtons = document.querySelectorAll(".openSheet");
+  const rateOverlay = document.getElementById("rateOverlay");
+  const openRateBtn = document.getElementById("openRate");
+  const rateCancel = document.getElementById("rateCancel");
+
 
   // Функция блокировки прокрутки body при открытом листе
   function lockBody(lock) {
@@ -51,10 +55,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Закрытие при клике по фону оверлея
   overlay.addEventListener("click", e => {
-    if (e.target === overlay) {
-      closeSheet();
-    }
+    if (isRateOpen) return;
+    if (e.target === overlay) closeSheet();
   });
+
 
   /* ===== SWIPE DOWN для мобильных ===== */
   let startY = 0;
@@ -62,12 +66,14 @@ document.addEventListener("DOMContentLoaded", () => {
   let isDragging = false;
 
   sheet.addEventListener("touchstart", e => {
+    if (isRateOpen) return;
     startY = e.touches[0].clientY;
     isDragging = true;
   });
 
+
   sheet.addEventListener("touchmove", e => {
-    if (!isDragging) return;
+    if (!isDragging || isRateOpen) return;
     currentY = e.touches[0].clientY - startY;
     if (currentY > 0) {
       sheet.style.transition = "none";
@@ -84,5 +90,40 @@ document.addEventListener("DOMContentLoaded", () => {
       sheet.style.transform = "";
     }
     currentY = 0;
+  });
+
+
+
+  let isRateOpen = false;
+
+  function openRate() {
+  isRateOpen = true;
+  rateOverlay.classList.add("active");
+
+  // блокируем взаимодействие с sheet
+  sheet.style.touchAction = "none";
+  }
+
+  function closeRate() {
+  isRateOpen = false;
+  rateOverlay.classList.remove("active");
+
+  sheet.style.touchAction = "";
+  }
+
+  /* Открытие */
+  openRateBtn.addEventListener("click", e => {
+  e.preventDefault();
+  openRate();
+  });
+
+  /* Закрытие по кнопке */
+  rateCancel.addEventListener("click", closeRate);
+
+  /* Закрытие по фону */
+  rateOverlay.addEventListener("click", e => {
+  if (e.target === rateOverlay) {
+      closeRate();
+  }
   });
 });
