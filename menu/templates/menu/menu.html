@@ -14,21 +14,28 @@
 <script src="../../static/menu/js/menu_footer.js"></script>
 <script src="../../static/menu/js/sheet.js"></script>
 <body>
-    <div class="menu_page">
-        <div class="app_view app_view--active" data-view="menu">
-            <header class="menu_header">
+    <header class="menu_header">
                 <a href="?date={{ prev_date }}"><img class="arrow_right" src="../../static/menu/icon/arrow.svg" alt=""></a>
                 <h1 class="menu_date">
                     {{ date_display }}
                 </h1>
                 <a href="?date={{ next_date }}"><img class="arrow_left" src="../../static/menu/icon/arrow.svg" alt=""></a>
             </header>
+    <div class="menu_page">
+        <div class="app_view app_view--active" data-view="menu">
+
             <main class="menu_main">
 
                 {% for item in menu_items %}
 
 
-                <section class="menu_section openSheet">
+                <section class="menu_section openSheet" data-id="{{ item.id }}"
+                    data-name="{{ item.name }}"
+                    data-price="{{ item.price }}"
+                    data-time="{{ item.time }}"
+                    data-icon="{% static item.icon %}"
+                    data-max-des='{{ item.max_des|join:"||" }}'
+                    data-allergens='{{ item.allergens|join:"||" }}'>
                     <div class="menu_section_head">
                         <h3>
                             {% if item.category == 'breakfast' %}
@@ -328,18 +335,18 @@
         <div class="sheet_pipslide"></div>
         <button class="sheet-close" id="closeSheet"></button>
 
-        <div class="sheet-content">
+        <div class="sheet-content" >
 
             <header class="sheet_header">
-                <p class="sheet_title_left">9:10-9:30</p>
-                <p class="sheet_name">Завтрак</p>
-                <p class="sheet_title_right">170₽</p>
+                <p class="sheet_title_left" id="sheet-time">9:10-9:30</p>
+                <p class="sheet_name" id="sheet-name">Завтрак</p>
+                <p class="sheet_title_right" id="sheet-price">170₽</p>
             </header>
 
             <section class="sheet_main">
                 <img src="../../static/menu/icon/meal1.svg" alt="" class="sheet_main_img">
                 <button class="sheet_order_btn">
-                    <p class="sheet_title">Заказать</p>
+                    <p class="sheet_title" >Заказать</p>
                     <p class="sheet_text">(для дальнейшего получения на кассе)</p>
                 </button>
             </section>
@@ -347,18 +354,11 @@
             <section class="sheet_info">
                 <div class="sheet_info_1">
                     <h3 class="sheet_title_sost">Состав:</h3>
-                    <ol class="sostav_list">
-                        <li class="sheet_text">Каша гречневая с молоком: Молоко пастеризованное, крупа гречневая, сахар песок.</li>
-                        <li class="sheet_text">Сырники с джемом: Творог, яйца, мука высшего сорта, сахар песок, клубника.</li>
-                        <li class="sheet_text">Чай чёрный: Вода, чай чёрный пакетированный, сахар</li>
-                    </ol>
+                    <ol class="sostav_list" id="sheet-composition"></ol>
                 </div>
                 <div class="sheet_info_2">
                     <h3 class="sheet_title">Аллергены:</h3>
-                    <ul>
-                        <li class="sheet_text">Лактоза</li>
-                        <li class="sheet_text">Клубника</li>
-                    </ul>
+                    <ul id="sheet-allergens"></ul>
                 </div>
             </section>
             <section class="sheet_rating">
