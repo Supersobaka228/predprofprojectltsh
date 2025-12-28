@@ -891,6 +891,92 @@ input[type="checkbox"] {
   box-shadow: none;
   transform: translateY(2px);
 }
+
+
+
+/* ===== RATE OVERLAY ===== */
+
+.rate-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 20000; /* выше sheet-overlay */
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+}
+
+.rate-overlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Карточка */
+.rate-card {
+  width: 90%;
+  max-width: 420px;
+
+  background: #fff;
+  border-radius: 16px;
+  padding: 24px;
+
+  box-shadow: 0 12px 40px rgba(0,0,0,0.25);
+
+  transform: scale(0.96);
+  transition: transform 0.25s ease;
+}
+
+.rate-overlay.active .rate-card {
+  transform: scale(1);
+}
+
+.rate-title {
+  margin: 0 0 12px;
+  font-size: 20px;
+}
+
+.rate-textarea {
+  width: 100%;
+  min-height: 120px;
+  resize: none;
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  margin-bottom: 16px;
+}
+
+.rate-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.rate-cancel,
+.rate-submit {
+  padding: 10px 16px;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+}
+
+.rate-cancel {
+  background: #eee;
+}
+
+.rate-submit {
+  background: #4caf50;
+  color: #fff;
+}
+
 /* anims */
 
 @keyframes moveGradient {
