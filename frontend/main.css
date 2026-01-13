@@ -944,6 +944,7 @@ input[type="checkbox"] {
 }
 
 .rate-textarea {
+  background-color: #E7FFD4;
   width: 100%;
   min-height: 120px;
   resize: none;
@@ -996,9 +997,9 @@ input[type="checkbox"] {
 }
 
 .rating label {
-  font-size: 2rem;
-  color: #ccc;
-  cursor: pointer;
+  font-size: 2.5rem;
+  color: #E7FFD4;
+  cursor: pointer;  
   transition: color 0.2s;
 }
 
