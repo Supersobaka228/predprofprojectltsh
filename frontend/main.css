@@ -924,7 +924,7 @@ input[type="checkbox"] {
   width: 90%;
   max-width: 420px;
 
-  background: #fff;
+  background: #88BE83;
   border-radius: 16px;
   padding: 24px;
 
@@ -949,7 +949,7 @@ input[type="checkbox"] {
   resize: none;
   padding: 12px;
   border-radius: 12px;
-  border: 1px solid #ccc;
+  border: 1px solid #E7FFD4;
   font-size: 14px;
   margin-bottom: 16px;
 }
@@ -969,12 +969,12 @@ input[type="checkbox"] {
 }
 
 .rate-cancel {
-  background: #eee;
+  background: #E7FFD4;
 }
 
 .rate-submit {
   background: #4caf50;
-  color: #fff;
+  color: #E7FFD4;
 }
 
 
@@ -1013,7 +1013,13 @@ input[type="checkbox"] {
   color: gold;
 }
 
-
+.rating-stars-box {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  font-size: larger;
+}
 
 
 /* anims */
