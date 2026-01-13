@@ -977,6 +977,45 @@ input[type="checkbox"] {
   color: #fff;
 }
 
+
+
+
+
+.review-form {
+  max-width: 400px;
+  font-family: sans-serif;
+}
+
+.rating {
+  direction: rtl;
+  display: inline-flex;
+}
+
+.rating input {
+  display: none;
+}
+
+.rating label {
+  font-size: 2rem;
+  color: #ccc;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+/* при наведении */
+.rating label:hover,
+.rating label:hover ~ label {
+  color: gold;
+}
+
+/* при выборе */
+.rating input:checked ~ label {
+  color: gold;
+}
+
+
+
+
 /* anims */
 
 @keyframes moveGradient {
