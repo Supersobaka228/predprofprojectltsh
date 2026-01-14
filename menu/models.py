@@ -29,14 +29,3 @@ class MenuItem(models.Model):
 class DayOrder(models.Model):
     day = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(7)])
     order = models.JSONField(default=list, blank=True)
-
-
-class Review(models.Model):
-    CATEGORY_CHOICES = [
-        ('breakfast', 'Завтрак'),
-        ('lunch', 'Обед'),
-    ]
-    day = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(7)])
-    category = models.CharField(max_length=10, choices=CATEGORY_CHOICES)
-    text = models.TextField()
-    stars_count = models.IntegerField()
