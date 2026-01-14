@@ -1,10 +1,14 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
+from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_http_methods
+
+
 from .models import MenuItem, DayOrder
 from datetime import datetime, timedelta
 import locale
 from datetime import datetime, timedelta
-
+from .forms import ReviewForm
 
 try:
     locale.setlocale(locale.LC_TIME, 'ru_RU.UTF-8')
@@ -12,8 +16,18 @@ except locale.Error:
     pass
 
 
+@csrf_exempt
 @login_required
 def menu(request):
+    if request.method == 'POST':
+        print(117)
+        print(request.POST.items())
+        for key, value in request.POST.items():
+            print(f"  {key}: {value}")
+        form = ReviewForm(request.POST)
+        if form.is_valid():
+            print(113)
+            form.save()
     date_str = request.GET.get('date')
     if date_str:
         try:
@@ -37,6 +51,7 @@ def menu(request):
         menu_items = [menu_items_dict[id] for id in day_order.order if id in menu_items_dict]
     else:
         menu_items = []
+    
 
     date_display = format_russian_date(current_date)
 
