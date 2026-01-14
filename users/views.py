@@ -20,12 +20,12 @@ def register(request):
         if form.is_valid():
             print(113)
             form.save()
-            return render(request, 'users/login.html')
+            return redirect('login')
         else:
             print(form.errors)
             form.error_messages.append('Форма неверна')
             data = {'form': form}
-            return render(request, 'users/register.html', data)
+            return redirect('register', data=data)
     form = RegisterForm()
     data = {'form': form}
     form.error_messages = []

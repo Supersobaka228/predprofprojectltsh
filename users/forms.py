@@ -24,7 +24,6 @@ class RegisterForm(ModelForm):
         widgets = {"email": TextInput(attrs={"class": "field__input"}),
                    "password": PasswordInput(attrs={"class": "field__input"}),
                    "password2": PasswordInput(attrs={"class": "field__input"}),
-                   "phone": TextInput(attrs={"class": "field__input"})
                    }
 
 class LoginForm(forms.Form):
