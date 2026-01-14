@@ -53,7 +53,7 @@ class User(AbstractUser, PermissionsMixin):
     first_name = models.CharField(_('first name'), max_length=255, default='')
     last_name = models.CharField(_('last name'), max_length=255, default='')
     email = models.EmailField(_('email address'), unique=True, db_index=True)
-    phone = models.CharField(_('phone number'), max_length=11, default='')
+    phone = models.CharField(_('phone number'), max_length=11, blank=True, null=True)
     is_active = models.BooleanField(_('active'), default=True)
     role = models.CharField(_('role'), max_length=255, choices=ROLE_CHOICES, default='student')
     grade = models.CharField(_('grade'), max_length=3, default='')

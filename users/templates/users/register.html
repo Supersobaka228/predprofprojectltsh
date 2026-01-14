@@ -17,19 +17,15 @@
       Контроль питания учеников
     </p>
   </section>
+    <form class="login__form" method="post">
   <section class="login_box">
     <h1 class="title_h1">Регистрация</h1>
-    <form class="login__form" method="post">
+
         {% csrf_token %}
       <div class="fields">
         <label class="field">
           <span class="field__label">Email</span>
           <input class="field__input" type="email" name="email" value="{{ request.POST.email|default:'' }}"/>
-        </label>
-
-        <label class="field">
-          <span class="field__label">Номер телефона</span>
-          <input class="field__input" type="text" name="phone" value="{{ request.POST.phone|default:'' }}"/>
         </label>
 
         <label class="field">
@@ -58,9 +54,11 @@
             </ul>
         </div>
     {% endif %}
-    <button class="login_button" type="submit">Далее</button>
-    </form>
   </section>
+        <button class="login_button" type="submit">Далее</button>
+
+    </form>
+
 
 </main>
 
