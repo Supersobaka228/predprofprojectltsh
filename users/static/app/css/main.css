@@ -90,7 +90,7 @@ body {
 }
 
 .login_box {
-  margin-top: 6vh;
+  margin-bottom: 6vh;
   background-color: #76B881;
   width: 50%;
   min-width: 300px;
@@ -224,7 +224,7 @@ body {
 }
 
 .login_button {
-  margin-bottom: 6vh;
+  margin-top: 6vh;
   align-self: center;
   justify-self: center;
   width: 60%;
@@ -464,7 +464,12 @@ body {
   padding-left: 1.5rem;
 }
 
-
+.login__form {
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+}
 
 @keyframes moveGradient {
   0% {
