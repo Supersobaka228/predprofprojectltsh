@@ -17,9 +17,10 @@
       Контроль питания учеников
     </p>
   </section>
+    <form class="login__form" method="post">
   <section class="login_box">
     <h1 class="title_h1">Регистрация</h1>
-    <form class="login__form" method="post">
+
         {% csrf_token %}
       <div class="fields">
         <label class="field">
@@ -53,9 +54,11 @@
             </ul>
         </div>
     {% endif %}
-    <button class="login_button" type="submit">Далее</button>
-    </form>
   </section>
+        <button class="login_button" type="submit">Далее</button>
+
+    </form>
+
 
 </main>
 

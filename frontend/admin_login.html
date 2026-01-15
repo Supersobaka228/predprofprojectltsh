@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MealHub</title>
+    <link rel="stylesheet" href="admin.css">
+    <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="admin_login_header">
+        <div class="title_box">
+            <p class="admin_login_title">MealHub</p>
+            <p class="admin_login_sub">Контроль питания учеников</p>
+        </div>
+    </header>
+    <main class="admin_login_main">
+        <p class="admin_login_title">Администратор</p>
+        <form action="/login" method="POST">
+
+            <section class="admin_login_box">
+                <p class="admin_login_title_1">Войдите в свой аккаунт:</p>
+                <label for="username">Логин/электронная почта</label>
+                <input type="text" id="username" name="username" required autocomplete="username"/>
+                <label for="password">Пароль</label>
+                <input type="password" id="password" name="password" required autocomplete="current-password" />
+            </section>
+
+            <button class="login_button" type="submit">Войти</button>
+        </form>
+    </main>
+</body>
+</html>

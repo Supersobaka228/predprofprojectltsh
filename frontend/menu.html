@@ -12,6 +12,7 @@
 </head>
 <script src="menu_footer.js"></script>
 <script src="sheet.js"></script>
+<script src="aller.js"></script>
 <body>
     <div class="menu_page">
         <div class="app_view app_view--active" data-view="menu">
@@ -390,18 +391,18 @@
                     Настройки
                 </h1>
             </header>
-            <section class="main_settings">
-                    <div class="user_info_box">
-                        <img class="user_pfp" src="resources/photo_2026-01-14_11-19-22.jpg" alt="">
+            <main class="settings_container">
+
+                <section class="settings_main main_screen is-active">
+                    <div class="account_info_box">
+                        <img class="st_acc_pfp" src="resources/photo_2026-01-14_11-19-22.jpg" alt="">
                         <div>
-                            <p class="user_name">Александр</p>
-                            <div>
-                            <p class="stn_bl_txt">Баланс:</p>
-                            <p class="stn_bl">1488₽</p>
-                            </div>
+                            <p class="st_user_name">Александр</p>
+                            <p class="st_balance_text">Баланс:</p>
+                            <p class="st_balance">1488₽</p>
                         </div>
                         <div>
-                            <p>Аллергены:</p>
+                            <p class="st_aller_head">Аллергены:</p>
                             <ul>
                                 <li>Лактоза</li>
                                 <li>Клубника</li>
@@ -409,11 +410,38 @@
                         </div>
                     </div>
                     <button class="user_add_aller">Добавить аллергены</button>
-                    <button class="user_logout">Выйти</button>
-            </section>
-
-            <main class="settings_main">
+                    <button class="st_logout">Выйти из аккаунта</button>
+                </section>
                 
+                <section class="allergens_main main_screen">
+                    <div class="allergens_select">
+                        <h2 class="allergens_title">Выберите аллергены</h2>
+
+                        <div class="allergens_list">
+                            <label class="allergen_item">
+                            <input type="checkbox" name="allergens" value="gluten">
+                            <span>Злаки, содержащие глютен</span>
+                            </label>
+
+                            <label class="allergen_item"><input type="checkbox"><span>Ракообразные</span></label>
+                            <label class="allergen_item"><input type="checkbox"><span>Яйца</span></label>
+                            <label class="allergen_item"><input type="checkbox"><span>Рыба</span></label>
+                            <label class="allergen_item"><input type="checkbox"><span>Арахис</span></label>
+                            <label class="allergen_item"><input type="checkbox"><span>Соя</span></label>
+                            <label class="allergen_item"><input type="checkbox"><span>Молоко</span></label>
+                            <label class="allergen_item"><input type="checkbox"><span>Орехи</span></label>
+                            <label class="allergen_item"><input type="checkbox"><span>Сельдерей</span></label>
+                            <label class="allergen_item"><input type="checkbox"><span>Горчица</span></label>
+                            <label class="allergen_item"><input type="checkbox"><span>Семена кунжута</span></label>
+                            <label class="allergen_item"><input type="checkbox"><span>Люпин</span></label>
+                            <label class="allergen_item"><input type="checkbox"><span>Моллюски</span></label>
+                            <label class="allergen_item"><input type="checkbox"><span>Диоксид серы и сульфиты</span></label>
+                        </div>
+
+                        <button class="back_to_settings">Готово</button>
+                    </div>
+
+                </section>
             </main>
         </div>
 
