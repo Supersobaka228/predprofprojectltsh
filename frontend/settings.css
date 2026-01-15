@@ -1,0 +1,53 @@
+.settings_main {
+    font-weight: 700;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.account_info_box {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    text-align: center;
+    margin-top: 1rem;
+    width: 90%;
+    background-color: #A6D19E;
+    border-radius: 1.5rem;
+    padding: 1rem
+}
+
+.st_acc_pfp {
+    width: 6rem;
+    height: 6rem;
+    border-radius: 50%;
+}
+
+.st_user_name {
+    font-size: 1.2rem;
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+}
+
+.st_balance_text {
+    margin: 0;
+    font-size: 0.8rem;
+}
+
+.st_balance {
+    margin: 0;
+    font-size: 1.1rem;
+}
+
+.st_aller_head {
+    margin-top: 0;
+    margin-bottom: 0.5rem; 
+}
+
+.account_info_box ul {
+    margin: 0;
+    padding-left: 0.4rem;
+    font-size: 0.8rem;
+}
