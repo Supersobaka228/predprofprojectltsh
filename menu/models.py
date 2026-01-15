@@ -36,7 +36,7 @@ class Review(models.Model):
         ('breakfast', 'Завтрак'),
         ('lunch', 'Обед'),
     ]
-    day = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(7)])
-    category = models.CharField(max_length=10, choices=CATEGORY_CHOICES)
+    day = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(7)], default=1)
+    category = models.CharField(max_length=10, choices=CATEGORY_CHOICES, default='breakfast')
     text = models.TextField()
-    stars_count = models.IntegerField()
+    stars_count = models.IntegerField(default=3)

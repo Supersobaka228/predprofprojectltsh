@@ -8,7 +8,6 @@ from .models import MenuItem, DayOrder
 from datetime import datetime, timedelta
 import locale
 from datetime import datetime, timedelta
-from .forms import ReviewForm
 
 try:
     locale.setlocale(locale.LC_TIME, 'ru_RU.UTF-8')
@@ -24,10 +23,7 @@ def menu(request):
         print(request.POST.items())
         for key, value in request.POST.items():
             print(f"  {key}: {value}")
-        form = ReviewForm(request.POST)
-        if form.is_valid():
-            print(113)
-            form.save()
+        print(request.get_full_path()[-10:])
     date_str = request.GET.get('date')
     if date_str:
         try:
