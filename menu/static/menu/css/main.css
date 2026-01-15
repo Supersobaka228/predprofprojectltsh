@@ -1,7 +1,9 @@
 *,
 *::before,
 *::after {
+  -webkit-tap-highlight-color: transparent;
   box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
 }
 
 
@@ -305,9 +307,9 @@ input[type="checkbox"] {
   align-items: center;
   width: 100%;
 
-  height: clamp(2.4rem, 12vh, 4rem);
+  height: clamp(2.4rem, 12vh, 4rem); 
   font-size: clamp(1.15rem, 5vh, 1.5rem);
-
+  
   background-color: #AED094;
   flex: 0 0 auto;
 }
@@ -368,7 +370,7 @@ input[type="checkbox"] {
 
 
 .menu_footer {
-  height: clamp(2.4rem, 12vh, 4rem);
+  height: clamp(2.4rem, 12vh, 4rem); 
   position: relative;
   display: flex;
   flex-direction: row;
@@ -401,7 +403,7 @@ input[type="checkbox"] {
 .footer_highlight {
   position: absolute;
   bottom: 10;
-  height: clamp(1.3rem, 7.7vh, 2.8rem);
+  height: clamp(1.3rem, 7.7vh, 2.8rem); 
   background-color: #AED094;
   border-radius: clamp(0.5rem, 3vh, 2.5rem);
   transition: left 0.3s ease, width 0.3s ease;
@@ -556,7 +558,7 @@ input[type="checkbox"] {
 .add_money_img {
   width: 0.6em;
   margin-right: 0.4em;
-}
+} 
 
 .history {
   width: 90%;
@@ -891,6 +893,138 @@ input[type="checkbox"] {
   box-shadow: none;
   transform: translateY(2px);
 }
+
+
+
+/* ===== RATE OVERLAY ===== */
+
+.rate-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 20000; /* выше sheet-overlay */
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+}
+
+.rate-overlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Карточка */
+.rate-card {
+  width: 90%;
+  max-width: 420px;
+
+  background: #88BE83;
+  border-radius: 16px;
+  padding: 24px;
+
+  box-shadow: 0 12px 40px rgba(0,0,0,0.25);
+
+  transform: scale(0.96);
+  transition: transform 0.25s ease;
+}
+
+.rate-overlay.active .rate-card {
+  transform: scale(1);
+}
+
+.rate-title {
+  margin: 0 0 12px;
+  font-size: 20px;
+}
+
+.rate-textarea {
+  background-color: #E7FFD4;
+  width: 100%;
+  min-height: 120px;
+  resize: none;
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid #E7FFD4;
+  font-size: 14px;
+  margin-bottom: 16px;
+}
+
+.rate-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.rate-cancel,
+.rate-submit {
+  padding: 10px 16px;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+}
+
+.rate-cancel {
+  background: #E7FFD4;
+}
+
+.rate-submit {
+  background: #4caf50;
+  color: #E7FFD4;
+}
+
+
+
+
+
+.review-form {
+  max-width: 400px;
+  font-family: sans-serif;
+}
+
+.rating {
+  direction: rtl;
+  display: inline-flex;
+}
+
+.rating input {
+  display: none;
+}
+
+.rating label {
+  font-size: 2.5rem;
+  color: #E7FFD4;
+  cursor: pointer;  
+  transition: color 0.2s;
+}
+
+/* при наведении */
+.rating label:hover,
+.rating label:hover ~ label {
+  color: gold;
+}
+
+/* при выборе */
+.rating input:checked ~ label {
+  color: gold;
+}
+
+.rating-stars-box {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  font-size: larger;
+}
+
+
 /* anims */
 
 @keyframes moveGradient {

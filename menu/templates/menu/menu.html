@@ -372,15 +372,18 @@
                         <img src="../../static/menu/icon/Star%201.svg" alt="" class="rating_star">
                         <p class="sheet_rating_text"> 4.5/5</p>
                     </div>
-                    <button class="rate_button">
-                        <p class="sheet_rating_text" id="openRate">Оставить отзыв</p>
+                    <button class="rate_button" id="openRate">
+                        <p class="sheet_rating_text">Оставить отзыв</p>
                     </button>
                 </div>
             </section>
 
         </div>
-        <div class="rate-overlay" id="rateOverlay">
-        <form class="rate-card">
+
+
+    </div>
+    <div class="rate-overlay" id="rateOverlay">
+        <form class="rate-card" method="post">
 
                 <div class="rating-stars-box">
                     <div class="rating">
@@ -410,13 +413,9 @@
 
             <div class="rate-actions">
             <button class="rate-cancel" id="rateCancel">Отмена</button>
-            <button class="rate-submit">Отправить</button>
+            <button class="rate-submit" type="submit" >Отправить</button>
             </div>
         </div>
-    </div>
-
-
-    </div>
 </div>
 </body>
 </html>
