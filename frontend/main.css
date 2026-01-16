@@ -796,6 +796,13 @@ input[type="checkbox"] {
   align-items: center;
 }
 
+
+.sheet_rating .sheet_title {
+  padding-bottom: 0.6rem;
+  font-weight: 600;
+}
+
+
 .rating_box {
   display: flex;
   width: 63%;
@@ -807,6 +814,25 @@ input[type="checkbox"] {
   gap: 0.4em;
   font-size: clamp(8px, 2.8vw, 14px);
   height: auto;
+  border: 0;
+  box-shadow:
+    inset 0 0 0 2px rgba(81, 81, 81, 0.4),
+    0 6px 16px rgba(60, 60, 60, 0.18);
+}
+
+.rating_box:hover {
+  box-shadow:
+    inset 0 0 0 2px rgba(0,0,0,0.45),
+    0 6px 16px rgba(0,0,0,0.18);
+}
+
+.rating_box:active {
+  background-color: #a8c692;
+  box-shadow:
+    inset 0 0 0 2px rgba(0,0,0,0.45),
+    0 3px 8px rgba(0,0,0,0.1);
+
+  transform: scale(0.99);
 }
 
 .rating_star {
@@ -1024,6 +1050,15 @@ input[type="checkbox"] {
   font-size: larger;
 }
 
+
+.sheet-rating-overlay {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 89%;
+  background-color: #E7FFD4;
+}
 
 /* anims */
 

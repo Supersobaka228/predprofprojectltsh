@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="main.css">
     <link rel="stylesheet" href="settings.css">
+    <link rel="stylesheet" href="rating.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c&display=swap" rel="stylesheet">
@@ -13,6 +14,7 @@
 <script src="menu_footer.js"></script>
 <script src="sheet.js"></script>
 <script src="aller.js"></script>
+<script src="rating.js"></script>
 <body>
     <div class="menu_page">
         <div class="app_view app_view--active" data-view="menu">
@@ -505,14 +507,14 @@
                 <section class="sheet_rating">
                     <p class="sheet_title">Отзывы</p>
                     <div class="rate_container">
-                        <div class="rating_box">
+                        <button id="openOverlay" class="rating_box">
                             <img src="resources/Star 1.svg" alt="" class="rating_star">
                             <img src="resources/Star 1.svg" alt="" class="rating_star">
                             <img src="resources/Star 1.svg" alt="" class="rating_star">
                             <img src="resources/Star 1.svg" alt="" class="rating_star">
                             <img src="resources/Star 1.svg" alt="" class="rating_star">
                             <p class="sheet_rating_text"> 4.5/5</p>
-                        </div>
+                        </button>
                         <button class="rate_button" id="openRate">
                             <p class="sheet_rating_text">Оставить отзыв</p>
                         </button>
@@ -523,6 +525,72 @@
 
 
         </div>
+
+    <div class="sheet-rating-overlay" id="sheetRatingOverlay">
+        <div class="sheet-rating-card">
+            <div class="sheet-rating-header">Отзывы</div>
+
+            <div class="sheet-rating-body">
+                <div class="sheet-rating-stars" aria-label="Рейтинг 4 из 5">
+                    <div class="sheet-rating-stars-box">
+                        <img src="resources/Star 1.svg" alt="" class="sheet-rating-star">
+                        <img src="resources/Star 1.svg" alt="" class="sheet-rating-star">
+                        <img src="resources/Star 1.svg" alt="" class="sheet-rating-star">
+                        <img src="resources/Star 1.svg" alt="" class="sheet-rating-star">
+                        <img src="resources/Star 1.svg" alt="" class="sheet-rating-star sheet-rating-star--empty">
+                    </div>
+                    <div class="sheet-rating-value">4/5</div>
+                </div>
+                <div class="reviews_overflow">
+                    <div class="sheet-review">
+                        <div class="sheet-review-top">
+                            <div class="sheet-review-date">20 дек. 2025</div>
+                            <div class="sheet-review-user">ученик</div>
+                            <div class="sheet-review-stars">
+                                <img src="resources/Star 1.svg" alt="" class="sheet-rating-star">
+                                <img src="resources/Star 1.svg" alt="" class="sheet-rating-star">
+                                <img src="resources/Star 1.svg" alt="" class="sheet-rating-star">
+                                <img src="resources/Star 1.svg" alt="" class="sheet-rating-star">
+                                <img src="resources/Star 1.svg" alt="" class="sheet-rating-star">
+                                </div>
+                        </div>
+                        <div class="sheet-review-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Officiis soluta voluptas, atque quis architecto quam corporis consequuntur amet quibusdam perferendis placeat! Architecto dicta nisi recusandae est perferendis cumque eaque quasi?</div>
+                    </div>
+
+                    <div class="sheet-review">
+                        <div class="sheet-review-top">
+                            <div class="sheet-review-date">20 дек. 2025</div>
+                            <div class="sheet-review-user">ученик</div>
+                            <div class="sheet-review-stars">
+                                <img src="resources/Star 1.svg" alt="" class="sheet-rating-star">
+                                <img src="resources/Star 1.svg" alt="" class="sheet-rating-star">
+                                <img src="resources/Star 1.svg" alt="" class="sheet-rating-star">
+                                <img src="resources/Star 1.svg" alt="" class="sheet-rating-star">
+                                <img src="resources/Star 1.svg" alt="" class="sheet-rating-star">
+                                </div>
+                        </div>
+                        <div class="sheet-review-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Mollitia, ipsa?</div>
+                    </div>
+
+                    <div class="sheet-review">
+                        <div class="sheet-review-top">
+                            <div class="sheet-review-date">20 дек. 2025</div>
+                            <div class="sheet-review-user">ученик</div>
+                            <div class="sheet-review-stars">
+                                <img src="resources/Star 1.svg" alt="" class="sheet-rating-star">
+                                <img src="resources/Star 1.svg" alt="" class="sheet-rating-star">
+                                <img src="resources/Star 1.svg" alt="" class="sheet-rating-star">
+                                <img src="resources/Star 1.svg" alt="" class="sheet-rating-star">
+                                <img src="resources/Star 1.svg" alt="" class="sheet-rating-star">
+                                </div>
+                        </div>
+                        <div class="sheet-review-text">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Aliquid exercitationem esse distinctio mollitia ea, atque fugiat voluptate aut quia perferendis.</div>
+                    </div>
+                </div>
+                <button id="closeOverlay">Закрыть</button>
+            </div>
+        </div>
+    </div>
     </div>
 
     <div class="rate-overlay" id="rateOverlay">
