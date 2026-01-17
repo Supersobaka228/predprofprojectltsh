@@ -69,7 +69,10 @@ def menu(request):
         'next_date': next_date,
         'review_items': Review.objects.all()
     }
-    print(Review.objects.first().text, 222)
+    review = Review.objects.first()
+    if review is not None:
+        print(review.text, 222)
+
     return render(request, 'menu/menu.html', context)
 
 
