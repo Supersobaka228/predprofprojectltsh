@@ -61,13 +61,13 @@ def menu(request):
     prev_date = (current_date - timedelta(days=1)).strftime('%Y-%m-%d')
     next_date = (current_date + timedelta(days=1)).strftime('%Y-%m-%d')
 
-
     context = {
         'menu_items': menu_items,
         'date_display': date_display,
         'current_date': current_date.strftime('%Y-%m-%d'),
         'prev_date': prev_date,
         'next_date': next_date,
+        'review_items': Review.objects.all()
     }
     print(Review.objects.first().text, 222)
     return render(request, 'menu/menu.html', context)
