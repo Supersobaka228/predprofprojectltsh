@@ -5,31 +5,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../../static/menu/css/main.css">
+    <link rel="stylesheet" href="../../static/menu/css/settings.css">
+    <link rel="stylesheet" href="../../static/menu/css/rating.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c&display=swap" rel="stylesheet">
     <title>Меню</title>
 </head>
 
-<script src="../../static/menu/js/menu_footer.js"></script>
-<script src="../../static/menu/js/sheet.js"></script>
 <body>
-    <header class="menu_header">
+    <div class="menu_page">
+        <!-- Главный вид - Меню -->
+        <div class="app_view app_view--active" data-view="menu">
+            <header class="menu_header">
                 <a href="?date={{ prev_date }}"><img class="arrow_right" src="../../static/menu/icon/arrow.svg" alt=""></a>
                 <h1 class="menu_date">
                     {{ date_display }}
                 </h1>
                 <a href="?date={{ next_date }}"><img class="arrow_left" src="../../static/menu/icon/arrow.svg" alt=""></a>
             </header>
-    <div class="menu_page">
-        <div class="app_view app_view--active" data-view="menu">
 
             <main class="menu_main">
-
                 {% for item in menu_items %}
-
-
-                <section class="menu_section openSheet" data-id="{{ item.id }}"
+                <section class="menu_section openSheet"
+                    data-id="{{ item.id }}"
                     data-name="{{ item.name }}"
                     data-price="{{ item.price }}"
                     data-time="{{ item.time }}"
@@ -38,6 +37,7 @@
                     data-allergens='{{ item.allergens|join:"||" }}'
                     data-date="{{ current_date }}"
                     data-category="{% if item.category == 'breakfast' %}Завтрак{% elif item.category == 'lunch' %}Обед{% else %}{{ item.category }}{% endif %}">
+
                     <div class="menu_section_head">
                         <h3>
                             {% if item.category == 'breakfast' %}
@@ -51,6 +51,7 @@
                         <h3>{{ item.time }}</h3>
                         <h3>{{ item.price }}₽</h3>
                     </div>
+
                     <div class="menu_section_main">
                         <img src="{% static item.icon %}" alt="" class="menu_pic">
                         <ul class="menu_items">
@@ -72,11 +73,10 @@
                 {% empty %}
                 <p>На сегодня нет блюд.</p>
                 {% endfor %}
-
-
             </main>
         </div>
 
+        <!-- Вид - Кошелёк -->
         <div class="app_view" data-view="wallet">
             <header class="menu_header">
                 <h1 class="menu_date">
@@ -95,212 +95,57 @@
                         <p class="balance_text">Пополнить</p>
                     </a>
                 </section>
+
                 <section class="history">
                     <h1 class="history_title">История покупок</h1>
                     <div class="history_container">
-
-
                         <div class="history_day">
                             <p class="history_day_title">20 декабря</p>
                             <section class="history_section">
-                                    <div class="history_row">
-                                        <p class="history_time">
-                                            19:20
-                                        </p>
-                                        <p class="history_item">
-                                            Булочка
-                                        </p>
-                                        <p class="history_price">
-                                            -290Р
-                                        </p>
-                                    </div>
-                                    <div class="history_row">
-                                        <p class="history_time">
-                                            19:20
-                                        </p>
-                                        <p class="history_item">
-                                            Каша
-                                        </p>
-                                        <p class="history_price">
-                                            -290Р
-                                        </p>
-                                    </div>
-                                    <div class="history_row">
-                                        <p class="history_time">
-                                            9:20
-                                        </p>
-                                        <p class="history_item">
-                                            Обед комплексный
-                                        </p>
-                                        <p class="history_price">
-                                            -290Р
-                                        </p>
-                                    </div>
+                                <div class="history_row">
+                                    <p class="history_time">19:20</p>
+                                    <p class="history_item">Булочка</p>
+                                    <p class="history_price">-290Р</p>
+                                </div>
+                                <div class="history_row">
+                                    <p class="history_time">19:20</p>
+                                    <p class="history_item">Каша</p>
+                                    <p class="history_price">-290Р</p>
+                                </div>
+                                <div class="history_row">
+                                    <p class="history_time">9:20</p>
+                                    <p class="history_item">Обед комплексный</p>
+                                    <p class="history_price">-290Р</p>
+                                </div>
                             </section>
                         </div>
 
-                                                <div class="history_day">
-                            <p class="history_day_title">20 декабря</p>
+                        <div class="history_day">
+                            <p class="history_day_title">19 декабря</p>
                             <section class="history_section">
-                                    <div class="history_row">
-                                        <p class="history_time">
-                                            19:20
-                                        </p>
-                                        <p class="history_item">
-                                            Булочка
-                                        </p>
-                                        <p class="history_price">
-                                            -290Р
-                                        </p>
-                                    </div>
-                                    <div class="history_row">
-                                        <p class="history_time">
-                                            19:20
-                                        </p>
-                                        <p class="history_item">
-                                            Каша
-                                        </p>
-                                        <p class="history_price">
-                                            -290Р
-                                        </p>
-                                    </div>
-                                    <div class="history_row">
-                                        <p class="history_time">
-                                            9:20
-                                        </p>
-                                        <p class="history_item">
-                                            Обед комплексный
-                                        </p>
-                                        <p class="history_price">
-                                            -290Р
-                                        </p>
-                                    </div>
+                                <div class="history_row">
+                                    <p class="history_time">19:20</p>
+                                    <p class="history_item">Булочка</p>
+                                    <p class="history_price">-290Р</p>
+                                </div>
+                                <div class="history_row">
+                                    <p class="history_time">19:20</p>
+                                    <p class="history_item">Каша</p>
+                                    <p class="history_price">-290Р</p>
+                                </div>
+                                <div class="history_row">
+                                    <p class="history_time">9:20</p>
+                                    <p class="history_item">Обед комплексный</p>
+                                    <p class="history_price">-290Р</p>
+                                </div>
                             </section>
                         </div>
-
-                                                <div class="history_day">
-                            <p class="history_day_title">20 декабря</p>
-                            <section class="history_section">
-                                    <div class="history_row">
-                                        <p class="history_time">
-                                            19:20
-                                        </p>
-                                        <p class="history_item">
-                                            Булочка
-                                        </p>
-                                        <p class="history_price">
-                                            -290Р
-                                        </p>
-                                    </div>
-                                    <div class="history_row">
-                                        <p class="history_time">
-                                            19:20
-                                        </p>
-                                        <p class="history_item">
-                                            Каша
-                                        </p>
-                                        <p class="history_price">
-                                            -290Р
-                                        </p>
-                                    </div>
-                                    <div class="history_row">
-                                        <p class="history_time">
-                                            9:20
-                                        </p>
-                                        <p class="history_item">
-                                            Обед комплексный
-                                        </p>
-                                        <p class="history_price">
-                                            -290Р
-                                        </p>
-                                    </div>
-                            </section>
-                        </div>
-
-                                                <div class="history_day">
-                            <p class="history_day_title">20 декабря</p>
-                            <section class="history_section">
-                                    <div class="history_row">
-                                        <p class="history_time">
-                                            19:20
-                                        </p>
-                                        <p class="history_item">
-                                            Булочка
-                                        </p>
-                                        <p class="history_price">
-                                            -290Р
-                                        </p>
-                                    </div>
-                                    <div class="history_row">
-                                        <p class="history_time">
-                                            19:20
-                                        </p>
-                                        <p class="history_item">
-                                            Каша
-                                        </p>
-                                        <p class="history_price">
-                                            -290Р
-                                        </p>
-                                    </div>
-                                    <div class="history_row">
-                                        <p class="history_time">
-                                            9:20
-                                        </p>
-                                        <p class="history_item">
-                                            Обед комплексный
-                                        </p>
-                                        <p class="history_price">
-                                            -290Р
-                                        </p>
-                                    </div>
-                            </section>
-                        </div>
-
-                                                <div class="history_day">
-                            <p class="history_day_title">20 декабря</p>
-                            <section class="history_section">
-                                    <div class="history_row">
-                                        <p class="history_time">
-                                            19:20
-                                        </p>
-                                        <p class="history_item">
-                                            Булочка
-                                        </p>
-                                        <p class="history_price">
-                                            -290Р
-                                        </p>
-                                    </div>
-                                    <div class="history_row">
-                                        <p class="history_time">
-                                            19:20
-                                        </p>
-                                        <p class="history_item">
-                                            Каша
-                                        </p>
-                                        <p class="history_price">
-                                            -290Р
-                                        </p>
-                                    </div>
-                                    <div class="history_row">
-                                        <p class="history_time">
-                                            9:20
-                                        </p>
-                                        <p class="history_item">
-                                            Обед комплексный
-                                        </p>
-                                        <p class="history_price">
-                                            -290Р
-                                        </p>
-                                    </div>
-                            </section>
-                        </div>
-
-
                     </div>
-                    </section>
+                </section>
             </main>
         </div>
 
+        <!-- Вид - Настройки -->
         <div class="app_view" data-view="settings">
             <header class="menu_header">
                 <h1 class="menu_date">
@@ -308,116 +153,309 @@
                 </h1>
             </header>
 
-            <main class="settings_main">
+            <main class="settings_container">
+                <section class="settings_main main_screen is-active">
+                    <div class="account_info_box">
+                        <img class="st_acc_pfp" src="../../static/menu/icon/default_avatar.jpg" alt="Фото профиля">
+                        <div>
+                            <p class="st_user_name">{{ user.first_name|default:"Пользователь" }}</p>
+                            <p class="st_balance_text">Баланс:</p>
+                            <p class="st_balance">1488₽</p>
+                        </div>
+                        <div>
+                            <p class="st_aller_head">Аллергены:</p>
+                            <ul>
+                                <li>Лактоза</li>
+                                <li>Клубника</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <button class="user_add_aller">Добавить аллергены</button>
+                    <button class="st_logout">Выйти из аккаунта</button>
+                </section>
 
+                <section class="allergens_main main_screen">
+                    <div class="allergens_select">
+                        <h2 class="allergens_title">Выберите аллергены</h2>
+
+                        <div class="allergens_list">
+                            <label class="allergen_item">
+                                <input type="checkbox" name="allergens" value="gluten">
+                                <span>Злаки, содержащие глютен</span>
+                            </label>
+
+                            <label class="allergen_item">
+                                <input type="checkbox" name="allergens" value="crustaceans">
+                                <span>Ракообразные</span>
+                            </label>
+
+                            <label class="allergen_item">
+                                <input type="checkbox" name="allergens" value="eggs">
+                                <span>Яйца</span>
+                            </label>
+
+                            <label class="allergen_item">
+                                <input type="checkbox" name="allergens" value="fish">
+                                <span>Рыба</span>
+                            </label>
+
+                            <label class="allergen_item">
+                                <input type="checkbox" name="allergens" value="peanuts">
+                                <span>Арахис</span>
+                            </label>
+
+                            <label class="allergen_item">
+                                <input type="checkbox" name="allergens" value="soy">
+                                <span>Соя</span>
+                            </label>
+
+                            <label class="allergen_item">
+                                <input type="checkbox" name="allergens" value="milk">
+                                <span>Молоко</span>
+                            </label>
+
+                            <label class="allergen_item">
+                                <input type="checkbox" name="allergens" value="nuts">
+                                <span>Орехи</span>
+                            </label>
+
+                            <label class="allergen_item">
+                                <input type="checkbox" name="allergens" value="celery">
+                                <span>Сельдерей</span>
+                            </label>
+
+                            <label class="allergen_item">
+                                <input type="checkbox" name="allergens" value="mustard">
+                                <span>Горчица</span>
+                            </label>
+
+                            <label class="allergen_item">
+                                <input type="checkbox" name="allergens" value="sesame">
+                                <span>Семена кунжута</span>
+                            </label>
+
+                            <label class="allergen_item">
+                                <input type="checkbox" name="allergens" value="lupin">
+                                <span>Люпин</span>
+                            </label>
+
+                            <label class="allergen_item">
+                                <input type="checkbox" name="allergens" value="mollusks">
+                                <span>Моллюски</span>
+                            </label>
+
+                            <label class="allergen_item">
+                                <input type="checkbox" name="allergens" value="sulfites">
+                                <span>Диоксид серы и сульфиты</span>
+                            </label>
+                        </div>
+
+                        <button class="back_to_settings">Готово</button>
+                    </div>
+                </section>
             </main>
         </div>
 
+        <!-- Футер с навигацией -->
         <footer class="menu_footer">
             <div class="footer_background"></div>
             <div class="footer_highlight"></div>
             <div class="footer_locator">
                 <button class="footer_container" data-view="menu">
-                    <img class="menu_footer_button_img" src="../../static/menu/icon/menu.svg" alt="">
+                    <img class="menu_footer_button_img" src="../../static/menu/icon/menu.svg" alt="Меню">
                     <p class="menu_footer_button_text">Меню</p>
                 </button>
                 <button class="footer_container" data-view="wallet">
-                    <img class="menu_footer_button_img" src="../../static/menu/icon/wallet.svg" alt="">
+                    <img class="menu_footer_button_img" src="../../static/menu/icon/wallet.svg" alt="Кошелёк">
                     <p class="menu_footer_button_text">Кошелёк</p>
                 </button>
                 <button class="footer_container" data-view="settings">
-                    <img class="menu_footer_button_img" src="../../static/menu/icon/options.svg" alt="">
+                    <img class="menu_footer_button_img" src="../../static/menu/icon/options.svg" alt="Настройки">
                     <p class="menu_footer_button_text">Настройки</p>
                 </button>
             </div>
         </footer>
     </div>
+
+    <!-- Оверлей для детальной информации о блюде -->
     <div class="sheet-overlay" id="overlay">
-    <div class="sheet" id="sheet">
-        <div class="sheet_pipslide"></div>
-        <button class="sheet-close" id="closeSheet"></button>
+        <div class="sheet" id="sheet">
+            <div class="sheet_pipslide"></div>
+            <button class="sheet-close" id="closeSheet"></button>
 
-        <div class="sheet-content" >
+            <div class="sheet-content">
+                <header class="sheet_header">
+                    <p class="sheet_title_left" id="sheet-time">9:10-9:30</p>
+                    <p class="sheet_name" id="sheet-name">Завтрак</p>
+                    <p class="sheet_title_right" id="sheet-price">170₽</p>
+                </header>
 
-            <header class="sheet_header">
-                <p class="sheet_title_left" id="sheet-time">9:10-9:30</p>
-                <p class="sheet_name" id="sheet-name">Завтрак</p>
-                <p class="sheet_title_right" id="sheet-price">170₽</p>
-            </header>
-
-            <section class="sheet_main">
-                <img src="../../static/menu/icon/meal1.svg" alt="" class="sheet_main_img">
-                <button class="sheet_order_btn">
-                    <p class="sheet_title" >Заказать</p>
-                    <p class="sheet_text">(для дальнейшего получения на кассе)</p>
-                </button>
-            </section>
-
-            <section class="sheet_info">
-                <div class="sheet_info_1">
-                    <h3 class="sheet_title_sost">Состав:</h3>
-                    <ol class="sostav_list" id="sheet-composition"></ol>
-                </div>
-                <div class="sheet_info_2">
-                    <h3 class="sheet_title">Аллергены:</h3>
-                    <ul id="sheet-allergens"></ul>
-                </div>
-            </section>
-            <section class="sheet_rating">
-                <p class="sheet_title">Отзывы</p>
-                <div class="rate_container">
-                    <div class="rating_box">
-                        <img src="../../static/menu/icon/Star%201.svg" alt="" class="rating_star">
-                        <img src="../../static/menu/icon/Star%201.svg" alt="" class="rating_star">
-                        <img src="../../static/menu/icon/Star%201.svg" alt="" class="rating_star">
-                        <img src="../../static/menu/icon/Star%201.svg" alt="" class="rating_star">
-                        <img src="../../static/menu/icon/Star%201.svg" alt="" class="rating_star">
-                        <p class="sheet_rating_text"> 4.5/5</p>
-                    </div>
-                    <button class="rate_button" id="openRate">
-                        <p class="sheet_rating_text">Оставить отзыв</p>
+                <section class="sheet_main">
+                    <img src="../../static/menu/icon/meal1.svg" alt="" class="sheet_main_img" id="sheet-image">
+                    <button class="sheet_order_btn">
+                        <p class="sheet_title">Заказать</p>
+                        <p class="sheet_text">(для дальнейшего получения на кассе)</p>
                     </button>
-                </div>
-            </section>
+                </section>
 
+                <section class="sheet_info">
+                    <div class="sheet_info_1">
+                        <h3 class="sheet_title_sost">Состав:</h3>
+                        <ol class="sostav_list" id="sheet-composition"></ol>
+                    </div>
+                    <div class="sheet_info_2">
+                        <h3 class="sheet_title">Аллергены:</h3>
+                        <ul id="sheet-allergens"></ul>
+                    </div>
+                </section>
+
+                <section class="sheet_rating">
+                    <p class="sheet_title">Отзывы</p>
+                    <div class="rate_container">
+                        <button id="openOverlay" class="rating_box">
+                            <img src="../../static/menu/icon/Star%201.svg" alt="" class="rating_star">
+                            <img src="../../static/menu/icon/Star%201.svg" alt="" class="rating_star">
+                            <img src="../../static/menu/icon/Star%201.svg" alt="" class="rating_star">
+                            <img src="../../static/menu/icon/Star%201.svg" alt="" class="rating_star">
+                            <img src="../../static/menu/icon/Star%201.svg" alt="" class="rating_star">
+                            <p class="sheet_rating_text"> 4.5/5</p>
+                        </button>
+                        <button class="rate_button" id="openRate">
+                            <p class="sheet_rating_text">Оставить отзыв</p>
+                        </button>
+                    </div>
+                </section>
+            </div>
         </div>
 
+        <!-- Оверлей для просмотра отзывов -->
+        <div class="sheet-rating-overlay" id="sheetRatingOverlay">
+            <div class="sheet-rating-card">
+                <div class="sheet-rating-header">Отзывы</div>
 
-    </div>
-    <div class="rate-overlay" id="rateOverlay">
-        <form class="rate-card" method="post">
-                {% csrf_token %}
-                <div class="rating-stars-box">
-                    <div class="rating">
-                        <input type="radio" id="star5" name="rating" value="5">
-                        <label for="star5" title="5 звезд">★</label>
-
-                        <input type="radio" id="star4" name="rating" value="4">
-                        <label for="star4" title="4 звезды">★</label>
-
-                        <input type="radio" id="star3" name="rating" value="3">
-                        <label for="star3" title="3 звезды">★</label>
-
-                        <input type="radio" id="star2" name="rating" value="2">
-                        <label for="star2" title="2 звезды">★</label>
-
-                        <input type="radio" id="star1" name="rating" value="1">
-                        <label for="star1" title="1 звезда">★</label>
+                <div class="sheet-rating-body">
+                    <div class="sheet-rating-stars" aria-label="Рейтинг 4 из 5">
+                        <div class="sheet-rating-stars-box">
+                            <img src="../../static/menu/icon/Star%201.svg" alt="" class="sheet-rating-star">
+                            <img src="../../static/menu/icon/Star%201.svg" alt="" class="sheet-rating-star">
+                            <img src="../../static/menu/icon/Star%201.svg" alt="" class="sheet-rating-star">
+                            <img src="../../static/menu/icon/Star%201.svg" alt="" class="sheet-rating-star">
+                            <img src="../../static/menu/icon/Star%201.svg" alt="" class="sheet-rating-star sheet-rating-star--empty">
+                        </div>
+                        <div class="sheet-rating-value">4/5</div>
                     </div>
-                    <div>4/5</div>
+
+                    <div class="reviews_overflow" id="reviews-container">
+                        <!-- Отзывы будут загружаться динамически -->
+                        {% for item in review_items %}
+                        {% if current_date == item.day %}
+                        <div class="sheet-review">
+                            <div class="sheet-review-top">
+                                <div class="sheet-review-date">{{ item.day }}</div>
+                                <div class="sheet-review-user">ученик</div>
+                                <div class="sheet-review-stars">
+                                    <img src="../../static/menu/icon/Star 1.svg" alt="" class="sheet-rating-star">
+                                    <img src="../../static/menu/icon/Star 1.svg" alt="" class="sheet-rating-star">
+                                    <img src="../../static/menu/icon/Star 1.svg" alt="" class="sheet-rating-star">
+                                    <img src="../../static/menu/icon/Star 1.svg" alt="" class="sheet-rating-star">
+                                    <img src="../../static/menu/icon/Star 1.svg" alt="" class="sheet-rating-star">
+                                </div>
+                            </div>
+                            <div class="sheet-review-text">{{ item.text }}</div>
+                        </div>
+                    </div>
+                        {% endif %}
+                        {% endfor %}
+                    <button id="closeOverlay">Закрыть</button>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Оверлей для добавления отзыва -->
+    <div class="rate-overlay" id="rateOverlay">
+        <form class="rate-card" method="post" id="review-form">
+            {% csrf_token %}
+            <input type="hidden" name="day" id="itemDateField">
+            <input type="hidden" name="category" id="itemCategoryField">
+
+            <div class="rating-stars-box">
+                <div class="rating" id="star-rating">
+                    <input type="radio" id="star5" name="stars_count" value="5">
+                    <label for="star5" title="5 звезд">★</label>
+
+                    <input type="radio" id="star4" name="stars_count" value="4">
+                    <label for="star4" title="4 звезды">★</label>
+
+                    <input type="radio" id="star3" name="stars_count" value="3">
+                    <label for="star3" title="3 звезды">★</label>
+
+                    <input type="radio" id="star2" name="stars_count" value="2">
+                    <label for="star2" title="2 звезды">★</label>
+
+                    <input type="radio" id="star1" name="stars_count" value="1">
+                    <label for="star1" title="1 звезда">★</label>
+                </div>
+                <div id="rating-value">0/5</div>
+            </div>
 
             <h2 class="rate-title">Оставить отзыв</h2>
             <textarea name="text" class="rate-textarea" placeholder="Ваш отзыв..." required></textarea>
-            <input type="hidden" name="day" id="itemDateField">
-            <input type="hidden" name="category" id="itemCategoryField">
+
             <div class="rate-actions">
-            <button class="rate-cancel" id="rateCancel">Отмена</button>
-            <button class="rate-submit" type="submit" >Отправить</button>
+                <button type="button" class="rate-cancel" id="rateCancel">Отмена</button>
+                <button type="submit" class="rate-submit">Отправить</button>
             </div>
         </form>
-        </div>
+    </div>
 
-</div>
+    <!-- Подключение JavaScript -->
+    <script src="../../static/menu/js/menu_footer.js"></script>
+    <script src="../../static/menu/js/sheet.js"></script>
+    <script src="../../static/menu/js/aller.js"></script>
+    <script src="../../static/menu/js/rating.js"></script>
+
+    <script>
+        // Обработка навигации между вкладками
+        document.querySelectorAll('.footer_container').forEach(button => {
+            button.addEventListener('click', function() {
+                const view = this.getAttribute('data-view');
+
+                // Скрываем все виды
+                document.querySelectorAll('.app_view').forEach(viewElement => {
+                    viewElement.classList.remove('app_view--active');
+                });
+
+                // Показываем выбранный вид
+                document.querySelector(`.app_view[data-view="${view}"]`).classList.add('app_view--active');
+
+                // Обновляем активную кнопку в футере
+                document.querySelectorAll('.footer_container').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                this.classList.add('active');
+            });
+        });
+
+        // Обработка аллергенов в настройках
+        document.querySelector('.user_add_aller')?.addEventListener('click', function() {
+            document.querySelector('.settings_main').classList.remove('is-active');
+            document.querySelector('.allergens_main').classList.add('is-active');
+        });
+
+        document.querySelector('.back_to_settings')?.addEventListener('click', function() {
+            document.querySelector('.allergens_main').classList.remove('is-active');
+            document.querySelector('.settings_main').classList.add('is-active');
+        });
+
+        // Обработка звездного рейтинга
+        document.querySelectorAll('#star-rating input').forEach(star => {
+            star.addEventListener('change', function() {
+                const ratingValue = this.value;
+                document.getElementById('rating-value').textContent = `${ratingValue}/5`;
+            });
+        });
+    </script>
 </body>
 </html>
+
