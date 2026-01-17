@@ -6,6 +6,21 @@ document.addEventListener("DOMContentLoaded", () => {
   const rateOverlay = document.getElementById("rateOverlay");
   const openRateBtn = document.getElementById("openRate");
   const rateCancel = document.getElementById("rateCancel");
+  let currentItemData = {};
+
+  function openSheetWithData(e) {
+    e.preventDefault();
+
+    // Получаем данные из кнопки, которая открывает лист
+    const button = e.currentTarget;
+    currentItemData = {
+      date: button.getAttribute('data-date'),
+      category: button.getAttribute('data-category')
+    };
+
+    console.log('Данные элемента:', currentItemData);
+    openSheet();
+  }
 
 
   // Функция блокировки прокрутки body при открытом листе
@@ -44,10 +59,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Навешиваем обработчики на кнопки открытия
   openButtons.forEach(btn => {
-    btn.addEventListener("click", (e) => {
-      e.preventDefault();
-      openSheet();
-    });
+    btn.addEventListener("click", openSheetWithData);
   });
 
   // Закрытие по кнопке крестика
@@ -59,7 +71,6 @@ document.addEventListener("DOMContentLoaded", () => {
     if (e.target === overlay) closeSheet();
   });
 
-
   /* ===== SWIPE DOWN для мобильных ===== */
   let startY = 0;
   let currentY = 0;
@@ -70,7 +81,6 @@ document.addEventListener("DOMContentLoaded", () => {
     startY = e.touches[0].clientY;
     isDragging = true;
   });
-
 
   sheet.addEventListener("touchmove", e => {
     if (!isDragging || isRateOpen) return;
@@ -92,29 +102,34 @@ document.addEventListener("DOMContentLoaded", () => {
     currentY = 0;
   });
 
-
-
   let isRateOpen = false;
 
-  function openRate() {
-  isRateOpen = true;
-  rateOverlay.classList.add("active");
+  function openRate(e) {
+    e.preventDefault();
+    isRateOpen = true;
+    rateOverlay.classList.add("active");
 
-  // блокируем взаимодействие с sheet
-  sheet.style.touchAction = "none";
+
+
+    // Заполняем поля формы данными
+
+    document.getElementById('itemDateField').value = currentItemData.date || '';
+    document.getElementById('itemCategoryField').value = currentItemData.category || '';
+
+    // блокируем взаимодействие с sheet
+    sheet.style.touchAction = "none";
   }
 
   function closeRate() {
-  isRateOpen = false;
-  rateOverlay.classList.remove("active");
-
-  sheet.style.touchAction = "";
+    isRateOpen = false;
+    rateOverlay.classList.remove("active");
+    sheet.style.touchAction = "";
   }
 
   /* Открытие */
-  openRateBtn.addEventListener("click", e => {
-  e.preventDefault();
-  openRate();
+  openRateBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    openRate(e);
   });
 
   /* Закрытие по кнопке */
@@ -122,8 +137,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /* Закрытие по фону */
   rateOverlay.addEventListener("click", e => {
-  if (e.target === rateOverlay) {
+    if (e.target === rateOverlay) {
       closeRate();
-  }
+    }
   });
 });

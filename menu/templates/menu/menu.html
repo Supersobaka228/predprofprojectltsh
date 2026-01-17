@@ -35,7 +35,9 @@
                     data-time="{{ item.time }}"
                     data-icon="{% static item.icon %}"
                     data-max-des='{{ item.max_des|join:"||" }}'
-                    data-allergens='{{ item.allergens|join:"||" }}'>
+                    data-allergens='{{ item.allergens|join:"||" }}'
+                    data-date="{{ current_date }}"
+                    data-category="{% if item.category == 'breakfast' %}Завтрак{% elif item.category == 'lunch' %}Обед{% else %}{{ item.category }}{% endif %}">
                     <div class="menu_section_head">
                         <h3>
                             {% if item.category == 'breakfast' %}
@@ -384,7 +386,7 @@
     </div>
     <div class="rate-overlay" id="rateOverlay">
         <form class="rate-card" method="post">
-
+                {% csrf_token %}
                 <div class="rating-stars-box">
                     <div class="rating">
                         <input type="radio" id="star5" name="rating" value="5">
@@ -406,16 +408,16 @@
                 </div>
 
             <h2 class="rate-title">Оставить отзыв</h2>
-            <textarea
-            class="rate-textarea"
-            placeholder="Ваш отзыв..."
-            ></textarea>
-
+            <textarea name="text" class="rate-textarea" placeholder="Ваш отзыв..." required></textarea>
+            <input type="hidden" name="day" id="itemDateField">
+            <input type="hidden" name="category" id="itemCategoryField">
             <div class="rate-actions">
             <button class="rate-cancel" id="rateCancel">Отмена</button>
             <button class="rate-submit" type="submit" >Отправить</button>
             </div>
+        </form>
         </div>
+
 </div>
 </body>
 </html>

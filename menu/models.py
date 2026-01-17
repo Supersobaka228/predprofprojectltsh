@@ -33,8 +33,8 @@ class DayOrder(models.Model):
 
 class Review(models.Model):
     CATEGORY_CHOICES = [
-        ('breakfast', 'Завтрак'),
-        ('lunch', 'Обед'),
+        ('Завтрак', 'Завтрак'),
+        ('Обед', 'Обед'),
     ]
     day = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(7)], default=1)
     category = models.CharField(max_length=10, choices=CATEGORY_CHOICES, default='breakfast')

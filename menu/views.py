@@ -3,8 +3,8 @@ from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
 
-
-from .models import MenuItem, DayOrder
+from .forms import ReviewForm
+from .models import MenuItem, DayOrder, Review
 from datetime import datetime, timedelta
 import locale
 from datetime import datetime, timedelta
@@ -20,11 +20,17 @@ except locale.Error:
 def menu(request):
     if request.method == 'POST':
         print(117)
-        print(request.POST.items())
-        for key, value in request.POST.items():
-            print(f"  {key}: {value}")
-        print(request.get_full_path()[-10:])
+        s = dict(request.POST.items())
+        s.pop('csrfmiddlewaretoken', None)
+        print(s)
+        s['day'] = (datetime.strptime(request.GET.get('date'), '%Y-%m-%d').date().isoweekday())
+        form = ReviewForm(s)
+        print(form.errors)
+        if form.is_valid():
+            print(113)
+            form.save()
     date_str = request.GET.get('date')
+    print(date_str, 111)
     if date_str:
         try:
             current_date = datetime.strptime(date_str, '%Y-%m-%d').date()
@@ -63,6 +69,7 @@ def menu(request):
         'prev_date': prev_date,
         'next_date': next_date,
     }
+    print(Review.objects.first().text, 222)
     return render(request, 'menu/menu.html', context)
 
 
