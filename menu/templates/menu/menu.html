@@ -414,7 +414,48 @@
     <script src="../../static/menu/js/sheet.js"></script>
     <script src="../../static/menu/js/aller.js"></script>
     <script src="../../static/menu/js/rating.js"></script>
-    <script src="../../static/menu/js/sheet_data.js"></script>
+    <script>
+            <script>
+        // Обработка навигации между вкладками
+        document.querySelectorAll('.footer_container').forEach(button => {
+            button.addEventListener('click', function() {
+                const view = this.getAttribute('data-view');
+
+                // Скрываем все виды
+                document.querySelectorAll('.app_view').forEach(viewElement => {
+                    viewElement.classList.remove('app_view--active');
+                });
+
+                // Показываем выбранный вид
+                document.querySelector(`.app_view[data-view="${view}"]`).classList.add('app_view--active');
+
+                // Обновляем активную кнопку в футере
+                document.querySelectorAll('.footer_container').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                this.classList.add('active');
+            });
+        });
+
+        // Обработка аллергенов в настройках
+        document.querySelector('.user_add_aller')?.addEventListener('click', function() {
+            document.querySelector('.settings_main').classList.remove('is-active');
+            document.querySelector('.allergens_main').classList.add('is-active');
+        });
+
+        document.querySelector('.back_to_settings')?.addEventListener('click', function() {
+            document.querySelector('.allergens_main').classList.remove('is-active');
+            document.querySelector('.settings_main').classList.add('is-active');
+        });
+
+        // Обработка звездного рейтинга
+        document.querySelectorAll('#star-rating input').forEach(star => {
+            star.addEventListener('change', function() {
+                const ratingValue = this.value;
+                document.getElementById('rating-value').textContent = `${ratingValue}/5`;
+            });
+        });
+    </script>
 </body>
 </html>
 
