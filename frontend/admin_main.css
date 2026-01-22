@@ -218,6 +218,7 @@ body {
 
 .admin_user_name {
     font-weight: 700;
+    margin-bottom: 0.3rem;
 }
 
 .admin_user_role {
@@ -263,7 +264,7 @@ body {
     flex-direction: column;
     align-items: center;
     text-align: center;
-    justify-content: space-between;
+    justify-content: center;
 }
 
 .admin_stat_label {
@@ -339,7 +340,7 @@ body {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 12px;
     flex: 1 1 0;
-    min-height: 160px;
+    min-height: 0;
     min-width: 0;
 }
 
@@ -361,8 +362,8 @@ body {
 
 .main_orders_panel {
     flex: 0 0 clamp(200px, 35vh, 500px);
-    min-height: 200px;
-    max-height: 500px;
+    flex: 1 1 0;
+    min-height: 0;
     background: #9ED5FF;
     border-radius: clamp(10px, 1vw, 16px);
     padding: clamp(8px, 1vw, 14px);
