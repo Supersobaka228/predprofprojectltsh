@@ -1,6 +1,32 @@
 document.addEventListener('DOMContentLoaded', () => {
   const ctx = document.getElementById('paymentsDynamics').getContext('2d');
 
+  const getScale = () => {
+    const baseWidth = 1920;
+    const scale = window.innerWidth / baseWidth;
+    return Math.min(1.4, Math.max(0.8, scale));
+  };
+
+  const applyResponsiveOptions = (chart) => {
+    const scale = getScale();
+    const fontSize = Math.round(12 * scale);
+
+    chart.data.datasets[0].pointRadius = Math.round(4 * scale);
+    chart.data.datasets[0].borderWidth = Math.round(2 * scale);
+    chart.data.datasets[0].pointBorderWidth = Math.round(2 * scale);
+
+    chart.options.scales.x.ticks.font.size = fontSize;
+    chart.options.scales.y.ticks.font.size = fontSize;
+    chart.options.layout = {
+      padding: {
+        top: Math.round(8 * scale),
+        right: Math.round(10 * scale),
+        bottom: Math.round(6 * scale),
+        left: Math.round(6 * scale)
+      }
+    };
+  };
+
   const data = {
     labels: ['Пн', 'Вт', 'Ср', 'Чт', 'Пт'],
     datasets: [{
@@ -39,6 +65,8 @@ document.addEventListener('DOMContentLoaded', () => {
               weight: 600,
               family: '"M PLUS Rounded 1c", sans-serif',
             },
+            autoSkip: true,
+            maxTicksLimit: 6
           }
         },
         x: {
@@ -50,7 +78,9 @@ document.addEventListener('DOMContentLoaded', () => {
             font: {
               weight: 600,
               family: '"M PLUS Rounded 1c", sans-serif',
-            }
+            },
+            autoSkip: true,
+            maxTicksLimit: 6
           }
         }
 
@@ -61,5 +91,13 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
   };
+
   const myChart = new Chart(ctx, config);
+  applyResponsiveOptions(myChart);
+  myChart.update('none');
+
+  window.addEventListener('resize', () => {
+    applyResponsiveOptions(myChart);
+    myChart.update('none');
+  });
 });

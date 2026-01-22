@@ -3,6 +3,10 @@
     font-family: "M PLUS Rounded 1c", sans-serif;
 }
 
+:root {
+    --lefter-width: clamp(240px, 22vw, 320px);
+}
+
 body {
     margin: 0;
     font-family: "M PLUS Rounded 1c", sans-serif;
@@ -15,18 +19,24 @@ body {
 .menu_page {
     display: flex;
     min-height: 100vh;
+    width: 100%;
 }
 
 .lefter {
     color: #f5f6fa;
-    width: 20%;
-    min-width: 220px;
+    width: var(--lefter-width);
+    min-width: 240px;
+    max-width: 320px;
     background: #32A5FE;
     border-right: 1px solid #e5e7eb;
     padding: 24px 16px;
     display: flex;
     flex-direction: column;
     gap: 16px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
 }
 
 .admin_logo_container {
@@ -50,8 +60,8 @@ body {
 .admin_divider {
     height: 0.8px;
     background: #00000034;
-    width: 20vw;
-    min-width: 220px;
+    width: 100%;
+    min-width: 0;
     align-self: center;
 }
 
@@ -107,6 +117,8 @@ body {
 .menu_app_view {
     flex: 1;
     display: none;
+    margin-left: var(--lefter-width);
+    width: calc(100% - var(--lefter-width));
 }
 
 .menu_app_view--active {
@@ -224,16 +236,17 @@ body {
 .admin_stats_panel {
     background: #ffffff;
     border-bottom: 1px solid #e5e7eb;
-    padding: 6px 18px;
-    height: 72px;
+    padding: clamp(6px, 0.8vw, 14px) clamp(14px, 1.4vw, 26px);
+    height: clamp(72px, 6.5vw, 110px);
     display: flex;
     align-items: center;
 }
 
 .admin_stats_grid {
-    display: grid;
-    grid-template-columns: repeat(5, minmax(0, 1fr));
-    gap: 12px;
+    display: flex;
+    flex-wrap: nowrap;
+    gap: clamp(14px, 1.8vw, 48px);
+    justify-content: space-between;
     width: 100%;
     height: 100%;
 }
@@ -245,6 +258,7 @@ body {
     padding: 6px 6px;
     min-height: 0;
     height: 100%;
+    width: clamp(150px, 20vw, 320px);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -284,10 +298,10 @@ body {
 }
 
 .main_main_notifications_panel {
-    flex: 0 0 190px;
-    width: 190px;
-    min-width: 180px;
-    max-width: 190px;
+    flex: 0 0 clamp(200px, 18vw, 260px);
+    width: clamp(200px, 18vw, 260px);
+    min-width: 200px;
+    max-width: 260px;
     background: #9ED5FF;
     border-radius: 14px;
     padding: 12px;
@@ -325,7 +339,7 @@ body {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 12px;
     flex: 1 1 0;
-    min-height: 0;
+    min-height: 160px;
     min-width: 0;
 }
 
@@ -334,8 +348,8 @@ body {
     flex-direction: column;
     gap: 8px;
     background: #9ED5FF;
-    border-radius: 12px;
-    padding: 9px;
+    border-radius: clamp(10px, 1vw, 16px);
+    padding: clamp(8px, 1vw, 14px);
     min-height: 0;
     height: 100%;
     min-width: 0;
@@ -346,12 +360,12 @@ body {
 }
 
 .main_orders_panel {
-    flex: 0 0 180px;
-    min-height: 180px;
-    max-height: 180px;
+    flex: 0 0 clamp(200px, 35vh, 500px);
+    min-height: 200px;
+    max-height: 500px;
     background: #9ED5FF;
-    border-radius: 12px;
-    padding: 9px;
+    border-radius: clamp(10px, 1vw, 16px);
+    padding: clamp(8px, 1vw, 14px);
     overflow: hidden;
     display: flex;
     flex-direction: column;
@@ -365,9 +379,10 @@ body {
 
 .orders_bg {
     background: #ffffff;
-    border-radius: 12px;
-    padding: 8px;
+    border-radius: clamp(10px, 1vw, 16px);
+    padding: clamp(6px, 0.9vw, 12px);
     overflow: auto;
+    overflow-x: hidden;
     flex: 1;
     min-height: 0;
     scrollbar-width: thin;
@@ -400,13 +415,13 @@ body {
 .orders_table {
     width: 100%;
     border-collapse: collapse;
-    table-layout: fixed;
+    table-layout: auto;
 }
 
 .orders_table th,
 .orders_table td {
-    padding: 4px 6px;
-    font-size: 0.85rem;
+    padding: clamp(3px, 0.4vw, 8px) clamp(4px, 0.6vw, 12px);
+    font-size: clamp(0.72rem, 0.7vw, 1.2rem);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -422,18 +437,25 @@ body {
     border-bottom: 2px solid rgba(31, 35, 40, 0.4);
 }
 
-.orders_table th:nth-child(1),
-.orders_table td:nth-child(1) { width: 48px; }
-.orders_table th:nth-child(2),
-.orders_table td:nth-child(2) { width: 90px; }
-.orders_table th:nth-child(3),
-.orders_table td:nth-child(3) { width: 130px; }
-.orders_table th:nth-child(4),
-.orders_table td:nth-child(4) { width: auto; }
 .orders_table th:nth-child(5),
-.orders_table td:nth-child(5) { width: 90px; }
+.orders_table td:nth-child(5) {
+    width: 1%;
+    white-space: nowrap;
+}
+
 .orders_table th:nth-child(6),
-.orders_table td:nth-child(6) { width: 150px; }
+.orders_table td:nth-child(6) {
+    width: 1%;
+    white-space: nowrap;
+    position: sticky;
+    right: 0;
+    background: #ffffff;
+    z-index: 2;
+}
+
+.orders_table thead th:nth-child(6) {
+    box-shadow: -8px 0 12px rgba(0, 0, 0, 0.04);
+}
 
 .orders_footer {
     text-align: center;
@@ -442,14 +464,14 @@ body {
 }
 
 .orders_action {
-    width: 100%;
+    width: clamp(80px, 100%, 240px);
     border: none;
     background: #2b9bff;
     color: #ffffff;
-    padding: 6px 10px;
-    border-radius: 14px;
+    padding: clamp(6px, 0.8vw, 10px) clamp(10px, 1vw, 16px);
+    border-radius: clamp(10px, 1.2vw, 16px);
     font-weight: 600;
-    font-size: 0.85rem;
+    font-size: clamp(0.7rem, 0.75vw, 0.95rem);
     cursor: pointer;
 }
 
@@ -460,8 +482,8 @@ body {
     width: 100%;
     height: 100%;
     background-color: #ffffff;
-    border-radius: 1rem;
-    padding: 0.25rem;
+    border-radius: clamp(10px, 1vw, 16px);
+    padding: clamp(2px, 0.2vw, 10px);
 }
 
 .graph_canvas canvas {
@@ -480,6 +502,6 @@ body {
 
 .notif_element p {
     margin: 0;
-    font-size: 0.7rem;
+    font-size: clamp(0.75rem, 0.95vw, 1rem);
     font-weight: 700;
 }
