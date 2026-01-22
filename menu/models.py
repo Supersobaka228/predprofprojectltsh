@@ -10,6 +10,7 @@ class MenuItem(models.Model):
     category = models.CharField(max_length=10, choices=CATEGORY_CHOICES)
     time = models.CharField(max_length=20)
     price = models.IntegerField()
+    id = models.AutoField(primary_key=True)
 
     min_des = models.JSONField(default=list, blank=True)
     max_des = models.JSONField(default=list, blank=True)
@@ -36,7 +37,7 @@ class Review(models.Model):
         ('Завтрак', 'Завтрак'),
         ('Обед', 'Обед'),
     ]
-    day = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(7)], default=1)
-    category = models.CharField(max_length=10, choices=CATEGORY_CHOICES, default='breakfast')
+    item = models.ForeignKey(MenuItem, on_delete=models.CASCADE)
+    day = models.CharField()
     text = models.TextField()
     stars_count = models.IntegerField(default=3)

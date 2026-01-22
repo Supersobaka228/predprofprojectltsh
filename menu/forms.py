@@ -4,16 +4,13 @@ from .models import Review
 class ReviewForm(forms.ModelForm):
     class Meta:
         model = Review
-        fields = ['text', 'day', 'category', ]
+        fields = ['text', 'day', 'item']
         widgets = {
             'text': forms.Textarea(attrs={
                 'class': 'form-control',
                 'rows': 4,
                 'placeholder': 'Ваш отзыв...'
             }),
-            'day': forms.NumberInput(),
-            'category': forms.Select(attrs={
-                'class': 'form-control'
-            })
-
+            'day': forms.TextInput(),
+            'item': forms.NumberInput()
         }

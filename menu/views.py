@@ -18,18 +18,20 @@ except locale.Error:
 @csrf_exempt
 @login_required
 def menu(request):
+    date_str = request.GET.get('date')
     if request.method == 'POST':
         print(117)
         s = dict(request.POST.items())
         s.pop('csrfmiddlewaretoken', None)
         print(s)
-        s['day'] = (datetime.strptime(request.GET.get('date'), '%Y-%m-%d').date().isoweekday())
+
+        s['day'] = str(format_russian_date(datetime.strptime(date_str, '%Y-%m-%d').date()))
         form = ReviewForm(s)
-        print(form.errors)
+        print(form.errors, 135)
         if form.is_valid():
             print(113)
             form.save()
-    date_str = request.GET.get('date')
+
     print(date_str, 111)
     if date_str:
         try:
@@ -45,14 +47,19 @@ def menu(request):
 
     try:
         day_order = DayOrder.objects.get(day=current_day)
+
     except DayOrder.DoesNotExist:
         day_order = None
 
+
     if day_order:
         menu_items_dict = {item.id: item for item in MenuItem.objects.filter(id__in=day_order.order)}
-        menu_items = [menu_items_dict[id] for id in day_order.order if id in menu_items_dict]
+        menu_items = [menu_items_dict[int(id)] for id in day_order.order if int(id) in menu_items_dict]
+        print(menu_items, 43)
     else:
         menu_items = []
+
+    print(day_order, 33)
     
 
     date_display = format_russian_date(current_date)
@@ -72,7 +79,7 @@ def menu(request):
     review = Review.objects.first()
     if review is not None:
         print(review.text, 222)
-
+    print(MenuItem.objects.all(), 36)
     return render(request, 'menu/menu.html', context)
 
 

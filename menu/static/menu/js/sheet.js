@@ -8,6 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const rateCancel = document.getElementById("rateCancel");
   let currentItemData = {};
 
+
   function openSheetWithData(e) {
     e.preventDefault();
 
@@ -15,7 +16,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const button = e.currentTarget;
     currentItemData = {
       date: button.getAttribute('data-date'),
-      category: button.getAttribute('data-category')
+      item: button.getAttribute('data-item')
     };
 
     console.log('Данные элемента:', currentItemData);
@@ -46,6 +47,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Открытие листа и оверлея
   function openSheet() {
+    const compositionList = document.getElementById('sheet-composition');
+    compositionList.innerHTML = '';
+    const allergensList = document.getElementById('sheet-allergens');
+    allergensList.innerHTML = '';
     overlay.classList.add("active");
     lockBody(true);
   }
@@ -114,7 +119,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Заполняем поля формы данными
 
     document.getElementById('itemDateField').value = currentItemData.date || '';
-    document.getElementById('itemCategoryField').value = currentItemData.category || '';
+    document.getElementById('itemCategoryField').value = currentItemData.item || '';
 
     // блокируем взаимодействие с sheet
     sheet.style.touchAction = "none";

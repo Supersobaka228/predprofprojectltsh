@@ -28,7 +28,7 @@
             <main class="menu_main">
                 {% for item in menu_items %}
                 <section class="menu_section openSheet"
-                    data-id="{{ item.id }}"
+                    data-item="{{ item.id }}"
                     data-name="{{ item.name }}"
                     data-price="{{ item.price }}"
                     data-time="{{ item.time }}"
@@ -348,7 +348,7 @@
                     <div class="reviews_overflow" id="reviews-container">
                         <!-- Отзывы будут загружаться динамически -->
                         {% for item in review_items %}
-                        {% if current_date == item.day %}
+
                         <div class="sheet-review">
                             <div class="sheet-review-top">
                                 <div class="sheet-review-date">{{ item.day }}</div>
@@ -364,7 +364,7 @@
                             <div class="sheet-review-text">{{ item.text }}</div>
                         </div>
                     </div>
-                        {% endif %}
+
                         {% endfor %}
                     <button id="closeOverlay">Закрыть</button>
                 </div>
@@ -377,7 +377,7 @@
         <form class="rate-card" method="post" id="review-form">
             {% csrf_token %}
             <input type="hidden" name="day" id="itemDateField">
-            <input type="hidden" name="category" id="itemCategoryField">
+            <input type="hidden" name="item" id="itemCategoryField">
 
             <div class="rating-stars-box">
                 <div class="rating" id="star-rating">
