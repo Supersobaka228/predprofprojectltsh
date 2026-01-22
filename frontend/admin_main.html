@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="admin_main.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c&display=swap" rel="stylesheet">
+    <title>MealHub - Меню админа</title>
+</head>
+<body>
+    <div class="menu_page">
+
+        <div class="lefter">
+            <div>
+                <div class="admin_logo">Meal Hub Admin</div>
+                <div class="admin_logo_sub">Контроль питания учеников</div>
+            </div>
+            <div class="admin_divider"></div>
+            <div class="admin_nav">
+                <div class="admin_nav_slider"></div>
+                <button class="admin_nav_button" data-view="admin_main"><img src="resources/home.svg" alt="">Главная</button>
+                <button class="admin_nav_button" data-view="admin_stats"><img src="resources/leaderboard.svg" alt="">Статистика</button>
+                <button class="admin_nav_button" data-view="admin_menu"><img class="admin_lefter_rest" src="resources/restaurant.svg" alt="">Меню</button>
+                <button class="admin_nav_button" data-view="admin_orders"><img src="resources/note_add.svg" alt="">Заказы</button>
+                <button class="admin_nav_button" data-view="reports"><img src="resources/assignment.svg" alt="">Отчёты</button>
+            </div>
+
+        </div>
+        
+
+        <div class="menu_app_view menu_app_view--active" data-view="admin_main">
+            ADMIN MAIN
+        </div>
+
+        <div class="menu_app_view" data-view="admin_stats">
+            ADMIN STATS
+        </div>
+
+        <div class="menu_app_view" data-view="admin_menu">
+            ADMIN MENU
+        </div>
+
+        <div class="menu_app_view" data-view="admin_orders">
+            ADMIN ORDERS
+        </div>
+
+        <div class="menu_app_view" data-view="reports">
+            REPORTS
+        </div>
+
+
+    </div>
+    <script src="admin_slider.js"></script>
+</body>
+</html>
