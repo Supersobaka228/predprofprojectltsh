@@ -14,3 +14,8 @@ class ReviewForm(forms.ModelForm):
             'day': forms.TextInput(),
             'item': forms.NumberInput()
         }
+
+
+class AllergenForm(forms.ModelForm):
+    class Meta:
+        fields = ['']

@@ -178,7 +178,9 @@
                     <div class="allergens_select">
                         <h2 class="allergens_title">Выберите аллергены</h2>
 
-                        <div class="allergens_list">
+                        <form class="rate-card" method="post" id="allergens-form" action="{% url 'update_allergens' %}">
+                            {% csrf_token %}
+                            <div class="allergens_list">
                             <label class="allergen_item">
                                 <input type="checkbox" name="allergens" value="gluten">
                                 <span>Злаки, содержащие глютен</span>
@@ -250,7 +252,8 @@
                             </label>
                         </div>
 
-                        <button class="back_to_settings">Готово</button>
+                        <button class="back_to_settings" type="submit">Готово</button>
+                        </form>
                     </div>
                 </section>
             </main>
@@ -371,6 +374,7 @@
             </div>
         </div>
     </div>
+
 
     <!-- Оверлей для добавления отзыва -->
     <div class="rate-overlay" id="rateOverlay">

@@ -1,4 +1,6 @@
+from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
@@ -7,6 +9,7 @@ from .forms import ReviewForm
 from .models import MenuItem, DayOrder, Review
 from datetime import datetime, timedelta
 import locale
+from users.models import User
 from datetime import datetime, timedelta
 
 try:
@@ -20,19 +23,20 @@ except locale.Error:
 def menu(request):
     date_str = request.GET.get('date')
     if request.method == 'POST':
-        print(117)
-        s = dict(request.POST.items())
-        s.pop('csrfmiddlewaretoken', None)
-        print(s)
+        if 'allergens' in request.POST:
+            update_allergens(request)
+        else:
+            s = dict(request.POST.items())
+            s.pop('csrfmiddlewaretoken', None)
 
-        s['day'] = str(format_russian_date(datetime.strptime(date_str, '%Y-%m-%d').date()))
-        form = ReviewForm(s)
-        print(form.errors, 135)
-        if form.is_valid():
-            print(113)
-            form.save()
 
-    print(date_str, 111)
+            s['day'] = str(format_russian_date(datetime.strptime(date_str, '%Y-%m-%d').date()))
+            form = ReviewForm(s)
+            if form.is_valid():
+                print(113)
+                form.save()
+
+
     if date_str:
         try:
             current_date = datetime.strptime(date_str, '%Y-%m-%d').date()
@@ -81,6 +85,41 @@ def menu(request):
         print(review.text, 222)
     print(MenuItem.objects.all(), 36)
     return render(request, 'menu/menu.html', context)
+
+
+@login_required
+def update_allergens(request):
+    """Обновление аллергенов пользователя"""
+    if request.method == 'POST':
+        # Получаем список выбранных аллергенов
+        selected_allergens = request.POST.getlist('allergens')
+        from django.db.models import Q
+        # Удаляем старые аллергены пользователя
+
+        user = User.objects.get(Q(username=request.user.username))
+        user.not_like = selected_allergens
+        user.save()
+        print(user.not_like)
+
+
+        '''       # Добавляем новые аллергены
+        for allergen_code in selected_allergens:
+            UserAllergen.objects.create(
+                user=request.user,
+                allergen=allergen_code
+            )
+
+        # Для AJAX запроса
+        if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+            return JsonResponse({
+                'success': True,
+                'message': 'Аллергены успешно обновлены',
+                'allergens': selected_allergens
+            })
+
+        return redirect('settings_view')'''
+
+    return JsonResponse({'success': False, 'error': 'Неправильный метод запроса'})
 
 
 
