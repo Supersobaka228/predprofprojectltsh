@@ -165,6 +165,9 @@ class LoginForm(forms.Form):
             return self.user_cache.id
         return None
 
+
+
+
     def get_remember_me(self):
         return self.cleaned_data.get('remember_me')
 
