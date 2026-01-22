@@ -41,4 +41,30 @@ document.addEventListener('DOMContentLoaded', () => {
     const activeButton = document.querySelector('.admin_nav_button.active') || buttons[0];
     moveSlider(activeButton);
   });
+
+  const notifyWrap = document.querySelector('.admin_notify_wrap');
+  const notifyButton = document.querySelector('.admin_notify_button');
+  const notifyOverlay = document.querySelector('.admin_notify_overlay');
+
+  if (notifyWrap && notifyButton && notifyOverlay) {
+    notifyButton.addEventListener('click', (event) => {
+      event.stopPropagation();
+      notifyWrap.classList.toggle('is-open');
+      notifyOverlay.setAttribute('aria-hidden', String(!notifyWrap.classList.contains('is-open')));
+    });
+
+    document.addEventListener('click', (event) => {
+      if (!notifyWrap.contains(event.target)) {
+        notifyWrap.classList.remove('is-open');
+        notifyOverlay.setAttribute('aria-hidden', 'true');
+      }
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') {
+        notifyWrap.classList.remove('is-open');
+        notifyOverlay.setAttribute('aria-hidden', 'true');
+      }
+    });
+  }
 });
