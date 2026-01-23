@@ -33,8 +33,8 @@
                     data-price="{{ item.price }}"
                     data-time="{{ item.time }}"
                     data-icon="{% static item.icon %}"
-                    data-max-des='{{ item.max_des|join:"||" }}'
-                    data-allergens='{{ item.allergens|join:"||" }}'
+                    data-max-des='{{ item.max_des_list|join:"||" }}'
+                    data-allergens='{{ item.allergens_list|join:"||" }}'
                     data-date="{{ current_date }}"
                     data-category="{% if item.category == 'breakfast' %}Завтрак{% elif item.category == 'lunch' %}Обед{% else %}{{ item.category }}{% endif %}">
 
@@ -55,7 +55,7 @@
                     <div class="menu_section_main">
                         <img src="{% static item.icon %}" alt="" class="menu_pic">
                         <ul class="menu_items">
-                            {% for desc in item.min_des %}
+                            {% for desc in item.min_des_list %}
                                 <li>{{ desc }}</li>
                             {% endfor %}
                         </ul>
@@ -64,7 +64,7 @@
                             <div>
                                 Аллергены:
                             </div>
-                            {% for allergen in item.allergens %}
+                            {% for allergen in item.allergens_list %}
                                 <li>{{ allergen }}</li>
                             {% endfor %}
                         </ul>

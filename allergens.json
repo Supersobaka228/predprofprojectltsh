@@ -1,0 +1,4 @@
+[
+  {"model": "menu.allergen", "pk": 1, "fields": {"code": "gluten", "name": "Глютен", "sort_order": 1}},
+  {"model": "menu.allergen", "pk": 2, "fields": {"code": "milk", "name": "Молоко", "sort_order": 2}}
+]
