@@ -24,8 +24,8 @@ def register(request):
         else:
             print(form.errors)
             form.error_messages.append('Форма неверна')
-            data = {'form': form}
-            return redirect('register', data=data)
+            # Render the template with the bound form to display validation errors
+            return render(request, 'users/register.html', {'form': form})
     form = RegisterForm()
     data = {'form': form}
     form.error_messages = []
@@ -58,9 +58,9 @@ def login_f(request):
             return redirect('menu')
     else:
         form = LoginForm(request=request)
-    if request.user.role == 'admin':
+    # Guard against AnonymousUser lacking 'role'
+    if getattr(request.user, 'is_authenticated', False) and getattr(request.user, 'role', None) == 'admin':
         return render(request, 'users/admin_login.html', {'form': form})
     return render(request, 'users/login.html', {'form': form, "next": request.GET.get('next', '')})
 
         
-
