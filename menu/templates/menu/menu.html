@@ -29,7 +29,7 @@
                 {% for item in menu_items %}
                 <section class="menu_section openSheet"
                     data-item="{{ item.id }}"
-                    data-name="{{ item.name }}"
+                    data-name="{{ item.category }}"
                     data-price="{{ item.price }}"
                     data-time="{{ item.time }}"
                     data-icon="{% static item.icon %}"
@@ -97,51 +97,32 @@
                 </section>
 
                 <section class="history">
-                    <h1 class="history_title">История покупок</h1>
-                    <div class="history_container">
-                        <div class="history_day">
-                            <p class="history_day_title">20 декабря</p>
-                            <section class="history_section">
-                                <div class="history_row">
-                                    <p class="history_time">19:20</p>
-                                    <p class="history_item">Булочка</p>
-                                    <p class="history_price">-290Р</p>
-                                </div>
-                                <div class="history_row">
-                                    <p class="history_time">19:20</p>
-                                    <p class="history_item">Каша</p>
-                                    <p class="history_price">-290Р</p>
-                                </div>
-                                <div class="history_row">
-                                    <p class="history_time">9:20</p>
-                                    <p class="history_item">Обед комплексный</p>
-                                    <p class="history_price">-290Р</p>
-                                </div>
-                            </section>
-                        </div>
+    <h1 class="history_title">История покупок</h1>
+    <div class="history_container">
+        <!-- Итерируемся сразу по ключу (дата) и значению (список заказов) -->
+        {% for date_key, orders_list in orders.items %}
+        <div class="history_day">
+            <p class="history_day_title">{{ date_key }}</p>
+            <section class="history_section">
+                <!-- Теперь берем список заказов напрямую -->
+                {% for order in orders_list %}
+                <div class="history_row">
+                    <p class="history_time">{{ order.time|default:"--:--" }}</p>
+                    <p class="history_item">{{ order.name|default:"Без категории" }}</p>
+                    <p class="history_price">{{ order.price|default:"0" }}₽</p>
+                </div>
+                {% empty %}
+                <p class="no-orders">Нет заказов на эту дату</p>
+                {% endfor %}
+            </section>
+        </div>
+        {% empty %}
+        <p class="no-history">История покупок пуста</p>
+        {% endfor %}
+    </div>
+</section>
 
-                        <div class="history_day">
-                            <p class="history_day_title">19 декабря</p>
-                            <section class="history_section">
-                                <div class="history_row">
-                                    <p class="history_time">19:20</p>
-                                    <p class="history_item">Булочка</p>
-                                    <p class="history_price">-290Р</p>
-                                </div>
-                                <div class="history_row">
-                                    <p class="history_time">19:20</p>
-                                    <p class="history_item">Каша</p>
-                                    <p class="history_price">-290Р</p>
-                                </div>
-                                <div class="history_row">
-                                    <p class="history_time">9:20</p>
-                                    <p class="history_item">Обед комплексный</p>
-                                    <p class="history_price">-290Р</p>
-                                </div>
-                            </section>
-                        </div>
-                    </div>
-                </section>
+
             </main>
         </div>
 
@@ -295,10 +276,17 @@
 
                 <section class="sheet_main">
                     <img src="../../static/menu/icon/meal1.svg" alt="" class="sheet_main_img" id="sheet-image">
-                    <button class="sheet_order_btn">
+                    <form class="rate-card" method="post" id="order-form">
+                        {% csrf_token %}
+                        <input type="hidden" name="name" id="itemDateField2">
+                        <input type="hidden" name="time" id="itemDateField3">
+                        <input type="hidden" name="price" id="itemDateField4">
+                        <input type="hidden" name="day" id="itemDateField5">
+                    <button class="sheet_order_btn" type="submit">
                         <p class="sheet_title">Заказать</p>
                         <p class="sheet_text">(для дальнейшего получения на кассе)</p>
                     </button>
+                    </form>
                 </section>
 
                 <section class="sheet_info">
@@ -357,11 +345,21 @@
                                 <div class="sheet-review-date">{{ item.day }}</div>
                                 <div class="sheet-review-user">ученик</div>
                                 <div class="sheet-review-stars">
+                                    {% if item.stars_count >= 1 %}
                                     <img src="../../static/menu/icon/Star 1.svg" alt="" class="sheet-rating-star">
+                                    {% endif %}
+                                    {% if item.stars_count >= 2 %}
                                     <img src="../../static/menu/icon/Star 1.svg" alt="" class="sheet-rating-star">
+                                    {% endif %}
+                                    {% if item.stars_count >= 3 %}
                                     <img src="../../static/menu/icon/Star 1.svg" alt="" class="sheet-rating-star">
+                                    {% endif %}
+                                    {% if item.stars_count >= 4 %}
                                     <img src="../../static/menu/icon/Star 1.svg" alt="" class="sheet-rating-star">
+                                    {% endif %}
+                                    {% if item.stars_count >= 5 %}
                                     <img src="../../static/menu/icon/Star 1.svg" alt="" class="sheet-rating-star">
+                                    {% endif %}
                                 </div>
                             </div>
                             <div class="sheet-review-text">{{ item.text }}</div>

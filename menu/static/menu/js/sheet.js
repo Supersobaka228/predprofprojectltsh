@@ -16,10 +16,15 @@ document.addEventListener("DOMContentLoaded", () => {
     const button = e.currentTarget;
     currentItemData = {
       date: button.getAttribute('data-date'),
-      item: button.getAttribute('data-item')
+      item: button.getAttribute('data-item'),
+      name: button.getAttribute('data-name'),
+      time: button.getAttribute('data-time'),
+      price: button.getAttribute('data-price'),
+      day: button.getAttribute('data-date')
     };
 
-    console.log('Данные элемента:', currentItemData);
+
+
     openSheet();
   }
 
@@ -52,6 +57,12 @@ document.addEventListener("DOMContentLoaded", () => {
     const allergensList = document.getElementById('sheet-allergens');
     allergensList.innerHTML = '';
     overlay.classList.add("active");
+   
+    document.getElementById('itemDateField2').value = currentItemData.name;
+    document.getElementById('itemDateField3').value = currentItemData.time;
+    document.getElementById('itemDateField4').value = currentItemData.price;
+    document.getElementById('itemDateField5').value = currentItemData.date;
+
     lockBody(true);
   }
 

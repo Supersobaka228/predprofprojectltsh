@@ -37,6 +37,7 @@ def register(request):
 
 def login_f(request):
     if request.method == "POST":
+
         form = LoginForm(request=request, data=request.POST)
         form.error_messages = []
         print(form.errors)
@@ -57,7 +58,8 @@ def login_f(request):
             return redirect('menu')
     else:
         form = LoginForm(request=request)
-
+    if request.user.role == 'admin':
+        return render(request, 'users/admin_login.html', {'form': form})
     return render(request, 'users/login.html', {'form': form, "next": request.GET.get('next', '')})
 
         

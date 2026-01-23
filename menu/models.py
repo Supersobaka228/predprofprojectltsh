@@ -1,6 +1,6 @@
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
-
+from users.models import User
 
 class MenuItem(models.Model):
     CATEGORY_CHOICES = [
@@ -41,3 +41,11 @@ class Review(models.Model):
     day = models.CharField()
     text = models.TextField()
     stars_count = models.IntegerField(default=3)
+
+
+class Order(models.Model):
+    time = models.CharField(max_length=20)
+    name = models.CharField(max_length=255)
+    price = models.IntegerField()
+    day = models.CharField()
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=False, blank=False)

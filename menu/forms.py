@@ -1,10 +1,11 @@
 from django import forms
-from .models import Review
+from .models import Review, Order
+
 
 class ReviewForm(forms.ModelForm):
     class Meta:
         model = Review
-        fields = ['text', 'day', 'item']
+        fields = ['text', 'day', 'item', 'stars_count']
         widgets = {
             'text': forms.Textarea(attrs={
                 'class': 'form-control',
@@ -12,10 +13,19 @@ class ReviewForm(forms.ModelForm):
                 'placeholder': 'Ваш отзыв...'
             }),
             'day': forms.TextInput(),
-            'item': forms.NumberInput()
+            'item': forms.NumberInput(),
+            'stars_count': forms.NumberInput()
+
         }
 
-
-class AllergenForm(forms.ModelForm):
+class OrderForm(forms.ModelForm):
     class Meta:
-        fields = ['']
+        model = Order
+        fields = ['name', 'time', 'price', 'day', 'user']
+        widgets = {
+            'name': forms.TextInput(),
+            'time': forms.TextInput(),
+            'price': forms.NumberInput(),
+            'day': forms.TextInput(),
+            'user_id': forms.IntegerField()
+        }

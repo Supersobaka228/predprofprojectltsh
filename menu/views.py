@@ -1,12 +1,14 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
+from django.db.models import Q
 from django.http import JsonResponse
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
-
-from .forms import ReviewForm
-from .models import MenuItem, DayOrder, Review
+from django import template
+from users.views import register
+from .forms import ReviewForm, OrderForm
+from .models import MenuItem, DayOrder, Review, Order
 from datetime import datetime, timedelta
 import locale
 from users.models import User
@@ -25,6 +27,8 @@ def menu(request):
     if request.method == 'POST':
         if 'allergens' in request.POST:
             update_allergens(request)
+        elif 'price' in request.POST:
+            order(request)
         else:
             s = dict(request.POST.items())
             s.pop('csrfmiddlewaretoken', None)
@@ -33,7 +37,6 @@ def menu(request):
             s['day'] = str(format_russian_date(datetime.strptime(date_str, '%Y-%m-%d').date()))
             form = ReviewForm(s)
             if form.is_valid():
-                print(113)
                 form.save()
 
 
@@ -59,11 +62,9 @@ def menu(request):
     if day_order:
         menu_items_dict = {item.id: item for item in MenuItem.objects.filter(id__in=day_order.order)}
         menu_items = [menu_items_dict[int(id)] for id in day_order.order if int(id) in menu_items_dict]
-        print(menu_items, 43)
     else:
         menu_items = []
 
-    print(day_order, 33)
     
 
     date_display = format_russian_date(current_date)
@@ -71,6 +72,12 @@ def menu(request):
 
     prev_date = (current_date - timedelta(days=1)).strftime('%Y-%m-%d')
     next_date = (current_date + timedelta(days=1)).strftime('%Y-%m-%d')
+    try:
+        orders = Order.objects.filter(Q(user_id=request.user.id))
+    except Order.DoesNotExist:
+        orders = None
+    orders_d = dict_orders(orders)
+
 
     context = {
         'menu_items': menu_items,
@@ -78,13 +85,24 @@ def menu(request):
         'current_date': current_date.strftime('%Y-%m-%d'),
         'prev_date': prev_date,
         'next_date': next_date,
-        'review_items': Review.objects.all()
+        'review_items': Review.objects.all(),
+        'orders': orders_d,
+        'orders_keys': orders_d.keys()
     }
-    review = Review.objects.first()
-    if review is not None:
-        print(review.text, 222)
-    print(MenuItem.objects.all(), 36)
     return render(request, 'menu/menu.html', context)
+
+
+@login_required
+def order(request):
+    if request.method == 'POST':
+        ordered_menu = dict(request.POST.items())
+        ordered_menu.pop('csrfmiddlewaretoken', None)
+        ordered_menu['user'] = request.user.id
+        form = OrderForm(ordered_menu)
+        if form.is_valid():
+            form.save()
+    return
+
 
 
 @login_required
@@ -99,28 +117,21 @@ def update_allergens(request):
         user = User.objects.get(Q(username=request.user.username))
         user.not_like = selected_allergens
         user.save()
-        print(user.not_like)
-
-
-        '''       # Добавляем новые аллергены
-        for allergen_code in selected_allergens:
-            UserAllergen.objects.create(
-                user=request.user,
-                allergen=allergen_code
-            )
-
-        # Для AJAX запроса
-        if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
-            return JsonResponse({
-                'success': True,
-                'message': 'Аллергены успешно обновлены',
-                'allergens': selected_allergens
-            })
-
-        return redirect('settings_view')'''
 
     return JsonResponse({'success': False, 'error': 'Неправильный метод запроса'})
 
+
+
+def dict_orders(orders):
+    ans = dict()
+    for i in orders.all():
+        current_date = datetime.strptime(i.day, '%Y-%m-%d').date()
+        r = format_russian_date(current_date)
+        if r in ans.keys():
+            ans[r].append(i)
+        else:
+            ans[r] = [i]
+    return ans
 
 
 def format_russian_date(date_obj):
