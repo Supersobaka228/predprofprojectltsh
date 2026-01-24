@@ -182,7 +182,9 @@ document.addEventListener('DOMContentLoaded', () => {
           showToast('Не удалось заказать');
         }
       } catch (err) {
-        showToast('Ошибка заказа');
+        // err может быть JSON-объектом от сервера
+        const msg = (err && (err.error || err.message)) ? (err.error || err.message) : 'Ошибка заказа';
+        showToast(msg);
       }
     });
   }
@@ -231,6 +233,56 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       } catch (err) {
         showToast('Ошибка отправки отзыва');
+      }
+    });
+  }
+
+  // 4) Аллергены (allergens-form) — отдельный AJAX, чтобы не было полного перехода/ошибки ссылки
+  const allergensForm = document.getElementById('allergens-form');
+  if (allergensForm) {
+    allergensForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      try {
+        const data = await postFormAjax(allergensForm);
+        if (data?.success) {
+          // Обновляем список в настройках
+          const ul = document.getElementById('user-allergens-list');
+          if (ul) {
+            ul.innerHTML = '';
+            const names = data.selected_names || [];
+            if (names.length === 0) {
+              const li = document.createElement('li');
+              li.className = 'st_allergens_empty';
+              li.textContent = 'Не выбраны';
+              ul.appendChild(li);
+            } else {
+              names.forEach(n => {
+                const li = document.createElement('li');
+                li.textContent = n;
+                ul.appendChild(li);
+              });
+            }
+          }
+
+          // Плавно возвращаемся на settings экран (логика как в aller.js)
+          const settings = document.querySelector('.settings_main');
+          const allergens = document.querySelector('.allergens_main');
+          if (settings && allergens) {
+            // resetScreens + showSettings
+            [settings, allergens].forEach(screen => {
+              screen.classList.remove('is-active', 'is-exit-left');
+              screen.style.transform = 'translateX(100%)';
+            });
+            settings.classList.add('is-active');
+            settings.style.transform = 'translateX(0)';
+          }
+
+          showToast('Аллергены сохранены');
+        } else {
+          showToast('Не удалось сохранить аллергены');
+        }
+      } catch (err) {
+        showToast('Ошибка сохранения аллергенов');
       }
     });
   }

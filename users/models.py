@@ -59,6 +59,8 @@ class User(AbstractUser, PermissionsMixin):
     grade = models.CharField(_('grade'), max_length=3, default='')
     # Баланс храним в центах (минимальных единицах), чтобы избежать ошибок округления
     balance_cents = models.IntegerField(_('balance (cents)'), default=0)
+    # Выбранные пользователем аллергены (фиксированный список из menu.Allergen)
+    allergies = models.ManyToManyField('menu.Allergen', blank=True, related_name='users')
     not_like = models.CharField(_('not like'), max_length=255, default='')
     abonement = models.IntegerField(_('abonement'), default=0)
 

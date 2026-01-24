@@ -22,7 +22,7 @@ class CustomUserAdmin(UserAdmin):
             'fields': ('role', 'is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions')
         }),
         (('Дополнительная информация'), {
-            'fields': ('balance_cents', 'balance_rub_display', 'abonement', 'not_like')
+            'fields': ('balance_cents', 'balance_rub_display', 'abonement', 'allergies', 'not_like')
         }),
         (('Важные даты'), {
             'fields': ('last_login', 'date_joined')

@@ -1,14 +1,14 @@
 from django.contrib.auth.decorators import login_required
+from django.db import transaction
 from django.db.models import Q
 from django.http import JsonResponse
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 
 from .forms import ReviewForm, OrderForm
-from .models import MenuItem, DayOrder, Review, Order
+from .models import MenuItem, DayOrder, Review, Order, Allergen
 from datetime import datetime, timedelta
 import locale
-from users.models import User
 
 try:
     locale.setlocale(locale.LC_TIME, 'ru_RU.UTF-8')
@@ -34,8 +34,13 @@ def menu(request):
             update_allergens(request)
         elif 'price' in request.POST:
             # Заказ блюда
-            created_order = order(request)
+            created_order, err_code, err_msg = order(request)
             if is_ajax:
+                if created_order is None:
+                    return JsonResponse(
+                        {'success': False, 'action': 'order', 'error_code': err_code, 'error': err_msg},
+                        status=400,
+                    )
                 balance_str = getattr(request.user, 'balance_rub_str', '0.00')
                 balance_display = str(balance_str).replace('.', ',')
                 order_payload = None
@@ -132,6 +137,16 @@ def menu(request):
         'orders_keys': orders_d.keys()
     }
 
+    # Аллергены: список и выбор пользователя
+    try:
+        context['all_allergens'] = list(Allergen.objects.all())
+        context['selected_allergen_codes'] = list(request.user.allergies.values_list('code', flat=True))
+        context['selected_allergen_names'] = list(request.user.allergies.values_list('name', flat=True))
+    except Exception:
+        context['all_allergens'] = []
+        context['selected_allergen_codes'] = []
+        context['selected_allergen_names'] = []
+
     # Баланс для отображения: 2 знака после запятой, разделитель запятая
     try:
         balance_str = getattr(request.user, 'balance_rub_str', '0.00')
@@ -161,31 +176,74 @@ def menu(request):
 
 @login_required
 def order(request):
-    if request.method == 'POST':
-        ordered_menu = dict(request.POST.items())
-        ordered_menu.pop('csrfmiddlewaretoken', None)
-        ordered_menu['user'] = request.user.id
-        form = OrderForm(ordered_menu)
-        if form.is_valid():
-            return form.save()
-    return None
+    """Создаёт заказ и списывает деньги с баланса.
+
+    Возвращает кортеж: (created_order | None, error_code | None, error_message | None)
+    """
+    if request.method != 'POST':
+        return None, 'BAD_METHOD', 'Неправильный метод запроса'
+
+    ordered_menu = dict(request.POST.items())
+    ordered_menu.pop('csrfmiddlewaretoken', None)
+    ordered_menu['user'] = request.user.id
+    form = OrderForm(ordered_menu)
+    if not form.is_valid():
+        return None, 'INVALID_FORM', 'Неверные данные заказа'
+
+    # Цена в форме хранится в рублях (int). Баланс — в центах.
+    try:
+        price_rub = int(form.cleaned_data.get('price') or 0)
+    except Exception:
+        price_rub = 0
+    price_cents = price_rub * 100
+
+    if price_cents <= 0:
+        return None, 'INVALID_PRICE', 'Некорректная цена'
+
+    with transaction.atomic():
+        user = request.user
+        current = int(getattr(user, 'balance_cents', 0) or 0)
+        if current < price_cents:
+            return None, 'INSUFFICIENT_FUNDS', 'Недостаточно средств'
+
+        user.balance_cents = current - price_cents
+        user.save(update_fields=['balance_cents'])
+
+        created_order = form.save()
+        return created_order, None, None
 
 
 
 @login_required
 def update_allergens(request):
-    """Обновление аллергенов пользователя"""
-    if request.method == 'POST':
-        # Получаем список выбранных аллергенов
-        selected_allergens = request.POST.getlist('allergens')
-        from django.db.models import Q
-        # Удаляем старые аллергены пользователя
+    """Обновление аллергенов пользователя (фиксированный список).
 
-        user = User.objects.get(Q(username=request.user.username))
-        user.not_like = selected_allergens
-        user.save()
+    Ожидаем, что форма отправляет список `allergens` со значениями = Allergen.code.
+    """
+    is_ajax = request.headers.get('x-requested-with') == 'XMLHttpRequest'
 
-    return JsonResponse({'success': False, 'error': 'Неправильный метод запроса'})
+    if request.method != 'POST':
+        if is_ajax:
+            return JsonResponse({'success': False, 'error': 'Неправильный метод запроса'}, status=405)
+        return JsonResponse({'success': False, 'error': 'Неправильный метод запроса'})
+
+    selected_codes = [c for c in request.POST.getlist('allergens') if c]
+    allergens = list(Allergen.objects.filter(code__in=selected_codes))
+
+    # Обновляем выбор для текущего пользователя
+    request.user.allergies.set(allergens)
+
+    payload = {
+        'success': True,
+        'selected_codes': [a.code for a in allergens],
+        'selected_names': [a.name for a in allergens],
+    }
+
+    if is_ajax:
+        return JsonResponse(payload)
+
+    # fallback: для обычной отправки формы возвращаемся в меню
+    return JsonResponse(payload)
 
 
 
