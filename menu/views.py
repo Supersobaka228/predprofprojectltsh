@@ -1,18 +1,14 @@
-from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.http import JsonResponse
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
-from django.views.decorators.http import require_http_methods
-from django import template
-from users.views import register
+
 from .forms import ReviewForm, OrderForm
 from .models import MenuItem, DayOrder, Review, Order
 from datetime import datetime, timedelta
 import locale
 from users.models import User
-from datetime import datetime, timedelta
 
 try:
     locale.setlocale(locale.LC_TIME, 'ru_RU.UTF-8')
@@ -94,6 +90,23 @@ def menu(request):
         'orders': orders_d,
         'orders_keys': orders_d.keys()
     }
+    # Вычисляем display_name: сначала first_name, иначе часть email до @, иначе 'Ученик'
+    try:
+        user_obj = request.user
+        first = getattr(user_obj, 'first_name', '') or ''
+        email = getattr(user_obj, 'email', '') or ''
+        if first.strip():
+            display_name = first.strip()
+        elif '@' in email:
+            display_name = email.split('@', 1)[0]
+        elif email.strip():
+            display_name = email.strip()
+        else:
+            display_name = 'Ученик'
+    except Exception:
+        display_name = 'Ученик'
+
+    context['display_name'] = display_name
     return render(request, 'menu/menu.html', context)
 
 
