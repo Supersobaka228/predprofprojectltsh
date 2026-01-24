@@ -784,6 +784,9 @@ input[type="checkbox"] {
   justify-content: space-around;
 }
 
+.sheet_info {
+    font-size: 0.8rem;
+}
 .sheet_main form {
     display: flex;
     justify-content: center;

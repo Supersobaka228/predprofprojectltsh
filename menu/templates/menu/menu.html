@@ -336,9 +336,11 @@
 
                     <div class="reviews_overflow" id="reviews-container">
                         <!-- Отзывы будут загружаться динамически -->
+                        <div class="sheet-review-empty" id="sheet-review-empty" style="display:none;">Нет отзывов для этого блюда</div>
+
                         {% for item in review_items %}
 
-                        <div class="sheet-review">
+                        <div class="sheet-review" data-review-item-id="{{ item.item_id }}">
                             <div class="sheet-review-top">
                                 <div class="sheet-review-date">{{ item.day }}</div>
                                 <div class="sheet-review-user">ученик</div>

@@ -75,6 +75,27 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  function filterReviewsForItem(itemId) {
+    const reviewsContainer = document.getElementById('reviews-container');
+    if (!reviewsContainer) return;
+
+    const emptyEl = document.getElementById('sheet-review-empty');
+    const reviews = Array.from(reviewsContainer.querySelectorAll('.sheet-review'));
+
+    let shown = 0;
+    reviews.forEach(r => {
+      const reviewItemId = r.getAttribute('data-review-item-id');
+      // itemId и reviewItemId должны совпасть как строки
+      const match = itemId && reviewItemId && String(reviewItemId) === String(itemId);
+      r.style.display = match ? '' : 'none';
+      if (match) shown += 1;
+    });
+
+    if (emptyEl) {
+      emptyEl.style.display = shown === 0 ? '' : 'none';
+    }
+  }
+
   function openSheet() {
     const compositionList = document.getElementById('sheet-composition');
     const allergensList = document.getElementById('sheet-allergens');
@@ -94,6 +115,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Аллергены
     fillList(allergensList, splitDataset(currentItemData.allergens), 'li');
+
+    // Фильтруем отзывы под выбранный MenuItem
+    filterReviewsForItem(currentItemData.item);
 
     overlay.classList.add("active");
 
