@@ -159,80 +159,82 @@
                     <div class="allergens_select">
                         <h2 class="allergens_title">Выберите аллергены</h2>
 
-                        <form class="allergens_list" method="post" id="allergens-form" action="{% url 'update_allergens' %}">
+                        <form class="allergens-form" method="post" id="allergens-form" action="{% url 'update_allergens' %}">
                             {% csrf_token %}
-                            <label class="allergen_item">
-                                <input type="checkbox" name="allergens" value="gluten">
-                                <span>Злаки, содержащие глютен</span>
-                            </label>
+                            <div class="allergens_list">
+                                <label class="allergen_item">
+                                    <input type="checkbox" name="allergens" value="gluten">
+                                    <span>Злаки, содержащие глютен</span>
+                                </label>
 
-                            <label class="allergen_item">
-                                <input type="checkbox" name="allergens" value="crustaceans">
-                                <span>Ракообразные</span>
-                            </label>
+                                <label class="allergen_item">
+                                    <input type="checkbox" name="allergens" value="crustaceans">
+                                    <span>Ракообразные</span>
+                                </label>
 
-                            <label class="allergen_item">
-                                <input type="checkbox" name="allergens" value="eggs">
-                                <span>Яйца</span>
-                            </label>
+                                <label class="allergen_item">
+                                    <input type="checkbox" name="allergens" value="eggs">
+                                    <span>Яйца</span>
+                                </label>
 
-                            <label class="allergen_item">
-                                <input type="checkbox" name="allergens" value="fish">
-                                <span>Рыба</span>
-                            </label>
+                                <label class="allergen_item">
+                                    <input type="checkbox" name="allergens" value="fish">
+                                    <span>Рыба</span>
+                                </label>
 
-                            <label class="allergen_item">
-                                <input type="checkbox" name="allergens" value="peanuts">
-                                <span>Арахис</span>
-                            </label>
+                                <label class="allergen_item">
+                                    <input type="checkbox" name="allergens" value="peanuts">
+                                    <span>Арахис</span>
+                                </label>
 
-                            <label class="allergen_item">
-                                <input type="checkbox" name="allergens" value="soy">
-                                <span>Соя</span>
-                            </label>
+                                <label class="allergen_item">
+                                    <input type="checkbox" name="allergens" value="soy">
+                                    <span>Соя</span>
+                                </label>
 
-                            <label class="allergen_item">
-                                <input type="checkbox" name="allergens" value="milk">
-                                <span>Молоко</span>
-                            </label>
+                                <label class="allergen_item">
+                                    <input type="checkbox" name="allergens" value="milk">
+                                    <span>Молоко</span>
+                                </label>
 
-                            <label class="allergen_item">
-                                <input type="checkbox" name="allergens" value="nuts">
-                                <span>Орехи</span>
-                            </label>
+                                <label class="allergen_item">
+                                    <input type="checkbox" name="allergens" value="nuts">
+                                    <span>Орехи</span>
+                                </label>
 
-                            <label class="allergen_item">
-                                <input type="checkbox" name="allergens" value="celery">
-                                <span>Сельдерей</span>
-                            </label>
+                                <label class="allergen_item">
+                                    <input type="checkbox" name="allergens" value="celery">
+                                    <span>Сельдерей</span>
+                                </label>
 
-                            <label class="allergen_item">
-                                <input type="checkbox" name="allergens" value="mustard">
-                                <span>Горчица</span>
-                            </label>
+                                <label class="allergen_item">
+                                    <input type="checkbox" name="allergens" value="mustard">
+                                    <span>Горчица</span>
+                                </label>
 
-                            <label class="allergen_item">
-                                <input type="checkbox" name="allergens" value="sesame">
-                                <span>Семена кунжута</span>
-                            </label>
+                                <label class="allergen_item">
+                                    <input type="checkbox" name="allergens" value="sesame">
+                                    <span>Семена кунжута</span>
+                                </label>
 
-                            <label class="allergen_item">
-                                <input type="checkbox" name="allergens" value="lupin">
-                                <span>Люпин</span>
-                            </label>
+                                <label class="allergen_item">
+                                    <input type="checkbox" name="allergens" value="lupin">
+                                    <span>Люпин</span>
+                                </label>
 
-                            <label class="allergen_item">
-                                <input type="checkbox" name="allergens" value="mollusks">
-                                <span>Моллюски</span>
-                            </label>
+                                <label class="allergen_item">
+                                    <input type="checkbox" name="allergens" value="mollusks">
+                                    <span>Моллюски</span>
+                                </label>
 
-                            <label class="allergen_item">
-                                <input type="checkbox" name="allergens" value="sulfites">
-                                <span>Диоксид серы и сульфиты</span>
-                            </label>
-
-                        <button class="back_to_settings" type="submit">Готово</button>
+                                <label class="allergen_item">
+                                    <input type="checkbox" name="allergens" value="sulfites">
+                                    <span>Диоксид серы и сульфиты</span>
+                                </label>
+                            </div>
+                            <button class="back_to_settings" type="submit">Готово</button>
                         </form>
+
                     </div>
                 </section>
             </main>
