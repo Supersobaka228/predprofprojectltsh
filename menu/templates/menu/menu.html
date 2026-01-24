@@ -90,10 +90,10 @@
                         <p class="balance_text">Баланс:</p>
                         <p class="balance_money">1488₽</p>
                     </div>
-                    <a href="" class="add_money_box">
-                        <img src="../../static/menu/icon/add.svg" alt="" class="add_money_img">
+                    <button class="add_money_box" id="openPayment" type="button">
+                        <img src="resources/add.svg" alt="" class="add_money_img">
                         <p class="balance_text">Пополнить</p>
-                    </a>
+                    </button>
                 </section>
 
                 <section class="history">
@@ -418,47 +418,27 @@
     <script src="../../static/menu/js/sheet.js"></script>
     <script src="../../static/menu/js/aller.js"></script>
     <script src="../../static/menu/js/rating.js"></script>
-    <script>
-        // Обработка навигации между вкладками
-        document.querySelectorAll('.footer_container').forEach(button => {
-            button.addEventListener('click', function() {
-                const view = this.getAttribute('data-view');
-
-                // Скрываем все виды
-                document.querySelectorAll('.app_view').forEach(viewElement => {
-                    viewElement.classList.remove('app_view--active');
-                });
-
-                // Показываем выбранный вид
-                document.querySelector(`.app_view[data-view="${view}"]`).classList.add('app_view--active');
-
-                // Обновляем активную кнопку в футере
-                document.querySelectorAll('.footer_container').forEach(btn => {
-                    btn.classList.remove('active');
-                });
-                this.classList.add('active');
-            });
-        });
-
-        // Обработка аллергенов в настройках
-        document.querySelector('.user_add_aller')?.addEventListener('click', function() {
-            document.querySelector('.settings_main').classList.remove('is-active');
-            document.querySelector('.allergens_main').classList.add('is-active');
-        });
-
-        document.querySelector('.back_to_settings')?.addEventListener('click', function() {
-            document.querySelector('.allergens_main').classList.remove('is-active');
-            document.querySelector('.settings_main').classList.add('is-active');
-        });
-
-        // Обработка звездного рейтинга
-        document.querySelectorAll('#star-rating input').forEach(star => {
-            star.addEventListener('change', function() {
-                const ratingValue = this.value;
-                document.getElementById('rating-value').textContent = `${ratingValue}/5`;
-            });
-        });
-    </script>
+    <div class="payment-overlay" id="paymentOverlay">
+        <div class="payment-card">
+            <div class="payment-header">Оплата</div>
+            <div class="payment-body">
+                <label class="payment-label" for="paymentAmount">Сумма</label>
+                <div class="payment-row">
+                    <input
+                        id="paymentAmount"
+                        class="payment-input"
+                        type="number"
+                        min="0"
+                        step="1"
+                        placeholder="Введите сумму"
+                    >
+                    <button class="payment-submit" type="button">Оплатить</button>
+                </div>
+                <button class="payment-subscribe" type="button">Купить абонемент на месяц</button>
+                <button class="payment-close" id="paymentClose" type="button">Закрыть</button>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
 

@@ -6,6 +6,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const rateOverlay = document.getElementById("rateOverlay");
   const openRateBtn = document.getElementById("openRate");
   const rateCancel = document.getElementById("rateCancel");
+   const paymentOverlay = document.getElementById("paymentOverlay");
+  const openPaymentBtn = document.getElementById("openPayment");
+  const paymentClose = document.getElementById("paymentClose");
   let currentItemData = {};
 
   function splitDataset(value) {
@@ -221,4 +224,35 @@ document.addEventListener("DOMContentLoaded", () => {
       closeRate();
     }
   });
+
+  function openPayment() {
+    if (!paymentOverlay) return;
+    paymentOverlay.classList.add("active");
+    lockBody(true);
+  }
+
+  function closePayment() {
+    if (!paymentOverlay) return;
+    paymentOverlay.classList.remove("active");
+    lockBody(false);
+  }
+
+  if (openPaymentBtn) {
+    openPaymentBtn.addEventListener("click", e => {
+      e.preventDefault();
+      openPayment();
+    });
+  }
+
+  if (paymentClose) {
+    paymentClose.addEventListener("click", closePayment);
+  }
+
+  if (paymentOverlay) {
+    paymentOverlay.addEventListener("click", e => {
+      if (e.target === paymentOverlay) {
+        closePayment();
+      }
+    });
+  }
 });
