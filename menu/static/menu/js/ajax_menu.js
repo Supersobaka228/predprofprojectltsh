@@ -194,6 +194,18 @@ document.addEventListener('DOMContentLoaded', () => {
   if (reviewForm) {
     reviewForm.addEventListener('submit', async (e) => {
       e.preventDefault();
+
+      // Сначала закрываем оверлей отзыва тем же кодом, что и «Отмена»,
+      // чтобы гарантированно разблокировать sheet до любых async-операций.
+      if (typeof window.closeRate === 'function') {
+        window.closeRate();
+      } else {
+        closeOverlayById('rateOverlay');
+      }
+      if (typeof window.resetSheetInteractions === 'function') {
+        window.resetSheetInteractions();
+      }
+
       try {
         const data = await postFormAjax(reviewForm);
         if (data?.success && data.action === 'review') {
@@ -226,7 +238,12 @@ document.addEventListener('DOMContentLoaded', () => {
           }
 
           showToast('Отзыв отправлен');
-          closeOverlayById('rateOverlay');
+
+          // На всякий случай ещё раз сбрасываем блокировки, если какие-то события залипли
+          if (typeof window.resetSheetInteractions === 'function') {
+            window.resetSheetInteractions();
+          }
+
           reviewForm.reset();
         } else {
           showToast('Не удалось отправить отзыв');

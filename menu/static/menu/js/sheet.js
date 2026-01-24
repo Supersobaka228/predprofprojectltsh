@@ -187,6 +187,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let isRateOpen = false;
 
+  function resetSheetInteractions() {
+    // на всякий случай возвращаем sheet в нормальное состояние
+    isDragging = false;
+    startY = 0;
+    currentY = 0;
+    if (sheet) {
+      sheet.style.transition = "";
+      sheet.style.transform = "";
+      // по умолчанию разрешаем вертикальные жесты
+      sheet.style.touchAction = "pan-y";
+    }
+  }
+
   function openRate(e) {
     e.preventDefault();
     isRateOpen = true;
@@ -204,10 +217,18 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function closeRate() {
+    // делаем идемпотентно: можно вызывать сколько угодно раз
     isRateOpen = false;
-    rateOverlay.classList.remove("active");
-    sheet.style.touchAction = "";
+    if (rateOverlay) rateOverlay.classList.remove("active");
+
+    // снимаем любые блокировки свайпа
+    resetSheetInteractions();
   }
+
+  // делаем доступным для других скриптов (например, ajax_menu.js)
+  window.openRate = openRate;
+  window.closeRate = closeRate;
+  window.resetSheetInteractions = resetSheetInteractions;
 
   /* Открытие */
   openRateBtn.addEventListener("click", (e) => {
