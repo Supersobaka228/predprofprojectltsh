@@ -340,7 +340,7 @@
                         <!-- Отзывы будут загружаться динамически -->
                         {% for item in review_items %}
 
-                        <div class="sheet-review">
+                        <div class="sheet-review" data-item-id="{{ item.item_id }}">
                             <div class="sheet-review-top">
                                 <div class="sheet-review-date">{{ item.day }}</div>
                                 <div class="sheet-review-user">ученик</div>
