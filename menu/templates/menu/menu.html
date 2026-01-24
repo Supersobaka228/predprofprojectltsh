@@ -88,7 +88,7 @@
                 <section class="balance">
                     <div class="balance_box">
                         <p class="balance_text">Баланс:</p>
-                        <p class="balance_money">1488₽</p>
+                        <p class="balance_money">{{ balance_display }}₽</p>
                     </div>
                     <button class="add_money_box" id="openPayment" type="button">
                         <img src="resources/add.svg" alt="" class="add_money_img">
@@ -141,7 +141,7 @@
                         <div>
                             <p class="st_user_name">{{ display_name|default:"Ученик" }}</p>
                             <p class="st_balance_text">Баланс:</p>
-                            <p class="st_balance">1488₽</p>
+                            <p class="st_balance">{{ balance_display }}₽</p>
                         </div>
                         <div>
                             <p class="st_aller_head">Аллергены:</p>
@@ -421,25 +421,26 @@
     <script src="../../static/menu/js/aller.js"></script>
     <script src="../../static/menu/js/rating.js"></script>
     <div class="payment-overlay" id="paymentOverlay">
-        <div class="payment-card">
-            <div class="payment-header">Оплата</div>
-            <div class="payment-body">
-                <label class="payment-label" for="paymentAmount">Сумма</label>
-                <div class="payment-row">
-                    <input
-                        id="paymentAmount"
-                        class="payment-input"
-                        type="number"
-                        min="0"
-                        step="1"
-                        placeholder="Введите сумму"
-                    >
-                    <button class="payment-submit" type="button">Оплатить</button>
-                </div>
-                <button class="payment-subscribe" type="button">Купить абонемент на месяц</button>
-                <button class="payment-close" id="paymentClose" type="button">Закрыть</button>
+        <form class="payment-card" method="post" action="{% url 'topup_balance' %}">
+        {% csrf_token %}
+        <div class="payment-header">Пополнение баланса</div>
+        <div class="payment-body">
+            <div class="payment-label">Текущий баланс: {{ balance_display }}₽</div>
+            <label class="payment-label" for="paymentAmount">Сумма пополнения</label>
+            <div class="payment-row">
+                <input
+                    id="paymentAmount"
+                    class="payment-input"
+                    name="amount"
+                    type="text"
+                    inputmode="decimal"
+                    placeholder="Например: 150,00"
+                >
+                <button class="payment-submit" type="submit">Пополнить</button>
             </div>
+            <button class="payment-close" id="paymentClose" type="button">Закрыть</button>
         </div>
+    </form>
     </div>
 </body>
 </html>

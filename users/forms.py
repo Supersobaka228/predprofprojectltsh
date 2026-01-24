@@ -2,7 +2,6 @@ from django.core.exceptions import ValidationError
 from django.db import models
 from django import forms
 from django.forms.widgets import PasswordInput
-from pyexpat.errors import messages
 
 from .models import User
 
@@ -173,3 +172,44 @@ class LoginForm(forms.Form):
 
     def set_error(self, a):
         self.error_messages.append(a)
+
+class TopUpBalanceForm(forms.Form):
+    amount = forms.CharField(
+        label='Сумма пополнения (₽)',
+        widget=forms.TextInput(attrs={
+            'class': 'payment-input',
+            'inputmode': 'decimal',
+            'placeholder': 'Например: 150.00',
+        })
+    )
+
+    def clean_amount(self):
+        raw = (self.cleaned_data.get('amount') or '').strip()
+        if not raw:
+            raise ValidationError('Введите сумму')
+
+        # поддерживаем запятую
+        raw = raw.replace(',', '.')
+        try:
+            # работаем через Decimal-подобную проверку без float-ошибок: рубли + 2 знака
+            parts = raw.split('.')
+            if len(parts) > 2:
+                raise ValueError
+            rub = int(parts[0]) if parts[0] else 0
+            kop = 0
+            if len(parts) == 2:
+                frac = parts[1]
+                if len(frac) > 2:
+                    # слишком много знаков
+                    raise ValidationError('Слишком много знаков после запятой')
+                kop = int((frac + '00')[:2]) if frac else 0
+            amount_cents = rub * 100 + kop
+        except ValidationError:
+            raise
+        except Exception:
+            raise ValidationError('Некорректная сумма')
+
+        if amount_cents <= 0:
+            raise ValidationError('Сумма должна быть больше 0')
+
+        return amount_cents

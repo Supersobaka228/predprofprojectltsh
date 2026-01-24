@@ -1,13 +1,13 @@
-from django.contrib.auth import _get_compatible_backends, get_user_model
 from django.shortcuts import render, redirect
-from django.views.decorators.cache import never_cache
 from django.views.decorators.csrf import csrf_protect
-from django.views.decorators.debug import sensitive_post_parameters
 from django.contrib.auth import login
-from django.contrib import messages
-from rest_framework.exceptions import ValidationError
 
-from .forms import RegisterForm, LoginForm
+from django.contrib.auth.decorators import login_required
+from django.db import transaction
+from django.views.decorators.http import require_POST
+
+from .forms import RegisterForm, LoginForm, TopUpBalanceForm
+from .models import BalanceTopUp
 
 
 # Create your views here.
@@ -30,9 +30,6 @@ def register(request):
     data = {'form': form}
     form.error_messages = []
     return render(request, 'users/register.html', data)
-    print(form)
-
-
 
 
 def login_f(request):
@@ -96,3 +93,38 @@ def login_admin(request):
 
     return render(request, 'users/admin_login.html', {'form': form, "next": request.GET.get('next', '')})
 
+
+@login_required
+@require_POST
+@csrf_protect
+def topup_balance(request):
+    """Пополнение баланса пользователя.
+
+    Базовая безопасность:
+    - доступно только авторизованному пользователю
+    - только POST + CSRF
+    - баланс не принимаем из клиента, только сумму пополнения
+    - изменение баланса делаем атомарно
+    """
+
+    form = TopUpBalanceForm(request.POST)
+    if not form.is_valid():
+        # На этом шаге не ломаем UI: просто возвращаемся в меню.
+        return redirect('menu')
+
+    amount_cents = form.cleaned_data['amount']
+
+    with transaction.atomic():
+        user = request.user
+        # SQLite не поддерживает select_for_update полноценно, но atomic всё равно защитит от частичных записей.
+        user.balance_cents = int(user.balance_cents or 0) + int(amount_cents)
+        user.save(update_fields=['balance_cents'])
+
+        BalanceTopUp.objects.create(
+            user=user,
+            amount_cents=amount_cents,
+            created_by=user,
+            comment='Пополнение через интерфейс кошелька',
+        )
+
+    return redirect('menu')

@@ -90,6 +90,14 @@ def menu(request):
         'orders': orders_d,
         'orders_keys': orders_d.keys()
     }
+
+    # Баланс для отображения: 2 знака после запятой, разделитель запятая
+    try:
+        balance_str = getattr(request.user, 'balance_rub_str', '0.00')
+        context['balance_display'] = str(balance_str).replace('.', ',')
+    except Exception:
+        context['balance_display'] = '0,00'
+
     # Вычисляем display_name: сначала first_name, иначе часть email до @, иначе 'Ученик'
     try:
         user_obj = request.user

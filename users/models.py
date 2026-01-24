@@ -3,7 +3,6 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser, BaseUserManager, PermissionsMixin
 from django.utils.translation import gettext_lazy as _
 import uuid
-import random
 
 
 class UserManager(BaseUserManager):
@@ -58,17 +57,10 @@ class User(AbstractUser, PermissionsMixin):
     is_active = models.BooleanField(_('active'), default=True)
     role = models.CharField(_('role'), max_length=255, choices=ROLE_CHOICES, default='student')
     grade = models.CharField(_('grade'), max_length=3, default='')
-    balance = models.IntegerField(_('balance'), default=0)
+    # Баланс храним в центах (минимальных единицах), чтобы избежать ошибок округления
+    balance_cents = models.IntegerField(_('balance (cents)'), default=0)
     not_like = models.CharField(_('not like'), max_length=255, default='')
     abonement = models.IntegerField(_('abonement'), default=0)
-    class Meta:
-        verbose_name = _('Пользователь')
-        verbose_name_plural = _('Пользователи')
-        db_table = 'users'
-        ordering = ('grade', 'last_name')
-
-    def __str__(self):
-        return self.email
 
     @property
     def get_is_auth(self):
@@ -91,9 +83,50 @@ class User(AbstractUser, PermissionsMixin):
                 counter += 1
         super().save(*args, **kwargs)
 
+    @property
+    def balance_rub_str(self) -> str:
+        """Баланс в рублях с 2 знаками после запятой (например, 123.45)."""
+        cents = int(self.balance_cents or 0)
+        rub = cents / 100
+        return f"{rub:.2f}"
+
+    @property
+    def balance_rub(self) -> float:
+        """Баланс в рублях (float) — только для отображения, не для расчётов."""
+        return (int(self.balance_cents or 0)) / 100
+
+    class Meta:
+        verbose_name = _('Пользователь')
+        verbose_name_plural = _('Пользователи')
+        db_table = 'users'
+        ordering = ('grade', 'last_name')
+
+    def __str__(self):
+        return self.email
 
 
+class BalanceTopUp(models.Model):
+    """Журнал пополнений баланса.
 
+    Важно: сам баланс в User меняем только на сервере в транзакции, а здесь фиксируем факт пополнения.
+    """
+    user = models.ForeignKey('User', on_delete=models.CASCADE, related_name='balance_topups')
+    amount_cents = models.PositiveIntegerField(_('amount (cents)'))
+    created_at = models.DateTimeField(auto_now_add=True)
+    # кто инициировал пополнение (например, админ), опционально
+    created_by = models.ForeignKey(
+        'User',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='created_balance_topups',
+    )
+    comment = models.CharField(max_length=255, blank=True, default='')
 
+    class Meta:
+        ordering = ['-created_at']
+        verbose_name = "Пополнение баланса"
+        verbose_name_plural = "Пополнения баланса"
 
-
+    def __str__(self):
+        return f"{self.user} +{self.amount_cents}c ({self.created_at:%Y-%m-%d %H:%M})"
