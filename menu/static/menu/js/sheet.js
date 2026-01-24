@@ -8,37 +8,62 @@ document.addEventListener("DOMContentLoaded", () => {
   const rateCancel = document.getElementById("rateCancel");
   let currentItemData = {};
 
+  function splitDataset(value) {
+    if (!value) return [];
+    return value
+      .split('||')
+      .map(s => (s || '').trim())
+      .filter(Boolean);
+  }
+
+  function setText(id, value) {
+    const el = document.getElementById(id);
+    if (el) el.textContent = value ?? '';
+  }
+
+  function setValue(id, value) {
+    const el = document.getElementById(id);
+    if (el) el.value = value ?? '';
+  }
+
+  function fillList(listEl, items, tagName = 'li') {
+    if (!listEl) return;
+    listEl.innerHTML = '';
+    items.forEach(item => {
+      const li = document.createElement(tagName);
+      li.textContent = item;
+      listEl.appendChild(li);
+    });
+  }
 
   function openSheetWithData(e) {
     e.preventDefault();
 
-    // Получаем данные из кнопки, которая открывает лист
     const button = e.currentTarget;
+
     currentItemData = {
       date: button.getAttribute('data-date'),
       item: button.getAttribute('data-item'),
       name: button.getAttribute('data-name'),
+      categoryLabel: button.getAttribute('data-category'),
       time: button.getAttribute('data-time'),
       price: button.getAttribute('data-price'),
-      day: button.getAttribute('data-date')
+      icon: button.getAttribute('data-icon'),
+      maxDes: button.getAttribute('data-max-des'),
+      allergens: button.getAttribute('data-allergens')
     };
-
-
 
     openSheet();
   }
 
-
-  // Функция блокировки прокрутки body при открытом листе
   function lockBody(lock) {
     if (lock) {
-      // Сохраняем текущий скролл, чтобы при закрытии вернуть
       const scrollY = window.scrollY || document.documentElement.scrollTop;
       document.body.style.position = "fixed";
       document.body.style.top = `-${scrollY}px`;
       document.body.style.left = "0";
       document.body.style.right = "0";
-      document.body.dataset.scrollY = scrollY;  // Сохраняем в data-атрибут
+      document.body.dataset.scrollY = scrollY;
     } else {
       const scrollY = document.body.dataset.scrollY ? parseInt(document.body.dataset.scrollY) : 0;
       document.body.style.position = "";
@@ -50,23 +75,38 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // Открытие листа и оверлея
   function openSheet() {
     const compositionList = document.getElementById('sheet-composition');
-    compositionList.innerHTML = '';
     const allergensList = document.getElementById('sheet-allergens');
-    allergensList.innerHTML = '';
+
+    // Заполняем UI
+    setText('sheet-time', currentItemData.time || '');
+    setText('sheet-name', currentItemData.categoryLabel || currentItemData.name || '');
+    setText('sheet-price', currentItemData.price ? `${currentItemData.price}₽` : '');
+
+    const sheetImage = document.getElementById('sheet-image');
+    if (sheetImage && currentItemData.icon) {
+      sheetImage.src = currentItemData.icon;
+    }
+
+    // Состав: используем data-max-des (строки description) — это "Состав" для sheet
+    fillList(compositionList, splitDataset(currentItemData.maxDes), 'li');
+
+    // Аллергены
+    fillList(allergensList, splitDataset(currentItemData.allergens), 'li');
+
     overlay.classList.add("active");
-   
-    document.getElementById('itemDateField2').value = currentItemData.name;
-    document.getElementById('itemDateField3').value = currentItemData.time;
-    document.getElementById('itemDateField4').value = currentItemData.price;
-    document.getElementById('itemDateField5').value = currentItemData.date;
+
+    // Hidden поля заказа
+    // name — оставляем как раньше (у вас это category код), чтобы не ломать обработчик заказа
+    setValue('itemDateField2', currentItemData.name);
+    setValue('itemDateField3', currentItemData.time);
+    setValue('itemDateField4', currentItemData.price);
+    setValue('itemDateField5', currentItemData.date);
 
     lockBody(true);
   }
 
-  // Закрытие
   function closeSheet() {
     overlay.classList.remove("active");
     lockBody(false);
@@ -129,8 +169,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Заполняем поля формы данными
 
-    document.getElementById('itemDateField').value = currentItemData.date || '';
-    document.getElementById('itemCategoryField').value = currentItemData.item || '';
+    setValue('itemDateField', currentItemData.date || '');
+    setValue('itemCategoryField', currentItemData.item || '');
 
     // блокируем взаимодействие с sheet
     sheet.style.touchAction = "none";

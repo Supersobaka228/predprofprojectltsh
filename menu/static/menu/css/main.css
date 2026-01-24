@@ -781,8 +781,14 @@ input[type="checkbox"] {
   display: flex;
   padding: 1rem 1rem 1rem;
   border-radius: 2em;
+  justify-content: space-around;
 }
 
+.sheet_main form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
 .sheet_title_sost {
   margin: 0;
@@ -916,7 +922,7 @@ input[type="checkbox"] {
   user-select: none;
   -webkit-user-select: none;
   touch-action: manipulation;
-  width: 40%;
+  width: 80%;
   height: 50%;
   will-change: transform;
   box-shadow: rgba(0, 0, 0, 0.25) 0 8px 15px;

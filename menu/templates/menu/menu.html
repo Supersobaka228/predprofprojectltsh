@@ -30,13 +30,13 @@
                 <section class="menu_section openSheet"
                     data-item="{{ item.id }}"
                     data-name="{{ item.category }}"
+                    data-category="{% if item.category == 'breakfast' %}Завтрак{% elif item.category == 'lunch' %}Обед{% else %}{{ item.category }}{% endif %}"
                     data-price="{{ item.price }}"
                     data-time="{{ item.time }}"
                     data-icon="{% static item.icon %}"
                     data-max-des='{{ item.max_des_list|join:"||" }}'
                     data-allergens='{{ item.allergens_list|join:"||" }}'
-                    data-date="{{ current_date }}"
-                    data-category="{% if item.category == 'breakfast' %}Завтрак{% elif item.category == 'lunch' %}Обед{% else %}{{ item.category }}{% endif %}">
+                    data-date="{{ current_date }}">
 
                     <div class="menu_section_head">
                         <h3>
@@ -159,9 +159,8 @@
                     <div class="allergens_select">
                         <h2 class="allergens_title">Выберите аллергены</h2>
 
-                        <form class="rate-card" method="post" id="allergens-form" action="{% url 'update_allergens' %}">
+                        <form class="allergens_list" method="post" id="allergens-form" action="{% url 'update_allergens' %}">
                             {% csrf_token %}
-                            <div class="allergens_list">
                             <label class="allergen_item">
                                 <input type="checkbox" name="allergens" value="gluten">
                                 <span>Злаки, содержащие глютен</span>
@@ -231,7 +230,6 @@
                                 <input type="checkbox" name="allergens" value="sulfites">
                                 <span>Диоксид серы и сульфиты</span>
                             </label>
-                        </div>
 
                         <button class="back_to_settings" type="submit">Готово</button>
                         </form>
@@ -276,7 +274,7 @@
 
                 <section class="sheet_main">
                     <img src="../../static/menu/icon/meal1.svg" alt="" class="sheet_main_img" id="sheet-image">
-                    <form class="rate-card" method="post" id="order-form">
+                    <form method="post" id="order-form">
                         {% csrf_token %}
                         <input type="hidden" name="name" id="itemDateField2">
                         <input type="hidden" name="time" id="itemDateField3">
@@ -364,11 +362,13 @@
                             </div>
                             <div class="sheet-review-text">{{ item.text }}</div>
                         </div>
+                        {% endfor %}
+
                     </div>
 
-                        {% endfor %}
-                    <button id="closeOverlay">Закрыть</button>
-                </div>
+
+                        <button id="closeOverlay">Закрыть</button>
+                    </div>
             </div>
         </div>
     </div>
