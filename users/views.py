@@ -64,3 +64,35 @@ def login_f(request):
     return render(request, 'users/login.html', {'form': form, "next": request.GET.get('next', '')})
 
         
+def login_admin(request):
+    if request.method == "POST":
+        form = LoginForm(request=request, data=request.POST)
+        form.error_messages = []
+
+        if not form.clean():
+            request.session.set_expiry(0)
+            form.set_error('Неверный логин или пароль')
+            return render(request, 'users/admin_login.html', {'form': form})
+
+        user = form.get_user()
+        if user is None:
+            form.set_error('Неверный логин или пароль')
+            return render(request, 'users/admin_login.html', {'form': form})
+
+        if not (getattr(user, 'role', None) == 'admin' or user.is_staff or user.is_superuser):
+            form.set_error('У вас нет прав администратора')
+            return render(request, 'users/admin_login.html', {'form': form})
+
+        login(request, user)
+
+        next_url = request.POST.get('next') or request.GET.get('next')
+        if next_url:
+            return redirect(next_url)
+
+        return redirect('menu')
+
+    else:
+        form = LoginForm(request=request)
+
+    return render(request, 'users/admin_login.html', {'form': form, "next": request.GET.get('next', '')})
+
