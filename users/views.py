@@ -5,6 +5,7 @@ from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.db import transaction
 from django.views.decorators.http import require_POST
+from django.http import JsonResponse
 
 from .forms import RegisterForm, LoginForm, TopUpBalanceForm
 from .models import BalanceTopUp
@@ -126,5 +127,9 @@ def topup_balance(request):
             created_by=user,
             comment='Пополнение через интерфейс кошелька',
         )
+
+    if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+        balance_display = f"{user.balance_cents // 100},{user.balance_cents % 100:02d}"
+        return JsonResponse({'success': True, 'balance_cents': user.balance_cents, 'balance_display': balance_display})
 
     return redirect('menu')

@@ -26,19 +26,60 @@ def menu(request):
     if not date_str:
         date_str = datetime.today().date().strftime('%Y-%m-%d')
 
+    is_ajax = request.headers.get('x-requested-with') == 'XMLHttpRequest'
+
     if request.method == 'POST':
         if 'allergens' in request.POST:
+            # аллергенов пока не трогаем
             update_allergens(request)
         elif 'price' in request.POST:
-            order(request)
+            # Заказ блюда
+            created_order = order(request)
+            if is_ajax:
+                balance_str = getattr(request.user, 'balance_rub_str', '0.00')
+                balance_display = str(balance_str).replace('.', ',')
+                order_payload = None
+                date_key = None
+                if created_order is not None:
+                    order_payload = {
+                        'time': getattr(created_order, 'time', ''),
+                        'name': getattr(created_order, 'name', ''),
+                        'price': getattr(created_order, 'price', 0),
+                        'day': getattr(created_order, 'day', ''),
+                    }
+                    # day хранится как 'YYYY-MM-DD' (в вашей модели)
+                    try:
+                        current_date_for_key = datetime.strptime(created_order.day, '%Y-%m-%d').date()
+                        date_key = format_russian_date(current_date_for_key)
+                    except Exception:
+                        date_key = created_order.day
+
+                return JsonResponse({
+                    'success': True,
+                    'action': 'order',
+                    'balance_display': balance_display,
+                    'order': order_payload,
+                    'date_key': date_key,
+                })
         else:
+            # Отзыв
             s = dict(request.POST.items())
             s.pop('csrfmiddlewaretoken', None)
 
             s['day'] = str(format_russian_date(datetime.strptime(date_str, '%Y-%m-%d').date()))
             form = ReviewForm(s)
             if form.is_valid():
-                form.save()
+                review = form.save()
+                if is_ajax:
+                    return JsonResponse({'success': True, 'action': 'review', 'review': {
+                        'item_id': getattr(review, 'item_id', None),
+                        'day': getattr(review, 'day', ''),
+                        'text': getattr(review, 'text', ''),
+                        'stars_count': getattr(review, 'stars_count', 0),
+                    }})
+            else:
+                if is_ajax:
+                    return JsonResponse({'success': False, 'action': 'review', 'errors': form.errors}, status=400)
 
 
     if date_str:
@@ -126,8 +167,8 @@ def order(request):
         ordered_menu['user'] = request.user.id
         form = OrderForm(ordered_menu)
         if form.is_valid():
-            form.save()
-    return
+            return form.save()
+    return None
 
 
 

@@ -1,0 +1,237 @@
+// Универсальная AJAX-обвязка для menu.html
+// Исключение: аллергенов (aller.js / update_allergens) пока не трогаем.
+
+document.addEventListener('DOMContentLoaded', () => {
+  const balanceEls = [
+    document.querySelector('.balance_money'),
+    document.querySelector('.st_balance'),
+    document.querySelector('#paymentOverlay .payment-label')
+  ].filter(Boolean);
+
+  function getCookie(name) {
+    const m = document.cookie.match('(^|;)\\s*' + name + '\\s*=\\s*([^;]+)');
+    return m ? m.pop() : '';
+  }
+
+  function getCsrfToken() {
+    return document.querySelector('[name=csrfmiddlewaretoken]')?.value || getCookie('csrftoken');
+  }
+
+  function isOverlayActive(el) {
+    return !!el && el.classList.contains('active');
+  }
+
+  function closeOverlayById(id) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.classList.remove('active');
+  }
+
+  function showToast(text) {
+    const t = document.createElement('div');
+    t.textContent = text;
+    t.style.position = 'fixed';
+    t.style.left = '50%';
+    t.style.top = '12px';
+    t.style.transform = 'translateX(-50%)';
+    t.style.padding = '10px 14px';
+    t.style.borderRadius = '12px';
+    t.style.background = 'rgba(0,0,0,0.75)';
+    t.style.color = '#fff';
+    t.style.zIndex = '99999';
+    t.style.fontSize = '14px';
+    document.body.appendChild(t);
+    setTimeout(() => t.remove(), 2200);
+  }
+
+  function updateBalance(balanceDisplay) {
+    if (!balanceDisplay) return;
+    // Обновляем в видимых местах
+    const wallet = document.querySelector('.balance_money');
+    if (wallet) wallet.textContent = balanceDisplay + '₽';
+
+    const settings = document.querySelector('.st_balance');
+    if (settings) settings.textContent = balanceDisplay + '₽';
+
+    const paymentLabel = document.querySelector('#paymentOverlay .payment-label');
+    if (paymentLabel) {
+      // там строка вида "Текущий баланс: ...₽"
+      paymentLabel.textContent = 'Текущий баланс: ' + balanceDisplay + '₽';
+    }
+  }
+
+  function ensureHistoryDay(dateKey) {
+    const container = document.querySelector('.history_container');
+    if (!container) return null;
+
+    const key = (dateKey || '').trim();
+    if (!key) return null;
+
+    // Пытаемся найти существующий день
+    const days = Array.from(container.querySelectorAll('.history_day'));
+    for (const d of days) {
+      const title = d.querySelector('.history_day_title');
+      if (title && title.textContent.trim() === key) {
+        return d;
+      }
+    }
+
+    // Если истории было "пусто" — убираем сообщение
+    const noHistory = container.querySelector('.no-history');
+    if (noHistory) noHistory.remove();
+
+    // Создаём новый блок дня
+    const dayDiv = document.createElement('div');
+    dayDiv.className = 'history_day';
+    dayDiv.innerHTML = `
+      <p class="history_day_title"></p>
+      <section class="history_section"></section>
+    `;
+    dayDiv.querySelector('.history_day_title').textContent = key;
+    container.prepend(dayDiv);
+    return dayDiv;
+  }
+
+  function appendHistoryRow(dateKey, order) {
+    if (!order) return;
+    const dayBlock = ensureHistoryDay(dateKey);
+    if (!dayBlock) return;
+    const section = dayBlock.querySelector('.history_section');
+    if (!section) return;
+
+    // Если внутри секции есть "Нет заказов" — убираем
+    const noOrders = section.querySelector('.no-orders');
+    if (noOrders) noOrders.remove();
+
+    const row = document.createElement('div');
+    row.className = 'history_row';
+    row.innerHTML = `
+      <p class="history_time"></p>
+      <p class="history_item"></p>
+      <p class="history_price"></p>
+    `;
+    row.querySelector('.history_time').textContent = order.time || '--:--';
+    row.querySelector('.history_item').textContent = order.name || 'Без категории';
+    row.querySelector('.history_price').textContent = String(order.price ?? 0) + '₽';
+
+    // Добавляем в начало дня
+    section.prepend(row);
+  }
+
+  async function postFormAjax(form) {
+    const csrfToken = getCsrfToken();
+    const fd = new FormData(form);
+
+    const resp = await fetch(form.action || window.location.href, {
+      method: 'POST',
+      body: fd,
+      headers: {
+        'X-Requested-With': 'XMLHttpRequest',
+        'X-CSRFToken': csrfToken,
+      },
+      credentials: 'same-origin'
+    });
+
+    const isJson = (resp.headers.get('content-type') || '').includes('application/json');
+    const data = isJson ? await resp.json() : null;
+
+    if (!resp.ok) {
+      throw data || { success: false };
+    }
+
+    return data;
+  }
+
+  // 1) Пополнение баланса (payment overlay)
+  const topupForm = document.querySelector('#paymentOverlay form.payment-card');
+  if (topupForm) {
+    topupForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      try {
+        const data = await postFormAjax(topupForm);
+        if (data?.success) {
+          updateBalance(data.balance_display);
+          showToast('Баланс пополнен');
+          // закрываем оверлей (CSS уже умеет)
+          closeOverlayById('paymentOverlay');
+          topupForm.reset();
+        } else {
+          showToast('Не удалось пополнить');
+        }
+      } catch (err) {
+        showToast('Ошибка пополнения');
+      }
+    });
+  }
+
+  // 2) Заказ блюда из sheet (order-form)
+  const orderForm = document.getElementById('order-form');
+  if (orderForm) {
+    orderForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      try {
+        const data = await postFormAjax(orderForm);
+        if (data?.success && data.action === 'order') {
+          if (data.balance_display) updateBalance(data.balance_display);
+          if (data.order && data.date_key) {
+            appendHistoryRow(data.date_key, data.order);
+          }
+          showToast('Заказ оформлен');
+          closeOverlayById('overlay');
+        } else {
+          showToast('Не удалось заказать');
+        }
+      } catch (err) {
+        showToast('Ошибка заказа');
+      }
+    });
+  }
+
+  // 3) Отзыв (review-form)
+  const reviewForm = document.getElementById('review-form');
+  if (reviewForm) {
+    reviewForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      try {
+        const data = await postFormAjax(reviewForm);
+        if (data?.success && data.action === 'review') {
+          // Добавим отзыв в DOM, чтобы он появился без перезагрузки
+          const r = data.review;
+          const container = document.getElementById('reviews-container');
+          if (container && r) {
+            const div = document.createElement('div');
+            div.className = 'sheet-review';
+            div.setAttribute('data-review-item-id', String(r.item_id ?? ''));
+            div.innerHTML = `
+              <div class="sheet-review-top">
+                <div class="sheet-review-date">${r.day || ''}</div>
+                <div class="sheet-review-user">ученик</div>
+                <div class="sheet-review-stars"></div>
+              </div>
+              <div class="sheet-review-text"></div>
+            `;
+            div.querySelector('.sheet-review-text').textContent = r.text || '';
+            const starsEl = div.querySelector('.sheet-review-stars');
+            const n = Number(r.stars_count || 0);
+            for (let i = 0; i < n; i++) {
+              const img = document.createElement('img');
+              img.src = '../../static/menu/icon/Star 1.svg';
+              img.alt = '';
+              img.className = 'sheet-rating-star';
+              starsEl.appendChild(img);
+            }
+            container.appendChild(div);
+          }
+
+          showToast('Отзыв отправлен');
+          closeOverlayById('rateOverlay');
+          reviewForm.reset();
+        } else {
+          showToast('Не удалось отправить отзыв');
+        }
+      } catch (err) {
+        showToast('Ошибка отправки отзыва');
+      }
+    });
+  }
+});
