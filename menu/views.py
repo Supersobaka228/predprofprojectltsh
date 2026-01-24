@@ -24,6 +24,12 @@ except locale.Error:
 @login_required
 def menu(request):
     date_str = request.GET.get('date')
+
+    # Если пришёл POST без ?date=..., не пытаемся парсить None
+    # (например, при сохранении аллергенов со страницы настроек).
+    if not date_str:
+        date_str = datetime.today().date().strftime('%Y-%m-%d')
+
     if request.method == 'POST':
         if 'allergens' in request.POST:
             update_allergens(request)
@@ -32,7 +38,6 @@ def menu(request):
         else:
             s = dict(request.POST.items())
             s.pop('csrfmiddlewaretoken', None)
-
 
             s['day'] = str(format_russian_date(datetime.strptime(date_str, '%Y-%m-%d').date()))
             form = ReviewForm(s)
@@ -144,4 +149,3 @@ def format_russian_date(date_obj):
     weekday = days[date_obj.isoweekday() - 1]
 
     return f"{day} {month} {year}, {weekday}"
-

@@ -24,8 +24,8 @@ def register(request):
         else:
             print(form.errors)
             form.error_messages.append('Форма неверна')
-            data = {'form': form}
-            return redirect('register', data=data)
+            # Render the template with the bound form to display validation errors
+            return render(request, 'users/register.html', {'form': form})
     form = RegisterForm()
     data = {'form': form}
     form.error_messages = []
@@ -58,9 +58,41 @@ def login_f(request):
             return redirect('menu')
     else:
         form = LoginForm(request=request)
-    if request.user.role == 'admin':
+    # Guard against AnonymousUser lacking 'role'
+    if getattr(request.user, 'is_authenticated', False) and getattr(request.user, 'role', None) == 'admin':
         return render(request, 'users/admin_login.html', {'form': form})
     return render(request, 'users/login.html', {'form': form, "next": request.GET.get('next', '')})
 
         
+def login_admin(request):
+    if request.method == "POST":
+        form = LoginForm(request=request, data=request.POST)
+        form.error_messages = []
+
+        if not form.clean():
+            request.session.set_expiry(0)
+            form.set_error('Неверный логин или пароль')
+            return render(request, 'users/admin_login.html', {'form': form})
+
+        user = form.get_user()
+        if user is None:
+            form.set_error('Неверный логин или пароль')
+            return render(request, 'users/admin_login.html', {'form': form})
+
+        if not (getattr(user, 'role', None) == 'admin' or user.is_staff or user.is_superuser):
+            form.set_error('У вас нет прав администратора')
+            return render(request, 'users/admin_login.html', {'form': form})
+
+        login(request, user)
+
+        next_url = request.POST.get('next') or request.GET.get('next')
+        if next_url:
+            return redirect(next_url)
+
+        return redirect('menu')
+
+    else:
+        form = LoginForm(request=request)
+
+    return render(request, 'users/admin_login.html', {'form': form, "next": request.GET.get('next', '')})
 
