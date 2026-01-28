@@ -59,12 +59,20 @@ def menu(request):
                     except Exception:
                         date_key = created_order.day
 
+                    try:
+                        order = Order.objects.get(Q(user=request.user.username))
+                        m = orders_stars(order)
+                    except Order.DoesNotExist:
+                        user = None
+
+
                 return JsonResponse({
                     'success': True,
                     'action': 'order',
                     'balance_display': balance_display,
                     'order': order_payload,
                     'date_key': date_key,
+                    'orders_stars': orders_stars(m)
                 })
         else:
             # Отзыв
@@ -244,6 +252,19 @@ def update_allergens(request):
 
     # fallback: для обычной отправки формы возвращаемся в меню
     return JsonResponse(payload)
+
+
+def orders_stars(orders):
+    ans = dict()
+    for i in orders.all():
+        current_date = datetime.strptime(i.day, '%Y-%m-%d').date()
+        r = format_russian_date(current_date)
+        if r in ans.keys():
+            ans[r] = (ans[r][0] + int(i.stars_count), ans[r][1] + 1)
+        else:
+            ans[r] = (i.stars_count, 1)
+        ans[r] = ans[r][0] / ans[r][1]
+    return ans
 
 
 
