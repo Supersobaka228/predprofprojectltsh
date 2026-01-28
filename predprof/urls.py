@@ -28,4 +28,5 @@ urlpatterns = [
     path('menu/update_allergens/', menu.views.update_allergens, name='update_allergens'),
     path('admin_main/', admin_main.views.admin, name='admin_main'),
     path('balance/topup/', users.views.topup_balance, name='topup_balance'),
+    path('admin/', admin.site.urls),
 ]
