@@ -17,7 +17,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='user',
             name='role',
-            field=models.CharField(choices=[('student', 'Ученик'), ('cook', 'Повар'), ('admin', 'Администратор')], default='student', max_length=255, verbose_name='role'),
+            field=models.CharField(choices=[('student', 'Ученик'), ('cook', 'Повар'), ('admin_main', 'Администратор')], default='student', max_length=255, verbose_name='role'),
         ),
         migrations.AlterField(
             model_name='user',

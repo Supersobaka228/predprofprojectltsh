@@ -53,11 +53,15 @@ def login_f(request):
 
             if next_url:
                 return redirect(next_url)
+            if getattr(request.user, 'role', None) == 'admin':
+                print(4)
+                return redirect('admin_main')
             return redirect('menu')
     else:
         form = LoginForm(request=request)
     # Guard against AnonymousUser lacking 'role'
-    if getattr(request.user, 'is_authenticated', False) and getattr(request.user, 'role', None) == 'admin':
+
+    if getattr(request.user, 'role', None) == 'admin_main':
         return render(request, 'users/admin_login.html', {'form': form})
     return render(request, 'users/login.html', {'form': form, "next": request.GET.get('next', '')})
 
@@ -77,7 +81,7 @@ def login_admin(request):
             form.set_error('Неверный логин или пароль')
             return render(request, 'users/admin_login.html', {'form': form})
 
-        if not (getattr(user, 'role', None) == 'admin' or user.is_staff or user.is_superuser):
+        if not (getattr(user, 'role', None) == 'admin_main' or user.is_staff or user.is_superuser):
             form.set_error('У вас нет прав администратора')
             return render(request, 'users/admin_login.html', {'form': form})
 

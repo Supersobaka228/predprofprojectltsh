@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="admin_main.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c&display=swap" rel="stylesheet">
+    <title>MealHub - Меню админа</title>
+</head>
+<body>
+    <div class="menu_page">
+
+        <div class="lefter">
+            <div class="admin_logo_container">
+                <div class="admin_logo">Meal Hub Admin</div>
+                <div class="admin_logo_sub">Контроль питания учеников</div>
+            </div>
+            <div class="admin_divider"></div>
+            <div class="admin_nav">
+                <div class="admin_nav_slider"></div>
+                <button class="admin_nav_button" data-view="admin_main"><img src="resources/home.svg" alt="">Главная</button>
+                <button class="admin_nav_button" data-view="admin_stats"><img src="resources/leaderboard.svg" alt="">Статистика</button>
+                <button class="admin_nav_button" data-view="admin_menu"><img class="admin_lefter_rest" src="resources/restaurant.svg" alt="">Меню</button>
+                <button class="admin_nav_button" data-view="admin_orders"><img src="resources/note_add.svg" alt="">Заказы</button>
+                <button class="admin_nav_button" data-view="reports"><img src="resources/assignment.svg" alt="">Отчёты</button>
+            </div>
+
+        </div>
+        
+
+        <div class="menu_app_view menu_app_view--active" data-view="admin_main">
+            <header class="admin_main_header">
+                <div class="admin_main_header_left">Главная</div>
+                <div class="admin_main_header_right">
+                    <div class="admin_notify_wrap">
+                        <button class="admin_notify_button" type="button" aria-label="Уведомления">
+                            <img src="/resources/notifications.svg" alt="">
+                        </button>
+                        <div class="admin_notify_overlay" aria-hidden="true">
+                            <div class="admin_notify_title">Уведомления</div>
+                            <div class="admin_notify_item">Нет новых уведомлений</div>
+                        </div>
+                    </div>
+                    <div class="admin_user_meta">
+                        <div class="admin_user_name">Имя Фамилия</div>
+                        <div class="admin_user_role">Должность</div>
+                    </div>
+                    <div class="admin_user_avatar" aria-hidden="true"></div>
+                </div>
+            </header>
+
+            <section class="admin_stats_panel">
+                <div class="admin_stats_grid">
+                    <article class="admin_stat_card">
+                        <div class="admin_stat_label">Оплаты сегодня</div>
+                        <div class="admin_stat_value">42 497₽</div>
+                    </article>
+                    <article class="admin_stat_card">
+                        <div class="admin_stat_label">Посещения</div>
+                        <div class="admin_stat_value">384 ученика</div>
+                    </article>
+                    <article class="admin_stat_card">
+                        <div class="admin_stat_label">Заявки на закупку</div>
+                        <div class="admin_stat_value">5 позиций</div>
+                    </article>
+                    <article class="admin_stat_card">
+                        <div class="admin_stat_label">Низкие остатки</div>
+                        <div class="admin_stat_value">5 позиций</div>
+                    </article>
+                    <article class="admin_stat_card">
+                        <div class="admin_stat_label">Приёмов пищи</div>
+                        <div class="admin_stat_value">4 позиции</div>
+                    </article>
+                </div>
+            </section>
+
+            <section class="main_main_panel">
+                <div class="main_main_graphs_orders_panel">
+                    <section class="main_graphs_panel">
+                        <div class="graph_holder">
+                            <p>Динамика оплат, руб.</p>
+                            <div class="graph_canvas">
+                                <canvas id="paymentsDynamics"></canvas>
+                            </div>
+                        </div>
+                        <div class="graph_holder">
+                            <p>Динамика посещаемости, чел.</p>
+                            <div class="graph_canvas">
+                                <canvas id="customersTraffic"></canvas>
+                            </div>
+                        </div>
+                    </section>
+                    <section class="main_orders_panel">
+                        <p>Новые заявки на закупку</p>
+                        <div class="orders_bg">
+                            <table class="orders_table">
+                                <thead>
+                                    <tr>
+                                        <th>№</th>
+                                        <th>Дата</th>
+                                        <th>Создатель</th>
+                                        <th>Товары</th>
+                                        <th>Сумма</th>
+                                        <th>Действие</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr data-order-id="101">
+                                        <td>101</td>
+                                        <td>10.01.26</td>
+                                        <td>Иванов Г.И.</td>
+                                        <td>Молоко, йогурт клубн...</td>
+                                        <td>9200 руб.</td>
+                                        <td><button class="orders_action" type="button">Перейти к заявке</button></td>
+                                    </tr>
+                                    <tr data-order-id="100">
+                                        <td>100</td>
+                                        <td>10.01.26</td>
+                                        <td>Боярова А.П.</td>
+                                        <td>Говядина, хлеб, вода...</td>
+                                        <td>17450 руб.</td>
+                                        <td><button class="orders_action" type="button">Перейти к заявке</button></td>
+                                    </tr>
+                                    <tr data-order-id="99">
+                                        <td>99</td>
+                                        <td>09.01.26</td>
+                                        <td>Бондарчук Ф.С.</td>
+                                        <td>Огурцы, помидор, лук...</td>
+                                        <td>6970 руб.</td>
+                                        <td><button class="orders_action" type="button">Перейти к заявке</button></td>
+                                    </tr>
+                                    <tr data-order-id="98">
+                                        <td>98</td>
+                                        <td>09.01.26</td>
+                                        <td>Корнеев Г.А.</td>
+                                        <td>Чай чёрный пакетир...</td>
+                                        <td>13224 руб.</td>
+                                        <td><button class="orders_action" type="button">Перейти к заявке</button></td>
+                                    </tr>
+                                    <tr data-order-id="98">
+                                        <td>98</td>
+                                        <td>09.01.26</td>
+                                        <td>Корнеев Г.А.</td>
+                                        <td>Чай чёрный пакетир...</td>
+                                        <td>13224 руб.</td>
+                                        <td><button class="orders_action" type="button">Перейти к заявке</button></td>
+                                    </tr>
+                                    <tr data-order-id="98">
+                                        <td>98</td>
+                                        <td>09.01.26</td>
+                                        <td>Корнеев Г.А.</td>
+                                        <td>Чай чёрный пакетир...</td>
+                                        <td>13224 руб.</td>
+                                        <td><button class="orders_action" type="button">Перейти к заявке</button></td>
+                                    </tr>
+                                    <tr data-order-id="98">
+                                        <td>98</td>
+                                        <td>09.01.26</td>
+                                        <td>Корнеев Г.А.</td>
+                                        <td>Чай чёрный пакетир...</td>
+                                        <td>13224 руб.</td>
+                                        <td><button class="orders_action" type="button">Перейти к заявке</button></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </section>
+                </div>
+                <div class="main_main_notifications_panel">
+                    <div class="notif_element">
+                        <p>Новая заявка от 10.01.26!</p>
+                    </div>
+                    <div class="notif_element">
+                        <p>Отчёт по затратам сформирован!</p>
+                    </div>
+                    <div class="notif_element">
+                        <p>Низкий остаток: пельмени</p>
+                    </div>
+                    <div class="notif_element">
+                        <p>Новая заявка от 09.01.26!</p>
+                    </div>
+                    <div class="notif_element">
+                        <p>Новая заявка от 10.01.26!</p>
+                    </div>
+                    <div class="notif_element">
+                        <p>Отчёт по затратам сформирован!</p>
+                    </div>
+                    <div class="notif_element">
+                        <p>Низкий остаток: пельмени</p>
+                    </div>
+                    <div class="notif_element">
+                        <p>Новая заявка от 09.01.26!</p>
+                    </div>
+                    <div class="notif_element">
+                        <p>Новая заявка от 10.01.26!</p>
+                    </div>
+                    <div class="notif_element">
+                        <p>Отчёт по затратам сформирован!</p>
+                    </div>
+                    <div class="notif_element">
+                        <p>Низкий остаток: пельмени</p>
+                    </div>
+                    <div class="notif_element">
+                        <p>Новая заявка от 09.01.26!</p>
+                    </div>
+                    <div class="notif_element">
+                        <p>Новая заявка от 10.01.26!</p>
+                    </div>
+                    <div class="notif_element">
+                        <p>Отчёт по затратам сформирован!</p>
+                    </div>
+                    <div class="notif_element">
+                        <p>Низкий остаток: пельмени</p>
+                    </div>
+                    <div class="notif_element">
+                        <p>Новая заявка от 09.01.26!</p>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+
+        <div class="menu_app_view" data-view="admin_stats">
+            ADMIN STATS
+        </div>
+
+        <div class="menu_app_view" data-view="admin_menu">
+            ADMIN MENU
+        </div>
+
+        <div class="menu_app_view" data-view="admin_orders">
+            ADMIN ORDERS
+        </div>
+
+        <div class="menu_app_view" data-view="reports">
+            REPORTS
+        </div>
+
+
+    </div>
+    <script src="admin_slider.js"></script>
+    <script src="paymentsDynamics.js"></script>
+    <script src="customersTraffic.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</body>
+</html>
