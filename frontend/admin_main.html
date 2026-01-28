@@ -393,7 +393,53 @@
         </div>
 
         <div class="menu_app_view" data-view="admin_menu">
-            ADMIN MENU
+            <header class="admin_main_header">
+                <div class="admin_main_header_left">Главная</div>
+                <div class="admin_main_header_right">
+                    <div class="admin_notify_wrap">
+                        <button class="admin_notify_button" type="button" aria-label="Уведомления">
+                            <img src="/resources/notifications.svg" alt="">
+                        </button>
+                        <div class="admin_notify_overlay" aria-hidden="true">
+                            <div class="admin_notify_title">Уведомления</div>
+                            <div class="admin_notify_item">Нет новых уведомлений</div>
+                        </div>
+                    </div>
+                    <div class="admin_user_meta">
+                        <div class="admin_user_name">Имя Фамилия</div>
+                        <div class="admin_user_role">Должность</div>
+                    </div>
+                    <div class="admin_user_avatar" aria-hidden="true"></div>
+                </div>
+            </header>
+
+            <section class="admin_stats_panel admin_menu_panel">
+                <div class="admin_menu_filters">
+                    <div class="admin_menu_left">
+                        <div class="admin_menu_date">Понедельник, 19.01.2026</div>
+                        <div class="admin_menu_days" role="group" aria-label="Дни недели">
+                            <button class="admin_menu_day" type="button">Пн</button>
+                            <button class="admin_menu_day" type="button">Вт</button>
+                            <button class="admin_menu_day" type="button">Ср</button>
+                            <button class="admin_menu_day" type="button">Чт</button>
+                            <button class="admin_menu_day" type="button">Пт</button>
+                        </div>
+                    </div>
+                    <div class="admin_menu_class_select">
+                        <button class="admin_menu_class_btn" type="button" aria-haspopup="listbox" aria-expanded="false">
+                            <span class="admin_menu_class_label">11-е классы</span>
+                            <img class="admin_menu_class_arrow" src="resources/left_arrow_stats.svg" alt="">
+                        </button>
+                        <div class="admin_menu_class_menu" role="listbox" aria-label="Классы">
+                            <button class="admin_menu_class_item" type="button" role="option" data-value="11">11-е классы</button>
+                            <button class="admin_menu_class_item" type="button" role="option" data-value="10">10-е классы</button>
+                            <button class="admin_menu_class_item" type="button" role="option" data-value="9">9-е классы</button>
+                            <button class="admin_menu_class_item" type="button" role="option" data-value="8">8-е классы</button>
+                            <button class="admin_menu_class_item" type="button" role="option" data-value="7">7-е классы</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
         </div>
 
         <div class="menu_app_view" data-view="admin_orders">

@@ -67,4 +67,54 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   }
+
+  const classSelect = document.querySelector('.admin_menu_class_select');
+  if (classSelect) {
+    const classButton = classSelect.querySelector('.admin_menu_class_btn');
+    const classLabel = classSelect.querySelector('.admin_menu_class_label');
+    const classMenu = classSelect.querySelector('.admin_menu_class_menu');
+    const classItems = classSelect.querySelectorAll('.admin_menu_class_item');
+
+    const closeClassMenu = () => {
+      classSelect.classList.remove('is-open');
+      classButton.setAttribute('aria-expanded', 'false');
+    };
+
+    const toggleClassMenu = (event) => {
+      event.stopPropagation();
+      const isOpen = classSelect.classList.toggle('is-open');
+      classButton.setAttribute('aria-expanded', String(isOpen));
+    };
+
+    if (classButton && classMenu && classLabel) {
+      classButton.addEventListener('click', toggleClassMenu);
+
+      classItems.forEach((item) => {
+        item.addEventListener('click', () => {
+          const value = item.dataset.value || '';
+          const label = item.textContent.trim();
+          classLabel.textContent = label;
+          classButton.dataset.value = value;
+          closeClassMenu();
+
+          const changeEvent = new CustomEvent('classFilterChange', {
+            detail: { value, label }
+          });
+          document.dispatchEvent(changeEvent);
+        });
+      });
+
+      document.addEventListener('click', (event) => {
+        if (!classSelect.contains(event.target)) {
+          closeClassMenu();
+        }
+      });
+
+      document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') {
+          closeClassMenu();
+        }
+      });
+    }
+  }
 });
