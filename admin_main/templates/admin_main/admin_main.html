@@ -55,15 +55,15 @@
                 <div class="admin_stats_grid">
                     <article class="admin_stat_card">
                         <div class="admin_stat_label">Оплаты сегодня</div>
-                        <div class="admin_stat_value">42 497₽</div>
+                        <div class="admin_stat_value">{{ summ }}₽</div>
                     </article>
                     <article class="admin_stat_card">
                         <div class="admin_stat_label">Посещения</div>
-                        <div class="admin_stat_value">384 ученика</div>
+                        <div class="admin_stat_value">{{ sum_comes }}</div>
                     </article>
                     <article class="admin_stat_card">
                         <div class="admin_stat_label">Заявки на закупку</div>
-                        <div class="admin_stat_value">5 позиций</div>
+                        <div class="admin_stat_value">{{buyorders_count}}</div>
                     </article>
                     <article class="admin_stat_card">
                         <div class="admin_stat_label">Низкие остатки</div>
@@ -71,11 +71,17 @@
                     </article>
                     <article class="admin_stat_card">
                         <div class="admin_stat_label">Приёмов пищи</div>
-                        <div class="admin_stat_value">4 позиции</div>
+                        <div class="admin_stat_value">{{ menu }}</div>
                     </article>
                 </div>
             </section>
-
+            <script>
+                const date = [
+                {% for item in data %}
+                "{{ item|safe }}"{% if not forloop.last %},{% endif %}
+                {% endfor %}
+                ];
+            </script>
             <section class="main_main_panel">
                 <div class="main_main_graphs_orders_panel">
                     <section class="main_graphs_panel">
@@ -124,54 +130,11 @@
                     </section>
                 </div>
                 <div class="main_main_notifications_panel">
+                    {% for item in notifications %}
                     <div class="notif_element">
-                        <p>Новая заявка от 10.01.26!</p>
+                        <p>{{ item.text }}</p>
                     </div>
-                    <div class="notif_element">
-                        <p>Отчёт по затратам сформирован!</p>
-                    </div>
-                    <div class="notif_element">
-                        <p>Низкий остаток: пельмени</p>
-                    </div>
-                    <div class="notif_element">
-                        <p>Новая заявка от 09.01.26!</p>
-                    </div>
-                    <div class="notif_element">
-                        <p>Новая заявка от 10.01.26!</p>
-                    </div>
-                    <div class="notif_element">
-                        <p>Отчёт по затратам сформирован!</p>
-                    </div>
-                    <div class="notif_element">
-                        <p>Низкий остаток: пельмени</p>
-                    </div>
-                    <div class="notif_element">
-                        <p>Новая заявка от 09.01.26!</p>
-                    </div>
-                    <div class="notif_element">
-                        <p>Новая заявка от 10.01.26!</p>
-                    </div>
-                    <div class="notif_element">
-                        <p>Отчёт по затратам сформирован!</p>
-                    </div>
-                    <div class="notif_element">
-                        <p>Низкий остаток: пельмени</p>
-                    </div>
-                    <div class="notif_element">
-                        <p>Новая заявка от 09.01.26!</p>
-                    </div>
-                    <div class="notif_element">
-                        <p>Новая заявка от 10.01.26!</p>
-                    </div>
-                    <div class="notif_element">
-                        <p>Отчёт по затратам сформирован!</p>
-                    </div>
-                    <div class="notif_element">
-                        <p>Низкий остаток: пельмени</p>
-                    </div>
-                    <div class="notif_element">
-                        <p>Новая заявка от 09.01.26!</p>
-                    </div>
+                    {% endfor %}
                 </div>
             </section>
 
@@ -202,7 +165,7 @@
                 <div class="admin_stats_grid">
                     <article class="admin_stat_card">
                         <div class="admin_stat_label">Оплаты сегодня</div>
-                        <div class="admin_stat_value">42 497₽</div>
+                        <div class="admin_stat_value">{{ summ }}₽</div>
                     </article>
                     <article class="admin_stat_card">
                         <div class="admin_stat_label">Посещения</div>

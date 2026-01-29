@@ -5,6 +5,7 @@ from django.http import JsonResponse
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 
+from admin_main.models import Pay
 from .forms import ReviewForm, OrderForm
 from .models import MenuItem, DayOrder, Review, Order, Allergen
 from datetime import datetime, timedelta
@@ -34,7 +35,7 @@ def menu(request):
             update_allergens(request)
         elif 'price' in request.POST:
             # Заказ блюда
-            created_order, err_code, err_msg = order(request)
+            created_order, err_code, err_msg = order(request, request.POST.get('day'))
             if is_ajax:
                 if created_order is None:
                     return JsonResponse(
@@ -59,11 +60,6 @@ def menu(request):
                     except Exception:
                         date_key = created_order.day
 
-                    try:
-                        order = Order.objects.get(Q(user=request.user.username))
-                        m = orders_stars(order)
-                    except Order.DoesNotExist:
-                        user = None
 
 
                 return JsonResponse({
@@ -72,7 +68,7 @@ def menu(request):
                     'balance_display': balance_display,
                     'order': order_payload,
                     'date_key': date_key,
-                    'orders_stars': orders_stars(m)
+                    'orders_stars': ''
                 })
         else:
             # Отзыв
@@ -183,7 +179,7 @@ def menu(request):
 
 
 @login_required
-def order(request):
+def order(request, day_d):
     """Создаёт заказ и списывает деньги с баланса.
 
     Возвращает кортеж: (created_order | None, error_code | None, error_message | None)
@@ -215,6 +211,13 @@ def order(request):
             return None, 'INSUFFICIENT_FUNDS', 'Недостаточно средств'
 
         user.balance_cents = current - price_cents
+        print(day_d)
+        Pay.objects.create(
+            user_id=request.user,
+            summ=price_rub,
+            date=day_d
+        )
+        print(Pay.objects.all())
         user.save(update_fields=['balance_cents'])
 
         created_order = form.save()
