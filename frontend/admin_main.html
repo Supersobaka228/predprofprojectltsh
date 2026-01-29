@@ -460,9 +460,17 @@
 
                                     <div class="menu_config_dish_row">
                                         <span class="menu_config_dish_label">Аллергены</span>
-                                        <span class="menu_config_chip" aria-label="Аллерген">Глютен</span>
-                                        <span class="menu_config_chip" aria-label="Аллерген">Лактоза</span>
-                                        <button class="menu_config_add" type="button">Добавить</button>
+                                        <div class="menu_config_allergens" aria-live="polite"></div>
+                                        <div class="menu_config_allergen_picker">
+                                            <button class="menu_config_add" type="button" aria-haspopup="listbox" aria-expanded="false">Добавить</button>
+                                            <div class="menu_config_allergen_menu" role="listbox" aria-label="Аллергены">
+                                                <button class="menu_config_allergen_option" type="button" data-allergen-id="gluten">Глютен</button>
+                                                <button class="menu_config_allergen_option" type="button" data-allergen-id="lactose">Лактоза</button>
+                                                <button class="menu_config_allergen_option" type="button" data-allergen-id="eggs">Яйца</button>
+                                                <button class="menu_config_allergen_option" type="button" data-allergen-id="nuts">Орехи</button>
+                                                <button class="menu_config_allergen_option" type="button" data-allergen-id="soy">Соя</button>
+                                            </div>
+                                        </div>
                                     </div>
 
                                     <div class="menu_config_dish_row">
@@ -491,9 +499,17 @@
 
                                     <div class="menu_config_dish_row">
                                         <span class="menu_config_dish_label">Аллергены</span>
-                                        <span class="menu_config_chip" aria-label="Аллерген">Глютен</span>
-                                        <span class="menu_config_chip" aria-label="Аллерген">Лактоза</span>
-                                        <button class="menu_config_add" type="button">Добавить</button>
+                                        <div class="menu_config_allergens" aria-live="polite"></div>
+                                        <div class="menu_config_allergen_picker">
+                                            <button class="menu_config_add" type="button" aria-haspopup="listbox" aria-expanded="false">Добавить</button>
+                                            <div class="menu_config_allergen_menu" role="listbox" aria-label="Аллергены">
+                                                <button class="menu_config_allergen_option" type="button" data-allergen-id="gluten">Глютен</button>
+                                                <button class="menu_config_allergen_option" type="button" data-allergen-id="lactose">Лактоза</button>
+                                                <button class="menu_config_allergen_option" type="button" data-allergen-id="eggs">Яйца</button>
+                                                <button class="menu_config_allergen_option" type="button" data-allergen-id="nuts">Орехи</button>
+                                                <button class="menu_config_allergen_option" type="button" data-allergen-id="soy">Соя</button>
+                                            </div>
+                                        </div>
                                     </div>
 
                                     <div class="menu_config_dish_row">
@@ -545,6 +561,7 @@
 
     </div>
     <script src="admin_slider.js"></script>
+    <script src="allergen_picker.js"></script>
     <script src="paymentsDynamics.js"></script>
     <script src="customersTraffic.js"></script>
     <script src="statsPaymentsDynamics.js"></script>

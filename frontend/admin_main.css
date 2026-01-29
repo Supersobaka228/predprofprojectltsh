@@ -557,6 +557,88 @@ body {
     font-weight: 600;
     font-size: 0.9rem;
     color: #1f2328;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.menu_config_chip_button {
+    border: none;
+    background: transparent;
+    padding: 0;
+    width: 18px;
+    height: 18px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.menu_config_chip_button img {
+    width: 14px;
+    height: 14px;
+    display: block;
+}
+
+.menu_config_allergens {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    min-height: 34px;
+    align-items: center;
+}
+
+.menu_config_allergen_picker {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+}
+
+.menu_config_allergen_menu {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    min-width: 180px;
+    max-height: 220px;
+    overflow: auto;
+    background: #ffffff;
+    border-radius: 12px;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 12px 30px rgba(15, 23, 42, 0.12);
+    padding: 6px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    opacity: 0;
+    transform: translateY(-6px);
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.18s ease, transform 0.18s ease, visibility 0.18s ease;
+    z-index: 12;
+}
+
+.menu_config_allergen_picker.is-open .menu_config_allergen_menu {
+    opacity: 1;
+    transform: translateY(0);
+    visibility: visible;
+    pointer-events: auto;
+}
+
+.menu_config_allergen_option {
+    border: none;
+    background: #f7fbff;
+    color: #1f2328;
+    padding: 8px 12px;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    text-align: left;
+    cursor: pointer;
+    transition: background 0.15s ease, transform 0.15s ease;
+}
+
+.menu_config_allergen_option:hover {
+    background: #e9f4ff;
 }
 
 .menu_config_add {
