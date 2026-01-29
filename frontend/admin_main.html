@@ -440,6 +440,98 @@
                     </div>
                 </div>
             </section>
+
+            <section class="admin_menu_configurator_main">
+                <form class="menu_configurator_form" aria-label="Конструктор меню">
+                    <div class="menu_config_card">
+                        <div class="menu_config_header">
+                            <h3 class="menu_config_title">Завтрак</h3>
+                        </div>
+
+                        <div class="menu_config_body">
+                            <div class="menu_config_block">
+                                <div class="menu_config_dish">
+                                    <div class="menu_config_dish_top">
+                                        <span class="menu_config_dish_label">1-е блюдо</span>
+                                        <input class="menu_config_input menu_config_input--name" type="text" name="dish_name" placeholder="Название блюда">
+                                        <input class="menu_config_input menu_config_input--small" type="text" name="dish_weight" placeholder="Вес">
+                                        <input class="menu_config_input menu_config_input--small" type="text" name="dish_kcal" placeholder="Ккал">
+                                    </div>
+
+                                    <div class="menu_config_dish_row">
+                                        <span class="menu_config_dish_label">Аллергены</span>
+                                        <span class="menu_config_chip" aria-label="Аллерген">Глютен</span>
+                                        <span class="menu_config_chip" aria-label="Аллерген">Лактоза</span>
+                                        <button class="menu_config_add" type="button">Добавить</button>
+                                    </div>
+
+                                    <div class="menu_config_dish_row">
+                                        <span class="menu_config_dish_label">Состав</span>
+                                        <input class="menu_config_input menu_config_input--wide" type="text" name="composition" placeholder="Состав">
+                                    </div>
+                                </div>
+
+                                <div class="menu_config_requests">
+                                    <div class="menu_config_requests_title">Заявки, связанные с блюдом</div>
+                                    <div class="menu_config_requests_list">
+                                        <span class="menu_config_requests_item">Молоко пастеризованное</span>
+                                        <span class="menu_config_requests_item">Крупа гречневая</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="menu_config_block">
+                                <div class="menu_config_dish">
+                                    <div class="menu_config_dish_top">
+                                        <span class="menu_config_dish_label">1-е блюдо</span>
+                                        <input class="menu_config_input menu_config_input--name" type="text" name="dish_name" placeholder="Название блюда">
+                                        <input class="menu_config_input menu_config_input--small" type="text" name="dish_weight" placeholder="Вес">
+                                        <input class="menu_config_input menu_config_input--small" type="text" name="dish_kcal" placeholder="Ккал">
+                                    </div>
+
+                                    <div class="menu_config_dish_row">
+                                        <span class="menu_config_dish_label">Аллергены</span>
+                                        <span class="menu_config_chip" aria-label="Аллерген">Глютен</span>
+                                        <span class="menu_config_chip" aria-label="Аллерген">Лактоза</span>
+                                        <button class="menu_config_add" type="button">Добавить</button>
+                                    </div>
+
+                                    <div class="menu_config_dish_row">
+                                        <span class="menu_config_dish_label">Состав</span>
+                                        <input class="menu_config_input menu_config_input--wide" type="text" name="composition" placeholder="Состав">
+                                    </div>
+                                </div>
+
+                                <div class="menu_config_requests">
+                                    <div class="menu_config_requests_title">Заявки, связанные с блюдом</div>
+                                    <div class="menu_config_requests_list">
+                                        <span class="menu_config_requests_item">Молоко пастеризованное</span>
+                                        <span class="menu_config_requests_item">Крупа гречневая</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <button class="menu_config_plus" type="button" aria-label="Добавить блюдо">+</button>
+                        </div>
+
+                        <div class="menu_config_footer">
+                            <div class="menu_config_time">
+                                <span class="menu_config_label">Время выдачи</span>
+                                <input class="menu_config_input menu_config_input--time" type="text" name="time_start" placeholder="Начало">
+                                <input class="menu_config_input menu_config_input--time" type="text" name="time_end" placeholder="Конец">
+                            </div>
+                            <div class="menu_config_price">
+                                <span class="menu_config_label">Цена</span>
+                                <input class="menu_config_input menu_config_input--time" type="text" name="price" placeholder="Цена">
+                            </div>
+                            <div class="menu_config_actions">
+                                <button class="menu_config_btn menu_config_btn--cancel" type="reset">Отмена</button>
+                                <button class="menu_config_btn menu_config_btn--save" type="submit">Сохранить</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </section>
         </div>
 
         <div class="menu_app_view" data-view="admin_orders">
