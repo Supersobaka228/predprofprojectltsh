@@ -38,10 +38,6 @@
                         <button class="admin_notify_button" type="button" aria-label="Уведомления">
                             <img src="/resources/notifications.svg" alt="">
                         </button>
-                        <div class="admin_notify_overlay" aria-hidden="true">
-                            <div class="admin_notify_title">Уведомления</div>
-                            <div class="admin_notify_item">Нет новых уведомлений</div>
-                        </div>
                     </div>
                     <div class="admin_user_meta">
                         <div class="admin_user_name">Имя Фамилия</div>
@@ -229,22 +225,18 @@
 
         <div class="menu_app_view" data-view="admin_stats">
             <header class="admin_main_header">
-                <div class="admin_main_header_left">Главная</div>
+                <div class="admin_main_header_left">Статистика</div>
                 <div class="admin_main_header_right">
                     <div class="admin_notify_wrap">
                         <button class="admin_notify_button" type="button" aria-label="Уведомления">
                             <img src="/resources/notifications.svg" alt="">
                         </button>
-                        <div class="admin_notify_overlay" aria-hidden="true">
-                            <div class="admin_notify_title">Уведомления</div>
-                            <div class="admin_notify_item">Нет новых уведомлений</div>
-                        </div>
                     </div>
                     <div class="admin_user_meta">
                         <div class="admin_user_name">Имя Фамилия</div>
                         <div class="admin_user_role">Должность</div>
                     </div>
-                    <div class="admin_user_avatar" aria-hidden="true"></div>
+                    <img src="resources/photo_2026-01-14_11-19-22.jpg" class="admin_user_avatar">
                 </div>
             </header>
 
@@ -395,22 +387,18 @@
 
         <div class="menu_app_view" data-view="admin_menu">
             <header class="admin_main_header">
-                <div class="admin_main_header_left">Главная</div>
+                <div class="admin_main_header_left">Меню</div>
                 <div class="admin_main_header_right">
                     <div class="admin_notify_wrap">
                         <button class="admin_notify_button" type="button" aria-label="Уведомления">
                             <img src="/resources/notifications.svg" alt="">
                         </button>
-                        <div class="admin_notify_overlay" aria-hidden="true">
-                            <div class="admin_notify_title">Уведомления</div>
-                            <div class="admin_notify_item">Нет новых уведомлений</div>
-                        </div>
                     </div>
                     <div class="admin_user_meta">
                         <div class="admin_user_name">Имя Фамилия</div>
                         <div class="admin_user_role">Должность</div>
                     </div>
-                    <div class="admin_user_avatar" aria-hidden="true"></div>
+                    <img src="resources/photo_2026-01-14_11-19-22.jpg" class="admin_user_avatar">
                 </div>
             </header>
 
@@ -553,22 +541,18 @@
 
         <div class="menu_app_view" data-view="admin_orders">
             <header class="admin_main_header">
-                <div class="admin_main_header_left">Главная</div>
+                <div class="admin_main_header_left">Заказы</div>
                 <div class="admin_main_header_right">
                     <div class="admin_notify_wrap">
                         <button class="admin_notify_button" type="button" aria-label="Уведомления">
                             <img src="/resources/notifications.svg" alt="">
                         </button>
-                        <div class="admin_notify_overlay" aria-hidden="true">
-                            <div class="admin_notify_title">Уведомления</div>
-                            <div class="admin_notify_item">Нет новых уведомлений</div>
-                        </div>
                     </div>
                     <div class="admin_user_meta">
                         <div class="admin_user_name">Имя Фамилия</div>
                         <div class="admin_user_role">Должность</div>
                     </div>
-                    <div class="admin_user_avatar" aria-hidden="true"></div>
+                    <img src="resources/photo_2026-01-14_11-19-22.jpg" class="admin_user_avatar">
                 </div>
             </header>
 
@@ -700,16 +684,12 @@
 
         <div class="menu_app_view" data-view="reports">
             <header class="admin_main_header">
-                <div class="admin_main_header_left">Главная</div>
+                <div class="admin_main_header_left">Отчёты</div>
                 <div class="admin_main_header_right">
                     <div class="admin_notify_wrap">
                         <button class="admin_notify_button" type="button" aria-label="Уведомления">
                             <img src="/resources/notifications.svg" alt="">
                         </button>
-                        <div class="admin_notify_overlay" aria-hidden="true">
-                            <div class="admin_notify_title">Уведомления</div>
-                            <div class="admin_notify_item">Нет новых уведомлений</div>
-                        </div>
                     </div>
                     <div class="admin_user_meta">
                         <div class="admin_user_name">Имя Фамилия</div>
@@ -975,6 +955,35 @@
         </div>
 
 
+    </div>
+    <div id="adminNotifyOverlay" class="admin_notify_overlay" aria-hidden="true">
+        <div class="admin_notify_title">Уведомления</div>
+        <div class="admin_notify_list" aria-live="polite">
+            <div class="notif_element">
+                <p>Новая заявка от 10.01.26!</p>
+            </div>
+            <div class="notif_element">
+                <p>Отчёт по затратам сформирован!</p>
+            </div>
+            <div class="notif_element">
+                <p>Низкий остаток: пельмени</p>
+            </div>
+            <div class="notif_element">
+                <p>Новая заявка от 09.01.26!</p>
+            </div>
+            <div class="notif_element">
+                <p>Новая заявка от 10.01.26!</p>
+            </div>
+            <div class="notif_element">
+                <p>Отчёт по затратам сформирован!</p>
+            </div>
+            <div class="notif_element">
+                <p>Низкий остаток: пельмени</p>
+            </div>
+            <div class="notif_element">
+                <p>Новая заявка от 09.01.26!</p>
+            </div>
+        </div>
     </div>
     <script src="admin_slider.js"></script>
     <script src="allergen_picker.js"></script>

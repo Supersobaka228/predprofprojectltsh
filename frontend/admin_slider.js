@@ -43,23 +43,22 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   const notifyWraps = document.querySelectorAll('.admin_notify_wrap');
+  const sharedOverlay = document.querySelector('#adminNotifyOverlay');
 
   const closeAllNotifications = () => {
     notifyWraps.forEach((wrap) => {
-      const overlay = wrap.querySelector('.admin_notify_overlay');
       wrap.classList.remove('is-open');
-      if (overlay) {
-        overlay.setAttribute('aria-hidden', 'true');
-      }
     });
+    if (sharedOverlay) {
+      sharedOverlay.setAttribute('aria-hidden', 'true');
+    }
   };
 
-  if (notifyWraps.length > 0) {
+  if (notifyWraps.length > 0 && sharedOverlay) {
     notifyWraps.forEach((wrap) => {
       const button = wrap.querySelector('.admin_notify_button');
-      const overlay = wrap.querySelector('.admin_notify_overlay');
 
-      if (!button || !overlay) {
+      if (!button) {
         return;
       }
 
@@ -68,8 +67,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const willOpen = !wrap.classList.contains('is-open');
         closeAllNotifications();
         if (willOpen) {
+          wrap.appendChild(sharedOverlay);
           wrap.classList.add('is-open');
-          overlay.setAttribute('aria-hidden', 'false');
+          sharedOverlay.setAttribute('aria-hidden', 'false');
         }
       });
     });

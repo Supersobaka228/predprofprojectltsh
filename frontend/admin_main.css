@@ -209,6 +209,33 @@ body {
     color: #4b5563;
 }
 
+.admin_notify_list {
+    display: flex;
+    flex-direction: column;
+    max-height: 50vh;
+    overflow: auto;
+    padding-right: 4px;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(31, 35, 40, 0.22) transparent;
+}
+
+.admin_notify_list::-webkit-scrollbar {
+    width: 6px;
+}
+
+.admin_notify_list::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.admin_notify_list::-webkit-scrollbar-thumb {
+    background: rgba(31, 35, 40, 0.22);
+    border-radius: 999px;
+}
+
+.admin_notify_list::-webkit-scrollbar-thumb:hover {
+    background: rgba(31, 35, 40, 0.32);
+}
+
 .admin_user_meta {
     display: flex;
     flex-direction: column;
@@ -1309,7 +1336,7 @@ body {
 
 
 .notif_element {
-    background: #ffffff;
+    background: #f7fbff;
     border-radius: 8px;
     padding: 8px;
     margin-bottom: 8px;
