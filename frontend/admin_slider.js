@@ -42,28 +42,50 @@ document.addEventListener('DOMContentLoaded', () => {
     moveSlider(activeButton);
   });
 
-  const notifyWrap = document.querySelector('.admin_notify_wrap');
-  const notifyButton = document.querySelector('.admin_notify_button');
-  const notifyOverlay = document.querySelector('.admin_notify_overlay');
+  const notifyWraps = document.querySelectorAll('.admin_notify_wrap');
+  const sharedOverlay = document.querySelector('#adminNotifyOverlay');
 
-  if (notifyWrap && notifyButton && notifyOverlay) {
-    notifyButton.addEventListener('click', (event) => {
-      event.stopPropagation();
-      notifyWrap.classList.toggle('is-open');
-      notifyOverlay.setAttribute('aria-hidden', String(!notifyWrap.classList.contains('is-open')));
+  const closeAllNotifications = () => {
+    notifyWraps.forEach((wrap) => {
+      wrap.classList.remove('is-open');
+    });
+    if (sharedOverlay) {
+      sharedOverlay.setAttribute('aria-hidden', 'true');
+    }
+  };
+
+  if (notifyWraps.length > 0 && sharedOverlay) {
+    notifyWraps.forEach((wrap) => {
+      const button = wrap.querySelector('.admin_notify_button');
+
+      if (!button) {
+        return;
+      }
+
+      button.addEventListener('click', (event) => {
+        event.stopPropagation();
+        const willOpen = !wrap.classList.contains('is-open');
+        closeAllNotifications();
+        if (willOpen) {
+          wrap.appendChild(sharedOverlay);
+          wrap.classList.add('is-open');
+          sharedOverlay.setAttribute('aria-hidden', 'false');
+        }
+      });
     });
 
     document.addEventListener('click', (event) => {
-      if (!notifyWrap.contains(event.target)) {
-        notifyWrap.classList.remove('is-open');
-        notifyOverlay.setAttribute('aria-hidden', 'true');
+      const targetWrap = event.target instanceof Element
+        ? event.target.closest('.admin_notify_wrap')
+        : null;
+      if (!targetWrap) {
+        closeAllNotifications();
       }
     });
 
     document.addEventListener('keydown', (event) => {
       if (event.key === 'Escape') {
-        notifyWrap.classList.remove('is-open');
-        notifyOverlay.setAttribute('aria-hidden', 'true');
+        closeAllNotifications();
       }
     });
   }
