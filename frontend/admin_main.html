@@ -551,7 +551,150 @@
         </div>
 
         <div class="menu_app_view" data-view="admin_orders">
-            ADMIN ORDERS
+            <header class="admin_main_header">
+                <div class="admin_main_header_left">Главная</div>
+                <div class="admin_main_header_right">
+                    <div class="admin_notify_wrap">
+                        <button class="admin_notify_button" type="button" aria-label="Уведомления">
+                            <img src="/resources/notifications.svg" alt="">
+                        </button>
+                        <div class="admin_notify_overlay" aria-hidden="true">
+                            <div class="admin_notify_title">Уведомления</div>
+                            <div class="admin_notify_item">Нет новых уведомлений</div>
+                        </div>
+                    </div>
+                    <div class="admin_user_meta">
+                        <div class="admin_user_name">Имя Фамилия</div>
+                        <div class="admin_user_role">Должность</div>
+                    </div>
+                    <div class="admin_user_avatar" aria-hidden="true"></div>
+                </div>
+            </header>
+
+            <section class="admin_orders_main">
+                <div class="orders_panel">
+                    <div class="orders_topbar">
+                        <div class="orders_title">9 заявок</div>
+                        <div class="orders_search">
+                            <img class="orders_search_icon" src="resources/search.svg" alt="">
+                            <input class="orders_search_input" type="search" placeholder="Поиск">
+                        </div>
+                    </div>
+
+                    <div class="orders_table_card">
+                        <div class="orders_table_header">
+                            <div class="orders_cell">№</div>
+                            <div class="orders_cell">Дата</div>
+                            <div class="orders_cell">Создатель</div>
+                            <div class="orders_cell">Товары</div>
+                            <div class="orders_cell">Сумма</div>
+                            <div class="orders_cell">Статус</div>
+                        </div>
+
+                        <div class="orders_table_body">
+                            <div class="orders_row">
+                                <div class="orders_cell">105</div>
+                                <div class="orders_cell">10.01.26</div>
+                                <div class="orders_cell">Иванов И.</div>
+                                <div class="orders_cell">Картофель</div>
+                                <div class="orders_cell">42 тыс. ₽</div>
+                                <div class="orders_cell orders_cell--actions">
+                                    <button class="orders_action_btn orders_action_btn--accept" type="button" aria-label="Одобрить">
+                                        <img src="resources/check.svg" alt="">
+                                    </button>
+                                    <button class="orders_action_btn orders_action_btn--reject" type="button" aria-label="Отклонить">
+                                        <img src="resources/close.svg" alt="">
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="orders_row">
+                                <div class="orders_cell">104</div>
+                                <div class="orders_cell">10.01.26</div>
+                                <div class="orders_cell">Максимов Р.</div>
+                                <div class="orders_cell">Картофель</div>
+                                <div class="orders_cell">42 тыс. ₽</div>
+                                <div class="orders_cell"><span class="orders_status orders_status--approved">Одобрено</span></div>
+                            </div>
+                            <div class="orders_row">
+                                <div class="orders_cell">103</div>
+                                <div class="orders_cell">10.01.26</div>
+                                <div class="orders_cell">Фтаростин С.</div>
+                                <div class="orders_cell">Картофель</div>
+                                <div class="orders_cell">42 тыс. ₽</div>
+                                <div class="orders_cell"><span class="orders_status orders_status--rejected">Отклонено</span></div>
+                            </div>
+                            <div class="orders_row">
+                                <div class="orders_cell">102</div>
+                                <div class="orders_cell">10.01.26</div>
+                                <div class="orders_cell">Сидоров П.</div>
+                                <div class="orders_cell">Картофель</div>
+                                <div class="orders_cell">42 тыс. ₽</div>
+                                <div class="orders_cell"><span class="orders_status orders_status--approved">Одобрено</span></div>
+                            </div>
+                            <div class="orders_row">
+                                <div class="orders_cell">101</div>
+                                <div class="orders_cell">10.01.26</div>
+                                <div class="orders_cell">Картошкин А.</div>
+                                <div class="orders_cell">Картофель</div>
+                                <div class="orders_cell">42 тыс. ₽</div>
+                                <div class="orders_cell"><span class="orders_status orders_status--approved">Одобрено</span></div>
+                            </div>
+                            <div class="orders_row">
+                                <div class="orders_cell">101</div>
+                                <div class="orders_cell">10.01.26</div>
+                                <div class="orders_cell">Картошкин А.</div>
+                                <div class="orders_cell">Картофель</div>
+                                <div class="orders_cell">42 тыс. ₽</div>
+                                <div class="orders_cell"><span class="orders_status orders_status--approved">Одобрено</span></div>
+                            </div>
+                            <div class="orders_row">
+                                <div class="orders_cell">101</div>
+                                <div class="orders_cell">10.01.26</div>
+                                <div class="orders_cell">Картошкин А.</div>
+                                <div class="orders_cell">Картофель</div>
+                                <div class="orders_cell">42 тыс. ₽</div>
+                                <div class="orders_cell"><span class="orders_status orders_status--approved">Одобрено</span></div>
+                            </div>
+                            <div class="orders_row">
+                                <div class="orders_cell">101</div>
+                                <div class="orders_cell">10.01.26</div>
+                                <div class="orders_cell">Картошкин А.</div>
+                                <div class="orders_cell">Картофель</div>
+                                <div class="orders_cell">42 тыс. ₽</div>
+                                <div class="orders_cell"><span class="orders_status orders_status--approved">Одобрено</span></div>
+                            </div>
+                            <div class="orders_row">
+                                <div class="orders_cell">101</div>
+                                <div class="orders_cell">10.01.26</div>
+                                <div class="orders_cell">Картошкин А.</div>
+                                <div class="orders_cell">Картофель</div>
+                                <div class="orders_cell">42 тыс. ₽</div>
+                                <div class="orders_cell"><span class="orders_status orders_status--approved">Одобрено</span></div>
+                            </div>
+                            <div class="orders_row">
+                                <div class="orders_cell">101</div>
+                                <div class="orders_cell">10.01.26</div>
+                                <div class="orders_cell">Картошкин А.</div>
+                                <div class="orders_cell">Картофель</div>
+                                <div class="orders_cell">42 тыс. ₽</div>
+                                <div class="orders_cell"><span class="orders_status orders_status--approved">Одобрено</span></div>
+                            </div>
+                        </div>
+
+                        <div class="orders_table_footer">
+                            <div class="orders_pagination">
+                                <button class="orders_nav_btn" type="button" aria-label="Предыдущая дата">
+                                    <img src="resources/left_arrow_stats.svg" alt="">
+                                </button>
+                                <div class="orders_date">10.01.26</div>
+                                <button class="orders_nav_btn orders_nav_btn--next" type="button" aria-label="Следующая дата">
+                                    <img src="resources/left_arrow_stats.svg" alt="">
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
         </div>
 
         <div class="menu_app_view" data-view="reports">
