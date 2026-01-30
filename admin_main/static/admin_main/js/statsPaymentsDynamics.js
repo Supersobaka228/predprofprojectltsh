@@ -34,12 +34,29 @@ document.addEventListener('DOMContentLoaded', () => {
     };
   };
 
-  const data = {
+  const serverData = JSON.parse(document.getElementById('my-chart-data').textContent);
+  const serverDataKeys = Object.keys(serverData);
+  let CurrentDataKey = serverDataKeys[0];
+  let currentIndex = 0;
+  console.log(CurrentDataKey, 34);
+
+
+
+// 3. Находим кнопку и вешаем на неё событие "клик"
+
+
+
+
+
+// Вызываем один раз при загрузке, чтобы показать первое значение
+
+
+  let data = {
     labels: ['Пн', 'Вт', 'Ср', 'Чт', 'Пт'],
     datasets: [
       {
         label: 'Продажи',
-        data: [65000, 85000, 50000, 75000, 106000],
+        data: serverData[CurrentDataKey],
         borderColor: '#000000',
         backgroundColor: '#0091ff6f',
         fill: true,
@@ -64,6 +81,44 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     ]
   };
+
+  function updateUI() {
+    console.log(data.datasets[0].data, CurrentDataKey);
+    myChart.update('none');
+    document.getElementById('display-stats-pay').innerText = CurrentDataKey;
+}
+
+
+
+  document.getElementById('next-btn-so').addEventListener('click', () => {
+    // Проверяем, не дошли ли мы до конца списка
+    if (currentIndex < serverDataKeys.length - 1) {
+        currentIndex++; // Увеличиваем индекс на 1
+        CurrentDataKey = serverDataKeys[currentIndex]; // Обновляем значение ключа
+
+        console.log("Новый ключ:", CurrentDataKey);
+
+        data.datasets[0].data = serverData[CurrentDataKey];
+
+        updateUI(); // Обновляем текст в HTML
+    } else {
+        alert("Это последний доступный день!");
+    }
+});
+
+document.getElementById('prev-btn-so').addEventListener('click', () => {
+    if (currentIndex > 0) {
+        currentIndex--;
+        CurrentDataKey = serverDataKeys[currentIndex];
+
+        // Обновляем данные графика
+        data.datasets[0].data = serverData[CurrentDataKey];
+        // myChart.update();
+
+        updateUI();
+    }
+});
+
 
   const config = {
     type: 'line',
@@ -115,6 +170,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const myChart = new Chart(ctx, config);
   applyResponsiveOptions(myChart);
   myChart.update('none');
+  document.getElementById('display-stats-pay').innerText = CurrentDataKey;
 
   window.addEventListener('resize', () => {
     applyResponsiveOptions(myChart);

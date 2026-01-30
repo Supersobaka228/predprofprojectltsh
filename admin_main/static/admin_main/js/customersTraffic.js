@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
     labels: ['Пн', 'Вт', 'Ср', 'Чт', 'Пт'],
     datasets: [{
       label: 'Продажи',
-      data: [400, 510, 320, 450, 440],
+      data: date2,
       borderColor: '#000000',  // цвет линии
       backgroundColor: '#0091ff6f',  // цвет заливки под линией
       fill: true,  // заливка под линией

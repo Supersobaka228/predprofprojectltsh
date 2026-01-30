@@ -34,12 +34,18 @@ document.addEventListener('DOMContentLoaded', () => {
     };
   };
 
+
+  const serverData = JSON.parse(document.getElementById('my-chart-data2').textContent);
+  const serverDataKeys = Object.keys(serverData);
+  let CurrentDataKey = serverDataKeys[0];
+  let currentIndex = 0;
+
   const data = {
     labels: ['Пн', 'Вт', 'Ср', 'Чт', 'Пт'],
     datasets: [
       {
         label: 'Посещения',
-        data: [400, 510, 320, 450, 440],
+        data: serverData[CurrentDataKey],
         borderColor: '#000000',
         backgroundColor: '#0091ff6f',
         fill: true,
@@ -64,6 +70,44 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     ]
   };
+
+
+  function updateUI() {
+    console.log(data.datasets[0].data, CurrentDataKey);
+    myChart.update('none');
+    document.getElementById('display-stats-comes').innerText = CurrentDataKey;
+  }
+
+
+
+  document.getElementById('next-btn-sc').addEventListener('click', () => {
+    // Проверяем, не дошли ли мы до конца списка
+    if (currentIndex < serverDataKeys.length - 1) {
+        currentIndex++; // Увеличиваем индекс на 1
+        CurrentDataKey = serverDataKeys[currentIndex]; // Обновляем значение ключа
+
+        console.log("Новый ключ:", CurrentDataKey);
+
+        data.datasets[0].data = serverData[CurrentDataKey];
+
+        updateUI(); // Обновляем текст в HTML
+    } else {
+        alert("Это последний доступный день!");
+    }
+  });
+
+document.getElementById('prev-btn-sc').addEventListener('click', () => {
+    if (currentIndex > 0) {
+        currentIndex--;
+        CurrentDataKey = serverDataKeys[currentIndex];
+
+        // Обновляем данные графика
+        data.datasets[0].data = serverData[CurrentDataKey];
+        // myChart.update();
+
+        updateUI();
+    }
+  });
 
   const config = {
     type: 'line',
