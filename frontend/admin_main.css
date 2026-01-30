@@ -1030,6 +1030,7 @@ body {
     align-items: center;
     text-align: center;
     justify-content: center;
+    box-shadow: 0 5px 10px rgba(15, 23, 42, 0.12);
 }
 
 .admin_stat_label {
