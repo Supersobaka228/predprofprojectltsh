@@ -69,10 +69,213 @@
             </section>
 
             <section class="chef_page_body">
-                <div class="chef_panel">
-                    <h2 class="chef_panel_title">Сводка на сегодня</h2>
-                    <p class="chef_panel_text">Здесь будет краткая информация о выдачах и заявках.</p>
-                </div>
+                <section class="main_main_panel">
+                    <div class="main_main_graphs_orders_panel">
+                        <section class="main_graphs_panel">
+                            <div class="graph_holder">
+                                <p>Меню на день</p>
+                                <div class="day_menu_panel">
+                                    <div class="day_menu_body">
+                                        <div class="day_menu_tabs" role="tablist" aria-label="Выбор приёма пищи">
+                                            <input class="day_menu_tab_input" type="radio" name="meal_tab" id="meal_breakfast" checked>
+                                            <label class="day_menu_tab" for="meal_breakfast" role="tab">Завтрак</label>
+                                            <input class="day_menu_tab_input" type="radio" name="meal_tab" id="meal_lunch">
+                                            <label class="day_menu_tab" for="meal_lunch" role="tab">Обед</label>
+                                        </div>
+                                        <div class="day_menu_table">
+                                            <div class="day_menu_row day_menu_row--head">
+                                                <div>Блюдо</div>
+                                                <div>Заказано</div>
+                                                <div>Наличие</div>
+                                                <div>Осталось</div>
+                                                <div></div>
+                                                <div></div>
+                                                <div></div>
+                                            </div>
+                                            <div class="day_menu_table_body">
+                                                <div class="day_menu_row">
+                                                    <div>Каша овсяная</div>
+                                                    <div>120</div>
+                                                    <div>150</div>
+                                                    <div>30</div>
+                                                    <div><button class="day_menu_btn" type="button">+1</button></div>
+                                                    <div><button class="day_menu_btn" type="button">+5</button></div>
+                                                    <div><button class="day_menu_btn day_menu_btn--danger" type="button">-1</button></div>
+                                                </div>
+                                                <div class="day_menu_row">
+                                                    <div>Омлет</div>
+                                                    <div>90</div>
+                                                    <div>110</div>
+                                                    <div>20</div>
+                                                    <div><button class="day_menu_btn" type="button">+1</button></div>
+                                                    <div><button class="day_menu_btn" type="button">+5</button></div>
+                                                    <div><button class="day_menu_btn day_menu_btn--danger" type="button">-1</button></div>
+                                                </div>
+                                                <div class="day_menu_row">
+                                                    <div>Чай с лимоном</div>
+                                                    <div>140</div>
+                                                    <div>160</div>
+                                                    <div>20</div>
+                                                    <div><button class="day_menu_btn" type="button">+1</button></div>
+                                                    <div><button class="day_menu_btn" type="button">+5</button></div>
+                                                    <div><button class="day_menu_btn day_menu_btn--danger" type="button">-1</button></div>
+                                                </div>
+                                                <div class="day_menu_row">
+                                                    <div>Сырники</div>
+                                                    <div>80</div>
+                                                    <div>100</div>
+                                                    <div>20</div>
+                                                    <div><button class="day_menu_btn" type="button">+1</button></div>
+                                                    <div><button class="day_menu_btn" type="button">+5</button></div>
+                                                    <div><button class="day_menu_btn day_menu_btn--danger" type="button">-1</button></div>
+                                                </div>
+                                                <div class="day_menu_row">
+                                                    <div>Какао</div>
+                                                    <div>110</div>
+                                                    <div>130</div>
+                                                    <div>20</div>
+                                                    <div><button class="day_menu_btn" type="button">+1</button></div>
+                                                    <div><button class="day_menu_btn" type="button">+5</button></div>
+                                                    <div><button class="day_menu_btn day_menu_btn--danger" type="button">-1</button></div>
+                                                </div>
+                                                <div class="day_menu_row">
+                                                    <div>Яблоко</div>
+                                                    <div>95</div>
+                                                    <div>120</div>
+                                                    <div>25</div>
+                                                    <div><button class="day_menu_btn" type="button">+1</button></div>
+                                                    <div><button class="day_menu_btn" type="button">+5</button></div>
+                                                    <div><button class="day_menu_btn day_menu_btn--danger" type="button">-1</button></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                        <section class="main_orders_panel">
+                            <p>Новые заявки на закупку</p>
+                            <div class="orders_bg">
+                                <div class="orders_list">
+                                    <table class="orders_table">
+                                        <thead>
+                                            <tr>
+                                                <th>№</th>
+                                                <th>Дата</th>
+                                                <th>Товары</th>
+                                                <th>Сумма</th>
+                                                <th>Действие</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr data-order-id="101">
+                                                <td>101</td>
+                                                <td>10.01.26</td>
+                                                <td>Молоко, йогурт клубн...</td>
+                                                <td>9200 руб.</td>
+                                                <td><button class="orders_action" type="button">Перейти к заявке</button></td>
+                                            </tr>
+                                            <tr data-order-id="100">
+                                                <td>100</td>
+                                                <td>10.01.26</td>
+                                                <td>Говядина, хлеб, вода...</td>
+                                                <td>17450 руб.</td>
+                                                <td><button class="orders_action" type="button">Перейти к заявке</button></td>
+                                            </tr>
+                                            <tr data-order-id="99">
+                                                <td>99</td>
+                                                <td>09.01.26</td>
+                                                <td>Огурцы, помидор, лук...</td>
+                                                <td>6970 руб.</td>
+                                                <td><button class="orders_action" type="button">Перейти к заявке</button></td>
+                                            </tr>
+                                            <tr data-order-id="98">
+                                                <td>98</td>
+                                                <td>09.01.26</td>
+                                                <td>Чай чёрный пакетир...</td>
+                                                <td>13224 руб.</td>
+                                                <td><button class="orders_action" type="button">Перейти к заявке</button></td>
+                                            </tr>
+                                            <tr data-order-id="98">
+                                                <td>98</td>
+                                                <td>09.01.26</td>
+                                                <td>Чай чёрный пакетир...</td>
+                                                <td>13224 руб.</td>
+                                                <td><button class="orders_action" type="button">Перейти к заявке</button></td>
+                                            </tr>
+                                            <tr data-order-id="98">
+                                                <td>98</td>
+                                                <td>09.01.26</td>
+                                                <td>Чай чёрный пакетир...</td>
+                                                <td>13224 руб.</td>
+                                                <td><button class="orders_action" type="button">Перейти к заявке</button></td>
+                                            </tr>
+                                            <tr data-order-id="98">
+                                                <td>98</td>
+                                                <td>09.01.26</td>
+                                                <td>Чай чёрный пакетир...</td>
+                                                <td>13224 руб.</td>
+                                                <td><button class="orders_action" type="button">Перейти к заявке</button></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                    <div class="main_main_notifications_panel">
+                        <div class="notifications_list">
+                            <div class="notif_element">
+                                <p>Новая заявка от 10.01.26!</p>
+                            </div>
+                            <div class="notif_element">
+                                <p>Отчёт по затратам сформирован!</p>
+                            </div>
+                            <div class="notif_element">
+                                <p>Низкий остаток: пельмени</p>
+                            </div>
+                            <div class="notif_element">
+                                <p>Новая заявка от 09.01.26!</p>
+                            </div>
+                            <div class="notif_element">
+                                <p>Новая заявка от 10.01.26!</p>
+                            </div>
+                            <div class="notif_element">
+                                <p>Отчёт по затратам сформирован!</p>
+                            </div>
+                            <div class="notif_element">
+                                <p>Низкий остаток: пельмени</p>
+                            </div>
+                            <div class="notif_element">
+                                <p>Новая заявка от 09.01.26!</p>
+                            </div>
+                            <div class="notif_element">
+                                <p>Новая заявка от 10.01.26!</p>
+                            </div>
+                            <div class="notif_element">
+                                <p>Отчёт по затратам сформирован!</p>
+                            </div>
+                            <div class="notif_element">
+                                <p>Низкий остаток: пельмени</p>
+                            </div>
+                            <div class="notif_element">
+                                <p>Новая заявка от 09.01.26!</p>
+                            </div>
+                            <div class="notif_element">
+                                <p>Новая заявка от 10.01.26!</p>
+                            </div>
+                            <div class="notif_element">
+                                <p>Отчёт по затратам сформирован!</p>
+                            </div>
+                            <div class="notif_element">
+                                <p>Низкий остаток: пельмени</p>
+                            </div>
+                            <div class="notif_element">
+                                <p>Новая заявка от 09.01.26!</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
             </section>
         </div>
 
