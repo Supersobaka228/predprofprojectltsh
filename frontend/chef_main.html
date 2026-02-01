@@ -69,10 +69,214 @@
             </section>
 
             <section class="chef_page_body">
-                <div class="chef_panel">
-                    <h2 class="chef_panel_title">Сводка на сегодня</h2>
-                    <p class="chef_panel_text">Здесь будет краткая информация о выдачах и заявках.</p>
-                </div>
+                <section class="main_main_panel">
+                    <div class="main_main_graphs_orders_panel">
+                        <section class="main_graphs_panel">
+                            <div class="graph_holder">
+                                <p>Меню на день</p>
+                                <div class="day_menu_panel">
+                                    <div class="day_menu_body">
+                                        <div class="day_menu_tabs" role="tablist" aria-label="Выбор приёма пищи">
+                                            <input class="day_menu_tab_input" type="radio" name="meal_tab" id="meal_breakfast" checked>
+                                            <label class="day_menu_tab" for="meal_breakfast" role="tab">Завтрак</label>
+                                            <input class="day_menu_tab_input" type="radio" name="meal_tab" id="meal_lunch">
+                                            <label class="day_menu_tab" for="meal_lunch" role="tab">Обед</label>
+                                        </div>
+                                        <div class="day_menu_table">
+                                            <div class="day_menu_row day_menu_row--head">
+                                                <div>Блюдо</div>
+                                                <div>Заказано</div>
+                                                <div>Наличие</div>
+                                                <div>Осталось</div>
+                                                <div></div>
+                                                <div></div>
+                                                <div></div>
+                                            </div>
+                                            <div class="day_menu_table_body">
+                                                <div class="day_menu_row">
+                                                    <div>Каша овсяная</div>
+                                                    <div>120</div>
+                                                    <div>150</div>
+                                                    <div>30</div>
+                                                    <div><button class="day_menu_btn" type="button">+1</button></div>
+                                                    <div><button class="day_menu_btn" type="button">+5</button></div>
+                                                    <div><button class="day_menu_btn day_menu_btn--danger" type="button">-1</button></div>
+                                                </div>
+                                                <div class="day_menu_row">
+                                                    <div>Омлет</div>
+                                                    <div>90</div>
+                                                    <div>110</div>
+                                                    <div>20</div>
+                                                    <div><button class="day_menu_btn" type="button">+1</button></div>
+                                                    <div><button class="day_menu_btn" type="button">+5</button></div>
+                                                    <div><button class="day_menu_btn day_menu_btn--danger" type="button">-1</button></div>
+                                                </div>
+                                                <div class="day_menu_row">
+                                                    <div>Чай с лимоном</div>
+                                                    <div>140</div>
+                                                    <div>160</div>
+                                                    <div>20</div>
+                                                    <div><button class="day_menu_btn" type="button">+1</button></div>
+                                                    <div><button class="day_menu_btn" type="button">+5</button></div>
+                                                    <div><button class="day_menu_btn day_menu_btn--danger" type="button">-1</button></div>
+                                                </div>
+                                                <div class="day_menu_row">
+                                                    <div>Сырники</div>
+                                                    <div>80</div>
+                                                    <div>100</div>
+                                                    <div>20</div>
+                                                    <div><button class="day_menu_btn" type="button">+1</button></div>
+                                                    <div><button class="day_menu_btn" type="button">+5</button></div>
+                                                    <div><button class="day_menu_btn day_menu_btn--danger" type="button">-1</button></div>
+                                                </div>
+                                                <div class="day_menu_row">
+                                                    <div>Какао</div>
+                                                    <div>110</div>
+                                                    <div>130</div>
+                                                    <div>20</div>
+                                                    <div><button class="day_menu_btn" type="button">+1</button></div>
+                                                    <div><button class="day_menu_btn" type="button">+5</button></div>
+                                                    <div><button class="day_menu_btn day_menu_btn--danger" type="button">-1</button></div>
+                                                </div>
+                                                <div class="day_menu_row">
+                                                    <div>Яблоко</div>
+                                                    <div>95</div>
+                                                    <div>120</div>
+                                                    <div>25</div>
+                                                    <div><button class="day_menu_btn" type="button">+1</button></div>
+                                                    <div><button class="day_menu_btn" type="button">+5</button></div>
+                                                    <div><button class="day_menu_btn day_menu_btn--danger" type="button">-1</button></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                        <section class="main_orders_panel">
+                            <p>Новые заявки на закупку</p>
+                            <div class="orders_bg">
+                                <div class="orders_list">
+                                    <table class="orders_table">
+                                        <thead>
+                                            <tr>
+                                                <th>№</th>
+                                                <th>Дата</th>
+                                                <th>Товары</th>
+                                                <th>Сумма</th>
+                                                <th>Действие</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr data-order-id="101">
+                                                <td>101</td>
+                                                <td>10.01.26</td>
+                                                <td>Молоко, йогурт клубн...</td>
+                                                <td>9200 руб.</td>
+                                                <td><button class="orders_action" type="button">Перейти к заявке</button></td>
+                                            </tr>
+                                            <tr data-order-id="100">
+                                                <td>100</td>
+                                                <td>10.01.26</td>
+                                                <td>Говядина, хлеб, вода...</td>
+                                                <td>17450 руб.</td>
+                                                <td><button class="orders_action" type="button">Перейти к заявке</button></td>
+                                            </tr>
+                                            <tr data-order-id="99">
+                                                <td>99</td>
+                                                <td>09.01.26</td>
+                                                <td>Огурцы, помидор, лук...</td>
+                                                <td>6970 руб.</td>
+                                                <td><button class="orders_action" type="button">Перейти к заявке</button></td>
+                                            </tr>
+                                            <tr data-order-id="98">
+                                                <td>98</td>
+                                                <td>09.01.26</td>
+                                                <td>Чай чёрный пакетир...</td>
+                                                <td>13224 руб.</td>
+                                                <td><button class="orders_action" type="button">Перейти к заявке</button></td>
+                                            </tr>
+                                            <tr data-order-id="98">
+                                                <td>98</td>
+                                                <td>09.01.26</td>
+                                                <td>Чай чёрный пакетир...</td>
+                                                <td>13224 руб.</td>
+                                                <td><button class="orders_action" type="button">Перейти к заявке</button></td>
+                                            </tr>
+                                            <tr data-order-id="98">
+                                                <td>98</td>
+                                                <td>09.01.26</td>
+                                                <td>Чай чёрный пакетир...</td>
+                                                <td>13224 руб.</td>
+                                                <td><button class="orders_action" type="button">Перейти к заявке</button></td>
+                                            </tr>
+                                            <tr data-order-id="98">
+                                                <td>98</td>
+                                                <td>09.01.26</td>
+                                                <td>Чай чёрный пакетир...</td>
+                                                <td>13224 руб.</td>
+                                                <td><button class="orders_action" type="button">Перейти к заявке</button></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                    <div class="main_main_notifications_panel">
+                        <p>Уведомления</p>
+                        <div class="notifications_list">
+                            <div class="notif_element">
+                                <p>Новая заявка от 10.01.26!</p>
+                            </div>
+                            <div class="notif_element">
+                                <p>Отчёт по затратам сформирован!</p>
+                            </div>
+                            <div class="notif_element">
+                                <p>Низкий остаток: пельмени</p>
+                            </div>
+                            <div class="notif_element">
+                                <p>Новая заявка от 09.01.26!</p>
+                            </div>
+                            <div class="notif_element">
+                                <p>Новая заявка от 10.01.26!</p>
+                            </div>
+                            <div class="notif_element">
+                                <p>Отчёт по затратам сформирован!</p>
+                            </div>
+                            <div class="notif_element">
+                                <p>Низкий остаток: пельмени</p>
+                            </div>
+                            <div class="notif_element">
+                                <p>Новая заявка от 09.01.26!</p>
+                            </div>
+                            <div class="notif_element">
+                                <p>Новая заявка от 10.01.26!</p>
+                            </div>
+                            <div class="notif_element">
+                                <p>Отчёт по затратам сформирован!</p>
+                            </div>
+                            <div class="notif_element">
+                                <p>Низкий остаток: пельмени</p>
+                            </div>
+                            <div class="notif_element">
+                                <p>Новая заявка от 09.01.26!</p>
+                            </div>
+                            <div class="notif_element">
+                                <p>Новая заявка от 10.01.26!</p>
+                            </div>
+                            <div class="notif_element">
+                                <p>Отчёт по затратам сформирован!</p>
+                            </div>
+                            <div class="notif_element">
+                                <p>Низкий остаток: пельмени</p>
+                            </div>
+                            <div class="notif_element">
+                                <p>Новая заявка от 09.01.26!</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
             </section>
         </div>
 
@@ -119,10 +323,159 @@
             </header>
 
             <section class="chef_page_body">
-                <div class="chef_panel">
-                    <h2 class="chef_panel_title">Новые заявки</h2>
-                    <p class="chef_panel_text">Список заявок и их статусы.</p>
-                </div>
+                <section class="chef_orders_page">
+                    <div class="chef_orders_header">
+                        <div class="chef_orders_status">
+                            <span>3 активные</span>
+                            <span>124 завершенные</span>
+                        </div>
+                        <button class="chef_orders_new" type="button" data-open-view="chef_order_new">
+                            <img class="chef_orders_new_icon" src="resources/add_2.svg" alt="">
+                            Новая заявка
+                        </button>
+                    </div>
+                    <section class="chef_orders_panel">
+                        <h2 class="chef_orders_title">История заявок</h2>
+                        <div class="chef_orders_table_padder">
+                            <div class="chef_orders_table_wrap">
+                                <table class="chef_orders_table">
+                                    <thead>
+                                        <tr>
+                                            <th>№</th>
+                                            <th>Дата</th>
+                                            <th>Создатель</th>
+                                            <th>Товары</th>
+                                            <th>Сумма</th>
+                                            <th>Статус</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>105</td>
+                                            <td>10.01.26</td>
+                                            <td>Мауро Лоренцо</td>
+                                            <td>Картофель</td>
+                                            <td>42 тыс. ₽</td>
+                                            <td><span class="chef_orders_status_badge">Ожидает</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>104</td>
+                                            <td>10.01.26</td>
+                                            <td>Мауро Росиелла</td>
+                                            <td>Картофель</td>
+                                            <td>42 тыс. ₽</td>
+                                            <td><span class="chef_orders_status_badge chef_orders_status_badge--ok">Одобрено</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>103</td>
+                                            <td>10.01.26</td>
+                                            <td>Мауро Мауро</td>
+                                            <td>Картофель</td>
+                                            <td>42 тыс. ₽</td>
+                                            <td><span class="chef_orders_status_badge chef_orders_status_badge--reject">Отклонено</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>102</td>
+                                            <td>10.01.26</td>
+                                            <td>Лоренцо Лоренцо</td>
+                                            <td>Картофель</td>
+                                            <td>42 тыс. ₽</td>
+                                            <td><span class="chef_orders_status_badge chef_orders_status_badge--ok">Одобрено</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>101</td>
+                                            <td>10.01.26</td>
+                                            <td>Лоренцо Росиелла</td>
+                                            <td>Картофель</td>
+                                            <td>42 тыс. ₽</td>
+                                            <td><span class="chef_orders_status_badge chef_orders_status_badge--ok">Одобрено</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>101</td>
+                                            <td>10.01.26</td>
+                                            <td>Лоренцо Росиелла</td>
+                                            <td>Картофель</td>
+                                            <td>42 тыс. ₽</td>
+                                            <td><span class="chef_orders_status_badge chef_orders_status_badge--ok">Одобрено</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>101</td>
+                                            <td>10.01.26</td>
+                                            <td>Лоренцо Росиелла</td>
+                                            <td>Картофель</td>
+                                            <td>42 тыс. ₽</td>
+                                            <td><span class="chef_orders_status_badge chef_orders_status_badge--ok">Одобрено</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>101</td>
+                                            <td>10.01.26</td>
+                                            <td>Лоренцо Росиелла</td>
+                                            <td>Картофель</td>
+                                            <td>42 тыс. ₽</td>
+                                            <td><span class="chef_orders_status_badge chef_orders_status_badge--ok">Одобрено</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>101</td>
+                                            <td>10.01.26</td>
+                                            <td>Лоренцо Росиелла</td>
+                                            <td>Картофель</td>
+                                            <td>42 тыс. ₽</td>
+                                            <td><span class="chef_orders_status_badge chef_orders_status_badge--ok">Одобрено</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>101</td>
+                                            <td>10.01.26</td>
+                                            <td>Лоренцо Росиелла</td>
+                                            <td>Картофель</td>
+                                            <td>42 тыс. ₽</td>
+                                            <td><span class="chef_orders_status_badge chef_orders_status_badge--ok">Одобрено</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>101</td>
+                                            <td>10.01.26</td>
+                                            <td>Лоренцо Росиелла</td>
+                                            <td>Картофель</td>
+                                            <td>42 тыс. ₽</td>
+                                            <td><span class="chef_orders_status_badge chef_orders_status_badge--ok">Одобрено</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>101</td>
+                                            <td>10.01.26</td>
+                                            <td>Лоренцо Росиелла</td>
+                                            <td>Картофель</td>
+                                            <td>42 тыс. ₽</td>
+                                            <td><span class="chef_orders_status_badge chef_orders_status_badge--ok">Одобрено</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>101</td>
+                                            <td>10.01.26</td>
+                                            <td>Лоренцо Росиелла</td>
+                                            <td>Картофель</td>
+                                            <td>42 тыс. ₽</td>
+                                            <td><span class="chef_orders_status_badge chef_orders_status_badge--ok">Одобрено</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>101</td>
+                                            <td>10.01.26</td>
+                                            <td>Лоренцо Росиелла</td>
+                                            <td>Картофель</td>
+                                            <td>42 тыс. ₽</td>
+                                            <td><span class="chef_orders_status_badge chef_orders_status_badge--ok">Одобрено</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>101</td>
+                                            <td>10.01.26</td>
+                                            <td>Лоренцо Росиелла</td>
+                                            <td>Картофель</td>
+                                            <td>42 тыс. ₽</td>
+                                            <td><span class="chef_orders_status_badge chef_orders_status_badge--ok">Одобрено</span></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </section>
+                </section>
             </section>
         </div>
 
@@ -144,10 +497,176 @@
             </header>
 
             <section class="chef_page_body">
-                <div class="chef_panel">
-                    <h2 class="chef_panel_title">Склад</h2>
-                    <p class="chef_panel_text">Остатки и предупреждения по складу.</p>
+                <section class="chef_stocks_outer">
+                    <section class="chef_stocks_panel">
+                        <h2 class="chef_stocks_title">Остатки по продуктам</h2>
+                        <div class="chef_stocks_list_outer">
+                            <div class="chef_stocks_table_wrap">
+                                <table class="chef_stocks_table">
+                            <thead>
+                                <tr>
+                                    <th>Продукт</th>
+                                    <th>Остаток</th>
+                                    <th>Срок годности</th>
+                                    <th>Оповещение</th>
+                                    <th>Заявка</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Макароны</td>
+                                    <td>20 кг</td>
+                                    <td>01.01.01</td>
+                                    <td>Осталось мало</td>
+                                    <td><button class="chef_stocks_action" type="button">Составить заявку</button></td>
+                                </tr>
+                                <tr>
+                                    <td>Картофель</td>
+                                    <td>20 кг</td>
+                                    <td>01.01.01</td>
+                                    <td>Осталось мало</td>
+                                    <td><button class="chef_stocks_action" type="button">Составить заявку</button></td>
+                                </tr>
+                                <tr>
+                                    <td>Гречневая крупа</td>
+                                    <td>20 кг</td>
+                                    <td>01.01.01</td>
+                                    <td>Осталось мало</td>
+                                    <td><button class="chef_stocks_action" type="button">Составить заявку</button></td>
+                                </tr>
+                                <tr>
+                                    <td>Молоко</td>
+                                    <td>20 кг</td>
+                                    <td>01.01.01</td>
+                                    <td>Осталось мало</td>
+                                    <td><button class="chef_stocks_action" type="button">Составить заявку</button></td>
+                                </tr>
+                                <tr>
+                                    <td>Макароны</td>
+                                    <td>20 кг</td>
+                                    <td>01.01.01</td>
+                                    <td>Осталось мало</td>
+                                    <td><button class="chef_stocks_action" type="button">Составить заявку</button></td>
+                                </tr>
+                                <tr>
+                                    <td>Картофель</td>
+                                    <td>20 кг</td>
+                                    <td>01.01.01</td>
+                                    <td>Осталось мало</td>
+                                    <td><button class="chef_stocks_action" type="button">Составить заявку</button></td>
+                                </tr>
+                                <tr>
+                                    <td>Гречневая крупа</td>
+                                    <td>20 кг</td>
+                                    <td>01.01.01</td>
+                                    <td>Осталось мало</td>
+                                    <td><button class="chef_stocks_action" type="button">Составить заявку</button></td>
+                                </tr>
+                                <tr>
+                                    <td>Молоко</td>
+                                    <td>20 кг</td>
+                                    <td>01.01.01</td>
+                                    <td>Осталось мало</td>
+                                    <td><button class="chef_stocks_action" type="button">Составить заявку</button></td>
+                                </tr>
+                                <tr>
+                                    <td>Макароны</td>
+                                    <td>20 кг</td>
+                                    <td>01.01.01</td>
+                                    <td>Осталось мало</td>
+                                    <td><button class="chef_stocks_action" type="button">Составить заявку</button></td>
+                                </tr>
+                                <tr>
+                                    <td>Картофель</td>
+                                    <td>20 кг</td>
+                                    <td>01.01.01</td>
+                                    <td>Осталось мало</td>
+                                    <td><button class="chef_stocks_action" type="button">Составить заявку</button></td>
+                                </tr>
+                                <tr>
+                                    <td>Гречневая крупа</td>
+                                    <td>20 кг</td>
+                                    <td>01.01.01</td>
+                                    <td>Осталось мало</td>
+                                    <td><button class="chef_stocks_action" type="button">Составить заявку</button></td>
+                                </tr>
+                                <tr>
+                                    <td>Молоко</td>
+                                    <td>20 кг</td>
+                                    <td>01.01.01</td>
+                                    <td>Осталось мало</td>
+                                    <td><button class="chef_stocks_action" type="button">Составить заявку</button></td>
+                                </tr>
+                            </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </section>
+                </section>
+            </section>
+        </div>
+
+        <div class="menu_app_view" data-view="chef_order_new">
+            <header class="admin_main_header">
+                <div class="admin_main_header_left">Новая заявка</div>
+                <div class="admin_main_header_right">
+                    <div class="admin_notify_wrap">
+                        <button class="admin_notify_button" type="button" aria-label="Уведомления">
+                            <img src="/resources/notifications.svg" alt="">
+                        </button>
+                    </div>
+                    <div class="admin_user_meta">
+                        <div class="admin_user_name">Имя Фамилия</div>
+                        <div class="admin_user_role">Повар</div>
+                    </div>
+                    <img src="resources/photo_2026-01-14_11-19-22.jpg" class="admin_user_avatar" alt="">
                 </div>
+            </header>
+
+            <section class="chef_page_body">
+                <section class="chef_order_new_page">
+
+                    <section class="chef_order_new_panel">
+                        <div class="chef_order_new_header">
+                            <h3 class="chef_order_new_title">Состав заявки</h3>
+                            <span class="chef_order_new_sub">Выберите продукт и количество</span>
+                        </div>
+
+                        <div class="chef_order_new_body">
+                            <div class="chef_order_new_row">
+                                <label class="chef_order_new_label" for="order_product_1">Продукт</label>
+                                <div class="chef_product_picker">
+                                    <button class="chef_product_add" type="button" aria-haspopup="listbox" aria-expanded="false">
+                                        <span>Выберите продукт</span>
+                                        <img class="chef_product_add_icon" src="resources/arrow_back_ios_new.svg" alt="">
+                                    </button>
+                                    <div class="chef_product_menu" role="listbox" aria-label="Продукты">
+                                        <button class="chef_product_option" type="button" data-value="Молоко">Молоко</button>
+                                        <button class="chef_product_option" type="button" data-value="Картофель">Картофель</button>
+                                        <button class="chef_product_option" type="button" data-value="Гречка">Гречка</button>
+                                        <button class="chef_product_option" type="button" data-value="Огурцы">Огурцы</button>
+                                        <button class="chef_product_option" type="button" data-value="Хлеб">Хлеб</button>
+                                    </div>
+                                    <input class="chef_product_input" id="order_product_1" name="order_product_1" type="hidden" value="">
+                                </div>
+                                <label class="chef_order_new_label" for="order_qty_1">Количество</label>
+                                <input class="chef_order_new_input" id="order_qty_1" type="number" min="1" value="10">
+                                <span class="chef_order_new_unit">кг</span>
+                            </div>
+                        </div>
+
+                        <div class="chef_order_new_add">
+                            <button class="chef_order_new_add_btn" type="button">+ Добавить ещё продукт</button>
+                        </div>
+
+                        <div class="chef_order_new_actions">
+                            <button class="chef_order_new_action chef_order_new_action--ghost" type="button" data-open-view="chef_orders">
+                                Отменить
+                            </button>
+                            <button class="chef_order_new_action" type="button">Отправить заявку</button>
+                        </div>
+                    </section>
+                </section>
             </section>
         </div>
     </div>
