@@ -192,8 +192,16 @@
             </section>
             {{ orders_by_day|json_script:"my-chart-data" }}
             {{ comes_by_day|json_script:"my-chart-data2" }}
-            <script>
+            {{ reviews_by_day|json_script:"my-chart-data3" }}
 
+
+            <script>
+                const serverData = JSON.parse(document.getElementById('my-chart-data3').textContent);
+                const serverDataKeys = Object.keys(serverData);
+                let CurrentDataKey = serverDataKeys[0];
+                let currentIndex = 0;
+
+                console.log(serverData);
             </script>
             <section class="admin_stats_main">
                 <div class="stats_graph_holder">
@@ -236,20 +244,22 @@
                     <div class="reviews_header">
                         <div class="reviews_title">Отзывы</div>
                         <div class="stats_week_switch" aria-label="Переключение недели">
-                            <button class="stats_week_btn" type="button" aria-label="Предыдущая неделя">
+                            <button class="stats_week_btn" type="button" id='review-next-btn' aria-label="Предыдущая неделя">
                                 <img src="resources/left_arrow_stats.svg" alt="">
                             </button>
-                            <span class="stats_week_label">{{ orders_by_day_keys.0 }}</span>
-                            <button class="stats_week_btn stats_week_btn--next" type="button" aria-label="Следующая неделя">
+                            <span class="stats_week_label" id="display-stats-reviews"></span>
+                            <button class="stats_week_btn stats_week_btn--next" type="button" id="review-before-btn" aria-label="Следующая неделя">
                                 <img src="resources/left_arrow_stats.svg" alt="">
                             </button>
                         </div>
                     </div>
-                    <div class="reviews_list">
+                    <div class="reviews_list" id="reviews_list">
                         <article class="review_card">
-                            <div class="review_meta">
+                            <div class="sheet-review-empty" id="sheet-review-empty" style="display:none;">Нет отзывов для этой даты</div>
+                            {% for item in all_reviews %}
+                            <div class="review_meta" data-review-item-id="{{ item.id }}">
                                 <div class="review_meta_text">
-                                    <div class="review_date">27.01.26</div>
+                                    <div class="review_date">{{ item.day }}</div>
                                     <div class="review_target">К: Каша рисовая</div>
                                 </div>
                                 <div class="review_stars" aria-label="Рейтинг 5 из 5">
@@ -259,56 +269,10 @@
                                     <img src="resources/Star 1.svg" alt="">
                                     <img src="resources/Star 1.svg" alt="">
                                 </div>
+                                <div class="review_text">{{ item.text }}</div>
                             </div>
-                            <div class="review_text">Очень вкусная и нежная каша, порция оптимальная. Спасибо!</div>
-                        </article>
-                        <article class="review_card">
-                            <div class="review_meta">
-                                <div class="review_meta_text">
-                                    <div class="review_date">26.01.26</div>
-                                    <div class="review_target">К: Суп куриный</div>
-                                </div>
-                                <div class="review_stars" aria-label="Рейтинг 4 из 5">
-                                    <img src="resources/Star 1.svg" alt="">
-                                    <img src="resources/Star 1.svg" alt="">
-                                    <img src="resources/Star 1.svg" alt="">
-                                    <img src="resources/Star 1.svg" alt="">
-                                    <img src="resources/Star 1.svg" alt="">
-                                </div>
-                            </div>
-                            <div class="review_text">Тёплый и насыщенный вкус. Хотелось бы чуть меньше соли.</div>
-                        </article>
-                        <article class="review_card">
-                            <div class="review_meta">
-                                <div class="review_meta_text">
-                                    <div class="review_date">25.01.26</div>
-                                    <div class="review_target">К: Творожная запеканка</div>
-                                </div>
-                                <div class="review_stars" aria-label="Рейтинг 5 из 5">
-                                    <img src="resources/Star 1.svg" alt="">
-                                    <img src="resources/Star 1.svg" alt="">
-                                    <img src="resources/Star 1.svg" alt="">
-                                    <img src="resources/Star 1.svg" alt="">
-                                    <img src="resources/Star 1.svg" alt="">
-                                </div>
-                            </div>
-                            <div class="review_text">Запеканка мягкая, не сухая, понравилась детям.</div>
-                        </article>
-                        <article class="review_card">
-                            <div class="review_meta">
-                                <div class="review_meta_text">
-                                    <div class="review_date">24.01.26</div>
-                                    <div class="review_target">К: Компот яблочный</div>
-                                </div>
-                                <div class="review_stars" aria-label="Рейтинг 3 из 5">
-                                    <img src="resources/Star 1.svg" alt="">
-                                    <img src="resources/Star 1.svg" alt="">
-                                    <img src="resources/Star 1.svg" alt="">
-                                    <img src="resources/Star 1.svg" alt="">
-                                    <img src="resources/Star 1.svg" alt="">
-                                </div>
-                            </div>
-                            <div class="review_text">Вкус приятный, но хотелось бы чуть слаще.</div>
+
+                            {% endfor %}
                         </article>
                     </div>
                 </div>
