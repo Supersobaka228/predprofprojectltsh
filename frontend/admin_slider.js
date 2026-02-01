@@ -37,6 +37,78 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
+  const openViewButtons = document.querySelectorAll('[data-open-view]');
+  openViewButtons.forEach((button) => {
+    button.addEventListener('click', () => {
+      const targetView = button.dataset.openView;
+      if (targetView) {
+        openView(targetView);
+      }
+    });
+  });
+
+  const closeAllProductPickers = () => {
+    document.querySelectorAll('.chef_product_picker.is-open').forEach((picker) => {
+      picker.classList.remove('is-open');
+      const button = picker.querySelector('.chef_product_add');
+      if (button) {
+        button.setAttribute('aria-expanded', 'false');
+      }
+    });
+  };
+
+  document.addEventListener('click', (event) => {
+    const addButton = event.target.closest('.chef_product_add');
+    if (addButton) {
+      event.preventDefault();
+      event.stopPropagation();
+      const picker = addButton.closest('.chef_product_picker');
+      if (!picker) {
+        return;
+      }
+      const isOpen = picker.classList.contains('is-open');
+      closeAllProductPickers();
+      picker.classList.toggle('is-open', !isOpen);
+      addButton.setAttribute('aria-expanded', String(!isOpen));
+      return;
+    }
+
+    const option = event.target.closest('.chef_product_option');
+    if (option) {
+      event.preventDefault();
+      event.stopPropagation();
+      const picker = option.closest('.chef_product_picker');
+      if (!picker) {
+        return;
+      }
+      const button = picker.querySelector('.chef_product_add');
+      const input = picker.querySelector('.chef_product_input');
+      const label = option.textContent.trim();
+      if (button) {
+        const textSpan = button.querySelector('span');
+        if (textSpan) {
+          textSpan.textContent = label;
+        } else {
+          button.textContent = label;
+        }
+        button.setAttribute('aria-expanded', 'false');
+      }
+      if (input) {
+        input.value = option.dataset.value || label;
+      }
+      picker.classList.remove('is-open');
+      return;
+    }
+
+    closeAllProductPickers();
+  });
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') {
+      closeAllProductPickers();
+    }
+  });
+
   window.addEventListener('resize', () => {
     const activeButton = document.querySelector('.admin_nav_button.active') || buttons[0];
     moveSlider(activeButton);

@@ -329,7 +329,10 @@
                             <span>3 активные</span>
                             <span>124 завершенные</span>
                         </div>
-                        <button class="chef_orders_new" type="button">+ Новая заявка</button>
+                        <button class="chef_orders_new" type="button" data-open-view="chef_order_new">
+                            <img class="chef_orders_new_icon" src="resources/add_2.svg" alt="">
+                            Новая заявка
+                        </button>
                     </div>
                     <section class="chef_orders_panel">
                         <h2 class="chef_orders_title">История заявок</h2>
@@ -597,6 +600,70 @@
                             </tbody>
                                 </table>
                             </div>
+                        </div>
+                    </section>
+                </section>
+            </section>
+        </div>
+
+        <div class="menu_app_view" data-view="chef_order_new">
+            <header class="admin_main_header">
+                <div class="admin_main_header_left">Новая заявка</div>
+                <div class="admin_main_header_right">
+                    <div class="admin_notify_wrap">
+                        <button class="admin_notify_button" type="button" aria-label="Уведомления">
+                            <img src="/resources/notifications.svg" alt="">
+                        </button>
+                    </div>
+                    <div class="admin_user_meta">
+                        <div class="admin_user_name">Имя Фамилия</div>
+                        <div class="admin_user_role">Повар</div>
+                    </div>
+                    <img src="resources/photo_2026-01-14_11-19-22.jpg" class="admin_user_avatar" alt="">
+                </div>
+            </header>
+
+            <section class="chef_page_body">
+                <section class="chef_order_new_page">
+
+                    <section class="chef_order_new_panel">
+                        <div class="chef_order_new_header">
+                            <h3 class="chef_order_new_title">Состав заявки</h3>
+                            <span class="chef_order_new_sub">Выберите продукт и количество</span>
+                        </div>
+
+                        <div class="chef_order_new_body">
+                            <div class="chef_order_new_row">
+                                <label class="chef_order_new_label" for="order_product_1">Продукт</label>
+                                <div class="chef_product_picker">
+                                    <button class="chef_product_add" type="button" aria-haspopup="listbox" aria-expanded="false">
+                                        <span>Выберите продукт</span>
+                                        <img class="chef_product_add_icon" src="resources/arrow_back_ios_new.svg" alt="">
+                                    </button>
+                                    <div class="chef_product_menu" role="listbox" aria-label="Продукты">
+                                        <button class="chef_product_option" type="button" data-value="Молоко">Молоко</button>
+                                        <button class="chef_product_option" type="button" data-value="Картофель">Картофель</button>
+                                        <button class="chef_product_option" type="button" data-value="Гречка">Гречка</button>
+                                        <button class="chef_product_option" type="button" data-value="Огурцы">Огурцы</button>
+                                        <button class="chef_product_option" type="button" data-value="Хлеб">Хлеб</button>
+                                    </div>
+                                    <input class="chef_product_input" id="order_product_1" name="order_product_1" type="hidden" value="">
+                                </div>
+                                <label class="chef_order_new_label" for="order_qty_1">Количество</label>
+                                <input class="chef_order_new_input" id="order_qty_1" type="number" min="1" value="10">
+                                <span class="chef_order_new_unit">кг</span>
+                            </div>
+                        </div>
+
+                        <div class="chef_order_new_add">
+                            <button class="chef_order_new_add_btn" type="button">+ Добавить ещё продукт</button>
+                        </div>
+
+                        <div class="chef_order_new_actions">
+                            <button class="chef_order_new_action chef_order_new_action--ghost" type="button" data-open-view="chef_orders">
+                                Отменить
+                            </button>
+                            <button class="chef_order_new_action" type="button">Отправить заявку</button>
                         </div>
                     </section>
                 </section>

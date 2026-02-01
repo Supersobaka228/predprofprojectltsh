@@ -368,11 +368,19 @@ body {
     font-size: clamp(0.85rem, 1vw, 1.05rem);
     box-shadow: 0 6px 12px rgba(15, 23, 42, 0.2);
     transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.2s ease;
-    animation: chefOrdersPulse 2.8s ease-in-out infinite;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.chef_orders_new_icon {
+    width: 18px;
+    height: 18px;
 }
 
 .chef_orders_new:hover {
-    transform: translateY(-1px);
+    transform: translateY(-2px);
     box-shadow: 0 10px 18px rgba(15, 23, 42, 0.25);
 }
 
@@ -381,17 +389,6 @@ body {
     box-shadow: 0 6px 10px rgba(15, 23, 42, 0.2);
 }
 
-@keyframes chefOrdersPulse {
-    0%,
-    100% {
-        filter: brightness(1);
-        transform: translateY(0);
-    }
-    50% {
-        filter: brightness(1.08);
-        transform: translateY(-1px);
-    }
-}
 
 .chef_orders_panel {
     flex: 1;
@@ -1105,6 +1102,246 @@ body {
 .chef_stocks_action:active {
     transform: translateY(0) scale(0.98);
     box-shadow: 0 6px 10px rgba(15, 23, 42, 0.2);
+}
+
+.chef_order_new_page {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 16px 20px;
+    height: 100%;
+    box-sizing: border-box;
+}
+
+.chef_order_new_intro {
+    background: #9ED5FF;
+    border-radius: 18px;
+    padding: clamp(12px, 1.5vw, 20px);
+    box-shadow: 0 12px 26px rgba(15, 23, 42, 0.12);
+}
+
+.chef_order_new_panel {
+    flex: 1;
+    min-height: 0;
+    background: #9ED5FF;
+    border-radius: 18px;
+    padding: clamp(12px, 1.5vw, 20px);
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    box-shadow: 0 12px 26px rgba(15, 23, 42, 0.12);
+}
+
+.chef_order_new_header {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.chef_order_new_title {
+    margin: 0;
+    font-weight: 700;
+    font-size: clamp(1.1rem, 1.4vw, 1.5rem);
+}
+
+.chef_order_new_sub {
+    font-weight: 600;
+    color: #1f2937;
+}
+
+.chef_order_new_body {
+    background: #9ED5FF;
+    border-radius: 16px;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    min-height: 0;
+}
+
+.chef_order_new_row {
+    display: grid;
+    grid-template-columns: 120px minmax(180px, 1fr) 120px 140px 60px;
+    gap: 10px;
+    align-items: center;
+    background: #E9F5FF;
+    border-radius: 12px;
+    padding: 10px 12px;
+    box-shadow: 0 6px 14px rgba(15, 23, 42, 0.08);
+}
+
+.chef_order_new_label {
+    font-weight: 700;
+    color: #0f172a;
+}
+
+.chef_order_new_input {
+    width: 100%;
+    border: 1px solid rgba(15, 23, 42, 0.15);
+    background: #ffffff;
+    border-radius: 10px;
+    padding: 8px 10px;
+    font-weight: 600;
+    font-size: clamp(0.8rem, 0.9vw, 1rem);
+}
+
+.chef_order_new_input:focus {
+    outline: 2px solid rgba(43, 155, 255, 0.4);
+    border-color: rgba(43, 155, 255, 0.6);
+}
+
+.chef_product_picker {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    width: 100%;
+}
+
+.chef_product_add {
+    border: none;
+    background: #FFFFFF;
+    color: #1f2328;
+    padding: 8px 12px;
+    border-radius: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    width: 100%;
+    text-align: left;
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.chef_product_add_icon {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+}
+
+.chef_product_add:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 12px rgba(15, 23, 42, 0.12);
+}
+
+.chef_product_menu {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    min-width: 180px;
+    max-height: 220px;
+    overflow: auto;
+    background: #ffffff;
+    border-radius: 12px;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 12px 30px rgba(15, 23, 42, 0.12);
+    padding: 6px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    opacity: 0;
+    transform: translateY(-6px);
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.18s ease, transform 0.18s ease, visibility 0.18s ease;
+    z-index: 12;
+}
+
+.chef_product_picker.is-open .chef_product_menu {
+    opacity: 1;
+    transform: translateY(0);
+    visibility: visible;
+    pointer-events: auto;
+}
+
+.chef_product_option {
+    border: none;
+    background: #f7fbff;
+    color: #1f2328;
+    padding: 8px 12px;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    text-align: left;
+    cursor: pointer;
+    transition: background 0.15s ease, transform 0.15s ease;
+}
+
+.chef_product_option:hover {
+    background: #e9f4ff;
+}
+
+.chef_order_new_unit {
+    font-weight: 700;
+    color: #0f172a;
+    text-align: left;
+}
+
+.chef_order_new_add {
+    display: flex;
+}
+
+.chef_order_new_add_btn {
+    border: none;
+    background: #2b9bff;
+    color: #ffffff;
+    font-weight: 700;
+    padding: 10px 16px;
+    border-radius: 12px;
+    cursor: pointer;
+    box-shadow: 0 6px 12px rgba(15, 23, 42, 0.18);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.chef_order_new_add_btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 18px rgba(15, 23, 42, 0.22);
+}
+
+.chef_order_new_add_btn:active {
+    transform: translateY(0) scale(0.98);
+    box-shadow: 0 6px 10px rgba(15, 23, 42, 0.18);
+}
+
+.chef_order_new_actions {
+    margin-top: auto;
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+}
+
+.chef_order_new_action {
+    border: none;
+    background: #2b9bff;
+    color: #ffffff;
+    font-weight: 700;
+    padding: 10px 18px;
+    border-radius: 12px;
+    cursor: pointer;
+    box-shadow: 0 6px 12px rgba(15, 23, 42, 0.18);
+    transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+}
+
+.chef_order_new_action:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 18px rgba(15, 23, 42, 0.22);
+}
+
+.chef_order_new_action:active {
+    transform: translateY(0) scale(0.98);
+    box-shadow: 0 6px 10px rgba(15, 23, 42, 0.18);
+}
+
+.chef_order_new_action--ghost {
+    background: #ffffff;
+    color: #1f2328;
+    border: 1px solid rgba(15, 23, 42, 0.15);
+    box-shadow: none;
+}
+
+.chef_order_new_action--ghost:hover {
+    box-shadow: 0 8px 16px rgba(15, 23, 42, 0.12);
 }
 
 
