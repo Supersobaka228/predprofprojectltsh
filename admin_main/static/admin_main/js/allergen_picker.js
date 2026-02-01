@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const closeAllPickers = () => {
     form.querySelectorAll('.menu_config_allergen_picker.is-open').forEach((picker) => {
+      console.log(123);
       picker.classList.remove('is-open');
       const button = picker.querySelector('.menu_config_add');
       if (button) {
@@ -14,15 +15,22 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   };
 
+
+
   form.addEventListener('click', (event) => {
+
     const addButton = event.target.closest('.menu_config_add');
+
     if (addButton) {
+      console.log(39045);
       event.preventDefault();
       event.stopPropagation();
       const picker = addButton.closest('.menu_config_allergen_picker');
+
       if (!picker) {
         return;
       }
+
       const isOpen = picker.classList.contains('is-open');
       closeAllPickers();
       picker.classList.toggle('is-open', !isOpen);

@@ -7,7 +7,7 @@ from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 
 from admin_main.models import BuyOrder, Notification
-from menu.models import MenuItem, Order, Review
+from menu.models import MenuItem, Order, Review, Meal, DayOrder
 
 
 @csrf_exempt
@@ -33,7 +33,28 @@ def admin(request):
 
 
     }
-    print(reviews_by_day())
+    if request.method == 'POST':
+        post = request.POST
+        meals = []
+        print(post)
+        for i in range(len(post.getlist('dish_name'))):
+            dish = Meal.objects.create(name=post.getlist('dish_name[]')[i],
+                                       weight=int(post.getlist('dish_weight[]')[i]),
+                                       calories=int(list(post.getlist('dish_kcal[]'))[i]),
+                                       description=post.getlist('composition[]')[i],)
+            dish.allergens.add(post.get('allergens[]'))
+            meals.append(dish)
+
+        menuitem = MenuItem.objects.create(category=post.getlist('category')[0],
+                                           time=f'{post.getlist('time_start')[0]} - {post.getlist('time_end')[0]}',
+                                           price=int(post.getlist('price')[0]),
+                                           calories=sum(list(map(int, post.getlist('dish_kcal[]')[0]))),
+                                           proteins=45,
+                                           fats=76,
+                                           carbs=89)
+        menuitem.meals.set(meals)
+        for i in DayOrder.objects.all():
+            print(i.day)
     return render(request, 'admin_main/admin_main.html', context)
 
 def sum_orders_count():

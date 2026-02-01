@@ -299,7 +299,7 @@
             <section class="admin_stats_panel admin_menu_panel">
                 <div class="admin_menu_filters">
                     <div class="admin_menu_left">
-                        <div class="admin_menu_date">Понедельник, 19.01.2026</div>
+                        <div class="admin_menu_date" id="admin_menu_date"></div>
                         <div class="admin_menu_days" role="group" aria-label="Дни недели">
                             <button class="admin_menu_day" type="button">Пн</button>
                             <button class="admin_menu_day" type="button">Вт</button>
@@ -325,10 +325,93 @@
             </section>
 
             <section class="admin_menu_configurator_main">
-                <form class="menu_configurator_form" aria-label="Конструктор меню">
+                <form class="menu_configurator_form" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="category" value="Обед">
+                    <input type="hidden" name="day" value="admin_menu_date">
+
                     <div class="menu_config_card">
                         <div class="menu_config_header">
-                            <h3 class="menu_config_title">Завтрак</h3>
+                            <h3 class="menu_config_title">Обед</h3>
+                        </div>
+
+                    <div class="menu_config_body" id="dishes-container">
+            <!-- Первый блок блюда -->
+                    <div class="menu_config_block dish-block" data-dish-index="0">
+                        <div class="menu_config_dish">
+                            <div class="menu_config_dish_top">
+                                <span class="menu_config_dish_label">Блюдо <span class="dish-number">1</span></span>
+                                <button type="button" class="remove-dish-btn" style="display:none;">×</button>
+                            </div>
+
+                            <div class="menu_config_dish_row">
+                                <input class="menu_config_input menu_config_input--name" type="text" name="dish_name[]" placeholder="Название блюда" required>
+                                <input class="menu_config_input menu_config_input--small" type="number" name="dish_weight[]" placeholder="Вес (г)" min="0">
+                            <input class="menu_config_input menu_config_input--small" type="number" name="dish_kcal[]" placeholder="Ккал" min="0">
+                            </div>
+
+                    <div class="menu_config_dish_row">
+                        <span class="menu_config_dish_label">Аллергены</span>
+                        <div class="menu_config_allergens" aria-live="polite"></div>
+                        <div class="menu_config_allergen_picker">
+                            <button class="menu_config_add" type="button" aria-haspopup="listbox" aria-expanded="false">Добавить</button>
+                            <div class="menu_config_allergen_menu" role="listbox" aria-label="Аллергены">
+                                <button class="menu_config_allergen_option" type="button" data-allergen-id="gluten">Глютен</button>
+                                <button class="menu_config_allergen_option" type="button" data-allergen-id="lactose">Лактоза</button>
+                                <button class="menu_config_allergen_option" type="button" data-allergen-id="eggs">Яйца</button>
+                                <button class="menu_config_allergen_option" type="button" data-allergen-id="nuts">Орехи</button>
+                                <button class="menu_config_allergen_option" type="button" data-allergen-id="soy">Соя</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="menu_config_dish_row">
+                        <span class="menu_config_dish_label">Состав</span>
+                        <textarea class="menu_config_input menu_config_input--wide" name="composition[]" placeholder="Состав" rows="3"></textarea>
+                    </div>
+                </div>
+
+                <div class="menu_config_requests">
+                    <div class="menu_config_requests_title">Заявки, связанные с блюдом</div>
+                    <div class="menu_config_requests_list">
+                        <span class="menu_config_requests_item">Молоко пастеризованное</span>
+                        <span class="menu_config_requests_item">Крупа гречневая</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Кнопка добавления нового блюда -->
+        <div class="menu_config_actions">
+            <button type="button" class="menu_config_btn add-dish-btn">
+                + Добавить блюдо
+            </button>
+        </div>
+
+        <div class="menu_config_footer">
+            <div class="menu_config_time">
+                <span class="menu_config_label">Время выдачи</span>
+                <input class="menu_config_input menu_config_input--time" type="time" name="time_start" value="12:00">
+                <input class="menu_config_input menu_config_input--time" type="time" name="time_end" value="14:00">
+            </div>
+            <div class="menu_config_price">
+                <span class="menu_config_label">Цена</span>
+                <input class="menu_config_input menu_config_input--price" type="number" name="price" placeholder="Цена" min="0">
+            </div>
+            <div class="menu_config_actions">
+                <button class="menu_config_btn menu_config_btn--cancel" type="reset">Отмена</button>
+                <button class="menu_config_btn menu_config_btn--save" type="submit">Сохранить меню</button>
+            </div>
+        </div>
+    </div>
+</form>
+
+                <form class="menu_configurator_form" aria-label="Конструктор меню" method="post">
+                    <input type="hidden" name="day" id="day_input">
+                    <input type="hidden" name="category" value="lunch">
+                    <div class="menu_config_card">
+                        <div class="menu_config_header">
+                            <h3 class="menu_config_title">Обед</h3>
                         </div>
 
                         <div class="menu_config_body">
@@ -346,7 +429,7 @@
                                         <div class="menu_config_allergens" aria-live="polite"></div>
                                         <div class="menu_config_allergen_picker">
                                             <button class="menu_config_add" type="button" aria-haspopup="listbox" aria-expanded="false">Добавить</button>
-                                            <div class="menu_config_allergen_menu" role="listbox" aria-label="Аллергены">
+                                            <div class="menu_config_allergen_menu" id="list2" role="listbox" aria-label="Аллергены">
                                                 <button class="menu_config_allergen_option" type="button" data-allergen-id="gluten">Глютен</button>
                                                 <button class="menu_config_allergen_option" type="button" data-allergen-id="lactose">Лактоза</button>
                                                 <button class="menu_config_allergen_option" type="button" data-allergen-id="eggs">Яйца</button>
@@ -430,6 +513,11 @@
                         </div>
                     </div>
                 </form>
+
+                <button class="menu_configurator_add" type="button" aria-label="Добавить меню">
+                    <span class="menu_configurator_add_icon">+</span>
+                    <span class="menu_configurator_add_text">Добавить меню</span>
+                </button>
             </section>
         </div>
 
@@ -886,6 +974,8 @@
     <script src="../../static/admin_main/js/statsPaymentsDynamics.js"></script>
     <script src="../../static/admin_main/js/statsCustomersTraffic.js"></script>
     <script src="../../static/admin_main/js/admin_reports.js"></script>
+    <script src="../../static/admin_main/js/admin_menu.js"></script>
+    <script src="../../static/admin_main/js/admin_mealsadd.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </body>
 </html>
