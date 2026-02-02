@@ -43,6 +43,13 @@ document.addEventListener('DOMContentLoaded', () => {
       const targetView = button.dataset.openView;
       if (targetView) {
         openView(targetView);
+        const targetNavButton = Array.from(buttons)
+          .find((navButton) => navButton.dataset.view === targetView);
+        if (targetNavButton) {
+          buttons.forEach(btn => btn.classList.remove('active'));
+          targetNavButton.classList.add('active');
+          moveSlider(targetNavButton);
+        }
       }
     });
   });
@@ -157,6 +164,30 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         row.remove();
       });
+    }
+  }
+
+  const dayMenuTabs = document.querySelectorAll('.day_menu_tab_input');
+  const dayMenuBodies = document.querySelectorAll('.day_menu_table_body[data-meal]');
+
+  const setDayMenu = (mealId) => {
+    dayMenuBodies.forEach((body) => {
+      body.classList.toggle('day_menu_table_body--active', body.dataset.meal === mealId);
+    });
+  };
+
+  if (dayMenuTabs.length > 0 && dayMenuBodies.length > 0) {
+    dayMenuTabs.forEach((tab) => {
+      tab.addEventListener('change', () => {
+        if (tab.checked) {
+          setDayMenu(tab.id);
+        }
+      });
+    });
+
+    const activeTab = Array.from(dayMenuTabs).find((tab) => tab.checked) || dayMenuTabs[0];
+    if (activeTab) {
+      setDayMenu(activeTab.id);
     }
   }
 

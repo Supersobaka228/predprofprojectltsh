@@ -1180,6 +1180,10 @@ body {
     flex-direction: column;
 }
 
+.day_menu_table_body:not(.day_menu_table_body--active) {
+    display: none;
+}
+
 .day_menu_row {
     display: grid;
     grid-template-columns: 2.2fr 1fr 1fr 1fr 1fr 1fr 1fr;
