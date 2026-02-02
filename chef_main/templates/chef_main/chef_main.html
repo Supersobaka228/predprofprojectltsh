@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="chef_main.css">
+    <link rel="stylesheet" href="../../static/chef_main/css/chef_main.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c&display=swap" rel="stylesheet">
@@ -92,7 +92,7 @@
                                                 <div>Выдачи</div>
                                                 <div></div>
                                             </div>
-                                            <div class="day_menu_table_body">
+                                            <div class="day_menu_table_body day_menu_table_body--active" data-meal="meal_breakfast">
                                                 <div class="day_menu_row">
                                                     <div>Каша овсяная</div>
                                                     <div>120</div>
@@ -143,6 +143,63 @@
                                                     <div>95</div>
                                                     <div>120</div>
                                                     <div>25</div>
+                                                    <div><button class="day_menu_btn" type="button">+1</button></div>
+                                                    <div><button class="day_menu_btn" type="button">+5</button></div>
+                                                    <div><button class="day_menu_btn day_menu_btn--danger" type="button">-1</button></div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="day_menu_table_body" data-meal="meal_lunch">
+                                                <div class="day_menu_row">
+                                                    <div>Суп куриный</div>
+                                                    <div>160</div>
+                                                    <div>120</div>
+                                                    <div>40</div>
+                                                    <div><button class="day_menu_btn" type="button">+1</button></div>
+                                                    <div><button class="day_menu_btn" type="button">+5</button></div>
+                                                    <div><button class="day_menu_btn day_menu_btn--danger" type="button">-1</button></div>
+                                                </div>
+                                                <div class="day_menu_row">
+                                                    <div>Котлета с пюре</div>
+                                                    <div>140</div>
+                                                    <div>110</div>
+                                                    <div>30</div>
+                                                    <div><button class="day_menu_btn" type="button">+1</button></div>
+                                                    <div><button class="day_menu_btn" type="button">+5</button></div>
+                                                    <div><button class="day_menu_btn day_menu_btn--danger" type="button">-1</button></div>
+                                                </div>
+                                                <div class="day_menu_row">
+                                                    <div>Гречка</div>
+                                                    <div>180</div>
+                                                    <div>150</div>
+                                                    <div>30</div>
+                                                    <div><button class="day_menu_btn" type="button">+1</button></div>
+                                                    <div><button class="day_menu_btn" type="button">+5</button></div>
+                                                    <div><button class="day_menu_btn day_menu_btn--danger" type="button">-1</button></div>
+                                                </div>
+                                                <div class="day_menu_row">
+                                                    <div>Салат овощной</div>
+                                                    <div>130</div>
+                                                    <div>95</div>
+                                                    <div>35</div>
+                                                    <div><button class="day_menu_btn" type="button">+1</button></div>
+                                                    <div><button class="day_menu_btn" type="button">+5</button></div>
+                                                    <div><button class="day_menu_btn day_menu_btn--danger" type="button">-1</button></div>
+                                                </div>
+                                                <div class="day_menu_row">
+                                                    <div>Компот</div>
+                                                    <div>170</div>
+                                                    <div>140</div>
+                                                    <div>30</div>
+                                                    <div><button class="day_menu_btn" type="button">+1</button></div>
+                                                    <div><button class="day_menu_btn" type="button">+5</button></div>
+                                                    <div><button class="day_menu_btn day_menu_btn--danger" type="button">-1</button></div>
+                                                </div>
+                                                <div class="day_menu_row">
+                                                    <div>Хлеб</div>
+                                                    <div>150</div>
+                                                    <div>130</div>
+                                                    <div>20</div>
                                                     <div><button class="day_menu_btn" type="button">+1</button></div>
                                                     <div><button class="day_menu_btn" type="button">+5</button></div>
                                                     <div><button class="day_menu_btn day_menu_btn--danger" type="button">-1</button></div>
@@ -431,7 +488,7 @@
                             <div class="chef_serving_divider"></div>
                             <div class="chef_serving_metric">Обедов выдано: 200</div>
                             <div class="chef_serving_divider"></div>
-                            <button class="chef_serving_cta" type="button">Перейти к остаткам</button>
+                            <button class="chef_serving_cta" type="button" data-open-view="chef_stocks">Перейти к остаткам</button>
                         </div>
                     </aside>
                 </section>
@@ -845,6 +902,6 @@
         </div>
     </div>
 
-    <script src="admin_slider.js"></script>
+    <script src="../../static/chef_main/js/admin_slider.js"></script>
 </body>
 </html>
