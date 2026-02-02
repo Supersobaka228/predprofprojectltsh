@@ -434,7 +434,16 @@
                 <form class="menu_configurator_form" aria-label="Конструктор меню">
                     <div class="menu_config_card">
                         <div class="menu_config_header">
-                            <h3 class="menu_config_title">Завтрак</h3>
+                            <div class="menu_config_title_select">
+                                <button class="menu_config_title_btn" type="button" aria-haspopup="listbox" aria-expanded="false">
+                                    <span class="menu_config_title_label">Завтрак</span>
+                                    <img class="menu_config_title_arrow" src="resources/arrow_back_ios_new.svg" alt="">
+                                </button>
+                                <div class="menu_config_title_menu" role="listbox" aria-label="Тип приёма пищи">
+                                    <button class="menu_config_title_item" type="button" role="option" data-value="breakfast">Завтрак</button>
+                                    <button class="menu_config_title_item" type="button" role="option" data-value="lunch">Обед</button>
+                                </div>
+                            </div>
                         </div>
 
                         <div class="menu_config_body">
@@ -464,15 +473,25 @@
 
                                     <div class="menu_config_dish_row">
                                         <span class="menu_config_dish_label">Состав</span>
-                                        <input class="menu_config_input menu_config_input--wide" type="text" name="composition" placeholder="Состав">
+                                        <div class="menu_config_ingredients" aria-live="polite"></div>
+                                        <div class="menu_config_ingredient_picker">
+                                            <button class="menu_config_add" type="button" aria-haspopup="listbox" aria-expanded="false">Добавить</button>
+                                            <div class="menu_config_ingredient_menu" role="listbox" aria-label="Ингредиенты">
+                                                <button class="menu_config_ingredient_option" type="button" data-ingredient-id="milk">Молоко</button>
+                                                <button class="menu_config_ingredient_option" type="button" data-ingredient-id="rice">Рис</button>
+                                                <button class="menu_config_ingredient_option" type="button" data-ingredient-id="oats">Овсяные хлопья</button>
+                                                <button class="menu_config_ingredient_option" type="button" data-ingredient-id="butter">Масло</button>
+                                                <button class="menu_config_ingredient_option" type="button" data-ingredient-id="salt">Соль</button>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
 
                                 <div class="menu_config_requests">
                                     <div class="menu_config_requests_title">Заявки, связанные с блюдом</div>
                                     <div class="menu_config_requests_list">
-                                        <span class="menu_config_requests_item">Молоко пастеризованное</span>
-                                        <span class="menu_config_requests_item">Крупа гречневая</span>
+                                        <button class="menu_config_requests_item" type="button">Молоко пастеризованное</button>
+                                        <button class="menu_config_requests_item" type="button">Крупа гречневая</button>
                                     </div>
                                 </div>
                             </div>
@@ -503,121 +522,25 @@
 
                                     <div class="menu_config_dish_row">
                                         <span class="menu_config_dish_label">Состав</span>
-                                        <input class="menu_config_input menu_config_input--wide" type="text" name="composition" placeholder="Состав">
-                                    </div>
-                                </div>
-
-                                <div class="menu_config_requests">
-                                    <div class="menu_config_requests_title">Заявки, связанные с блюдом</div>
-                                    <div class="menu_config_requests_list">
-                                        <span class="menu_config_requests_item">Молоко пастеризованное</span>
-                                        <span class="menu_config_requests_item">Крупа гречневая</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <button class="menu_config_plus" type="button" aria-label="Добавить блюдо">+</button>
-                        </div>
-
-                        <div class="menu_config_footer">
-                            <div class="menu_config_time">
-                                <span class="menu_config_label">Время выдачи</span>
-                                <input class="menu_config_input menu_config_input--time" type="text" name="time_start" placeholder="Начало">
-                                <input class="menu_config_input menu_config_input--time" type="text" name="time_end" placeholder="Конец">
-                            </div>
-                            <div class="menu_config_price">
-                                <span class="menu_config_label">Цена</span>
-                                <input class="menu_config_input menu_config_input--time" type="text" name="price" placeholder="Цена">
-                            </div>
-                            <div class="menu_config_actions">
-                                <button class="menu_config_btn menu_config_btn--cancel" type="reset">Отмена</button>
-                                <button class="menu_config_btn menu_config_btn--save" type="submit">Сохранить</button>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-
-                <form class="menu_configurator_form" aria-label="Конструктор меню">
-                    <div class="menu_config_card">
-                        <div class="menu_config_header">
-                            <h3 class="menu_config_title">Обед</h3>
-                        </div>
-
-                        <div class="menu_config_body">
-                            <div class="menu_config_block">
-                                <div class="menu_config_dish">
-                                    <div class="menu_config_dish_top">
-                                        <span class="menu_config_dish_label">1-е блюдо</span>
-                                        <input class="menu_config_input menu_config_input--name" type="text" name="dish_name" placeholder="Название блюда">
-                                        <input class="menu_config_input menu_config_input--small" type="text" name="dish_weight" placeholder="Вес">
-                                        <input class="menu_config_input menu_config_input--small" type="text" name="dish_kcal" placeholder="Ккал">
-                                    </div>
-
-                                    <div class="menu_config_dish_row">
-                                        <span class="menu_config_dish_label">Аллергены</span>
-                                        <div class="menu_config_allergens" aria-live="polite"></div>
-                                        <div class="menu_config_allergen_picker">
+                                        <div class="menu_config_ingredients" aria-live="polite"></div>
+                                        <div class="menu_config_ingredient_picker">
                                             <button class="menu_config_add" type="button" aria-haspopup="listbox" aria-expanded="false">Добавить</button>
-                                            <div class="menu_config_allergen_menu" role="listbox" aria-label="Аллергены">
-                                                <button class="menu_config_allergen_option" type="button" data-allergen-id="gluten">Глютен</button>
-                                                <button class="menu_config_allergen_option" type="button" data-allergen-id="lactose">Лактоза</button>
-                                                <button class="menu_config_allergen_option" type="button" data-allergen-id="eggs">Яйца</button>
-                                                <button class="menu_config_allergen_option" type="button" data-allergen-id="nuts">Орехи</button>
-                                                <button class="menu_config_allergen_option" type="button" data-allergen-id="soy">Соя</button>
+                                            <div class="menu_config_ingredient_menu" role="listbox" aria-label="Ингредиенты">
+                                                <button class="menu_config_ingredient_option" type="button" data-ingredient-id="eggs">Яйца</button>
+                                                <button class="menu_config_ingredient_option" type="button" data-ingredient-id="flour">Мука</button>
+                                                <button class="menu_config_ingredient_option" type="button" data-ingredient-id="milk">Молоко</button>
+                                                <button class="menu_config_ingredient_option" type="button" data-ingredient-id="sugar">Сахар</button>
+                                                <button class="menu_config_ingredient_option" type="button" data-ingredient-id="salt">Соль</button>
                                             </div>
                                         </div>
                                     </div>
-
-                                    <div class="menu_config_dish_row">
-                                        <span class="menu_config_dish_label">Состав</span>
-                                        <input class="menu_config_input menu_config_input--wide" type="text" name="composition" placeholder="Состав">
-                                    </div>
                                 </div>
 
                                 <div class="menu_config_requests">
                                     <div class="menu_config_requests_title">Заявки, связанные с блюдом</div>
                                     <div class="menu_config_requests_list">
-                                        <span class="menu_config_requests_item">Молоко пастеризованное</span>
-                                        <span class="menu_config_requests_item">Крупа гречневая</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="menu_config_block">
-                                <div class="menu_config_dish">
-                                    <div class="menu_config_dish_top">
-                                        <span class="menu_config_dish_label">1-е блюдо</span>
-                                        <input class="menu_config_input menu_config_input--name" type="text" name="dish_name" placeholder="Название блюда">
-                                        <input class="menu_config_input menu_config_input--small" type="text" name="dish_weight" placeholder="Вес">
-                                        <input class="menu_config_input menu_config_input--small" type="text" name="dish_kcal" placeholder="Ккал">
-                                    </div>
-
-                                    <div class="menu_config_dish_row">
-                                        <span class="menu_config_dish_label">Аллергены</span>
-                                        <div class="menu_config_allergens" aria-live="polite"></div>
-                                        <div class="menu_config_allergen_picker">
-                                            <button class="menu_config_add" type="button" aria-haspopup="listbox" aria-expanded="false">Добавить</button>
-                                            <div class="menu_config_allergen_menu" role="listbox" aria-label="Аллергены">
-                                                <button class="menu_config_allergen_option" type="button" data-allergen-id="gluten">Глютен</button>
-                                                <button class="menu_config_allergen_option" type="button" data-allergen-id="lactose">Лактоза</button>
-                                                <button class="menu_config_allergen_option" type="button" data-allergen-id="eggs">Яйца</button>
-                                                <button class="menu_config_allergen_option" type="button" data-allergen-id="nuts">Орехи</button>
-                                                <button class="menu_config_allergen_option" type="button" data-allergen-id="soy">Соя</button>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="menu_config_dish_row">
-                                        <span class="menu_config_dish_label">Состав</span>
-                                        <input class="menu_config_input menu_config_input--wide" type="text" name="composition" placeholder="Состав">
-                                    </div>
-                                </div>
-
-                                <div class="menu_config_requests">
-                                    <div class="menu_config_requests_title">Заявки, связанные с блюдом</div>
-                                    <div class="menu_config_requests_list">
-                                        <span class="menu_config_requests_item">Молоко пастеризованное</span>
-                                        <span class="menu_config_requests_item">Крупа гречневая</span>
+                                        <button class="menu_config_requests_item" type="button">Молоко пастеризованное</button>
+                                        <button class="menu_config_requests_item" type="button">Крупа гречневая</button>
                                     </div>
                                 </div>
                             </div>
