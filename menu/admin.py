@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Allergen, DayOrder, Meal, MenuItem
+from .models import Allergen, DayOrder, Meal, MenuItem, MealIngredient
 
 
 @admin.register(DayOrder)
@@ -24,8 +24,19 @@ class AllergenAdmin(admin.ModelAdmin):
     ordering = ('sort_order', 'name')
 
 
+class MealIngredientInline(admin.TabularInline):
+    model = MealIngredient
+    extra = 1
+
+
 @admin.register(Meal)
 class MealAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'weight', 'calories')
+    list_display = ('id', 'name', 'weight', 'calories', 'ingredients_summary')
     search_fields = ('name',)
     filter_horizontal = ('allergens',)
+    inlines = (MealIngredientInline,)
+
+    def ingredients_summary(self, obj):
+        return obj.ingredients_with_mass
+
+    ingredients_summary.short_description = 'Ингредиенты'
