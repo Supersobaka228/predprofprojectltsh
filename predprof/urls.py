@@ -17,6 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
+import chef_main.views
 import menu.views
 import users.views
 import admin_main.views
@@ -28,5 +29,6 @@ urlpatterns = [
     path('menu/update_allergens/', menu.views.update_allergens, name='update_allergens'),
     path('admin_main/', admin_main.views.admin, name='admin_main'),
     path('balance/topup/', users.views.topup_balance, name='topup_balance'),
+    path('chef_main/', chef_main.views.chef, name='chef_main'),
     path('admin/', admin.site.urls),
 ]
