@@ -5,7 +5,7 @@ from django.http import JsonResponse
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 
-from admin_main.models import Pay
+
 from .forms import ReviewForm, OrderForm
 from .models import MenuItem, DayOrder, Review, Order, Allergen
 from datetime import datetime, timedelta

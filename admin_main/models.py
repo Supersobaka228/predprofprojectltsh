@@ -2,6 +2,7 @@ from django.db import models
 
 from menu.models import Meal
 from users.models import User
+from menu.models import Ingredient
 
 
 # Create your models here.
@@ -9,21 +10,16 @@ from users.models import User
 class BuyOrder(models.Model):
     id = models.AutoField(primary_key=True)
     summ = models.IntegerField()
-    items = models.CharField(max_length=200)
+    items = models.ForeignKey(Ingredient, on_delete=models.CASCADE)
     user_id = models.ForeignKey(User, on_delete=models.CASCADE)
+
     date = models.DateTimeField(auto_now_add=True)
+    status = models.CharField(default='ns', max_length=10)
 
 class Notification(models.Model):
     text = models.CharField(max_length=255)
     user_id = models.ForeignKey(User, on_delete=models.CASCADE)
     date = models.DateTimeField(auto_now_add=True)
-
-
-class Pay(models.Model):
-    id = models.AutoField(primary_key=True)
-    summ = models.IntegerField()
-    date = models.CharField()
-    user_id = models.ForeignKey(User, on_delete=models.CASCADE)
 
 
 class Food_count(models.Model):
@@ -32,6 +28,3 @@ class Food_count(models.Model):
     num = models.IntegerField()
 
 
-class Come(models.Model):
-    id = models.AutoField(primary_key=True)
-    num = models.IntegerField()

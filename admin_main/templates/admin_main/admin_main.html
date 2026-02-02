@@ -559,6 +559,8 @@
                         </div>
 
                         <div class="orders_table_body">
+                            {% for item in buyorders %}
+                            {% if item.status == "allowed" %}
                             <div class="orders_row">
                                 <div class="orders_cell">105</div>
                                 <div class="orders_cell">10.01.26</div>
@@ -574,6 +576,8 @@
                                     </button>
                                 </div>
                             </div>
+                            {% endif %}
+                            {% if item.status == "rejected" %}
                             <div class="orders_row">
                                 <div class="orders_cell">104</div>
                                 <div class="orders_cell">10.01.26</div>
@@ -582,6 +586,8 @@
                                 <div class="orders_cell">42 тыс. ₽</div>
                                 <div class="orders_cell"><span class="orders_status orders_status--approved">Одобрено</span></div>
                             </div>
+                            {% endif %}
+                            {% if item.status == "ns" %}
                             <div class="orders_row">
                                 <div class="orders_cell">103</div>
                                 <div class="orders_cell">10.01.26</div>
@@ -590,62 +596,8 @@
                                 <div class="orders_cell">42 тыс. ₽</div>
                                 <div class="orders_cell"><span class="orders_status orders_status--rejected">Отклонено</span></div>
                             </div>
-                            <div class="orders_row">
-                                <div class="orders_cell">102</div>
-                                <div class="orders_cell">10.01.26</div>
-                                <div class="orders_cell">Сидоров П.</div>
-                                <div class="orders_cell">Картофель</div>
-                                <div class="orders_cell">42 тыс. ₽</div>
-                                <div class="orders_cell"><span class="orders_status orders_status--approved">Одобрено</span></div>
-                            </div>
-                            <div class="orders_row">
-                                <div class="orders_cell">101</div>
-                                <div class="orders_cell">10.01.26</div>
-                                <div class="orders_cell">Картошкин А.</div>
-                                <div class="orders_cell">Картофель</div>
-                                <div class="orders_cell">42 тыс. ₽</div>
-                                <div class="orders_cell"><span class="orders_status orders_status--approved">Одобрено</span></div>
-                            </div>
-                            <div class="orders_row">
-                                <div class="orders_cell">101</div>
-                                <div class="orders_cell">10.01.26</div>
-                                <div class="orders_cell">Картошкин А.</div>
-                                <div class="orders_cell">Картофель</div>
-                                <div class="orders_cell">42 тыс. ₽</div>
-                                <div class="orders_cell"><span class="orders_status orders_status--approved">Одобрено</span></div>
-                            </div>
-                            <div class="orders_row">
-                                <div class="orders_cell">101</div>
-                                <div class="orders_cell">10.01.26</div>
-                                <div class="orders_cell">Картошкин А.</div>
-                                <div class="orders_cell">Картофель</div>
-                                <div class="orders_cell">42 тыс. ₽</div>
-                                <div class="orders_cell"><span class="orders_status orders_status--approved">Одобрено</span></div>
-                            </div>
-                            <div class="orders_row">
-                                <div class="orders_cell">101</div>
-                                <div class="orders_cell">10.01.26</div>
-                                <div class="orders_cell">Картошкин А.</div>
-                                <div class="orders_cell">Картофель</div>
-                                <div class="orders_cell">42 тыс. ₽</div>
-                                <div class="orders_cell"><span class="orders_status orders_status--approved">Одобрено</span></div>
-                            </div>
-                            <div class="orders_row">
-                                <div class="orders_cell">101</div>
-                                <div class="orders_cell">10.01.26</div>
-                                <div class="orders_cell">Картошкин А.</div>
-                                <div class="orders_cell">Картофель</div>
-                                <div class="orders_cell">42 тыс. ₽</div>
-                                <div class="orders_cell"><span class="orders_status orders_status--approved">Одобрено</span></div>
-                            </div>
-                            <div class="orders_row">
-                                <div class="orders_cell">101</div>
-                                <div class="orders_cell">10.01.26</div>
-                                <div class="orders_cell">Картошкин А.</div>
-                                <div class="orders_cell">Картофель</div>
-                                <div class="orders_cell">42 тыс. ₽</div>
-                                <div class="orders_cell"><span class="orders_status orders_status--approved">Одобрено</span></div>
-                            </div>
+                            {% endif %}
+                            {% endfor %}
                         </div>
 
                         <div class="orders_table_footer">
