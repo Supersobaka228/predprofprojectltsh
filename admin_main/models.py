@@ -2,18 +2,19 @@ from django.db import models
 
 from menu.models import Meal
 from users.models import User
+from menu.models import Ingredient
 
 
 # Create your models here.
 
 class BuyOrder(models.Model):
-    STATUS_CHOICES = ['allowed', 'rejected', 'ns']
     id = models.AutoField(primary_key=True)
     summ = models.IntegerField()
-    items = models.ManyToManyField('Part', blank=True, related_name='items')
+    items = models.ForeignKey(Ingredient, on_delete=models.CASCADE)
     user_id = models.ForeignKey(User, on_delete=models.CASCADE)
+
     date = models.DateTimeField(auto_now_add=True)
-    status = models.CharField(choices=STATUS_CHOICES, default='ns', max_length=10)
+    status = models.CharField(default='ns', max_length=10)
 
 class Notification(models.Model):
     text = models.CharField(max_length=255)
