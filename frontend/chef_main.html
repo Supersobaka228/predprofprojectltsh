@@ -86,17 +86,17 @@
                                             <div class="day_menu_row day_menu_row--head">
                                                 <div>Блюдо</div>
                                                 <div>Заказано</div>
+                                                <div>Выдано</div>
                                                 <div>Наличие</div>
-                                                <div>Осталось</div>
                                                 <div></div>
-                                                <div></div>
+                                                <div>Выдачи</div>
                                                 <div></div>
                                             </div>
                                             <div class="day_menu_table_body">
                                                 <div class="day_menu_row">
                                                     <div>Каша овсяная</div>
                                                     <div>120</div>
-                                                    <div>150</div>
+                                                    <div>90</div>
                                                     <div>30</div>
                                                     <div><button class="day_menu_btn" type="button">+1</button></div>
                                                     <div><button class="day_menu_btn" type="button">+5</button></div>
@@ -154,7 +154,7 @@
                             </div>
                         </section>
                         <section class="main_orders_panel">
-                            <p>Новые заявки на закупку</p>
+                            <p>Ваши заявки на закупку</p>
                             <div class="orders_bg">
                                 <div class="orders_list">
                                     <table class="orders_table">
@@ -297,11 +297,144 @@
                 </div>
             </header>
 
-            <section class="chef_page_body">
-                <div class="chef_panel">
-                    <h2 class="chef_panel_title">План выдач</h2>
-                    <p class="chef_panel_text">Список блюд и время выдачи.</p>
+            <section class="admin_stats_panel">
+                <div class="chef_serving_datebar" data-role="datebar" data-date="2026-01-19" data-week-start="2026-01-19" data-week-end="2026-01-23">
+                    <div class="chef_serving_date_left">
+                        <span class="chef_serving_date_label">Понедельник,</span>
+                        <span class="chef_serving_date_value" data-role="date-display">19.01.2026</span>
+                    </div>
+                    <div class="chef_serving_days" role="group" aria-label="Дни недели" data-role="weekday-switch">
+                        <button class="chef_serving_day is-active" type="button" data-day="1" data-date="2026-01-19">Пн</button>
+                        <button class="chef_serving_day" type="button" data-day="2" data-date="2026-01-20">Вт</button>
+                        <button class="chef_serving_day" type="button" data-day="3" data-date="2026-01-21">Ср</button>
+                        <button class="chef_serving_day" type="button" data-day="4" data-date="2026-01-22">Чт</button>
+                        <button class="chef_serving_day" type="button" data-day="5" data-date="2026-01-23">Пт</button>
+                    </div>
+                    <div class="chef_serving_week_switch" aria-label="Переключение недели">
+                        <button class="chef_serving_week_btn" type="button" data-action="week-prev" aria-label="Предыдущая неделя">
+                            <img src="resources/left_arrow_stats.svg" alt="">
+                        </button>
+                        <span class="chef_serving_week_label" data-role="week-label">19.01 - 23.01</span>
+                        <button class="chef_serving_week_btn chef_serving_week_btn--next" type="button" data-action="week-next" aria-label="Следующая неделя">
+                            <img src="resources/left_arrow_stats.svg" alt="">
+                        </button>
+                    </div>
                 </div>
+            </section>
+
+
+            <section class="chef_page_body">
+                <section class="chef_serving_page">
+                    <div class="chef_meal_list" aria-label="Список приёмов пищи">
+                        <article class="chef_meal_block">
+                            <div class="chef_meal_block_header">
+                                <span class="chef_meal_title">Завтрак</span>
+                                <span class="chef_meal_count">870 порций</span>
+                            </div>
+                            <div class="chef_meal_cards">
+                                <div class="chef_meal_card">
+                                    <div class="chef_meal_card_label">1-е блюдо</div>
+                                    <div class="chef_meal_card_body">
+                                        <img src="resources/meal1.svg" alt="">
+                                        <div class="chef_meal_card_name">Каша гречневая</div>
+                                        <div class="chef_meal_card_amount">230/400 порций</div>
+                                    </div>
+                                </div>
+                                <div class="chef_meal_card">
+                                    <div class="chef_meal_card_label">1-е блюдо</div>
+                                    <div class="chef_meal_card_body">
+                                        <img src="resources/meal1.svg" alt="">
+                                        <div class="chef_meal_card_name">Сырники с джемом</div>
+                                        <div class="chef_meal_card_amount">270/450 порций</div>
+                                    </div>
+                                </div>
+                                <div class="chef_meal_card">
+                                    <div class="chef_meal_card_label">1-е блюдо</div>
+                                    <div class="chef_meal_card_body">
+                                        <img src="resources/meal1.svg" alt="">
+                                        <div class="chef_meal_card_name">Чай чёрный</div>
+                                        <div class="chef_meal_card_amount">370/500 порций</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
+
+                        <article class="chef_meal_block">
+                            <div class="chef_meal_block_header">
+                                <span class="chef_meal_title">Обед</span>
+                                <span class="chef_meal_count">920 порций</span>
+                            </div>
+                            <div class="chef_meal_cards">
+                                <div class="chef_meal_card">
+                                    <div class="chef_meal_card_label">1-е блюдо</div>
+                                    <div class="chef_meal_card_body">
+                                        <img src="resources/meal1.svg" alt="">
+                                        <div class="chef_meal_card_name">Суп куриный</div>
+                                        <div class="chef_meal_card_amount">280/400 порций</div>
+                                    </div>
+                                </div>
+                                <div class="chef_meal_card">
+                                    <div class="chef_meal_card_label">2-е блюдо</div>
+                                    <div class="chef_meal_card_body">
+                                        <img src="resources/meal1.svg" alt="">
+                                        <div class="chef_meal_card_name">Котлета с пюре</div>
+                                        <div class="chef_meal_card_amount">260/350 порций</div>
+                                    </div>
+                                </div>
+                                <div class="chef_meal_card">
+                                    <div class="chef_meal_card_label">Напиток</div>
+                                    <div class="chef_meal_card_body">
+                                        <img src="resources/meal1.svg" alt="">
+                                        <div class="chef_meal_card_name">Компот</div>
+                                        <div class="chef_meal_card_amount">380/520 порций</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
+
+                        <article class="chef_meal_block">
+                            <div class="chef_meal_block_header">
+                                <span class="chef_meal_title">Полдник</span>
+                                <span class="chef_meal_count">540 порций</span>
+                            </div>
+                            <div class="chef_meal_cards">
+                                <div class="chef_meal_card">
+                                    <div class="chef_meal_card_label">Перекус</div>
+                                    <div class="chef_meal_card_body">
+                                        <img src="resources/meal1.svg" alt="">
+                                        <div class="chef_meal_card_name">Йогурт</div>
+                                        <div class="chef_meal_card_amount">180/240 порций</div>
+                                    </div>
+                                </div>
+                                <div class="chef_meal_card">
+                                    <div class="chef_meal_card_label">Фрукт</div>
+                                    <div class="chef_meal_card_body">
+                                        <img src="resources/meal1.svg" alt="">
+                                        <div class="chef_meal_card_name">Яблоко</div>
+                                        <div class="chef_meal_card_amount">200/250 порций</div>
+                                    </div>
+                                </div>
+                                <div class="chef_meal_card">
+                                    <div class="chef_meal_card_label">Напиток</div>
+                                    <div class="chef_meal_card_body">
+                                        <img src="resources/meal1.svg" alt="">
+                                        <div class="chef_meal_card_name">Морс</div>
+                                        <div class="chef_meal_card_amount">160/220 порций</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                    <aside class="chef_serving_side" aria-label="Сводка выдач">
+                        <div class="chef_serving_card">
+                            <div class="chef_serving_metric">Завтраков выдано: 130</div>
+                            <div class="chef_serving_divider"></div>
+                            <div class="chef_serving_metric">Обедов выдано: 200</div>
+                            <div class="chef_serving_divider"></div>
+                            <button class="chef_serving_cta" type="button">Перейти к остаткам</button>
+                        </div>
+                    </aside>
+                </section>
             </section>
         </div>
 
