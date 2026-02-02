@@ -1,120 +1,158 @@
 document.addEventListener('DOMContentLoaded', () => {
-  const form = document.querySelector('.menu_configurator_form');
-  if (!form) {
+  const forms = document.querySelectorAll('.menu_configurator_form');
+  if (forms.length === 0) {
     return;
   }
 
   const closeAllPickers = () => {
-    form.querySelectorAll('.menu_config_allergen_picker.is-open').forEach((picker) => {
-      console.log(123);
-      picker.classList.remove('is-open');
-      const button = picker.querySelector('.menu_config_add');
-      if (button) {
-        button.setAttribute('aria-expanded', 'false');
-      }
-    });
-  };
-
-
-
-  form.addEventListener('click', (event) => {
-
-    const addButton = event.target.closest('.menu_config_add');
-
-    if (addButton) {
-      console.log(39045);
-      event.preventDefault();
-      event.stopPropagation();
-      const picker = addButton.closest('.menu_config_allergen_picker');
-
-      if (!picker) {
-        return;
-      }
-
-      const isOpen = picker.classList.contains('is-open');
-      closeAllPickers();
-      picker.classList.toggle('is-open', !isOpen);
-      addButton.setAttribute('aria-expanded', String(!isOpen));
-      return;
-    }
-
-    const option = event.target.closest('.menu_config_allergen_option');
-    if (option) {
-      event.preventDefault();
-      const picker = option.closest('.menu_config_allergen_picker');
-      const dishRow = option.closest('.menu_config_dish_row');
-      const allergensWrap = dishRow ? dishRow.querySelector('.menu_config_allergens') : null;
-      if (!allergensWrap) {
-        return;
-      }
-
-      const allergenId = option.dataset.allergenId || option.textContent.trim();
-      const allergenLabel = option.textContent.trim();
-
-      const existing = allergensWrap.querySelector(`[data-allergen-id="${allergenId}"]`);
-      if (!existing) {
-        const chip = document.createElement('span');
-        chip.className = 'menu_config_chip';
-        chip.dataset.allergenId = allergenId;
-
-        const chipText = document.createElement('span');
-        chipText.textContent = allergenLabel;
-
-        const removeButton = document.createElement('button');
-        removeButton.type = 'button';
-        removeButton.className = 'menu_config_chip_button';
-        removeButton.setAttribute('aria-label', `Удалить аллерген ${allergenLabel}`);
-
-        const removeIcon = document.createElement('img');
-        removeIcon.src = 'resources/delete.svg';
-        removeIcon.alt = '';
-        removeButton.appendChild(removeIcon);
-
-        chip.appendChild(chipText);
-        chip.appendChild(removeButton);
-        allergensWrap.appendChild(chip);
-
-        const hiddenInput = document.createElement('input');
-        hiddenInput.type = 'hidden';
-        hiddenInput.name = 'allergens[]';
-        hiddenInput.value = allergenId;
-        hiddenInput.dataset.allergenId = allergenId;
-        allergensWrap.appendChild(hiddenInput);
-      }
-
-      if (picker) {
+    document.querySelectorAll('.menu_config_allergen_picker.is-open, .menu_config_ingredient_picker.is-open')
+      .forEach((picker) => {
         picker.classList.remove('is-open');
         const button = picker.querySelector('.menu_config_add');
         if (button) {
           button.setAttribute('aria-expanded', 'false');
         }
-      }
+      });
+  };
+
+  const buildChip = ({ label, id, type }) => {
+    const chip = document.createElement('span');
+    chip.className = 'menu_config_chip';
+    chip.dataset.itemId = id;
+    chip.dataset.itemType = type;
+
+    const chipText = document.createElement('span');
+    chipText.textContent = label;
+
+    chip.appendChild(chipText);
+
+    if (type === 'ingredient') {
+      const gramsInput = document.createElement('input');
+      gramsInput.type = 'number';
+      gramsInput.min = '1';
+      gramsInput.placeholder = 'г';
+      gramsInput.className = 'menu_config_chip_input';
+      gramsInput.name = 'ingredients_grams[]';
+      gramsInput.dataset.ingredientId = id;
+      chip.appendChild(gramsInput);
     }
+
+    const removeButton = document.createElement('button');
+    removeButton.type = 'button';
+    removeButton.className = 'menu_config_chip_button';
+    removeButton.setAttribute('aria-label', `Удалить ${type === 'ingredient' ? 'ингредиент' : 'аллерген'} ${label}`);
+
+    const removeIcon = document.createElement('img');
+    removeIcon.src = 'resources/delete.svg';
+    removeIcon.alt = '';
+    removeButton.appendChild(removeIcon);
+
+    chip.appendChild(removeButton);
+    return chip;
+  };
+
+  forms.forEach((form) => {
+    form.addEventListener('click', (event) => {
+      const addButton = event.target.closest('.menu_config_add');
+      if (addButton) {
+        event.preventDefault();
+        event.stopPropagation();
+        const picker = addButton.closest('.menu_config_allergen_picker, .menu_config_ingredient_picker');
+        if (!picker) {
+          return;
+        }
+        const isOpen = picker.classList.contains('is-open');
+        closeAllPickers();
+        picker.classList.toggle('is-open', !isOpen);
+        addButton.setAttribute('aria-expanded', String(!isOpen));
+        return;
+      }
+
+      const allergenOption = event.target.closest('.menu_config_allergen_option');
+      if (allergenOption) {
+        event.preventDefault();
+        const dishRow = allergenOption.closest('.menu_config_dish_row');
+        const allergensWrap = dishRow ? dishRow.querySelector('.menu_config_allergens') : null;
+        if (!allergensWrap) {
+          return;
+        }
+
+        const allergenId = allergenOption.dataset.allergenId || allergenOption.textContent.trim();
+        const allergenLabel = allergenOption.textContent.trim();
+
+        const existing = allergensWrap.querySelector(`[data-item-id="${allergenId}"][data-item-type="allergen"]`);
+        if (!existing) {
+          const chip = buildChip({ label: allergenLabel, id: allergenId, type: 'allergen' });
+          allergensWrap.appendChild(chip);
+
+          const hiddenInput = document.createElement('input');
+          hiddenInput.type = 'hidden';
+          hiddenInput.name = 'allergens[]';
+          hiddenInput.value = allergenId;
+          hiddenInput.dataset.itemId = allergenId;
+          hiddenInput.dataset.itemType = 'allergen';
+          allergensWrap.appendChild(hiddenInput);
+        }
+
+        closeAllPickers();
+        return;
+      }
+
+      const ingredientOption = event.target.closest('.menu_config_ingredient_option');
+      if (ingredientOption) {
+        event.preventDefault();
+        const dishRow = ingredientOption.closest('.menu_config_dish_row');
+        const ingredientsWrap = dishRow ? dishRow.querySelector('.menu_config_ingredients') : null;
+        if (!ingredientsWrap) {
+          return;
+        }
+
+        const ingredientId = ingredientOption.dataset.ingredientId || ingredientOption.textContent.trim();
+        const ingredientLabel = ingredientOption.textContent.trim();
+
+        const existing = ingredientsWrap.querySelector(`[data-item-id="${ingredientId}"][data-item-type="ingredient"]`);
+        if (!existing) {
+          const chip = buildChip({ label: ingredientLabel, id: ingredientId, type: 'ingredient' });
+          ingredientsWrap.appendChild(chip);
+
+          const hiddenInput = document.createElement('input');
+          hiddenInput.type = 'hidden';
+          hiddenInput.name = 'ingredients[]';
+          hiddenInput.value = ingredientId;
+          hiddenInput.dataset.itemId = ingredientId;
+          hiddenInput.dataset.itemType = 'ingredient';
+          ingredientsWrap.appendChild(hiddenInput);
+        }
+
+        closeAllPickers();
+      }
+    });
+
+    form.addEventListener('click', (event) => {
+      const removeButton = event.target.closest('.menu_config_chip_button');
+      if (!removeButton) {
+        return;
+      }
+      event.preventDefault();
+      const chip = removeButton.closest('.menu_config_chip');
+      const wrap = chip ? chip.parentElement : null;
+      const itemId = chip ? chip.dataset.itemId : null;
+      const itemType = chip ? chip.dataset.itemType : null;
+
+      if (chip && wrap) {
+        chip.remove();
+        if (itemId && itemType) {
+          const hiddenInput = wrap.querySelector(`input[type="hidden"][data-item-id="${itemId}"][data-item-type="${itemType}"]`);
+          if (hiddenInput) {
+            hiddenInput.remove();
+          }
+        }
+      }
+    });
   });
 
   document.addEventListener('click', () => {
     closeAllPickers();
-  });
-
-  form.addEventListener('click', (event) => {
-    const removeButton = event.target.closest('.menu_config_chip_button');
-    if (!removeButton) {
-        return;
-    }
-    event.preventDefault();
-    const chip = removeButton.closest('.menu_config_chip');
-    const allergensWrap = chip ? chip.parentElement : null;
-    const allergenId = chip ? chip.dataset.allergenId : null;
-
-    if (chip && allergensWrap) {
-      chip.remove();
-      if (allergenId) {
-        const hiddenInput = allergensWrap.querySelector(`input[type="hidden"][data-allergen-id="${allergenId}"]`);
-        if (hiddenInput) {
-          hiddenInput.remove();
-        }
-      }
-    }
   });
 
   document.addEventListener('keydown', (event) => {
