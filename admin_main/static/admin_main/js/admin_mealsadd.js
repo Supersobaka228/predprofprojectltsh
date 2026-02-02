@@ -77,9 +77,19 @@ document.addEventListener('DOMContentLoaded', function() {
                 </div>
 
                 <div class="menu_config_dish_row">
-                    <span class="menu_config_dish_label">Состав</span>
-                    <textarea class="menu_config_input menu_config_input--wide" name="composition[]" placeholder="Состав" rows="3"></textarea>
-                </div>
+                                        <span class="menu_config_dish_label">Состав</span>
+                                        <div class="menu_config_ingredients" aria-live="polite"></div>
+                                        <div class="menu_config_ingredient_picker">
+                                            <button class="menu_config_add" type="button" aria-haspopup="listbox" aria-expanded="false">Добавить</button>
+                                            <div class="menu_config_ingredient_menu" role="listbox" aria-label="Ингредиенты">
+                                                <button class="menu_config_ingredient_option" type="button" data-ingredient-id="milk">Молоко</button>
+                                                <button class="menu_config_ingredient_option" type="button" data-ingredient-id="rice">Рис</button>
+                                                <button class="menu_config_ingredient_option" type="button" data-ingredient-id="oats">Овсяные хлопья</button>
+                                                <button class="menu_config_ingredient_option" type="button" data-ingredient-id="butter">Масло</button>
+                                                <button class="menu_config_ingredient_option" type="button" data-ingredient-id="salt">Соль</button>
+                                            </div>
+                                        </div>
+                                    </div>
             </div>
 
             <div class="menu_config_requests">

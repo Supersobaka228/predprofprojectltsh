@@ -31,4 +31,6 @@ urlpatterns = [
     path('balance/topup/', users.views.topup_balance, name='topup_balance'),
     path('chef_main/', chef_main.views.chef, name='chef_main'),
     path('admin/', admin.site.urls),
+    path('update-order-status/', admin_main.views.update_order_status, name='update_order_status'),
+
 ]

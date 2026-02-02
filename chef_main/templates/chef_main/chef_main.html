@@ -816,6 +816,7 @@
             <section class="chef_page_body">
                 <section class="chef_order_new_page">
                     <form class="chef_order_new_panel" id="chefOrderForm" action="#" method="post">
+                        {% csrf_token %}
                         <div class="chef_order_new_header">
                             <h3 class="chef_order_new_title">Состав заявки</h3>
                             <span class="chef_order_new_sub">Выберите продукт и количество</span>

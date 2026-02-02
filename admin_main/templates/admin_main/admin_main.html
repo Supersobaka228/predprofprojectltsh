@@ -299,7 +299,7 @@
             <section class="admin_stats_panel admin_menu_panel">
                 <div class="admin_menu_filters">
                     <div class="admin_menu_left">
-                        <div class="admin_menu_date">Понедельник, 19.01.2026</div>
+                        <div class="admin_menu_date" id="admin_menu_date"></div>
                         <div class="admin_menu_days" role="group" aria-label="Дни недели">
                             <button class="admin_menu_day" type="button">Пн</button>
                             <button class="admin_menu_day" type="button">Вт</button>
@@ -325,10 +325,109 @@
             </section>
 
             <section class="admin_menu_configurator_main">
-                <form class="menu_configurator_form" aria-label="Конструктор меню">
+                <form class="menu_configurator_form" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="category" value="Обед">
+                    <input type="hidden" name="day" value="admin_menu_date">
+
                     <div class="menu_config_card">
-                        <div class="menu_config_header">
-                            <div class="menu_config_title_select">
+                        <div class="menu_config_title_select">
+                                <button class="menu_config_title_btn" type="button" aria-haspopup="listbox" aria-expanded="false">
+                                    <span class="menu_config_title_label">Завтрак</span>
+                                    <img class="menu_config_title_arrow" src="resources/arrow_back_ios_new.svg" alt="">
+                                </button>
+                                <div class="menu_config_title_menu" role="listbox" aria-label="Тип приёма пищи">
+                                    <button class="menu_config_title_item" type="button" role="option" data-value="breakfast">Завтрак</button>
+                                    <button class="menu_config_title_item" type="button" role="option" data-value="lunch">Обед</button>
+                                </div>
+                        </div>
+
+                    <div class="menu_config_body" id="dishes-container">
+            <!-- Первый блок блюда -->
+                    <div class="menu_config_block dish-block" data-dish-index="0">
+                        <div class="menu_config_dish">
+                            <div class="menu_config_dish_top">
+                                <span class="menu_config_dish_label">Блюдо <span class="dish-number">1</span></span>
+                                <button type="button" class="remove-dish-btn" style="display:none;">×</button>
+                            </div>
+
+                            <div class="menu_config_dish_row">
+                                <input class="menu_config_input menu_config_input--name" type="text" name="dish_name[]" placeholder="Название блюда" required>
+                                <input class="menu_config_input menu_config_input--small" type="number" name="dish_weight[]" placeholder="Вес (г)" min="0">
+                            <input class="menu_config_input menu_config_input--small" type="number" name="dish_kcal[]" placeholder="Ккал" min="0">
+                            </div>
+
+                    <div class="menu_config_dish_row">
+                        <span class="menu_config_dish_label">Аллергены</span>
+                        <div class="menu_config_allergens" aria-live="polite"></div>
+                        <div class="menu_config_allergen_picker">
+                            <button class="menu_config_add" type="button" aria-haspopup="listbox" aria-expanded="false">Добавить</button>
+                            <div class="menu_config_allergen_menu" role="listbox" aria-label="Аллергены">
+                                <button class="menu_config_allergen_option" type="button" data-allergen-id="gluten">Глютен</button>
+                                <button class="menu_config_allergen_option" type="button" data-allergen-id="lactose">Лактоза</button>
+                                <button class="menu_config_allergen_option" type="button" data-allergen-id="eggs">Яйца</button>
+                                <button class="menu_config_allergen_option" type="button" data-allergen-id="nuts">Орехи</button>
+                                <button class="menu_config_allergen_option" type="button" data-allergen-id="soy">Соя</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="menu_config_dish_row">
+                                        <span class="menu_config_dish_label">Состав</span>
+                                        <div class="menu_config_ingredients" aria-live="polite"></div>
+                                        <div class="menu_config_ingredient_picker">
+                                            <button class="menu_config_add" type="button" aria-haspopup="listbox" aria-expanded="false">Добавить</button>
+                                            <div class="menu_config_ingredient_menu" role="listbox" aria-label="Ингредиенты">
+                                                <button class="menu_config_ingredient_option" type="button" data-ingredient-id="milk">Молоко</button>
+                                                <button class="menu_config_ingredient_option" type="button" data-ingredient-id="rice">Рис</button>
+                                                <button class="menu_config_ingredient_option" type="button" data-ingredient-id="oats">Овсяные хлопья</button>
+                                                <button class="menu_config_ingredient_option" type="button" data-ingredient-id="butter">Масло</button>
+                                                <button class="menu_config_ingredient_option" type="button" data-ingredient-id="salt">Соль</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                </div>
+
+                <div class="menu_config_requests">
+                    <div class="menu_config_requests_title">Заявки, связанные с блюдом</div>
+                    <div class="menu_config_requests_list">
+                        <span class="menu_config_requests_item">Молоко пастеризованное</span>
+                        <span class="menu_config_requests_item">Крупа гречневая</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Кнопка добавления нового блюда -->
+        <div class="menu_config_actions">
+            <button type="button" class="menu_config_btn add-dish-btn">
+                + Добавить блюдо
+            </button>
+        </div>
+
+        <div class="menu_config_footer">
+            <div class="menu_config_time">
+                <span class="menu_config_label">Время выдачи</span>
+                <input class="menu_config_input menu_config_input--time" type="time" name="time_start" value="12:00">
+                <input class="menu_config_input menu_config_input--time" type="time" name="time_end" value="14:00">
+            </div>
+            <div class="menu_config_price">
+                <span class="menu_config_label">Цена</span>
+                <input class="menu_config_input menu_config_input--price" type="number" name="price" placeholder="Цена" min="0">
+            </div>
+            <div class="menu_config_actions">
+                <button class="menu_config_btn menu_config_btn--cancel" type="reset">Отмена</button>
+                <button class="menu_config_btn menu_config_btn--save" type="submit">Сохранить меню</button>
+            </div>
+        </div>
+    </div>
+</form>
+
+                <form class="menu_configurator_form" aria-label="Конструктор меню" method="post">
+                    <input type="hidden" name="day" id="day_input">
+                    <input type="hidden" name="category" value="lunch">
+                    <div class="menu_config_card">
+                        <div class="menu_config_title_select">
                                 <button class="menu_config_title_btn" type="button" aria-haspopup="listbox" aria-expanded="false">
                                     <span class="menu_config_title_label">Завтрак</span>
                                     <img class="menu_config_title_arrow" src="resources/arrow_back_ios_new.svg" alt="">
@@ -338,7 +437,6 @@
                                     <button class="menu_config_title_item" type="button" role="option" data-value="lunch">Обед</button>
                                 </div>
                             </div>
-                        </div>
 
                         <div class="menu_config_body">
                             <div class="menu_config_block">
@@ -355,7 +453,7 @@
                                         <div class="menu_config_allergens" aria-live="polite"></div>
                                         <div class="menu_config_allergen_picker">
                                             <button class="menu_config_add" type="button" aria-haspopup="listbox" aria-expanded="false">Добавить</button>
-                                            <div class="menu_config_allergen_menu" role="listbox" aria-label="Аллергены">
+                                            <div class="menu_config_allergen_menu" id="list2" role="listbox" aria-label="Аллергены">
                                                 <button class="menu_config_allergen_option" type="button" data-allergen-id="gluten">Глютен</button>
                                                 <button class="menu_config_allergen_option" type="button" data-allergen-id="lactose">Лактоза</button>
                                                 <button class="menu_config_allergen_option" type="button" data-allergen-id="eggs">Яйца</button>
@@ -506,45 +604,33 @@
 
                         <div class="orders_table_body">
                             {% for item in buyorders %}
-                            {% if item.status == "allowed" %}
-                            <div class="orders_row">
-                                <div class="orders_cell">105</div>
-                                <div class="orders_cell">10.01.26</div>
-                                <div class="orders_cell">Иванов И.</div>
-                                <div class="orders_cell">Картофель</div>
-                                <div class="orders_cell">42 тыс. ₽</div>
-                                <div class="orders_cell orders_cell--actions">
-                                    <button class="orders_action_btn orders_action_btn--accept" type="button" aria-label="Одобрить">
-                                        <img src="resources/check.svg" alt="">
-                                    </button>
-                                    <button class="orders_action_btn orders_action_btn--reject" type="button" aria-label="Отклонить">
-                                        <img src="resources/close.svg" alt="">
-                                    </button>
-                                </div>
-                            </div>
-                            {% endif %}
-                            {% if item.status == "rejected" %}
-                            <div class="orders_row">
-                                <div class="orders_cell">104</div>
-                                <div class="orders_cell">10.01.26</div>
-                                <div class="orders_cell">Максимов Р.</div>
-                                <div class="orders_cell">Картофель</div>
-                                <div class="orders_cell">42 тыс. ₽</div>
-                                <div class="orders_cell"><span class="orders_status orders_status--approved">Одобрено</span></div>
-                            </div>
-                            {% endif %}
+                            <div class="orders_row" data-order-id="{{ item.id }}">
+                                <div class="orders_cell">{{ item.id }}</div>
+                                <div class="orders_cell">{{ item.date }}</div>
+                                <div class="orders_cell">{{ item.user_id }}</div>
+                                <div class="orders_cell">{{ item.items }}</div>
+                                <div class="orders_cell">{{ item.summ }}</div>
+
+        <!-- Эта ячейка будет меняться динамически -->
+                            <div class="orders_cell orders_cell--actions js-status-cell">
                             {% if item.status == "ns" %}
-                            <div class="orders_row">
-                                <div class="orders_cell">103</div>
-                                <div class="orders_cell">10.01.26</div>
-                                <div class="orders_cell">Фтаростин С.</div>
-                                <div class="orders_cell">Картофель</div>
-                                <div class="orders_cell">42 тыс. ₽</div>
-                                <div class="orders_cell"><span class="orders_status orders_status--rejected">Отклонено</span></div>
-                            </div>
+                            <button class="orders_action_btn orders_action_btn--accept js-order-btn"
+                                type="button" data-action="allowed">
+                            <img src="resources/check.svg" alt="">
+                            </button>
+                            <button class="orders_action_btn orders_action_btn--reject js-order-btn"
+                                type="button" data-action="rejected">
+                                <img src="resources/close.svg" alt="">
+                            </button>
+                            {% elif item.status == "allowed" %}
+                            <span class="orders_status orders_status--approved">Одобрено</span>
+                            {% elif item.status == "rejected" %}
+                                <span class="orders_status orders_status--rejected">Отклонено</span>
                             {% endif %}
-                            {% endfor %}
+                            </div>
                         </div>
+                    {% endfor %}
+                    </div>
 
                         <div class="orders_table_footer">
                             <div class="orders_pagination">

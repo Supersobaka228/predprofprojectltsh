@@ -9,7 +9,7 @@ from menu.models import Ingredient
 
 class BuyOrder(models.Model):
     id = models.AutoField(primary_key=True)
-    summ = models.IntegerField()
+    summ = models.IntegerField(default=1000)
     items = models.ForeignKey(Ingredient, on_delete=models.CASCADE)
     user_id = models.ForeignKey(User, on_delete=models.CASCADE)
 

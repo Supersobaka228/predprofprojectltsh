@@ -1,10 +1,13 @@
+import json
 from datetime import datetime, timedelta
 from tkinter import Menu
 
 import dateparser
 from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_POST
 
 from admin_main.models import BuyOrder, Notification
 from menu.models import MenuItem, Order, Review, Meal, DayOrder
@@ -56,6 +59,25 @@ def admin(request):
         for i in DayOrder.objects.all():
             print(i.day)
     return render(request, 'admin_main/admin_main.html', context)
+
+
+@require_POST
+def update_order_status(request):
+    try:
+        data = json.loads(request.body)
+        order_id = data.get('id')
+        new_status = data.get('status') # 'allowed' или 'rejected'
+
+        # Находим заказ в базе и обновляем его
+        order = BuyOrder.objects.get(id=order_id)
+        order.status = new_status
+        order.save()
+
+        return JsonResponse({'status': 'ok'})
+    except BuyOrder.DoesNotExist:
+        return JsonResponse({'status': 'error', 'message': 'Заказ не найден'}, status=404)
+    except Exception as e:
+        return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
 
 def sum_orders_count():
     summ = 0
