@@ -2,6 +2,7 @@ from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
 
 from users.models import User
+from chef_main.models import Ingredient
 
 
 class MenuItem(models.Model):
@@ -100,7 +101,33 @@ class Meal(models.Model):
     weight = models.IntegerField()
     calories = models.IntegerField()
     allergens = models.ManyToManyField(Allergen, blank=True, related_name='meals')
+    # Список ингредиентов с массой на порцию.
+    ingredients = models.ManyToManyField(
+        Ingredient,
+        through='MealIngredient',
+        related_name='meals',
+        blank=True,
+    )
     description = models.TextField()
 
     def __str__(self):
         return self.name
+
+    @property
+    def ingredients_with_mass(self):
+        items = self.mealingredient_set.select_related('ingredient').all()
+        return ", ".join(f"{mi.ingredient.name}: {mi.mass} г" for mi in items)
+
+
+class MealIngredient(models.Model):
+    meal = models.ForeignKey(Meal, on_delete=models.CASCADE)
+    ingredient = models.ForeignKey(Ingredient, on_delete=models.CASCADE)
+    mass = models.PositiveIntegerField(help_text='Масса в граммах')
+
+    class Meta:
+        unique_together = ('meal', 'ingredient')
+        verbose_name = 'Ингредиент блюда'
+        verbose_name_plural = 'Ингредиенты блюда'
+
+    def __str__(self):
+        return f"{self.meal} - {self.ingredient}: {self.mass} г"
