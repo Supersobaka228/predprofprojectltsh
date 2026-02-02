@@ -758,15 +758,14 @@
 
             <section class="chef_page_body">
                 <section class="chef_order_new_page">
-
-                    <section class="chef_order_new_panel">
+                    <form class="chef_order_new_panel" id="chefOrderForm" action="#" method="post">
                         <div class="chef_order_new_header">
                             <h3 class="chef_order_new_title">Состав заявки</h3>
                             <span class="chef_order_new_sub">Выберите продукт и количество</span>
                         </div>
 
                         <div class="chef_order_new_body">
-                            <div class="chef_order_new_row">
+                            <div class="chef_order_new_row" data-order-row="1">
                                 <label class="chef_order_new_label" for="order_product_1">Продукт</label>
                                 <div class="chef_product_picker">
                                     <button class="chef_product_add" type="button" aria-haspopup="listbox" aria-expanded="false">
@@ -780,11 +779,12 @@
                                         <button class="chef_product_option" type="button" data-value="Огурцы">Огурцы</button>
                                         <button class="chef_product_option" type="button" data-value="Хлеб">Хлеб</button>
                                     </div>
-                                    <input class="chef_product_input" id="order_product_1" name="order_product_1" type="hidden" value="">
+                                    <input class="chef_product_input" id="order_product_1" name="products[]" type="hidden" value="">
                                 </div>
                                 <label class="chef_order_new_label" for="order_qty_1">Количество</label>
-                                <input class="chef_order_new_input" id="order_qty_1" type="number" min="1" value="10">
+                                <input class="chef_order_new_input" id="order_qty_1" name="quantities[]" type="number" min="1" value="10" required>
                                 <span class="chef_order_new_unit">кг</span>
+                                <button class="chef_order_row_remove" type="button" aria-label="Удалить продукт">×</button>
                             </div>
                         </div>
 
@@ -796,9 +796,32 @@
                             <button class="chef_order_new_action chef_order_new_action--ghost" type="button" data-open-view="chef_orders">
                                 Отменить
                             </button>
-                            <button class="chef_order_new_action" type="button">Отправить заявку</button>
+                            <button class="chef_order_new_action" type="submit">Отправить заявку</button>
                         </div>
-                    </section>
+                        <template id="chefOrderRowTemplate">
+                            <div class="chef_order_new_row" data-order-row="__INDEX__">
+                                <label class="chef_order_new_label" for="order_product___INDEX__">Продукт</label>
+                                <div class="chef_product_picker">
+                                    <button class="chef_product_add" type="button" aria-haspopup="listbox" aria-expanded="false">
+                                        <span>Выберите продукт</span>
+                                        <img class="chef_product_add_icon" src="resources/arrow_back_ios_new.svg" alt="">
+                                    </button>
+                                    <div class="chef_product_menu" role="listbox" aria-label="Продукты">
+                                        <button class="chef_product_option" type="button" data-value="Молоко">Молоко</button>
+                                        <button class="chef_product_option" type="button" data-value="Картофель">Картофель</button>
+                                        <button class="chef_product_option" type="button" data-value="Гречка">Гречка</button>
+                                        <button class="chef_product_option" type="button" data-value="Огурцы">Огурцы</button>
+                                        <button class="chef_product_option" type="button" data-value="Хлеб">Хлеб</button>
+                                    </div>
+                                    <input class="chef_product_input" id="order_product___INDEX__" name="products[]" type="hidden" value="">
+                                </div>
+                                <label class="chef_order_new_label" for="order_qty___INDEX__">Количество</label>
+                                <input class="chef_order_new_input" id="order_qty___INDEX__" name="quantities[]" type="number" min="1" value="10" required>
+                                <span class="chef_order_new_unit">кг</span>
+                                <button class="chef_order_row_remove" type="button" aria-label="Удалить продукт">×</button>
+                            </div>
+                        </template>
+                    </form>
                 </section>
             </section>
         </div>

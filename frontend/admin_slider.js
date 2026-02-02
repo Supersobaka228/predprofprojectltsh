@@ -109,6 +109,57 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
+  const orderForm = document.querySelector('#chefOrderForm');
+  if (orderForm) {
+    const orderBody = orderForm.querySelector('.chef_order_new_body');
+    const addRowButton = orderForm.querySelector('.chef_order_new_add_btn');
+    const rowTemplate = orderForm.querySelector('#chefOrderRowTemplate');
+    let rowIndex = orderBody
+      ? orderBody.querySelectorAll('.chef_order_new_row').length
+      : 0;
+
+    if (orderBody && addRowButton && rowTemplate) {
+      addRowButton.addEventListener('click', () => {
+        rowIndex += 1;
+        const html = rowTemplate.innerHTML.replaceAll('__INDEX__', String(rowIndex));
+        const wrapper = document.createElement('div');
+        wrapper.innerHTML = html.trim();
+        const newRow = wrapper.firstElementChild;
+        if (newRow) {
+          orderBody.appendChild(newRow);
+        }
+      });
+
+      orderBody.addEventListener('click', (event) => {
+        const removeButton = event.target.closest('.chef_order_row_remove');
+        if (!removeButton) {
+          return;
+        }
+        const row = removeButton.closest('.chef_order_new_row');
+        if (!row) {
+          return;
+        }
+        const rows = orderBody.querySelectorAll('.chef_order_new_row');
+        if (rows.length <= 1) {
+          const input = row.querySelector('.chef_order_new_input');
+          if (input) {
+            input.value = '';
+          }
+          const hidden = row.querySelector('.chef_product_input');
+          if (hidden) {
+            hidden.value = '';
+          }
+          const button = row.querySelector('.chef_product_add span');
+          if (button) {
+            button.textContent = 'Выберите продукт';
+          }
+          return;
+        }
+        row.remove();
+      });
+    }
+  }
+
   window.addEventListener('resize', () => {
     const activeButton = document.querySelector('.admin_nav_button.active') || buttons[0];
     moveSlider(activeButton);
