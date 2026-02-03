@@ -11,6 +11,8 @@ document.addEventListener('DOMContentLoaded', () => {
         // Получаем текущую дату (для примера, можно брать из глобальной переменной)
         const currentDate = new Date(); // Сегодняшняя дата
         let dayToDisplay = '';
+        // Получить элемент по ID и изменить значение
+        document.getElementById('day_input_value').value = currentDate;
 
         switch (dayOfWeekText) {
             case 'Пн':

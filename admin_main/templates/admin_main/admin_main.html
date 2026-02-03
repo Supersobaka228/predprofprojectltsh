@@ -327,8 +327,8 @@
             <section class="admin_menu_configurator_main">
                 <form class="menu_configurator_form" method="post">
                     {% csrf_token %}
-                    <input type="hidden" name="category" value="Обед">
-                    <input type="hidden" name="day" value="admin_menu_date">
+                    <input type="hidden" name="category" id="title_value">
+                    <input type="hidden" name="day" id="day_input_value">
 
                     <div class="menu_config_card">
                         <div class="menu_config_title_select">
@@ -425,7 +425,7 @@
 
                 <form class="menu_configurator_form" aria-label="Конструктор меню" method="post">
                     <input type="hidden" name="day" id="day_input">
-                    <input type="hidden" name="category" value="lunch">
+                    <input type="hidden" name="category" id="lunch">
                     <div class="menu_config_card">
                         <div class="menu_config_title_select">
                                 <button class="menu_config_title_btn" type="button" aria-haspopup="listbox" aria-expanded="false">
@@ -960,6 +960,7 @@
     <script src="../../static/admin_main/js/admin_reports.js"></script>
     <script src="../../static/admin_main/js/admin_menu.js"></script>
     <script src="../../static/admin_main/js/admin_mealsadd.js"></script>
+    <script src="../../static/admin_main/js/admin_orders.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </body>
 </html>
