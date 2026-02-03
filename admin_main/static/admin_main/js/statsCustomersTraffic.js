@@ -57,7 +57,7 @@ document.addEventListener('DOMContentLoaded', () => {
       },
       {
         label: 'Средние посещения',
-        data: [510, 430, 520, 390, 560],
+        data: [0, 0, 0, 0, 0],
         borderColor: '#000000',
         backgroundColor: 'transparent',
         fill: false,

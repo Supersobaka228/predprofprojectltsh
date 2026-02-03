@@ -68,7 +68,7 @@ document.addEventListener('DOMContentLoaded', () => {
       },
       {
         label: 'План',
-        data: [90000, 70000, 110000, 90000, 63000],
+        data: [0, 0, 0, 0, 0],
         borderColor: '#000000',
         backgroundColor: 'transparent',
         fill: false,

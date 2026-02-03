@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -20,11 +21,11 @@
             <div class="admin_divider"></div>
             <div class="admin_nav">
                 <div class="admin_nav_slider"></div>
-                <button class="admin_nav_button" data-view="admin_main"><img src="resources/home.svg" alt="">Главная</button>
-                <button class="admin_nav_button" data-view="admin_stats"><img src="resources/leaderboard.svg" alt="">Статистика</button>
-                <button class="admin_nav_button" data-view="admin_menu"><img class="admin_lefter_rest" src="resources/restaurant.svg" alt="">Меню</button>
-                <button class="admin_nav_button" data-view="admin_orders"><img src="resources/note_add.svg" alt="">Заказы</button>
-                <button class="admin_nav_button" data-view="reports"><img src="resources/assignment.svg" alt="">Отчёты</button>
+                <button class="admin_nav_button" data-view="admin_main"><img src="/static/icon/home.svg" alt="">Главная</button>
+                <button class="admin_nav_button" data-view="admin_stats"><img src="/static/icon/leaderboard.svg" alt="">Статистика</button>
+                <button class="admin_nav_button" data-view="admin_menu"><img class="admin_lefter_rest" src="/static/icon/restaurant.svg" alt="">Меню</button>
+                <button class="admin_nav_button" data-view="admin_orders"><img src="/static/icon/note_add.svg" alt="">Заказы</button>
+                <button class="admin_nav_button" data-view="reports"><img src="/static/icon/assignment.svg" alt="">Отчёты</button>
             </div>
 
         </div>
@@ -36,7 +37,7 @@
                 <div class="admin_main_header_right">
                     <div class="admin_notify_wrap">
                         <button class="admin_notify_button" type="button" aria-label="Уведомления">
-                            <img src="/resources/notifications.svg" alt="">
+                            <img src="/static/icon/notifications.svg" alt="">
                         </button>
                         <div class="admin_notify_overlay" aria-hidden="true">
                             <div class="admin_notify_title">Уведомления</div>
@@ -151,7 +152,7 @@
                 <div class="admin_main_header_right">
                     <div class="admin_notify_wrap">
                         <button class="admin_notify_button" type="button" aria-label="Уведомления">
-                            <img src="/resources/notifications.svg" alt="">
+                            <img src="/static/icon/notifications.svg" alt="">
                         </button>
                         <div class="admin_notify_overlay" aria-hidden="true">
                             <div class="admin_notify_title">Уведомления</div>
@@ -210,11 +211,11 @@
                             <p>Динамика оплат, руб.</p>
                             <div class="stats_week_switch" aria-label="Переключение недели">
                                 <button class="stats_week_btn" type="button" id="prev-btn-so" aria-label="Предыдущая неделя">
-                                    <img src="resources/left_arrow_stats.svg" alt="">
+                                    <img src="/static/icon/left_arrow_stats.svg" alt="">
                                 </button>
                                 <span class="stats_week_label" id="display-stats-pay"></span>
                                 <button class="stats_week_btn stats_week_btn--next" id="next-btn-so" type="button" aria-label="Следующая неделя">
-                                    <img src="resources/left_arrow_stats.svg" alt="">
+                                    <img src="/static/icon/left_arrow_stats.svg" alt="">
                                 </button>
                             </div>
                         </div>
@@ -227,11 +228,11 @@
                             <p>Динамика посещаемости, чел.</p>
                             <div class="stats_week_switch" aria-label="Переключение недели">
                                 <button class="stats_week_btn" id="prev-btn-sc" type="button" aria-label="Предыдущая неделя">
-                                    <img src="resources/left_arrow_stats.svg" alt="">
+                                    <img src="/static/icon/left_arrow_stats.svg" alt="">
                                 </button>
                                 <span class="stats_week_label" id="display-stats-comes">26.01 - 01.02</span>
                                 <button class="stats_week_btn stats_week_btn--next"  id="next-btn-sc" type="button" aria-label="Следующая неделя">
-                                    <img src="resources/left_arrow_stats.svg" alt="">
+                                    <img src="/static/icon/left_arrow_stats.svg" alt="">
                                 </button>
                             </div>
                         </div>
@@ -245,11 +246,11 @@
                         <div class="reviews_title">Отзывы</div>
                         <div class="stats_week_switch" aria-label="Переключение недели">
                             <button class="stats_week_btn" type="button" id='review-next-btn' aria-label="Предыдущая неделя">
-                                <img src="resources/left_arrow_stats.svg" alt="">
+                                <img src="/static/icon/left_arrow_stats.svg" alt="">
                             </button>
                             <span class="stats_week_label" id="display-stats-reviews"></span>
                             <button class="stats_week_btn stats_week_btn--next" type="button" id="review-before-btn" aria-label="Следующая неделя">
-                                <img src="resources/left_arrow_stats.svg" alt="">
+                                <img src="/static/icon/left_arrow_stats.svg" alt="">
                             </button>
                         </div>
                     </div>
@@ -263,11 +264,11 @@
                                     <div class="review_target">К: Каша рисовая</div>
                                 </div>
                                 <div class="review_stars" aria-label="Рейтинг 5 из 5">
-                                    <img src="resources/Star 1.svg" alt="">
-                                    <img src="resources/Star 1.svg" alt="">
-                                    <img src="resources/Star 1.svg" alt="">
-                                    <img src="resources/Star 1.svg" alt="">
-                                    <img src="resources/Star 1.svg" alt="">
+                                    <img src="/static/icon/Star 1.svg" alt="">
+                                    <img src="/static/icon/Star 1.svg" alt="">
+                                    <img src="/static/icon/Star 1.svg" alt="">
+                                    <img src="/static/icon/Star 1.svg" alt="">
+                                    <img src="/static/icon/Star 1.svg" alt="">
                                 </div>
                                 <div class="review_text">{{ item.text }}</div>
                             </div>
@@ -285,14 +286,14 @@
                 <div class="admin_main_header_right">
                     <div class="admin_notify_wrap">
                         <button class="admin_notify_button" type="button" aria-label="Уведомления">
-                            <img src="/resources/notifications.svg" alt="">
+                            <img src="/static/icon/notifications.svg" alt="">
                         </button>
                     </div>
                     <div class="admin_user_meta">
                         <div class="admin_user_name">Имя Фамилия</div>
                         <div class="admin_user_role">Должность</div>
                     </div>
-                    <img src="resources/photo_2026-01-14_11-19-22.jpg" class="admin_user_avatar">
+                    <img src="/static/icon/photo_2026-01-14_11-19-22.jpg" class="admin_user_avatar">
                 </div>
             </header>
 
@@ -311,7 +312,7 @@
                     <div class="admin_menu_class_select">
                         <button class="admin_menu_class_btn" type="button" aria-haspopup="listbox" aria-expanded="false">
                             <span class="admin_menu_class_label">11-е классы</span>
-                            <img class="admin_menu_class_arrow" src="resources/left_arrow_stats.svg" alt="">
+                            <img class="admin_menu_class_arrow" src="/static/icon/left_arrow_stats.svg" alt="">
                         </button>
                         <div class="admin_menu_class_menu" role="listbox" aria-label="Классы">
                             <button class="admin_menu_class_item" type="button" role="option" data-value="11">11-е классы</button>
@@ -334,7 +335,7 @@
                         <div class="menu_config_title_select">
                                 <button class="menu_config_title_btn" type="button" aria-haspopup="listbox" aria-expanded="false">
                                     <span class="menu_config_title_label">Завтрак</span>
-                                    <img class="menu_config_title_arrow" src="resources/arrow_back_ios_new.svg" alt="">
+                                    <img class="menu_config_title_arrow" src="/static/icon/arrow_back_ios_new.svg" alt="">
                                 </button>
                                 <div class="menu_config_title_menu" role="listbox" aria-label="Тип приёма пищи">
                                     <button class="menu_config_title_item" type="button" role="option" data-value="breakfast">Завтрак</button>
@@ -437,14 +438,14 @@
                 <div class="admin_main_header_right">
                     <div class="admin_notify_wrap">
                         <button class="admin_notify_button" type="button" aria-label="Уведомления">
-                            <img src="/resources/notifications.svg" alt="">
+                            <img src="/static/icon/notifications.svg" alt="">
                         </button>
                     </div>
                     <div class="admin_user_meta">
                         <div class="admin_user_name">Имя Фамилия</div>
                         <div class="admin_user_role">Должность</div>
                     </div>
-                    <img src="resources/photo_2026-01-14_11-19-22.jpg" class="admin_user_avatar">
+                    <img src="/static/icon/photo_2026-01-14_11-19-22.jpg" class="admin_user_avatar">
                 </div>
             </header>
 
@@ -453,7 +454,7 @@
                     <div class="orders_topbar">
                         <div class="orders_title">9 заявок</div>
                         <div class="orders_search">
-                            <img class="orders_search_icon" src="resources/search.svg" alt="">
+                            <img class="orders_search_icon" src="/static/icon/search.svg" alt="">
                             <input class="orders_search_input" type="search" placeholder="Поиск">
                         </div>
                     </div>
@@ -482,11 +483,11 @@
                             {% if item.status == "ns" %}
                             <button class="orders_action_btn orders_action_btn--accept js-order-btn"
                                 type="button" data-action="allowed">
-                            <img src="resources/check.svg" alt="">
+                            <img src="/static/icon/check.svg" alt="">
                             </button>
                             <button class="orders_action_btn orders_action_btn--reject js-order-btn"
                                 type="button" data-action="rejected">
-                                <img src="resources/close.svg" alt="">
+                                <img src="/static/icon/close.svg" alt="">
                             </button>
                             {% elif item.status == "allowed" %}
                             <span class="orders_status orders_status--approved">Одобрено</span>
@@ -501,11 +502,11 @@
                         <div class="orders_table_footer">
                             <div class="orders_pagination">
                                 <button class="orders_nav_btn" type="button" aria-label="Предыдущая дата">
-                                    <img src="resources/left_arrow_stats.svg" alt="">
+                                    <img src="/static/icon/left_arrow_stats.svg" alt="">
                                 </button>
                                 <div class="orders_date">10.01.26</div>
                                 <button class="orders_nav_btn orders_nav_btn--next" type="button" aria-label="Следующая дата">
-                                    <img src="resources/left_arrow_stats.svg" alt="">
+                                    <img src="/static/icon/left_arrow_stats.svg" alt="">
                                 </button>
                             </div>
                         </div>
@@ -520,14 +521,14 @@
                 <div class="admin_main_header_right">
                     <div class="admin_notify_wrap">
                         <button class="admin_notify_button" type="button" aria-label="Уведомления">
-                            <img src="/resources/notifications.svg" alt="">
+                            <img src="/static/icon/notifications.svg" alt="">
                         </button>
                     </div>
                     <div class="admin_user_meta">
                         <div class="admin_user_name">Имя Фамилия</div>
                         <div class="admin_user_role">Должность</div>
                     </div>
-                    <img src="resources/photo_2026-01-14_11-19-22.jpg" class="admin_user_avatar">
+                    <img src="/static/icon/photo_2026-01-14_11-19-22.jpg" class="admin_user_avatar">
                 </img>
                 </div>
             </header>
@@ -590,11 +591,11 @@
                                     </div>
                                     <div class="reports_period_range" aria-label="Выбор периода">
                                         <button class="reports_date_btn" type="button" aria-label="Предыдущий период">
-                                            <img src="resources/left_arrow_stats.svg" alt="">
+                                            <img src="/static/icon/left_arrow_stats.svg" alt="">
                                         </button>
                                         <span class="reports_date_value">12.01 - 16.01</span>
                                         <button class="reports_date_btn reports_date_btn--next" type="button" aria-label="Следующий период">
-                                            <img src="resources/left_arrow_stats.svg" alt="">
+                                            <img src="/static/icon/left_arrow_stats.svg" alt="">
                                         </button>
                                     </div>
                                 </div>
