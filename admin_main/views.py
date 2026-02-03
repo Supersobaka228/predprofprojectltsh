@@ -49,6 +49,7 @@ def admin(request):
                                        calories=int(list(post.getlist('dish_kcal[]'))[i]),
                                        description=post.getlist('composition[]')[i],)
             dish.allergens.add(post.get('allergens[]'))
+            dish.save()
             meals.append(dish)
 
         menuitem = MenuItem.objects.create(category=post.getlist('category')[0],
@@ -59,6 +60,19 @@ def admin(request):
                                            fats=76,
                                            carbs=89)
         menuitem.meals.set(meals)
+        menuitem.save()
+        clean_str = str(post.getlist('day')[0]).split(' GMT')[0]  # 'Tue Feb 03 2026 10:40:01'
+        clean_str = clean_str.split()[-1]
+        date_obj = datetime.strptime(clean_str, '%H:%M:%S')
+        print(date_obj)
+        # Получаем день недели (0=понедельник, 6=воскресенье)
+        day_number = date_obj.isoweekday()
+        print(day_number)
+        day_order = DayOrder.objects.get(day=day_number)
+        if day_order:
+            print(day_order.order)
+            day_order.order.append(menuitem.id)
+            day_order.save()
         for i in DayOrder.objects.all():
             print(i.day)
     return render(request, 'admin_main/admin_main.html', context)
