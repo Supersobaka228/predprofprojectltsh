@@ -10,7 +10,8 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 
 from admin_main.models import BuyOrder, Notification
-from menu.models import MenuItem, Order, Review, Meal, DayOrder
+from chef_main.models import Ingredient
+from menu.models import MenuItem, Order, Review, Meal, DayOrder, Allergen
 
 
 @csrf_exempt
@@ -32,6 +33,8 @@ def admin(request):
         'comes_by_day': comes_by_day(),
         'reviews_by_day': reviews_by_day(),
         'all_reviews': list(Review.objects.all()),
+        'ingredients': Ingredient.objects.all(),
+        'allergens': Allergen.objects.all(),
 
 
 
