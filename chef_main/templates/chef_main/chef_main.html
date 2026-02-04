@@ -94,16 +94,37 @@
                                                 <div></div>
                                             </div>
                                             <div class="day_menu_table_body day_menu_table_body--active" data-meal="meal_breakfast">
-                                                <div class="day_menu_row">
-                                                    <div>Каша овсяная</div>
-                                                    <div>120</div>
-                                                    <div>90</div>
-                                                    <div>30</div>
-                                                    <div><button class="day_menu_btn" type="button">+1</button></div>
-                                                    <div><button class="day_menu_btn" type="button">+5</button></div>
-                                                    <div><button class="day_menu_btn day_menu_btn--danger" type="button">-1</button></div>
-                                                </div>
-                                            </div>
+                                            {% for item in meals_b %}
+    <!-- Добавляем data-item-id, чтобы знать, какой это объект в базе -->
+    <div class="day_menu_row" data-item-id="{{ item.id }}">
+        <div>{{ item.name }}</div>
+
+        <!-- Заказано (допустим, это o) -->
+        <div class="js-ordered-count">{{ item.count_by_days.today.o }}</div>
+
+        <!-- Выдано (допустим, это v) -->
+        <div class="js-given-count">{{ item.count_by_days.today.g|default:"0" }}</div>
+
+        <!-- Наличие (вычисляется как o - v) -->
+        <div class="js-stock-count">
+            {{  }}
+            <!-- v_minus это v, умноженное на -1, либо считаем в JS -->
+        </div>
+
+        <!-- Кнопки с дельтами -->
+        <div>
+            <button class="day_menu_btn js-update-count" type="button" data-delta="1">+1</button>
+        </div>
+        <div>
+            <button class="day_menu_btn js-update-count" type="button" data-delta="5">+5</button>
+        </div>
+        <div>
+            <button class="day_menu_btn day_menu_btn--danger js-update-count" type="button" data-delta="-1">-1</button>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
                                             
                                             <div class="day_menu_table_body" data-meal="meal_lunch">
                                                 <div class="day_menu_row">
@@ -815,5 +836,6 @@
     </div>
 
     <script src="../../static/chef_main/js/admin_slider.js"></script>
+    <script src="../../static/chef_main/js/gives.js"></script>
 </body>
 </html>

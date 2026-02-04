@@ -224,13 +224,15 @@ def order(request, day_d):
                 for gh in st.all():
                     if str(datetime.today().date()) not in gh.count_by_days.keys():
                         print(87)
-                        gh.count_by_days[str(datetime.today().date())] = 1
+                        gh.count_by_days[str(datetime.today().date())] = {'o': 1, 'g': 0}
                     else:
-                        gh.count_by_days[str(datetime.today().date())] += 1
+                        gh.count_by_days[str(datetime.today().date())]['o'] += 1
                     gh.save(update_fields=['count_by_days'])
                     print(gh.__dict__)
                     for ui in gh.ingredients.all():
-                        print(ui.remains)
+                        ui.remains -= gh.weight
+                        ui.save()
+                        print(ui.__dict__)
 
         created_order = form.save()
 
