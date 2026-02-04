@@ -216,8 +216,22 @@ def order(request, day_d):
         user.balance_cents = current - price_cents
 
         user.save(update_fields=['balance_cents'])
-        menu_t = MenuItem.objects.filter(id=form.cleaned_data.get('item'))
-        print(menu_t.values())
+        menu_t = DayOrder.objects.get(day=1)
+        for i in menu_t.order:
+            m = MenuItem.objects.get(id=i)
+            st = m.meals
+            if st.all():
+                for gh in st.all():
+                    if str(datetime.today().date()) not in gh.count_by_days.keys():
+                        print(87)
+                        gh.count_by_days[str(datetime.today().date())] = 1
+                    else:
+                        gh.count_by_days[str(datetime.today().date())] += 1
+                    gh.save(update_fields=['count_by_days'])
+                    print(gh.__dict__)
+                    for ui in gh.ingredients.all():
+                        print(ui.remains)
+
         created_order = form.save()
 
         return created_order, None, None
