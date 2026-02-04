@@ -140,6 +140,20 @@ const initReports = () => {
 
             updateRange();
         }
+
+        if (generalForm) {
+            generalForm.addEventListener("submit", (event) => {
+                event.preventDefault();
+                const popup = window.open("about:blank", "reportsPdf", "noopener,noreferrer");
+                if (popup) {
+                    generalForm.target = "reportsPdf";
+                    generalForm.submit();
+                } else {
+                    generalForm.target = "";
+                    generalForm.submit();
+                }
+            });
+        }
     }
 };
 

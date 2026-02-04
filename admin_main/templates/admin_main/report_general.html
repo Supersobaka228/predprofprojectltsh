@@ -1,0 +1,92 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Отчёт по питанию</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 24px; }
+        .report-wrap { max-width: 900px; margin: 0 auto; }
+        .report-title { font-size: 20px; margin-bottom: 8px; }
+        .report-range { color: #666; margin-bottom: 16px; }
+        .report-error { color: #b00020; margin-bottom: 12px; }
+    </style>
+</head>
+<body>
+    <div class="report-wrap" id="report-root">
+        <div class="report-title">Отчёт по питанию</div>
+        <div class="report-range">{{ range_label }}</div>
+        {% if error %}
+            <div class="report-error">{{ error }}</div>
+        {% endif %}
+        <canvas id="reportChart" height="120"></canvas>
+    </div>
+
+    <script>
+        const labels = {{ labels|safe }};
+        const values = {{ values|safe }};
+        const rangeLabel = "{{ range_label }}";
+        const hasError = {{ error|yesno:"true,false" }};
+
+        const ctx = document.getElementById('reportChart').getContext('2d');
+        const chart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels,
+                datasets: [{
+                    label: 'Сумма по дням, ₽',
+                    data: values,
+                    borderColor: '#4b77ff',
+                    backgroundColor: 'rgba(75,119,255,0.2)',
+                    fill: true,
+                    tension: 0.2
+                }]
+            },
+            options: {
+                responsive: true,
+                animation: false,
+                plugins: {
+                    legend: { display: true }
+                },
+                scales: {
+                    y: { beginAtZero: true }
+                }
+            }
+        });
+
+        if (!hasError) {
+            setTimeout(() => {
+                const imageData = chart.toBase64Image();
+                const { jsPDF } = window.jspdf;
+                const pdf = new jsPDF('p', 'pt', 'a4');
+                const pageWidth = pdf.internal.pageSize.getWidth();
+                const margin = 24;
+
+                pdf.setFontSize(14);
+                pdf.text('Отчёт по питанию', margin, 24);
+                if (rangeLabel) {
+                    pdf.setFontSize(11);
+                    pdf.text(rangeLabel, margin, 42);
+                }
+
+                const imgWidth = pageWidth - margin * 2;
+                const imgHeight = imgWidth * (chart.height / chart.width);
+                const imgY = rangeLabel ? 58 : 44;
+                pdf.addImage(imageData, 'PNG', margin, imgY, imgWidth, imgHeight);
+                pdf.save('report.pdf');
+
+                setTimeout(() => {
+                    if (window.opener) {
+                        window.close();
+                        return;
+                    }
+                    window.location.href = "{% url 'admin_main' %}";
+                }, 500);
+            }, 0);
+        }
+    </script>
+</body>
+</html>

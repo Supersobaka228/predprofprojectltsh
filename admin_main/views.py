@@ -348,3 +348,57 @@ def reviews_by_day(queryset=None):
     return ans
 
 
+@login_required
+@require_POST
+def admin_report_general(request):
+    start_str = request.POST.get("report_start")
+    end_str = request.POST.get("report_end")
+
+    if not start_str or not end_str:
+        return render(request, "admin_main/report_general.html", {
+            "labels": [],
+            "values": [],
+            "range_label": "",
+            "error": "Не задан период отчета.",
+        })
+
+    try:
+        start_date = datetime.strptime(start_str, "%Y-%m-%d").date()
+        end_date = datetime.strptime(end_str, "%Y-%m-%d").date()
+    except ValueError:
+        return render(request, "admin_main/report_general.html", {
+            "labels": [],
+            "values": [],
+            "range_label": "",
+            "error": "Неверный формат даты.",
+        })
+
+    if start_date > end_date:
+        start_date, end_date = end_date, start_date
+
+    orders = Order.objects.filter(day__gte=start_date.isoformat(), day__lte=end_date.isoformat())
+
+    sums_by_day = {}
+    for order in orders:
+        try:
+            day_key = datetime.strptime(order.day, "%Y-%m-%d").date()
+        except ValueError:
+            continue
+        sums_by_day[day_key] = sums_by_day.get(day_key, 0) + (order.price or 0)
+
+    labels = []
+    values = []
+    cursor = start_date
+    while cursor <= end_date:
+        labels.append(cursor.strftime("%d.%m"))
+        values.append(sums_by_day.get(cursor, 0))
+        cursor += timedelta(days=1)
+
+    range_label = f"{start_date.strftime('%d.%m.%Y')} - {end_date.strftime('%d.%m.%Y')}"
+
+    return render(request, "admin_main/report_general.html", {
+        "labels": labels,
+        "values": values,
+        "range_label": range_label,
+        "error": "",
+    })

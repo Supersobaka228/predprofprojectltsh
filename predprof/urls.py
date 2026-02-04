@@ -32,5 +32,6 @@ urlpatterns = [
     path('chef_main/', chef_main.views.chef, name='chef_main'),
     path('admin/', admin.site.urls),
     path('update-order-status/', admin_main.views.update_order_status, name='update_order_status'),
+    path('admin_main/report/general/', admin_main.views.admin_report_general, name='admin_report_general'),
 
 ]

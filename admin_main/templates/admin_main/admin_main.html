@@ -552,7 +552,8 @@
 
                 <div class="reports_panel" data-stage="general">
                     <div class="reports_page_body">
-                        <form class="reports_form" aria-label="Общий отчёт">
+                        <form class="reports_form" aria-label="Общий отчёт" method="post" action="{% url 'admin_report_general' %}">
+                            {% csrf_token %}
                             <input type="hidden" name="report_start" value="">
                             <input type="hidden" name="report_end" value="">
 
