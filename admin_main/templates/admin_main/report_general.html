@@ -33,6 +33,8 @@
         const labels = {{ labels|safe }};
         const valuesBreakfast = {{ values_breakfast|safe }};
         const valuesLunch = {{ values_lunch|safe }};
+        const avgBreakfast = {{ avg_breakfast|safe }};
+        const avgLunch = {{ avg_lunch|safe }};
         const rangeLabel = "{{ range_label }}";
         const hasError = {{ error|yesno:"true,false" }};
         const isSingleDay = labels.length === 1;
@@ -48,13 +50,14 @@
                 ctx.textBaseline = 'bottom';
 
                 chart.data.datasets.forEach((dataset, datasetIndex) => {
+                    if (dataset.skipValueLabels) return;
                     const meta = chart.getDatasetMeta(datasetIndex);
                     meta.data.forEach((element, index) => {
                         const value = dataset.data[index];
                         if (value === null || value === undefined) return;
                         const x = element.x;
                         const y = element.y - 6;
-                        ctx.fillText(String(value), x, y);
+                        ctx.fillText(String(Math.round(value)), x, y);
                     });
                 });
                 ctx.restore();
@@ -84,6 +87,30 @@
                         fill: !isSingleDay,
                         tension: 0.2,
                         borderWidth: isSingleDay ? 1 : 2
+                    },
+                    {
+                        label: 'Среднее (завтрак), ₽',
+                        data: avgBreakfast,
+                        type: isSingleDay ? 'bar' : 'line',
+                        borderColor: '#2f56cc',
+                        backgroundColor: isSingleDay ? 'rgba(47,86,204,0.35)' : 'transparent',
+                        borderDash: isSingleDay ? [] : [6, 4],
+                        pointRadius: isSingleDay ? 0 : 0,
+                        pointHoverRadius: isSingleDay ? 0 : 0,
+                        fill: false,
+                        skipValueLabels: true
+                    },
+                    {
+                        label: 'Среднее (обед), ₽',
+                        data: avgLunch,
+                        type: isSingleDay ? 'bar' : 'line',
+                        borderColor: '#cc5e2f',
+                        backgroundColor: isSingleDay ? 'rgba(204,94,47,0.35)' : 'transparent',
+                        borderDash: isSingleDay ? [] : [6, 4],
+                        pointRadius: isSingleDay ? 0 : 0,
+                        pointHoverRadius: isSingleDay ? 0 : 0,
+                        fill: false,
+                        skipValueLabels: true
                     }
                 ]
             },
