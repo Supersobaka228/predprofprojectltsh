@@ -126,7 +126,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Hidden поля заказа
     // name — оставляем как раньше (у вас это category код), чтобы не ломать обработчик заказа
-    setValue('itemDateField2', currentItemData.name);
+    setValue('itemDateField2', currentItemData.item);
     setValue('itemDateField3', currentItemData.time);
     setValue('itemDateField4', currentItemData.price);
     setValue('itemDateField5', currentItemData.date);

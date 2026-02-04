@@ -51,7 +51,7 @@ def menu(request):
                 if created_order is not None:
                     order_payload = {
                         'time': getattr(created_order, 'time', ''),
-                        'name': getattr(created_order, 'name', ''),
+                        'name': str(getattr(created_order, 'name', '') or ''),
                         'price': getattr(created_order, 'price', 0),
                         'day': getattr(created_order, 'day', ''),
                     }
@@ -215,7 +215,7 @@ def order(request, day_d):
 
         user.balance_cents = current - price_cents
 
-        # user.save(update_fields=['balance_cents'])
+        user.save(update_fields=['balance_cents'])
         menu_t = MenuItem.objects.filter(id=form.cleaned_data.get('item'))
         print(menu_t.values())
         created_order = form.save()
