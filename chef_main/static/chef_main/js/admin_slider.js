@@ -4,6 +4,34 @@ document.addEventListener('DOMContentLoaded', () => {
   const buttons = document.querySelectorAll('.admin_nav_button');
   const views = document.querySelectorAll('.menu_app_view');
 
+
+
+  const tabInputs = document.querySelectorAll('.day_menu_tab_input');
+    const menuBodies = document.querySelectorAll('.day_menu_table_body');
+
+    // Функция для переключения видимости
+    function updateVisibility() {
+        // Находим ID выбранного в данный момент радио-баттона
+        const activeId = document.querySelector('.day_menu_tab_input:checked').id;
+
+        menuBodies.forEach(body => {
+            // Если data-meal совпадает с ID выбранной кнопки — показываем, иначе скрываем
+            if (body.getAttribute('data-meal') === activeId) {
+                body.style.display = 'block';
+            } else {
+                body.style.display = 'none';
+            }
+        });
+    }
+
+    // Вешаем событие изменения на каждую радио-кнопку
+    tabInputs.forEach(input => {
+        input.addEventListener('change', updateVisibility);
+    });
+
+    // Запускаем один раз при загрузке, чтобы отобразить дефолтный завтрак
+    updateVisibility();
+
   if (!nav || !slider || buttons.length === 0) {
     return;
   }

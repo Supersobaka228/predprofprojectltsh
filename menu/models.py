@@ -75,7 +75,7 @@ class Review(models.Model):
 
 class Order(models.Model):
     time = models.CharField(max_length=20)
-    name = models.CharField(max_length=255)
+    name = models.ForeignKey(MenuItem, on_delete=models.CASCADE)
     price = models.IntegerField()
     day = models.CharField()
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=False, blank=False)
@@ -109,6 +109,7 @@ class Meal(models.Model):
         blank=True,
     )
     description = models.TextField()
+    count_by_days = models.JSONField(default=dict)
 
     def __str__(self):
         return self.name

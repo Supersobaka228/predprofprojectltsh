@@ -1,3 +1,5 @@
+from tkinter import Menu
+
 from django.contrib.auth.decorators import login_required
 from django.db import transaction
 from django.db.models import Q
@@ -188,6 +190,7 @@ def order(request, day_d):
         return None, 'BAD_METHOD', 'Неправильный метод запроса'
 
     ordered_menu = dict(request.POST.items())
+    print(ordered_menu)
     ordered_menu.pop('csrfmiddlewaretoken', None)
     ordered_menu['user'] = request.user.id
     form = OrderForm(ordered_menu)
@@ -211,16 +214,12 @@ def order(request, day_d):
             return None, 'INSUFFICIENT_FUNDS', 'Недостаточно средств'
 
         user.balance_cents = current - price_cents
-        print(day_d)
-        Pay.objects.create(
-            user_id=request.user,
-            summ=price_rub,
-            date=day_d
-        )
-        print(Pay.objects.all())
-        user.save(update_fields=['balance_cents'])
 
+        # user.save(update_fields=['balance_cents'])
+        menu_t = MenuItem.objects.filter(id=form.cleaned_data.get('item'))
+        print(menu_t.values())
         created_order = form.save()
+
         return created_order, None, None
 
 

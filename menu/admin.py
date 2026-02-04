@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Allergen, DayOrder, Meal, MenuItem, MealIngredient
+from .models import Allergen, DayOrder, Meal, MenuItem, MealIngredient, Order
 
 
 @admin.register(DayOrder)
@@ -14,6 +14,11 @@ class MenuItemAdmin(admin.ModelAdmin):
     list_filter = ('category',)
     search_fields = ('category', 'time')
     filter_horizontal = ('meals',)
+
+
+@admin.register(Order)
+class OrderAdmin(admin.ModelAdmin):
+    list_display = ('day', 'user', 'name', 'time', 'price')
 
 
 @admin.register(Allergen)

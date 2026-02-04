@@ -43,7 +43,7 @@ document.addEventListener("DOMContentLoaded", () => {
     e.preventDefault();
 
     const button = e.currentTarget;
-
+    console.log(123);
     currentItemData = {
       date: button.getAttribute('data-date'),
       item: button.getAttribute('data-item'),
@@ -130,6 +130,7 @@ document.addEventListener("DOMContentLoaded", () => {
     setValue('itemDateField3', currentItemData.time);
     setValue('itemDateField4', currentItemData.price);
     setValue('itemDateField5', currentItemData.date);
+    setValue('itemDateField6', currentItemData.item);
 
     lockBody(true);
   }
@@ -142,6 +143,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Навешиваем обработчики на кнопки открытия
   openButtons.forEach(btn => {
+
     btn.addEventListener("click", openSheetWithData);
   });
 

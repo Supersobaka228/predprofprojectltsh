@@ -23,7 +23,7 @@ class OrderForm(forms.ModelForm):
         model = Order
         fields = ['name', 'time', 'price', 'day', 'user']
         widgets = {
-            'name': forms.TextInput(),
+            'item': forms.IntegerField(),
             'time': forms.TextInput(),
             'price': forms.NumberInput(),
             'day': forms.TextInput(),
