@@ -37,6 +37,30 @@
         const hasError = {{ error|yesno:"true,false" }};
         const isSingleDay = labels.length === 1;
 
+        const valueLabelPlugin = {
+            id: 'valueLabels',
+            afterDatasetsDraw(chart) {
+                const { ctx } = chart;
+                ctx.save();
+                ctx.fillStyle = '#333';
+                ctx.font = '12px "M PLUS Rounded 1c", sans-serif';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'bottom';
+
+                chart.data.datasets.forEach((dataset, datasetIndex) => {
+                    const meta = chart.getDatasetMeta(datasetIndex);
+                    meta.data.forEach((element, index) => {
+                        const value = dataset.data[index];
+                        if (value === null || value === undefined) return;
+                        const x = element.x;
+                        const y = element.y - 6;
+                        ctx.fillText(String(value), x, y);
+                    });
+                });
+                ctx.restore();
+            }
+        };
+
         const ctx = document.getElementById('reportChart').getContext('2d');
         const chart = new Chart(ctx, {
             type: isSingleDay ? 'bar' : 'line',
@@ -66,13 +90,15 @@
             options: {
                 responsive: true,
                 animation: false,
+                devicePixelRatio: 2,
                 plugins: {
                     legend: { display: true }
                 },
                 scales: {
                     y: { beginAtZero: true }
                 }
-            }
+            },
+            plugins: [valueLabelPlugin]
         });
 
         if (!hasError) {
@@ -84,7 +110,7 @@
                 const margin = 24;
 
                 const root = document.getElementById('report-root');
-                html2canvas(root, { scale: 2, backgroundColor: '#ffffff' }).then((canvas) => {
+                html2canvas(root, { scale: 3, backgroundColor: '#ffffff' }).then((canvas) => {
                     const maxWidth = pageWidth - margin * 2;
                     const maxHeight = pageHeight - margin * 2;
                     const scale = Math.min(maxWidth / canvas.width, maxHeight / canvas.height);
