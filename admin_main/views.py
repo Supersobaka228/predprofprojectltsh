@@ -357,7 +357,8 @@ def admin_report_general(request):
     if not start_str or not end_str:
         return render(request, "admin_main/report_general.html", {
             "labels": [],
-            "values": [],
+            "values_breakfast": [],
+            "values_lunch": [],
             "range_label": "",
             "error": "Не задан период отчета.",
         })
@@ -368,7 +369,8 @@ def admin_report_general(request):
     except ValueError:
         return render(request, "admin_main/report_general.html", {
             "labels": [],
-            "values": [],
+            "values_breakfast": [],
+            "values_lunch": [],
             "range_label": "",
             "error": "Неверный формат даты.",
         })
@@ -376,29 +378,40 @@ def admin_report_general(request):
     if start_date > end_date:
         start_date, end_date = end_date, start_date
 
-    orders = Order.objects.filter(day__gte=start_date.isoformat(), day__lte=end_date.isoformat())
+    orders = Order.objects.select_related("name").filter(
+        day__gte=start_date.isoformat(),
+        day__lte=end_date.isoformat(),
+    )
 
-    sums_by_day = {}
+    sums_by_day_breakfast = {}
+    sums_by_day_lunch = {}
     for order in orders:
         try:
             day_key = datetime.strptime(order.day, "%Y-%m-%d").date()
         except ValueError:
             continue
-        sums_by_day[day_key] = sums_by_day.get(day_key, 0) + (order.price or 0)
+        category = getattr(order.name, "category", None)
+        if category == "breakfast":
+            sums_by_day_breakfast[day_key] = sums_by_day_breakfast.get(day_key, 0) + (order.price or 0)
+        elif category == "lunch":
+            sums_by_day_lunch[day_key] = sums_by_day_lunch.get(day_key, 0) + (order.price or 0)
 
     labels = []
-    values = []
+    values_breakfast = []
+    values_lunch = []
     cursor = start_date
     while cursor <= end_date:
         labels.append(cursor.strftime("%d.%m"))
-        values.append(sums_by_day.get(cursor, 0))
+        values_breakfast.append(sums_by_day_breakfast.get(cursor, 0))
+        values_lunch.append(sums_by_day_lunch.get(cursor, 0))
         cursor += timedelta(days=1)
 
     range_label = f"{start_date.strftime('%d.%m.%Y')} - {end_date.strftime('%d.%m.%Y')}"
 
     return render(request, "admin_main/report_general.html", {
         "labels": labels,
-        "values": values,
+        "values_breakfast": values_breakfast,
+        "values_lunch": values_lunch,
         "range_label": range_label,
         "error": "",
     })
