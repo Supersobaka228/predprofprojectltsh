@@ -1,6 +1,15 @@
 document.addEventListener('DOMContentLoaded', () => {
     const adminMenuDateDiv = document.querySelector('.admin_menu_date');
     const dayButtons = document.querySelectorAll('.admin_menu_day');
+    const dayInput = document.getElementById('day_input_value');
+
+    const dayMap = {
+        'Пн': 1,
+        'Вт': 2,
+        'Ср': 3,
+        'Чт': 4,
+        'Пт': 5,
+    };
 
     // Функция для обновления даты
     function updateAdminMenuDate(dayOfWeekText) {
@@ -11,8 +20,9 @@ document.addEventListener('DOMContentLoaded', () => {
         // Получаем текущую дату (для примера, можно брать из глобальной переменной)
         const currentDate = new Date(); // Сегодняшняя дата
         let dayToDisplay = '';
-        // Получить элемент по ID и изменить значение
-        document.getElementById('day_input_value').value = currentDate;
+        if (dayInput) {
+            dayInput.value = dayMap[dayOfWeekText] || '';
+        }
 
         switch (dayOfWeekText) {
             case 'Пн':
@@ -76,6 +86,14 @@ document.addEventListener('DOMContentLoaded', () => {
     dayButtons.forEach(button => {
         if (button.textContent === currentDayAbbr) {
             button.classList.add('active');
+            updateAdminMenuDate(button.textContent);
         }
     });
+
+    if (dayInput && !dayInput.value) {
+        const first = dayButtons[0];
+        if (first) {
+            updateAdminMenuDate(first.textContent);
+        }
+    }
 });

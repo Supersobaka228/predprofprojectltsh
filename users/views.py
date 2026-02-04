@@ -39,14 +39,12 @@ def login_f(request):
         form = LoginForm(request=request, data=request.POST)
         form.error_messages = []
         print(form.errors)
-        if form.is_bound:
+        if form.is_valid():
             user = form.get_user()
-
-            if not form.clean():
-                request.session.set_expiry(0)
+            if user is None:
                 form.set_error('Неверный логин или пароль')
-                print(form.error_messages)
                 return render(request, 'users/login.html', {'form': form})
+
             login(request, user)
             # Получаем параметр next
             next_url = request.POST.get('next') or request.GET.get('next')
@@ -57,6 +55,11 @@ def login_f(request):
                 print(4)
                 return redirect('admin_main')
             return redirect('menu')
+
+        request.session.set_expiry(0)
+        form.set_error('Неверный логин или пароль')
+        print(form.error_messages)
+        return render(request, 'users/login.html', {'form': form})
     else:
         form = LoginForm(request=request)
     # Guard against AnonymousUser lacking 'role'
@@ -71,7 +74,7 @@ def login_admin(request):
         form = LoginForm(request=request, data=request.POST)
         form.error_messages = []
 
-        if not form.clean():
+        if not form.is_valid():
             request.session.set_expiry(0)
             form.set_error('Неверный логин или пароль')
             return render(request, 'users/admin_login.html', {'form': form})

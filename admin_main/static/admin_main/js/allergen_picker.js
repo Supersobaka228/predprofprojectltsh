@@ -15,7 +15,15 @@ document.addEventListener('DOMContentLoaded', () => {
       });
   };
 
-  const buildChip = ({ label, id, type }) => {
+  const getDishIndex = (element) => {
+    const dishBlock = element.closest('.dish-block');
+    if (!dishBlock) {
+      return '0';
+    }
+    return dishBlock.getAttribute('data-dish-index') || '0';
+  };
+
+  const buildChip = ({ label, id, type, dishIndex }) => {
     const chip = document.createElement('span');
     chip.className = 'menu_config_chip';
     chip.dataset.itemId = id;
@@ -32,7 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
       gramsInput.min = '1';
       gramsInput.placeholder = 'г';
       gramsInput.className = 'menu_config_chip_input';
-      gramsInput.name = 'ingredients_grams[]';
+      gramsInput.name = `ingredients_grams_${dishIndex}[]`;
       gramsInput.dataset.ingredientId = id;
       chip.appendChild(gramsInput);
     }
@@ -77,17 +85,18 @@ document.addEventListener('DOMContentLoaded', () => {
           return;
         }
 
+        const dishIndex = getDishIndex(allergenOption);
         const allergenId = allergenOption.dataset.allergenId || allergenOption.textContent.trim();
         const allergenLabel = allergenOption.textContent.trim();
 
         const existing = allergensWrap.querySelector(`[data-item-id="${allergenId}"][data-item-type="allergen"]`);
         if (!existing) {
-          const chip = buildChip({ label: allergenLabel, id: allergenId, type: 'allergen' });
+          const chip = buildChip({ label: allergenLabel, id: allergenId, type: 'allergen', dishIndex });
           allergensWrap.appendChild(chip);
 
           const hiddenInput = document.createElement('input');
           hiddenInput.type = 'hidden';
-          hiddenInput.name = 'allergens[]';
+          hiddenInput.name = `allergens_${dishIndex}[]`;
           hiddenInput.value = allergenId;
           hiddenInput.dataset.itemId = allergenId;
           hiddenInput.dataset.itemType = 'allergen';
@@ -107,17 +116,18 @@ document.addEventListener('DOMContentLoaded', () => {
           return;
         }
 
+        const dishIndex = getDishIndex(ingredientOption);
         const ingredientId = ingredientOption.dataset.ingredientId || ingredientOption.textContent.trim();
         const ingredientLabel = ingredientOption.textContent.trim();
 
         const existing = ingredientsWrap.querySelector(`[data-item-id="${ingredientId}"][data-item-type="ingredient"]`);
         if (!existing) {
-          const chip = buildChip({ label: ingredientLabel, id: ingredientId, type: 'ingredient' });
+          const chip = buildChip({ label: ingredientLabel, id: ingredientId, type: 'ingredient', dishIndex });
           ingredientsWrap.appendChild(chip);
 
           const hiddenInput = document.createElement('input');
           hiddenInput.type = 'hidden';
-          hiddenInput.name = 'ingredients[]';
+          hiddenInput.name = `ingredients_${dishIndex}[]`;
           hiddenInput.value = ingredientId;
           hiddenInput.dataset.itemId = ingredientId;
           hiddenInput.dataset.itemType = 'ingredient';

@@ -11,7 +11,7 @@ from django.views.decorators.http import require_POST
 
 from admin_main.models import BuyOrder, Notification
 from chef_main.models import Ingredient
-from menu.models import MenuItem, Order, Review, Meal, DayOrder, Allergen
+from menu.models import MenuItem, Order, Review, Meal, DayOrder, Allergen, MealIngredient
 
 
 @csrf_exempt
@@ -41,40 +41,122 @@ def admin(request):
     }
     if request.method == 'POST':
         post = request.POST
-        meals = []
-        print(post)
-        for i in range(len(post.getlist('dish_name'))):
-            dish = Meal.objects.create(name=post.getlist('dish_name[]')[i],
-                                       weight=int(post.getlist('dish_weight[]')[i]),
-                                       calories=int(list(post.getlist('dish_kcal[]'))[i]),
-                                       description=post.getlist('composition[]')[i],)
-            dish.allergens.add(post.get('allergens[]'))
-            dish.save()
-            meals.append(dish)
+        errors = []
 
-        menuitem = MenuItem.objects.create(category=post.getlist('category')[0],
-                                           time=f'{post.getlist('time_start')[0]} - {post.getlist('time_end')[0]}',
-                                           price=int(post.getlist('price')[0]),
-                                           calories=sum(list(map(int, post.getlist('dish_kcal[]')[0]))),
-                                           proteins=45,
-                                           fats=76,
-                                           carbs=89)
+        category = post.get('category')
+        day_value = post.get('day')
+        time_start = post.get('time_start')
+        time_end = post.get('time_end')
+        price_raw = post.get('price')
+
+        dish_names = post.getlist('dish_name[]')
+        dish_weights = post.getlist('dish_weight[]')
+        dish_kcals = post.getlist('dish_kcal[]')
+
+        if not category:
+            errors.append('Не выбран тип приёма пищи.')
+        if not time_start or not time_end:
+            errors.append('Не задано время выдачи.')
+        if not price_raw:
+            errors.append('Не задана цена.')
+        if not dish_names:
+            errors.append('Не добавлено ни одного блюда.')
+
+        if errors:
+            context['errors'] = errors
+            return render(request, 'admin_main/admin_main.html', context)
+
+        meals = []
+        total_calories = 0
+
+        for i, name in enumerate(dish_names):
+            name = name.strip()
+            if not name:
+                errors.append('Название блюда не может быть пустым.')
+                continue
+
+            try:
+                weight = int(dish_weights[i]) if i < len(dish_weights) and dish_weights[i] else 0
+            except ValueError:
+                weight = 0
+
+            try:
+                calories = int(dish_kcals[i]) if i < len(dish_kcals) and dish_kcals[i] else 0
+            except ValueError:
+                calories = 0
+
+            total_calories += calories
+
+            dish_allergens = post.getlist(f'allergens_{i}[]')
+            dish_ingredients = post.getlist(f'ingredients_{i}[]')
+            dish_ingredients_grams = post.getlist(f'ingredients_grams_{i}[]')
+
+            if not dish_allergens:
+                errors.append(f'Не выбраны аллергены для блюда №{i + 1}.')
+            if not dish_ingredients:
+                errors.append(f'Не выбраны ингредиенты для блюда №{i + 1}.')
+
+            meal = Meal.objects.create(
+                name=name,
+                weight=weight,
+                calories=calories,
+                description='',
+            )
+
+            if dish_allergens:
+                allergens = Allergen.objects.filter(code__in=dish_allergens)
+                meal.allergens.set(allergens)
+
+            for j, ingredient_code in enumerate(dish_ingredients):
+                ingredient = Ingredient.objects.filter(code=ingredient_code).first()
+                if not ingredient:
+                    continue
+                grams = 0
+                if j < len(dish_ingredients_grams):
+                    try:
+                        grams = int(dish_ingredients_grams[j])
+                    except ValueError:
+                        grams = 0
+                if grams <= 0:
+                    grams = 1
+                MealIngredient.objects.create(meal=meal, ingredient=ingredient, mass=grams)
+
+            meal.save()
+            meals.append(meal)
+
+        if errors:
+            context['errors'] = errors
+            return render(request, 'admin_main/admin_main.html', context)
+
+        try:
+            price = int(price_raw)
+        except ValueError:
+            price = 0
+
+        menuitem = MenuItem.objects.create(
+            category=category,
+            time=f'{time_start} - {time_end}',
+            price=price,
+            calories=total_calories,
+            proteins=0,
+            fats=0,
+            carbs=0,
+            icon='',
+        )
         menuitem.meals.set(meals)
         menuitem.save()
-        clean_str = str(post.getlist('day')[0]).split(' GMT')[0]  # 'Tue Feb 03 2026 10:40:01'
-        clean_str = clean_str.split()[-1]
-        date_obj = datetime.strptime(clean_str, '%H:%M:%S')
-        print(date_obj)
-        # Получаем день недели (0=понедельник, 6=воскресенье)
-        day_number = date_obj.isoweekday()
-        print(day_number)
-        day_order = DayOrder.objects.get(day=day_number)
-        if day_order:
-            print(day_order.order)
+
+        try:
+            day_number = int(day_value)
+        except (TypeError, ValueError):
+            day_number = None
+
+        if day_number:
+            day_order, _ = DayOrder.objects.get_or_create(day=day_number, defaults={'order': []})
             day_order.order.append(menuitem.id)
-            day_order.save()
-        for i in DayOrder.objects.all():
-            print(i.day)
+            day_order.save(update_fields=['order'])
+
+        return render(request, 'admin_main/admin_main.html', context)
     return render(request, 'admin_main/admin_main.html', context)
 
 
@@ -133,6 +215,8 @@ def orders_by_day():
             dates[date_obj_1] = order.price
         else:
             dates[date_obj_1] += order.price
+    if not dates:
+        return {}
     min_date = min(dates)
     max_date = max(dates)
     result = {}

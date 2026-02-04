@@ -309,19 +309,7 @@
                             <button class="admin_menu_day" type="button">Пт</button>
                         </div>
                     </div>
-                    <div class="admin_menu_class_select">
-                        <button class="admin_menu_class_btn" type="button" aria-haspopup="listbox" aria-expanded="false">
-                            <span class="admin_menu_class_label">11-е классы</span>
-                            <img class="admin_menu_class_arrow" src="/static/icon/left_arrow_stats.svg" alt="">
-                        </button>
-                        <div class="admin_menu_class_menu" role="listbox" aria-label="Классы">
-                            <button class="admin_menu_class_item" type="button" role="option" data-value="11">11-е классы</button>
-                            <button class="admin_menu_class_item" type="button" role="option" data-value="10">10-е классы</button>
-                            <button class="admin_menu_class_item" type="button" role="option" data-value="9">9-е классы</button>
-                            <button class="admin_menu_class_item" type="button" role="option" data-value="8">8-е классы</button>
-                            <button class="admin_menu_class_item" type="button" role="option" data-value="7">7-е классы</button>
-                        </div>
-                    </div>
+
                 </div>
             </section>
 
@@ -330,6 +318,14 @@
                     {% csrf_token %}
                     <input type="hidden" name="category" id="title_value">
                     <input type="hidden" name="day" id="day_input_value">
+
+                    {% if errors %}
+                    <div class="menu_config_errors" role="alert">
+                        {% for error in errors %}
+                        <div class="menu_config_error_item">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
 
                     <div class="menu_config_card">
                         <div class="menu_config_title_select">

@@ -3,6 +3,29 @@ document.addEventListener('DOMContentLoaded', function() {
     const addDishBtn = document.querySelector('.add-dish-btn');
     let dishCounter = 1;
 
+    const getMenuOptionsHtml = (selector) => {
+        const firstMenu = document.querySelector(selector);
+        return firstMenu ? firstMenu.innerHTML : '';
+    };
+
+    const updateDishFieldNames = (block, index) => {
+        block.setAttribute('data-dish-index', index);
+
+        block.querySelectorAll('input[name^="allergens_"]').forEach((input) => {
+            input.name = `allergens_${index}[]`;
+        });
+
+        block.querySelectorAll('input[name^="ingredients_"]').forEach((input) => {
+            if (input.type === 'hidden') {
+                input.name = `ingredients_${index}[]`;
+            }
+        });
+
+        block.querySelectorAll('input[name^="ingredients_grams_"]').forEach((input) => {
+            input.name = `ingredients_grams_${index}[]`;
+        });
+    };
+
     // Делегирование событий для аллергенов (работает и для динамических элементов)
     function setupEventDelegation() {
         // Клик по кнопке "Добавить" аллерген (делегирование)
@@ -48,6 +71,9 @@ document.addEventListener('DOMContentLoaded', function() {
         newDishBlock.className = 'menu_config_block dish-block';
         newDishBlock.setAttribute('data-dish-index', dishCounter - 1);
 
+        const allergensMenuHtml = getMenuOptionsHtml('.menu_config_allergen_menu');
+        const ingredientsMenuHtml = getMenuOptionsHtml('.menu_config_ingredient_menu');
+
         newDishBlock.innerHTML = `
             <div class="menu_config_dish">
                 <div class="menu_config_dish_top">
@@ -66,30 +92,22 @@ document.addEventListener('DOMContentLoaded', function() {
                     <div class="menu_config_allergens" aria-live="polite"></div>
                     <div class="menu_config_allergen_picker">
                         <button class="menu_config_add" type="button">Добавить</button>
-                        <div class="menu_config_allergen_menu" role="listbox" aria-label="Аллергены" style="display: none;">
-                            <button class="menu_config_allergen_option" type="button" data-allergen-id="gluten">Глютен</button>
-                            <button class="menu_config_allergen_option" type="button" data-allergen-id="lactose">Лактоза</button>
-                            <button class="menu_config_allergen_option" type="button" data-allergen-id="eggs">Яйца</button>
-                            <button class="menu_config_allergen_option" type="button" data-allergen-id="nuts">Орехи</button>
-                            <button class="menu_config_allergen_option" type="button" data-allergen-id="soy">Соя</button>
+                        <div class="menu_config_allergen_menu" role="listbox" aria-label="Аллергены">
+                            ${allergensMenuHtml}
                         </div>
                     </div>
                 </div>
 
                 <div class="menu_config_dish_row">
-                                        <span class="menu_config_dish_label">Состав</span>
-                                        <div class="menu_config_ingredients" aria-live="polite"></div>
-                                        <div class="menu_config_ingredient_picker">
-                                            <button class="menu_config_add" type="button" aria-haspopup="listbox" aria-expanded="false">Добавить</button>
-                                            <div class="menu_config_ingredient_menu" role="listbox" aria-label="Ингредиенты">
-                                                <button class="menu_config_ingredient_option" type="button" data-ingredient-id="milk">Молоко</button>
-                                                <button class="menu_config_ingredient_option" type="button" data-ingredient-id="rice">Рис</button>
-                                                <button class="menu_config_ingredient_option" type="button" data-ingredient-id="oats">Овсяные хлопья</button>
-                                                <button class="menu_config_ingredient_option" type="button" data-ingredient-id="butter">Масло</button>
-                                                <button class="menu_config_ingredient_option" type="button" data-ingredient-id="salt">Соль</button>
-                                            </div>
-                                        </div>
-                                    </div>
+                    <span class="menu_config_dish_label">Состав</span>
+                    <div class="menu_config_ingredients" aria-live="polite"></div>
+                    <div class="menu_config_ingredient_picker">
+                        <button class="menu_config_add" type="button" aria-haspopup="listbox" aria-expanded="false">Добавить</button>
+                        <div class="menu_config_ingredient_menu" role="listbox" aria-label="Ингредиенты">
+                            ${ingredientsMenuHtml}
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div class="menu_config_requests">
@@ -131,6 +149,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 numberSpan.textContent = index + 1;
             }
             block.setAttribute('data-dish-index', index);
+            updateDishFieldNames(block, index);
 
             // Показываем/скрываем кнопку удаления
             const removeBtn = block.querySelector('.remove-dish-btn');
