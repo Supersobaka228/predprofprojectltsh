@@ -194,6 +194,8 @@
             {{ orders_by_day|json_script:"my-chart-data" }}
             {{ comes_by_day|json_script:"my-chart-data2" }}
             {{ reviews_by_day|json_script:"my-chart-data3" }}
+            {{ avg_orders_weekday|json_script:"my-chart-avg-orders" }}
+            {{ avg_comes_weekday|json_script:"my-chart-avg-comes" }}
 
 
             <script>

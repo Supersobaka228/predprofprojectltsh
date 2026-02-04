@@ -35,6 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   const serverData = JSON.parse(document.getElementById('my-chart-data').textContent);
+  const avgWeekday = JSON.parse(document.getElementById('my-chart-avg-orders').textContent);
   const serverDataKeys = Object.keys(serverData);
   let CurrentDataKey = serverDataKeys[0];
   let currentIndex = 0;
@@ -67,8 +68,8 @@ document.addEventListener('DOMContentLoaded', () => {
         pointBackgroundColor: '#ffffff'
       },
       {
-        label: 'План',
-        data: [0, 0, 0, 0, 0],
+        label: 'Среднее',
+        data: avgWeekday,
         borderColor: '#000000',
         backgroundColor: 'transparent',
         fill: false,

@@ -36,6 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
   const serverData = JSON.parse(document.getElementById('my-chart-data2').textContent);
+  const avgWeekday = JSON.parse(document.getElementById('my-chart-avg-comes').textContent);
   const serverDataKeys = Object.keys(serverData);
   let CurrentDataKey = serverDataKeys[0];
   let currentIndex = 0;
@@ -57,7 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
       },
       {
         label: 'Средние посещения',
-        data: [0, 0, 0, 0, 0],
+        data: avgWeekday,
         borderColor: '#000000',
         backgroundColor: 'transparent',
         fill: false,

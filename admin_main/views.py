@@ -31,6 +31,8 @@ def admin(request):
         'comes_by_date': comes_by_date(),
         'orders_by_day': orders_by_day(),
         'comes_by_day': comes_by_day(),
+        'avg_orders_weekday': avg_orders_weekday_recent(),
+        'avg_comes_weekday': avg_comes_weekday_recent(),
         'reviews_by_day': reviews_by_day(),
         'all_reviews': list(Review.objects.all()),
         'ingredients': Ingredient.objects.all(),
@@ -474,3 +476,60 @@ def admin_report_general(request):
         "range_label": range_label,
         "error": "",
     })
+
+
+def avg_orders_weekday_recent(days_back=180):
+    today = datetime.today().date()
+    cutoff = today - timedelta(days=days_back)
+
+    daily_totals = {}
+    orders = Order.objects.filter(day__gte=cutoff.isoformat(), day__lte=today.isoformat())
+    for order in orders:
+        try:
+            day_key = datetime.strptime(order.day, "%Y-%m-%d").date()
+        except ValueError:
+            continue
+        daily_totals[day_key] = daily_totals.get(day_key, 0) + (order.price or 0)
+
+    totals = [0] * 7
+    counts = [0] * 7
+    for day_key, total in daily_totals.items():
+        if total <= 0:
+            continue
+        weekday = day_key.weekday()
+        totals[weekday] += total
+        counts[weekday] += 1
+
+    return [
+        (totals[i] / counts[i]) if counts[i] else 0
+        for i in range(5)
+    ]
+
+
+def avg_comes_weekday_recent(days_back=180):
+    today = datetime.today().date()
+    cutoff = today - timedelta(days=days_back)
+
+    daily_users = {}
+    orders = Order.objects.filter(day__gte=cutoff.isoformat(), day__lte=today.isoformat())
+    for order in orders:
+        try:
+            day_key = datetime.strptime(order.day, "%Y-%m-%d").date()
+        except ValueError:
+            continue
+        daily_users.setdefault(day_key, set()).add(order.user_id)
+
+    totals = [0] * 7
+    counts = [0] * 7
+    for day_key, users in daily_users.items():
+        value = len(users)
+        if value <= 0:
+            continue
+        weekday = day_key.weekday()
+        totals[weekday] += value
+        counts[weekday] += 1
+
+    return [
+        (totals[i] / counts[i]) if counts[i] else 0
+        for i in range(5)
+    ]
