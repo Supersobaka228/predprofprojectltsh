@@ -197,9 +197,24 @@ document.getElementById('prev-btn-sc').addEventListener('click', () => {
 
 
 const serverData2 = JSON.parse(document.getElementById('my-chart-data3').textContent);
-const serverDataKeys2 = Object.keys(serverData2);
-let CurrentDataKey2 = serverDataKeys2[0];
-let currentIndex2 = 0;
+const serverDataKeys2 = Object.keys(serverData2).sort();
+
+const pad = (value) => String(value).padStart(2, '0');
+const toIso = (dateObj) => `${dateObj.getFullYear()}-${pad(dateObj.getMonth() + 1)}-${pad(dateObj.getDate())}`;
+const getWeekKey = (dateObj) => {
+    const day = dateObj.getDay();
+    const diff = (day + 6) % 7;
+    const start = new Date(dateObj);
+    start.setDate(start.getDate() - diff);
+    const end = new Date(start);
+    end.setDate(end.getDate() + 4);
+    return `${toIso(start)} ${toIso(end)}`;
+};
+
+const today = new Date();
+const currentWeekKey = getWeekKey(today);
+let CurrentDataKey2 = serverDataKeys2.includes(currentWeekKey) ? currentWeekKey : serverDataKeys2[0];
+let currentIndex2 = serverDataKeys2.indexOf(CurrentDataKey2);
 
 
 function filterReviewsForItem(containerId = 'reviews_list', emptyElementId = 'sheet-review-empty') {
@@ -208,84 +223,70 @@ function filterReviewsForItem(containerId = 'reviews_list', emptyElementId = 'sh
         console.warn(`Контейнер с ID "${containerId}" не найден.`);
         return;
     }
-    document.getElementById('display-stats-reviews').innerText = CurrentDataKey2;
+    document.getElementById('display-stats-reviews').innerText = CurrentDataKey2 || '';
     const emptyEl = document.getElementById(emptyElementId);
-    // Выбираем все элементы с классом 'review_meta' внутри контейнера
     const reviews = Array.from(reviewsContainer.querySelectorAll('.review_meta'));
 
-    // Получаем список элементов, которые должны быть показаны
-    // Используем CurrentDataKey2 + 1 как ключ, как в вашем коде
-    const NeedItems = serverData2[CurrentDataKey2];
+    const NeedItems = CurrentDataKey2 ? serverData2[CurrentDataKey2] : [];
 
-    // --- ГЛАВНОЕ ИСПРАВЛЕНИЕ: ПРОВЕРКА НАЛИЧИЯ ДАННЫХ ---
     if (!NeedItems || NeedItems.length === 0) {
-        // Если NeedItems пуст или undefined, скрываем все отзывы и показываем "пусто"
         reviews.forEach(r => {
             r.style.display = 'none';
         });
         if (emptyEl) {
-            emptyEl.style.display = ''; // Показываем сообщение "пусто"
+            emptyEl.style.display = '';
         }
-        console.log("NeedItems пуст или не определен. Ничего не отображено.");
-        return; // Завершаем функцию
+        return;
     }
 
-    // Создаем Set для быстрого поиска ID
     const allowedItemIds = new Set(NeedItems.map(item => String(item.id)));
 
     let shown = 0;
     reviews.forEach(r => {
-        const reviewItemId = r.getAttribute('data-review-item-id'); // ID элемента, к которому относится отзыв
-
-        // Проверяем, есть ли ID этого элемента в нашем Set
+        const reviewItemId = r.getAttribute('data-review-item-id');
         const match = reviewItemId && allowedItemIds.has(String(reviewItemId));
-
-        r.style.display = match ? '' : 'none'; // '' для показа, 'none' для скрытия
-
+        r.style.display = match ? '' : 'none';
         if (match) {
             shown += 1;
         }
     });
 
-    // Обновляем состояние элемента "пусто"
     if (emptyEl) {
         emptyEl.style.display = shown === 0 ? '' : 'none';
     }
-
-    console.log(`Показано ${shown} отзывов.`);
 }
 
+if (CurrentDataKey2) {
+    filterReviewsForItem();
+}
 
-document.getElementById('review-before-btn').addEventListener('click', () => {
-    // Проверяем, не дошли ли мы до конца списка
-    if (currentIndex2 < serverDataKeys2.length - 1) {
-        currentIndex2++; // Увеличиваем индекс на 1
-        CurrentDataKey2 = serverDataKeys2[currentIndex2]; // Обновляем значение ключа
+const reviewNextBtn = document.getElementById('review-next-btn');
+const reviewBeforeBtn = document.getElementById('review-before-btn');
+const reviewLabel = document.getElementById('display-stats-reviews');
 
-        console.log("Новый ключ:", CurrentDataKey2);
+if (reviewBeforeBtn) {
+    reviewBeforeBtn.addEventListener('click', () => {
+        if (currentIndex2 < serverDataKeys2.length - 1) {
+            currentIndex2 += 1;
+            CurrentDataKey2 = serverDataKeys2[currentIndex2];
+            filterReviewsForItem();
+            if (reviewLabel) reviewLabel.innerText = CurrentDataKey2;
+        } else {
+            alert('Это последняя доступная неделя!');
+        }
+    });
+}
 
-        filterReviewsForItem();
-        document.getElementById('display-stats-reviews').innerText = CurrentDataKey2;
-        myChart.update();
-
-    } else {
-        alert("Это последний доступный день!");
-    }
-  });
-
-document.getElementById('review-next-btn').addEventListener('click', () => {
-    if (currentIndex2 > 0) {
-        currentIndex2--;
-        CurrentDataKey2 = serverDataKeys2[currentIndex2];
-
-        // Обновляем данные графика
-        filterReviewsForItem();
-        document.getElementById('display-stats-reviews').innerText = CurrentDataKey2;
-        myChart.update();
-
-    }
-  });
-
+if (reviewNextBtn) {
+    reviewNextBtn.addEventListener('click', () => {
+        if (currentIndex2 > 0) {
+            currentIndex2 -= 1;
+            CurrentDataKey2 = serverDataKeys2[currentIndex2];
+            filterReviewsForItem();
+            if (reviewLabel) reviewLabel.innerText = CurrentDataKey2;
+        }
+    });
+}
 
   const myChart = new Chart(ctx, config);
 

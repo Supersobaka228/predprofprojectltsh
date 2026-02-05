@@ -2,7 +2,7 @@ import json
 from datetime import datetime, timedelta
 from tkinter import Menu
 
-import dateparser
+from django.utils import timezone
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.shortcuts import render
@@ -19,6 +19,47 @@ from menu.models import MenuItem, Order, Review, Meal, DayOrder, Allergen, MealI
 def admin(request):
     menu = MenuItem.objects.all()
     user = request.user
+
+    reviews_qs = Review.objects.select_related('item', 'user').prefetch_related('item__meals').order_by('-day')
+    reviews_payload = []
+    for r in reviews_qs:
+        email = getattr(getattr(r, 'user', None), 'email', '') or ''
+        if '@' in email:
+            reviewer = email.split('@', 1)[0]
+        elif email.strip():
+            reviewer = email.strip()
+        elif getattr(r, 'reviewer_name', ''):
+            reviewer = r.reviewer_name
+        else:
+            reviewer = 'Ученик'
+
+        item = getattr(r, 'item', None)
+        if item:
+            if item.category == 'breakfast':
+                meal_type = 'Завтрак'
+            elif item.category == 'lunch':
+                meal_type = 'Обед'
+            else:
+                meal_type = item.category
+            meal_names = [m.name for m in item.meals.all()]
+            if meal_names:
+                target = f"К: {meal_type} - {', '.join(meal_names)}"
+            else:
+                target = f"К: {meal_type}"
+        else:
+            target = 'К: -'
+
+        day_display = r.day.strftime('%d.%m.%y %H:%M') if getattr(r, 'day', None) else ''
+
+        reviews_payload.append({
+            'id': r.id,
+            'day': day_display,
+            'target': target,
+            'stars_count': r.stars_count,
+            'text': r.text,
+            'reviewer': reviewer,
+        })
+
     context = {
         'current_user': user,
         'notifications': Notification.objects.all(),
@@ -34,7 +75,7 @@ def admin(request):
         'avg_orders_weekday': avg_orders_weekday_recent(),
         'avg_comes_weekday': avg_comes_weekday_recent(),
         'reviews_by_day': reviews_by_day(),
-        'all_reviews': list(Review.objects.all()),
+        'all_reviews': reviews_payload,
         'ingredients': Ingredient.objects.all(),
         'allergens': Allergen.objects.all(),
 
@@ -309,6 +350,7 @@ def serialize_review(review):
         "text": getattr(review, "text", None) or getattr(review, "body", None) or str(review)
     }
 
+
 def reviews_by_day(queryset=None):
     """
     Возвращает словарь вида:
@@ -319,20 +361,13 @@ def reviews_by_day(queryset=None):
     if queryset is None:
         queryset = Review.objects.all()
 
-    # Собираем: date_obj (datetime.date) -> set(pk)
+    # date_obj (datetime.date) -> list[review]
     dates = {}
-    # PK -> (review_obj, parsed_date) для дальнейшей сериализации/сортировки
-    reviews_info = {}
-
     for review in queryset:
-        parsed = dateparser.parse(str(getattr(review, "day", "")), languages=['ru'])
-        if not parsed:
+        if not getattr(review, "day", None):
             continue
-        date_obj = parsed.date()
-        pk = review.pk
-
-        reviews_info[pk] = (review, date_obj)
-        dates.setdefault(date_obj, set()).add(pk)
+        day_local = timezone.localtime(review.day).date()
+        dates.setdefault(day_local, []).append(review)
 
     if not dates:
         return {}
@@ -355,21 +390,18 @@ def reviews_by_day(queryset=None):
     ans = {}
     # Группируем по блокам по 5 рабочих дней
     for i in range(0, len(workday_dates), 5):
-        block = workday_dates[i:i + 5]  # список datetime.date
+        block = workday_dates[i:i + 5]
         if not block:
             continue
 
-        # Объединяем PK всех отзывов в этих днях
-        pk_union = set()
+        reviews_in_block = []
         for d in block:
-            pk_union |= dates.get(d, set())
+            reviews_in_block.extend(dates.get(d, []))
 
-        # Преобразуем PK в сериализованные отзывы
-        # Сортируем по дате (reviews_info[pk][1]) и затем по pk для детерминированности
-        sorted_pks = sorted(pk_union, key=lambda p: (reviews_info[p][1], p))
-        reviews_serialized = [serialize_review(reviews_info[pk][0]) for pk in sorted_pks]
+        # Сортируем отзывы по дате убыванию
+        reviews_in_block.sort(key=lambda r: r.day or timezone.now(), reverse=True)
+        reviews_serialized = [serialize_review(r) for r in reviews_in_block]
 
-        # Формируем ключ "YYYY-MM-DD YYYY-MM-DD"
         key = f"{block[0].strftime('%Y-%m-%d')} {block[-1].strftime('%Y-%m-%d')}"
         ans[key] = reviews_serialized
 

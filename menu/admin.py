@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Allergen, DayOrder, Meal, MenuItem, MealIngredient, Order
+from .models import Allergen, DayOrder, Meal, MenuItem, MealIngredient, Order, Review
 
 
 @admin.register(DayOrder)
@@ -45,3 +45,11 @@ class MealAdmin(admin.ModelAdmin):
         return obj.ingredients_with_mass
 
     ingredients_summary.short_description = 'Ингредиенты'
+
+
+@admin.register(Review)
+class ReviewAdmin(admin.ModelAdmin):
+    list_display = ('id', 'item', 'user', 'day', 'stars_count')
+    list_filter = ('stars_count', 'day')
+    date_hierarchy = 'day'
+    search_fields = ('text', 'reviewer_name', 'user__email')

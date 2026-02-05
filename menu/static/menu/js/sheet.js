@@ -54,6 +54,8 @@ document.addEventListener("DOMContentLoaded", () => {
       icon: button.getAttribute('data-icon'),
       maxDes: button.getAttribute('data-max-des'),
       composition: button.getAttribute('data-composition'),
+      ratingAvg: button.getAttribute('data-rating-avg'),
+      ratingCount: button.getAttribute('data-rating-count'),
       allergens: button.getAttribute('data-allergens')
     };
 
@@ -100,6 +102,58 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  function ensureRatingMarkup(starsBox) {
+    if (!starsBox) return;
+    if (starsBox.querySelector('.rating-stars-bg')) return;
+
+    const starSrc = '../../static/menu/icon/Star 1.svg';
+    const bg = document.createElement('div');
+    bg.className = 'rating-stars-layer rating-stars-bg';
+
+    const fill = document.createElement('div');
+    fill.className = 'rating-stars-layer rating-stars-fill';
+
+    for (let i = 0; i < 5; i++) {
+      const imgBg = document.createElement('img');
+      imgBg.src = starSrc;
+      imgBg.alt = '';
+      bg.appendChild(imgBg);
+
+      const imgFill = document.createElement('img');
+      imgFill.src = starSrc;
+      imgFill.alt = '';
+      fill.appendChild(imgFill);
+    }
+
+    starsBox.appendChild(bg);
+    starsBox.appendChild(fill);
+  }
+
+  function setRating(value) {
+    const starsBoxes = Array.from(document.querySelectorAll('.sheet-rating-stars-box'));
+    const valueEls = Array.from(document.querySelectorAll('.sheet-rating-value'));
+    const rating = Number(value);
+    const safeRating = Number.isFinite(rating) ? Math.max(0, Math.min(5, rating)) : 0;
+
+    const display = safeRating.toFixed(1).replace('.', ',');
+
+    starsBoxes.forEach(starsBox => {
+      ensureRatingMarkup(starsBox);
+      const percent = (safeRating / 5) * 100;
+      starsBox.style.setProperty('--rating-percent', `${percent}%`);
+
+      const container = starsBox.closest('.sheet-rating-stars');
+      if (container) {
+        container.setAttribute('aria-label', `Рейтинг ${display} из 5`);
+      }
+      starsBox.setAttribute('aria-label', `Рейтинг ${display} из 5`);
+    });
+
+    valueEls.forEach(valueEl => {
+      valueEl.textContent = `${display}/5`;
+    });
+  }
+
   function openSheet() {
     const compositionList = document.getElementById('sheet-composition');
     const allergensList = document.getElementById('sheet-allergens');
@@ -119,6 +173,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Аллергены
     fillList(allergensList, splitDataset(currentItemData.allergens), 'li');
+
+    // Средний рейтинг
+    setRating(currentItemData.ratingAvg);
 
     // Фильтруем отзывы под выбранный MenuItem
     filterReviewsForItem(currentItemData.item);
@@ -232,6 +289,7 @@ document.addEventListener("DOMContentLoaded", () => {
   window.openRate = openRate;
   window.closeRate = closeRate;
   window.resetSheetInteractions = resetSheetInteractions;
+  window.setRating = setRating;
 
   /* Открытие */
   openRateBtn.addEventListener("click", (e) => {

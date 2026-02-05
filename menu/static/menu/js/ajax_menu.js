@@ -213,28 +213,48 @@ document.addEventListener('DOMContentLoaded', () => {
           const r = data.review;
           const container = document.getElementById('reviews-container');
           if (container && r) {
-            const div = document.createElement('div');
+            const userId = String(r.user_id ?? '');
+            const itemId = String(r.item_id ?? '');
+            const selector = userId ? `.sheet-review[data-review-item-id="${itemId}"][data-review-user-id="${userId}"]` : '';
+            const existingReview = selector ? container.querySelector(selector) : null;
+            const div = existingReview || document.createElement('div');
             div.className = 'sheet-review';
-            div.setAttribute('data-review-item-id', String(r.item_id ?? ''));
+            div.setAttribute('data-review-item-id', itemId);
+            if (userId) div.setAttribute('data-review-user-id', userId);
             div.innerHTML = `
               <div class="sheet-review-top">
                 <div class="sheet-review-date">${r.day || ''}</div>
-                <div class="sheet-review-user">ученик</div>
+                <div class="sheet-review-user"></div>
                 <div class="sheet-review-stars"></div>
               </div>
               <div class="sheet-review-text"></div>
             `;
             div.querySelector('.sheet-review-text').textContent = r.text || '';
+            div.querySelector('.sheet-review-user').textContent = r.reviewer_name || 'Ученик';
             const starsEl = div.querySelector('.sheet-review-stars');
             const n = Number(r.stars_count || 0);
-            for (let i = 0; i < n; i++) {
+            for (let i = 0; i < 5; i++) {
               const img = document.createElement('img');
               img.src = '../../static/menu/icon/Star 1.svg';
               img.alt = '';
-              img.className = 'sheet-rating-star';
+              img.className = 'sheet-rating-star' + (i >= n ? ' sheet-rating-star--empty' : '');
               starsEl.appendChild(img);
             }
-            container.appendChild(div);
+            if (!existingReview) {
+              container.appendChild(div);
+            }
+          }
+
+          const ratingAvg = Number(data.rating_avg ?? 0);
+          const ratingCount = Number(data.rating_count ?? 0);
+          const itemId = String(r?.item_id ?? '');
+          const itemEl = itemId ? document.querySelector(`.openSheet[data-item="${itemId}"]`) : null;
+          if (itemEl) {
+            itemEl.setAttribute('data-rating-avg', String(ratingAvg));
+            itemEl.setAttribute('data-rating-count', String(ratingCount));
+          }
+          if (typeof window.setRating === 'function') {
+            window.setRating(ratingAvg);
           }
 
           showToast('Отзыв отправлен');

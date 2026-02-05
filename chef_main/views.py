@@ -7,8 +7,12 @@ from django.shortcuts import render, redirect
 from django.views.decorators.http import require_POST
 
 from admin_main.models import BuyOrder
+from admin_main.views import sum_orders_count, sum_comes
 from chef_main.models import Ingredient
 from menu.models import Meal, DayOrder, MenuItem
+
+
+# Create your views here.
 
 
 def chef(request):
@@ -32,14 +36,11 @@ def chef(request):
             ingredient = Ingredient.objects.get(id=product_id)
             BuyOrder.objects.create(items=ingredient, user_id=request.user, summ=int(total_cents))
         return redirect('chef_main')
-
-    # Получаем текущую дату
-    today_str = date.today().strftime('%Y-%m-%d')
-
     a, b = meals_view()
     user_buyorders = BuyOrder.objects.filter(user_id=request.user).order_by('-date')
     all_buyorders = BuyOrder.objects.order_by('-date')[:100]
-
+    menu = MenuItem.objects.all()
+    today_str = date.today().isoformat()
     context = {
         'orders': BuyOrder.objects.all(),
         'user_buyorders': user_buyorders,
@@ -48,35 +49,31 @@ def chef(request):
         'meals_l': b,
         'today': today_str,
         'ingredients': Ingredient.objects.all(),
+        'buyorders_count': len(BuyOrder.objects.all()),
+        'menu': len(menu),
+        'summ': sum_orders_count(),
+        'sum_comes': sum_comes(),
     }
+    for i in a:
+        print(i.count_by_days['2026-02-05'])
 
-    # Отладочная информация
-    print(f"Сегодня: {today_str}")
-    for meal in a:
-        print(f"Блюдо: {meal.name}")
-        print(f"Данные: {meal.count_by_days}")
-
+    print(meals_view())
     return render(request, 'chef_main/chef_main.html', context)
 
 
 def meals_view():
     ans1, ans2 = [], []
-    try:
-        menu_t = DayOrder.objects.get(day=1)
-        for i in menu_t.order:
-            m = MenuItem.objects.get(id=i)
-            if m.category in 'breakfastЗавтрак':
-                for j in m.meals.all():
-                    ans1.append(j)
-            else:
-                for j in m.meals.all():
-                    ans2.append(j)
-    except DayOrder.DoesNotExist:
-        print("DayOrder для дня 1 не найден")
-    except Exception as e:
-        print(f"Ошибка в meals_view: {e}")
-
+    menu_t = DayOrder.objects.get(day=1)
+    for i in menu_t.order:
+        m = MenuItem.objects.get(id=i)
+        if m.category in 'breakfastЗавтрак':
+            for j in m.meals.all():
+                ans1.append(j)
+        else:
+            for j in m.meals.all():
+                ans2.append(j)
     return ans1, ans2
+
 
 
 @require_POST
