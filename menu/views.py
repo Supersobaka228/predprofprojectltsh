@@ -2,7 +2,7 @@ from tkinter import Menu
 
 from django.contrib.auth.decorators import login_required
 from django.db import transaction
-from django.db.models import Q
+from django.db.models import Q, Avg, Count
 from django.http import JsonResponse
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
@@ -82,12 +82,18 @@ def menu(request):
             if form.is_valid():
                 review = form.save()
                 if is_ajax:
+                    agg = Review.objects.filter(item_id=review.item_id).aggregate(
+                        avg=Avg('stars_count'),
+                        count=Count('id'),
+                    )
+                    rating_avg = round(float(agg.get('avg') or 0), 1)
+                    rating_count = int(agg.get('count') or 0)
                     return JsonResponse({'success': True, 'action': 'review', 'review': {
                         'item_id': getattr(review, 'item_id', None),
                         'day': getattr(review, 'day', ''),
                         'text': getattr(review, 'text', ''),
                         'stars_count': getattr(review, 'stars_count', 0),
-                    }})
+                    }, 'rating_avg': rating_avg, 'rating_count': rating_count})
             else:
                 if is_ajax:
                     return JsonResponse({'success': False, 'action': 'review', 'errors': form.errors}, status=400)
@@ -118,7 +124,16 @@ def menu(request):
     else:
         menu_items = []
 
-    
+    rating_rows = Review.objects.filter(item_id__in=[i.id for i in menu_items]).values('item_id').annotate(
+        avg=Avg('stars_count'),
+        count=Count('id'),
+    )
+    ratings_map = {r['item_id']: r for r in rating_rows}
+    for item in menu_items:
+        row = ratings_map.get(item.id)
+        avg_val = round(float(row.get('avg') or 0), 1) if row else 0.0
+        item.rating_avg = avg_val
+        item.rating_count = int(row.get('count') or 0) if row else 0
 
     date_display = format_russian_date(current_date)
 

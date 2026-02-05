@@ -227,14 +227,26 @@ document.addEventListener('DOMContentLoaded', () => {
             div.querySelector('.sheet-review-text').textContent = r.text || '';
             const starsEl = div.querySelector('.sheet-review-stars');
             const n = Number(r.stars_count || 0);
-            for (let i = 0; i < n; i++) {
+            for (let i = 0; i < 5; i++) {
               const img = document.createElement('img');
               img.src = '../../static/menu/icon/Star 1.svg';
               img.alt = '';
-              img.className = 'sheet-rating-star';
+              img.className = 'sheet-rating-star' + (i >= n ? ' sheet-rating-star--empty' : '');
               starsEl.appendChild(img);
             }
             container.appendChild(div);
+          }
+
+          const ratingAvg = Number(data.rating_avg ?? 0);
+          const ratingCount = Number(data.rating_count ?? 0);
+          const itemId = String(r?.item_id ?? '');
+          const itemEl = itemId ? document.querySelector(`.openSheet[data-item="${itemId}"]`) : null;
+          if (itemEl) {
+            itemEl.setAttribute('data-rating-avg', String(ratingAvg));
+            itemEl.setAttribute('data-rating-count', String(ratingCount));
+          }
+          if (typeof window.setRating === 'function') {
+            window.setRating(ratingAvg);
           }
 
           showToast('Отзыв отправлен');

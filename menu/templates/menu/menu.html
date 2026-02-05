@@ -37,6 +37,8 @@
                     data-max-des='{{ item.max_des_list|join:"||" }}'
                     data-composition='{{ item.composition_list|join:"||" }}'
                     data-allergens='{{ item.allergens_list|join:"||" }}'
+                    data-rating-avg="{{ item.rating_avg|default:0 }}"
+                    data-rating-count="{{ item.rating_count|default:0 }}"
                     data-date="{{ current_date }}">
 
                     <div class="menu_section_head">
@@ -275,20 +277,13 @@
                 <div class="sheet-rating-header">Отзывы</div>
 
                 <div class="sheet-rating-body">
-                    <div class="sheet-rating-stars" aria-label="Рейтинг 4 из 5">
-                        <div class="sheet-rating-stars-box">
-                            <img src="../../static/menu/icon/Star%201.svg" alt="" class="sheet-rating-star">
-                            <img src="../../static/menu/icon/Star%201.svg" alt="" class="sheet-rating-star">
-                            <img src="../../static/menu/icon/Star%201.svg" alt="" class="sheet-rating-star">
-                            <img src="../../static/menu/icon/Star%201.svg" alt="" class="sheet-rating-star">
-                            <img src="../../static/menu/icon/Star%201.svg" alt="" class="sheet-rating-star sheet-rating-star--empty">
-                        </div>
-                        <div class="sheet-rating-value">4/5</div>
+                    <div class="sheet-rating-stars" aria-label="Рейтинг 0,0 из 5">
+                        <div class="sheet-rating-stars-box" id="sheet-rating-stars-box" role="img" aria-label="Рейтинг 0,0 из 5"></div>
+                        <div class="sheet-rating-value" id="sheet-rating-value">0,0/5</div>
                     </div>
 
                     <div class="reviews_overflow" id="reviews-container">
                         <!-- Отзывы будут загружаться динамически -->
-                        <div class="sheet-review-empty" id="sheet-review-empty" style="display:none;">Нет отзывов для этого блюда</div>
 
                         {% for item in review_items %}
 
@@ -297,21 +292,9 @@
                                 <div class="sheet-review-date">{{ item.day }}</div>
                                 <div class="sheet-review-user">ученик</div>
                                 <div class="sheet-review-stars">
-                                    {% if item.stars_count >= 1 %}
-                                    <img src="../../static/menu/icon/Star 1.svg" alt="" class="sheet-rating-star">
-                                    {% endif %}
-                                    {% if item.stars_count >= 2 %}
-                                    <img src="../../static/menu/icon/Star 1.svg" alt="" class="sheet-rating-star">
-                                    {% endif %}
-                                    {% if item.stars_count >= 3 %}
-                                    <img src="../../static/menu/icon/Star 1.svg" alt="" class="sheet-rating-star">
-                                    {% endif %}
-                                    {% if item.stars_count >= 4 %}
-                                    <img src="../../static/menu/icon/Star 1.svg" alt="" class="sheet-rating-star">
-                                    {% endif %}
-                                    {% if item.stars_count >= 5 %}
-                                    <img src="../../static/menu/icon/Star 1.svg" alt="" class="sheet-rating-star">
-                                    {% endif %}
+                                    {% for i in "12345"|make_list %}
+                                    <img src="../../static/menu/icon/Star 1.svg" alt="" class="sheet-rating-star{% if forloop.counter > item.stars_count %} sheet-rating-star--empty{% endif %}">
+                                    {% endfor %}
                                 </div>
                             </div>
                             <div class="sheet-review-text">{{ item.text }}</div>
