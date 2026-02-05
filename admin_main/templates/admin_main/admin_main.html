@@ -115,7 +115,7 @@
                                         <th>Создатель</th>
                                         <th>Товары</th>
                                         <th>Сумма</th>
-                                        <th>Действие</th>
+                                        <th>Статус</th>
                                     </tr>
                                 </thead>
 
@@ -126,8 +126,16 @@
                                         <td>{{ item.date }}</td>
                                         <td>{{ item.user_id }}</td>
                                         <td>{{ item.items }}</td>
-                                        <td>{{ item.summ }}</td>
-                                        <td><button class="orders_action" type="button">Перейти к заявке</button></td>
+                                        <td>{{ item.summ_rub|floatformat:2 }} ₽</td>
+                                        <td>
+                                            {% if item.status == "allowed" %}
+                                            <span class="orders_status orders_status--approved">Одобрено</span>
+                                            {% elif item.status == "rejected" %}
+                                            <span class="orders_status orders_status--rejected">Отклонено</span>
+                                            {% else %}
+                                            <span class="orders_status">Ожидает</span>
+                                            {% endif %}
+                                        </td>
                                     </tr>
                                     {% endfor %}
                                 </tbody>
@@ -413,6 +421,7 @@
             <div class="menu_config_price">
                 <span class="menu_config_label">Цена</span>
                 <input class="menu_config_input menu_config_input--price" type="number" name="price" placeholder="Цена" min="0">
+                <span class="menu_config_currency">₽</span>
             </div>
             <div class="menu_config_actions">
                 <button class="menu_config_btn menu_config_btn--cancel" type="reset">Отмена</button>
@@ -474,7 +483,7 @@
                                 <div class="orders_cell">{{ item.date }}</div>
                                 <div class="orders_cell">{{ item.user_id }}</div>
                                 <div class="orders_cell">{{ item.items }}</div>
-                                <div class="orders_cell">{{ item.summ }}</div>
+                                <div class="orders_cell">{{ item.summ_rub|floatformat:2 }} ₽</div>
 
         <!-- Эта ячейка будет меняться динамически -->
                             <div class="orders_cell orders_cell--actions js-status-cell">
@@ -605,13 +614,22 @@
 
                 <div class="reports_panel" data-stage="costs">
                     <div class="reports_page_body">
-                        <form class="reports_form" aria-label="Отчёт по затратам">
+                        <form class="reports_form" aria-label="Отчёт по затратам" method="post" action="{% url 'admin_report_costs' %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="costs_start" value="">
+                            <input type="hidden" name="costs_end" value="">
+
                             <div class="reports_picker_title">Отчёт по затратам</div>
 
                             <div class="reports_form_section">
                                 <div class="reports_form_label">Период</div>
                                 <div class="reports_period">
                                     <div class="reports_period_options" role="radiogroup" aria-label="Период">
+                                        <label class="reports_radio_option">
+                                            <input class="reports_radio_input" type="radio" name="costs_period" value="day">
+                                            <span class="reports_radio_mark" aria-hidden="true"></span>
+                                            <span class="reports_radio_text">День</span>
+                                        </label>
                                         <label class="reports_radio_option">
                                             <input class="reports_radio_input" type="radio" name="costs_period" value="week" checked>
                                             <span class="reports_radio_mark" aria-hidden="true"></span>
@@ -623,28 +641,15 @@
                                             <span class="reports_radio_text">Месяц</span>
                                         </label>
                                     </div>
-                                </div>
-                            </div>
-
-                            <div class="reports_form_section">
-                                <div class="reports_form_label">Список питающихся (Дополнительно)</div>
-                                <div class="reports_checkbox_list">
-                                    <label class="reports_checkbox_option">
-                                        <input class="reports_checkbox_input" type="checkbox" name="costs_with_main">
-                                        <span class="reports_checkbox_mark" aria-hidden="true"></span>
-                                        <span class="reports_checkbox_text">Сформировать совместно с основным отчётом</span>
-                                    </label>
-                                </div>
-                            </div>
-
-                            <div class="reports_form_section">
-                                <div class="reports_form_label">Список всех блюд за период (Дополнительно)</div>
-                                <div class="reports_checkbox_list">
-                                    <label class="reports_checkbox_option">
-                                        <input class="reports_checkbox_input" type="checkbox" name="costs_dishes">
-                                        <span class="reports_checkbox_mark" aria-hidden="true"></span>
-                                        <span class="reports_checkbox_text">Сформировать совместно с основным отчётом</span>
-                                    </label>
+                                    <div class="reports_period_range" aria-label="Выбор периода">
+                                        <button class="reports_date_btn" type="button" aria-label="Предыдущий период">
+                                            <img src="/static/icon/left_arrow_stats.svg" alt="">
+                                        </button>
+                                        <span class="reports_date_value">12.01 - 16.01</span>
+                                        <button class="reports_date_btn reports_date_btn--next" type="button" aria-label="Следующий период">
+                                            <img src="/static/icon/left_arrow_stats.svg" alt="">
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
 
@@ -704,6 +709,8 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </body>
 </html>
+
+
 
 
 

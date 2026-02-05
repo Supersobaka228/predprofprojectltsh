@@ -146,13 +146,61 @@ document.addEventListener('DOMContentLoaded', () => {
       ? orderBody.querySelectorAll('.chef_order_new_row').length
       : 0;
 
-    if (orderBody && addRowButton && rowTemplate) {
+    const cloneRow = () => {
+      const sourceRow = orderBody?.querySelector('.chef_order_new_row');
+      if (!sourceRow) {
+        return null;
+      }
+      const newRow = sourceRow.cloneNode(true);
+      newRow.dataset.orderRow = String(rowIndex);
+
+      const replaceIndex = (value) => value.replace(/_\d+$/, `_${rowIndex}`);
+      newRow.querySelectorAll('[id]').forEach((element) => {
+        element.id = replaceIndex(element.id);
+      });
+      newRow.querySelectorAll('label[for]').forEach((label) => {
+        label.setAttribute('for', replaceIndex(label.getAttribute('for')));
+      });
+
+      newRow.querySelectorAll('.chef_product_picker').forEach((picker) => {
+        picker.classList.remove('is-open');
+        const button = picker.querySelector('.chef_product_add');
+        if (button) {
+          button.setAttribute('aria-expanded', 'false');
+        }
+      });
+
+      newRow.querySelectorAll('.chef_product_input').forEach((input) => {
+        input.value = '';
+      });
+      const productButton = newRow.querySelector('.chef_product_add span');
+      if (productButton) {
+        productButton.textContent = 'Выберите продукт';
+      }
+
+      newRow.querySelectorAll('.chef_order_new_input').forEach((input) => {
+        if (input.id.startsWith('order_qty_')) {
+          input.value = '10';
+        } else if (input.id.startsWith('order_price_')) {
+          input.value = '';
+        } else {
+          input.value = '';
+        }
+      });
+
+      return newRow;
+    };
+
+    if (orderBody && addRowButton) {
       addRowButton.addEventListener('click', () => {
         rowIndex += 1;
-        const html = rowTemplate.innerHTML.replaceAll('__INDEX__', String(rowIndex));
-        const wrapper = document.createElement('div');
-        wrapper.innerHTML = html.trim();
-        const newRow = wrapper.firstElementChild;
+        let newRow = cloneRow();
+        if (!newRow && rowTemplate) {
+          const html = rowTemplate.innerHTML.replaceAll('__INDEX__', String(rowIndex));
+          const wrapper = document.createElement('div');
+          wrapper.innerHTML = html.trim();
+          newRow = wrapper.firstElementChild;
+        }
         if (newRow) {
           orderBody.appendChild(newRow);
         }
@@ -169,10 +217,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         const rows = orderBody.querySelectorAll('.chef_order_new_row');
         if (rows.length <= 1) {
-          const input = row.querySelector('.chef_order_new_input');
-          if (input) {
+          row.querySelectorAll('.chef_order_new_input').forEach((input) => {
             input.value = '';
-          }
+          });
           const hidden = row.querySelector('.chef_product_input');
           if (hidden) {
             hidden.value = '';

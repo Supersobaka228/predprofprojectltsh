@@ -22,7 +22,7 @@ def admin(request):
     context = {
         'current_user': user,
         'notifications': Notification.objects.all(),
-        'buyorders': BuyOrder.objects.all(),
+        'buyorders': BuyOrder.objects.order_by('-date'),
         'buyorders_count': len(BuyOrder.objects.all()),
         'data': orders_by_date(),
         'menu': len(menu),
@@ -192,21 +192,47 @@ def sum_comes():
         summ.add(order.price)
     return len(summ)
 
+def _current_workweek_bounds(today=None):
+    if today is None:
+        today = datetime.today().date()
+    start_date = today - timedelta(days=today.weekday())
+    end_date = start_date + timedelta(days=4)
+    return start_date, end_date
+
 def orders_by_date():
+    start_date, end_date = _current_workweek_bounds()
     dates = [0] * 5
-    for order in Order.objects.all():
-        date_obj_1 = datetime.strptime(order.day, "%Y-%m-%d").date()  # .date() убирает время
-        dates[date_obj_1.weekday()] += order.price
+    orders = Order.objects.filter(
+        day__gte=start_date.isoformat(),
+        day__lte=end_date.isoformat(),
+    )
+    for order in orders:
+        try:
+            date_obj_1 = datetime.strptime(order.day, "%Y-%m-%d").date()
+        except ValueError:
+            continue
+        weekday_index = date_obj_1.weekday()
+        if 0 <= weekday_index < 5:
+            dates[weekday_index] += order.price
 
     return dates
 
 
 def comes_by_date():
+    start_date, end_date = _current_workweek_bounds()
     dates = [set(), set(), set(), set(), set()]
-    for order in Order.objects.all():
-        date_obj_1 = datetime.strptime(order.day, "%Y-%m-%d").date().weekday()
-        dates[date_obj_1].add(order.user)
-    return list(map(lambda x: len(x), dates))
+    orders = Order.objects.filter(
+        day__gte=start_date.isoformat(),
+        day__lte=end_date.isoformat(),
+    )
+    for order in orders:
+        try:
+            weekday_index = datetime.strptime(order.day, "%Y-%m-%d").date().weekday()
+        except ValueError:
+            continue
+        if 0 <= weekday_index < 5:
+            dates[weekday_index].add(order.user)
+    return [len(day_users) for day_users in dates]
 
 
 def orders_by_day():
@@ -478,6 +504,96 @@ def admin_report_general(request):
     })
 
 
+@login_required
+@require_POST
+def admin_report_costs(request):
+    start_str = request.POST.get("costs_start")
+    end_str = request.POST.get("costs_end")
+
+    if not start_str or not end_str:
+        return render(request, "admin_main/report_costs.html", {
+            "labels": [],
+            "values": [],
+            "avg_values": [],
+            "range_label": "",
+            "error": "Не задан период отчета.",
+        })
+
+    try:
+        start_date = datetime.strptime(start_str, "%Y-%m-%d").date()
+        end_date = datetime.strptime(end_str, "%Y-%m-%d").date()
+    except ValueError:
+        return render(request, "admin_main/report_costs.html", {
+            "labels": [],
+            "values": [],
+            "avg_values": [],
+            "range_label": "",
+            "error": "Неверный формат даты.",
+        })
+
+    if start_date > end_date:
+        start_date, end_date = end_date, start_date
+
+    orders = BuyOrder.objects.filter(
+        status="allowed",
+        date__date__gte=start_date,
+        date__date__lte=end_date,
+    )
+
+    sums_by_day = {}
+    for order in orders:
+        day_key = order.date.date()
+        sums_by_day[day_key] = sums_by_day.get(day_key, 0) + float(order.summ_rub)
+
+    today = datetime.today().date()
+    cutoff = today - timedelta(days=365)
+    avg_orders = BuyOrder.objects.filter(
+        status="allowed",
+        date__date__gte=cutoff,
+        date__date__lte=today,
+    )
+
+    daily_totals = {}
+    for order in avg_orders:
+        day_key = order.date.date()
+        daily_totals[day_key] = daily_totals.get(day_key, 0) + float(order.summ_rub)
+
+    avg_totals = [0.0] * 7
+    avg_counts = [0] * 7
+    for day_key, total in daily_totals.items():
+        if total <= 0:
+            continue
+        weekday = day_key.weekday()
+        avg_totals[weekday] += total
+        avg_counts[weekday] += 1
+
+    avg_by_weekday = [
+        (avg_totals[i] / avg_counts[i]) if avg_counts[i] else 0
+        for i in range(7)
+    ]
+
+    labels = []
+    values = []
+    avg_values = []
+    cursor = start_date
+    while cursor <= end_date:
+        labels.append(cursor.strftime("%d.%m"))
+        values.append(sums_by_day.get(cursor, 0))
+        weekday = cursor.weekday()
+        avg_values.append(avg_by_weekday[weekday])
+        cursor += timedelta(days=1)
+
+    range_label = f"{start_date.strftime('%d.%m.%Y')} - {end_date.strftime('%d.%m.%Y')}"
+
+    return render(request, "admin_main/report_costs.html", {
+        "labels": labels,
+        "values": values,
+        "avg_values": avg_values,
+        "range_label": range_label,
+        "error": "",
+    })
+
+
 def avg_orders_weekday_recent(days_back=180):
     today = datetime.today().date()
     cutoff = today - timedelta(days=days_back)
@@ -533,3 +649,26 @@ def avg_comes_weekday_recent(days_back=180):
         (totals[i] / counts[i]) if counts[i] else 0
         for i in range(5)
     ]
+
+
+def buyorders_by_date(request):
+    date_str = request.GET.get('date')
+    if not date_str:
+        return JsonResponse({'orders': []})
+    try:
+        target_date = datetime.strptime(date_str, "%Y-%m-%d").date()
+    except ValueError:
+        return JsonResponse({'orders': []}, status=400)
+
+    orders = BuyOrder.objects.filter(date__date=target_date).order_by('-date')
+    data = []
+    for order in orders:
+        data.append({
+            'id': order.id,
+            'date': order.date.strftime('%d.%m.%y'),
+            'user': str(order.user_id),
+            'items': str(order.items),
+            'summ': f"{order.summ_rub:.2f}",
+            'status': order.status,
+        })
+    return JsonResponse({'orders': data})

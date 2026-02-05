@@ -9,6 +9,7 @@ class BuyOrderAdmin(admin.ModelAdmin):
     list_display = ('id', 'items', 'summ', 'user_id', 'date')
     list_filter = ('id',)
     search_fields = ('summ', 'user_id')
+    fields = ('items', 'user_id', 'summ', 'date', 'status')
 
 
 @admin.register(Notification)
