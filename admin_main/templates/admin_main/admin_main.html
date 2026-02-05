@@ -126,7 +126,7 @@
                                         <td>{{ item.date }}</td>
                                         <td>{{ item.user_id }}</td>
                                         <td>{{ item.items }}</td>
-                                        <td>{{ item.summ }}</td>
+                                        <td>{{ item.summ_rub|floatformat:2 }} ₽</td>
                                         <td><button class="orders_action" type="button">Перейти к заявке</button></td>
                                     </tr>
                                     {% endfor %}
@@ -413,6 +413,7 @@
             <div class="menu_config_price">
                 <span class="menu_config_label">Цена</span>
                 <input class="menu_config_input menu_config_input--price" type="number" name="price" placeholder="Цена" min="0">
+                <span class="menu_config_currency">₽</span>
             </div>
             <div class="menu_config_actions">
                 <button class="menu_config_btn menu_config_btn--cancel" type="reset">Отмена</button>
@@ -474,7 +475,7 @@
                                 <div class="orders_cell">{{ item.date }}</div>
                                 <div class="orders_cell">{{ item.user_id }}</div>
                                 <div class="orders_cell">{{ item.items }}</div>
-                                <div class="orders_cell">{{ item.summ }}</div>
+                                <div class="orders_cell">{{ item.summ_rub|floatformat:2 }} ₽</div>
 
         <!-- Эта ячейка будет меняться динамически -->
                             <div class="orders_cell orders_cell--actions js-status-cell">

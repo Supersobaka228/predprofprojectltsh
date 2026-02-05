@@ -169,10 +169,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         const rows = orderBody.querySelectorAll('.chef_order_new_row');
         if (rows.length <= 1) {
-          const input = row.querySelector('.chef_order_new_input');
-          if (input) {
+          row.querySelectorAll('.chef_order_new_input').forEach((input) => {
             input.value = '';
-          }
+          });
           const hidden = row.querySelector('.chef_product_input');
           if (hidden) {
             hidden.value = '';

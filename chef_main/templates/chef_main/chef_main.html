@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -19,10 +20,10 @@
             <div class="admin_divider"></div>
             <div class="admin_nav">
                 <div class="admin_nav_slider"></div>
-                <button class="admin_nav_button" data-view="chef_main"><img src="resources/home.svg" alt="">Главная</button>
-                <button class="admin_nav_button" data-view="chef_serving"><img class="admin_lefter_rest" src="resources/restaurant.svg" alt="">Выдачи</button>
-                <button class="admin_nav_button" data-view="chef_orders"><img src="resources/note_add.svg" alt="">Заявки на закупку</button>
-                <button class="admin_nav_button" data-view="chef_stocks"><img src="resources/assignment.svg" alt="">Остатки</button>
+                <button class="admin_nav_button" data-view="chef_main"><img src="{% static 'icon/home.svg' %}" alt="">Главная</button>
+                <button class="admin_nav_button" data-view="chef_serving"><img class="admin_lefter_rest" src="{% static 'icon/restaurant.svg' %}" alt="">Выдачи</button>
+                <button class="admin_nav_button" data-view="chef_orders"><img src="{% static 'icon/note_add.svg' %}" alt="">Заявки на закупку</button>
+                <button class="admin_nav_button" data-view="chef_stocks"><img src="{% static 'icon/assignment.svg' %}" alt="">Остатки</button>
             </div>
         </div>
 
@@ -32,14 +33,14 @@
                 <div class="admin_main_header_right">
                     <div class="admin_notify_wrap">
                         <button class="admin_notify_button" type="button" aria-label="Уведомления">
-                            <img src="/resources/notifications.svg" alt="">
+                            <img src="{% static 'icon/notifications.svg' %}" alt="">
                         </button>
                     </div>
                     <div class="admin_user_meta">
                         <div class="admin_user_name">Имя Фамилия</div>
                         <div class="admin_user_role">Повар</div>
                     </div>
-                    <img src="resources/photo_2026-01-14_11-19-22.jpg" class="admin_user_avatar" alt="">
+                    <img src="{% static 'icon/photo_2026-01-14_11-19-22.jpg' %}" class="admin_user_avatar" alt="">
                 </div>
             </header>
 
@@ -287,14 +288,14 @@
                 <div class="admin_main_header_right">
                     <div class="admin_notify_wrap">
                         <button class="admin_notify_button" type="button" aria-label="Уведомления">
-                            <img src="/resources/notifications.svg" alt="">
+                            <img src="{% static 'icon/notifications.svg' %}" alt="">
                         </button>
                     </div>
                     <div class="admin_user_meta">
                         <div class="admin_user_name">Имя Фамилия</div>
                         <div class="admin_user_role">Повар</div>
                     </div>
-                    <img src="resources/photo_2026-01-14_11-19-22.jpg" class="admin_user_avatar" alt="">
+                    <img src="{% static 'icon/photo_2026-01-14_11-19-22.jpg' %}" class="admin_user_avatar" alt="">
                 </div>
             </header>
 
@@ -313,11 +314,11 @@
                     </div>
                     <div class="chef_serving_week_switch" aria-label="Переключение недели">
                         <button class="chef_serving_week_btn" type="button" data-action="week-prev" aria-label="Предыдущая неделя">
-                            <img src="resources/left_arrow_stats.svg" alt="">
+                            <img src="{% static 'icon/left_arrow_stats.svg' %}" alt="">
                         </button>
                         <span class="chef_serving_week_label" data-role="week-label">19.01 - 23.01</span>
                         <button class="chef_serving_week_btn chef_serving_week_btn--next" type="button" data-action="week-next" aria-label="Следующая неделя">
-                            <img src="resources/left_arrow_stats.svg" alt="">
+                            <img src="{% static 'icon/left_arrow_stats.svg' %}" alt="">
                         </button>
                     </div>
                 </div>
@@ -336,7 +337,7 @@
                                 <div class="chef_meal_card">
                                     <div class="chef_meal_card_label">1-е блюдо</div>
                                     <div class="chef_meal_card_body">
-                                        <img src="resources/meal1.svg" alt="">
+                                        <img src="{% static 'icon/meal1.svg' %}" alt="">
                                         <div class="chef_meal_card_name">Каша гречневая</div>
                                         <div class="chef_meal_card_amount">230/400 порций</div>
                                     </div>
@@ -344,7 +345,7 @@
                                 <div class="chef_meal_card">
                                     <div class="chef_meal_card_label">1-е блюдо</div>
                                     <div class="chef_meal_card_body">
-                                        <img src="resources/meal1.svg" alt="">
+                                        <img src="{% static 'icon/meal1.svg' %}" alt="">
                                         <div class="chef_meal_card_name">Сырники с джемом</div>
                                         <div class="chef_meal_card_amount">270/450 порций</div>
                                     </div>
@@ -352,7 +353,7 @@
                                 <div class="chef_meal_card">
                                     <div class="chef_meal_card_label">1-е блюдо</div>
                                     <div class="chef_meal_card_body">
-                                        <img src="resources/meal1.svg" alt="">
+                                        <img src="{% static 'icon/meal1.svg' %}" alt="">
                                         <div class="chef_meal_card_name">Чай чёрный</div>
                                         <div class="chef_meal_card_amount">370/500 порций</div>
                                     </div>
@@ -369,7 +370,7 @@
                                 <div class="chef_meal_card">
                                     <div class="chef_meal_card_label">1-е блюдо</div>
                                     <div class="chef_meal_card_body">
-                                        <img src="resources/meal1.svg" alt="">
+                                        <img src="{% static 'icon/meal1.svg' %}" alt="">
                                         <div class="chef_meal_card_name">Суп куриный</div>
                                         <div class="chef_meal_card_amount">280/400 порций</div>
                                     </div>
@@ -377,7 +378,7 @@
                                 <div class="chef_meal_card">
                                     <div class="chef_meal_card_label">2-е блюдо</div>
                                     <div class="chef_meal_card_body">
-                                        <img src="resources/meal1.svg" alt="">
+                                        <img src="{% static 'icon/meal1.svg' %}" alt="">
                                         <div class="chef_meal_card_name">Котлета с пюре</div>
                                         <div class="chef_meal_card_amount">260/350 порций</div>
                                     </div>
@@ -385,7 +386,7 @@
                                 <div class="chef_meal_card">
                                     <div class="chef_meal_card_label">Напиток</div>
                                     <div class="chef_meal_card_body">
-                                        <img src="resources/meal1.svg" alt="">
+                                        <img src="{% static 'icon/meal1.svg' %}" alt="">
                                         <div class="chef_meal_card_name">Компот</div>
                                         <div class="chef_meal_card_amount">380/520 порций</div>
                                     </div>
@@ -402,7 +403,7 @@
                                 <div class="chef_meal_card">
                                     <div class="chef_meal_card_label">Перекус</div>
                                     <div class="chef_meal_card_body">
-                                        <img src="resources/meal1.svg" alt="">
+                                        <img src="{% static 'icon/meal1.svg' %}" alt="">
                                         <div class="chef_meal_card_name">Йогурт</div>
                                         <div class="chef_meal_card_amount">180/240 порций</div>
                                     </div>
@@ -410,7 +411,7 @@
                                 <div class="chef_meal_card">
                                     <div class="chef_meal_card_label">Фрукт</div>
                                     <div class="chef_meal_card_body">
-                                        <img src="resources/meal1.svg" alt="">
+                                        <img src="{% static 'icon/meal1.svg' %}" alt="">
                                         <div class="chef_meal_card_name">Яблоко</div>
                                         <div class="chef_meal_card_amount">200/250 порций</div>
                                     </div>
@@ -418,7 +419,7 @@
                                 <div class="chef_meal_card">
                                     <div class="chef_meal_card_label">Напиток</div>
                                     <div class="chef_meal_card_body">
-                                        <img src="resources/meal1.svg" alt="">
+                                        <img src="{% static 'icon/meal1.svg' %}" alt="">
                                         <div class="chef_meal_card_name">Морс</div>
                                         <div class="chef_meal_card_amount">160/220 порций</div>
                                     </div>
@@ -445,14 +446,14 @@
                 <div class="admin_main_header_right">
                     <div class="admin_notify_wrap">
                         <button class="admin_notify_button" type="button" aria-label="Уведомления">
-                            <img src="/resources/notifications.svg" alt="">
+                            <img src="{% static 'icon/notifications.svg' %}" alt="">
                         </button>
                     </div>
                     <div class="admin_user_meta">
                         <div class="admin_user_name">Имя Фамилия</div>
                         <div class="admin_user_role">Повар</div>
                     </div>
-                    <img src="resources/photo_2026-01-14_11-19-22.jpg" class="admin_user_avatar" alt="">
+                    <img src="{% static 'icon/photo_2026-01-14_11-19-22.jpg' %}" class="admin_user_avatar" alt="">
                 </div>
             </header>
 
@@ -464,7 +465,7 @@
                             <span>124 завершенные</span>
                         </div>
                         <button class="chef_orders_new" type="button" data-open-view="chef_order_new">
-                            <img class="chef_orders_new_icon" src="resources/add_2.svg" alt="">
+                            <img class="chef_orders_new_icon" src="{% static 'icon/add_2.svg' %}" alt="">
                             Новая заявка
                         </button>
                     </div>
@@ -604,6 +605,30 @@
                                             <td>42 тыс. ₽</td>
                                             <td><span class="chef_orders_status_badge chef_orders_status_badge--ok">Одобрено</span></td>
                                         </tr>
+                                        <tr>
+                                            <td>101</td>
+                                            <td>10.01.26</td>
+                                            <td>Лоренцо Росиелла</td>
+                                            <td>Картофель</td>
+                                            <td>42 тыс. ₽</td>
+                                            <td><span class="chef_orders_status_badge chef_orders_status_badge--ok">Одобрено</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>101</td>
+                                            <td>10.01.26</td>
+                                            <td>Лоренцо Росиелла</td>
+                                            <td>Картофель</td>
+                                            <td>42 тыс. ₽</td>
+                                            <td><span class="chef_orders_status_badge chef_orders_status_badge--ok">Одобрено</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>101</td>
+                                            <td>10.01.26</td>
+                                            <td>Лоренцо Росиелла</td>
+                                            <td>Картофель</td>
+                                            <td>42 тыс. ₽</td>
+                                            <td><span class="chef_orders_status_badge chef_orders_status_badge--ok">Одобрено</span></td>
+                                        </tr>
                                     </tbody>
                                 </table>
                             </div>
@@ -619,14 +644,14 @@
                 <div class="admin_main_header_right">
                     <div class="admin_notify_wrap">
                         <button class="admin_notify_button" type="button" aria-label="Уведомления">
-                            <img src="/resources/notifications.svg" alt="">
+                            <img src="{% static 'icon/notifications.svg' %}" alt="">
                         </button>
                     </div>
                     <div class="admin_user_meta">
                         <div class="admin_user_name">Имя Фамилия</div>
                         <div class="admin_user_role">Повар</div>
                     </div>
-                    <img src="resources/photo_2026-01-14_11-19-22.jpg" class="admin_user_avatar" alt="">
+                    <img src="{% static 'icon/photo_2026-01-14_11-19-22.jpg' %}" class="admin_user_avatar" alt="">
                 </div>
             </header>
 
@@ -746,14 +771,14 @@
                 <div class="admin_main_header_right">
                     <div class="admin_notify_wrap">
                         <button class="admin_notify_button" type="button" aria-label="Уведомления">
-                            <img src="/resources/notifications.svg" alt="">
+                            <img src="{% static 'icon/notifications.svg' %}" alt="">
                         </button>
                     </div>
                     <div class="admin_user_meta">
                         <div class="admin_user_name">Имя Фамилия</div>
                         <div class="admin_user_role">Повар</div>
                     </div>
-                    <img src="resources/photo_2026-01-14_11-19-22.jpg" class="admin_user_avatar" alt="">
+                    <img src="{% static 'icon/photo_2026-01-14_11-19-22.jpg' %}" class="admin_user_avatar" alt="">
                 </div>
             </header>
 
@@ -768,24 +793,35 @@
 
                         <div class="chef_order_new_body">
                             <div class="chef_order_new_row" data-order-row="1">
-                                <label class="chef_order_new_label" for="order_product_1">Продукт</label>
-                                <div class="chef_product_picker">
-                                    <button class="chef_product_add" type="button" aria-haspopup="listbox" aria-expanded="false">
-                                        <span>Выберите продукт</span>
-                                        <img class="chef_product_add_icon" src="resources/arrow_back_ios_new.svg" alt="">
-                                    </button>
-                                    <div class="chef_product_menu" role="listbox" aria-label="Продукты">
-                                        <button class="chef_product_option" type="button" data-value="Молоко">Молоко</button>
-                                        <button class="chef_product_option" type="button" data-value="Картофель">Картофель</button>
-                                        <button class="chef_product_option" type="button" data-value="Гречка">Гречка</button>
-                                        <button class="chef_product_option" type="button" data-value="Огурцы">Огурцы</button>
-                                        <button class="chef_product_option" type="button" data-value="Хлеб">Хлеб</button>
+                                <div class="chef_order_new_field">
+                                    <label class="chef_order_new_label" for="order_product_1">Продукт</label>
+                                    <div class="chef_product_picker">
+                                        <button class="chef_product_add" type="button" aria-haspopup="listbox" aria-expanded="false">
+                                            <span>Выберите продукт</span>
+                                            <img class="chef_product_add_icon" src="{% static 'icon/arrow_back_ios_new.svg' %}" alt="">
+                                        </button>
+                                        <div class="chef_product_menu" role="listbox" aria-label="Продукты">
+                                           {% for ingredient in ingredients %}
+                                            <button class="chef_product_option" type="button" data-value="{{ ingredient.id }}">{{ ingredient.name }}</button>
+                                            {% endfor %}
+                                        </div>
+                                        <input class="chef_product_input" id="order_product_1" name="products[]" type="hidden" value="">
                                     </div>
-                                    <input class="chef_product_input" id="order_product_1" name="products[]" type="hidden" value="">
                                 </div>
-                                <label class="chef_order_new_label" for="order_qty_1">Количество</label>
-                                <input class="chef_order_new_input" id="order_qty_1" name="quantities[]" type="number" min="1" value="10" required>
-                                <span class="chef_order_new_unit">кг</span>
+
+                                <div class="chef_order_new_field">
+                                    <label class="chef_order_new_label" for="order_price_1">Цена</label>
+                                    <input class="chef_order_new_input chef_order_new_input--price" id="order_price_1" name="prices[]" type="number" min="0" step="0.01" value="" required>
+                                    <span class="chef_order_new_unit">₽/кг</span>
+                                </div>
+
+                                <div class="chef_order_new_field">
+                                    <label class="chef_order_new_label" for="order_qty_1">Количество</label>
+                                    <div class="chef_order_new_field">
+                                        <input class="chef_order_new_input" id="order_qty_1" name="quantities[]" type="number" min="1" step="0.01" value="10" required>
+                                        <span class="chef_order_new_unit">кг</span>
+                                    </div>
+                                </div>
                                 <button class="chef_order_row_remove" type="button" aria-label="Удалить продукт">×</button>
                             </div>
                         </div>
@@ -806,20 +842,25 @@
                                 <div class="chef_product_picker">
                                     <button class="chef_product_add" type="button" aria-haspopup="listbox" aria-expanded="false">
                                         <span>Выберите продукт</span>
-                                        <img class="chef_product_add_icon" src="resources/arrow_back_ios_new.svg" alt="">
+                                        <img class="chef_product_add_icon" src="{% static 'icon/arrow_back_ios_new.svg' %}" alt="">
                                     </button>
                                     <div class="chef_product_menu" role="listbox" aria-label="Продукты">
-                                        <button class="chef_product_option" type="button" data-value="Молоко">Молоко</button>
-                                        <button class="chef_product_option" type="button" data-value="Картофель">Картофель</button>
-                                        <button class="chef_product_option" type="button" data-value="Гречка">Гречка</button>
-                                        <button class="chef_product_option" type="button" data-value="Огурцы">Огурцы</button>
-                                        <button class="chef_product_option" type="button" data-value="Хлеб">Хлеб</button>
+                                        {% for ingredient in ingredients %}
+                                            <button class="chef_product_option" type="button" data-value="{{ ingredient.id }}">{{ ingredient.name }}</button>
+                                        {% endfor %}
                                     </div>
                                     <input class="chef_product_input" id="order_product___INDEX__" name="products[]" type="hidden" value="">
                                 </div>
+                                <label class="chef_order_new_label" for="order_price___INDEX__">Цена</label>
+                                <div class="chef_order_new_field">
+                                    <input class="chef_order_new_input chef_order_new_input--price" id="order_price___INDEX__" name="prices[]" type="number" min="0" step="0.01" value="" required>
+                                    <span class="chef_order_new_unit">₽/кг</span>
+                                </div>
                                 <label class="chef_order_new_label" for="order_qty___INDEX__">Количество</label>
-                                <input class="chef_order_new_input" id="order_qty___INDEX__" name="quantities[]" type="number" min="1" value="10" required>
-                                <span class="chef_order_new_unit">кг</span>
+                                <div class="chef_order_new_field">
+                                    <input class="chef_order_new_input" id="order_qty___INDEX__" name="quantities[]" type="number" min="1" step="0.01" value="10" required>
+                                    <span class="chef_order_new_unit">кг</span>
+                                </div>
                                 <button class="chef_order_row_remove" type="button" aria-label="Удалить продукт">×</button>
                             </div>
                         </template>

@@ -1184,12 +1184,14 @@ body {
 
 .day_menu_row {
     display: grid;
-    grid-template-columns: 2.2fr 1fr 1fr 1fr 1fr 1fr 1fr;
+    grid-template-columns: max-content minmax(140px, 1.6fr) max-content minmax(80px, 1fr) max-content max-content minmax(80px, 1fr) max-content 32px;
+    column-gap: 8px;
+    row-gap: 8px;
     align-items: center;
-    gap: 4px;
-    padding: 4px 6px;
-    font-size: clamp(0.72rem, 0.85vw, 0.95rem);
-    position: relative;
+    background: #E9F5FF;
+    border-radius: 12px;
+    padding: 10px 12px;
+    box-shadow: 0 6px 14px rgba(15, 23, 42, 0.08);
 }
 
 .day_menu_row > div {
@@ -1410,6 +1412,11 @@ body {
     box-shadow: 0 6px 10px rgba(15, 23, 42, 0.2);
 }
 
+.chef_order_new_field {
+    display: flex;
+    gap: 8px;
+}
+
 .chef_order_new_page {
     display: flex;
     flex-direction: column;
@@ -1466,9 +1473,11 @@ body {
 }
 
 .chef_order_new_row {
-    display: grid;
-    grid-template-columns: 120px minmax(180px, 1fr) 120px 140px 60px 40px;
-    gap: 10px;
+    display: flex;
+    justify-content: space-between;
+    grid-template-columns: max-content minmax(140px, 1.6fr) max-content minmax(80px, 1fr) max-content max-content minmax(80px, 1fr) max-content 32px;
+    column-gap: 8px;
+    row-gap: 8px;
     align-items: center;
     background: #E9F5FF;
     border-radius: 12px;
@@ -1496,11 +1505,16 @@ body {
     border-color: rgba(43, 155, 255, 0.6);
 }
 
+.chef_order_new_input--price {
+    max-width: 110px;
+}
+
 .chef_product_picker {
     position: relative;
     display: inline-flex;
     align-items: center;
     width: 100%;
+    min-width: 0;
 }
 
 .chef_product_add {
@@ -1513,6 +1527,7 @@ body {
     cursor: pointer;
     transition: transform 0.15s ease, box-shadow 0.15s ease;
     width: 100%;
+    min-width: 0;
     text-align: left;
     display: inline-flex;
     align-items: center;
@@ -1535,8 +1550,9 @@ body {
     position: absolute;
     top: calc(100% + 8px);
     left: 0;
+    width: 100%;
     min-width: 180px;
-    max-height: 220px;
+    max-height: 420px;
     overflow: auto;
     background: #ffffff;
     border-radius: 12px;
@@ -1582,6 +1598,7 @@ body {
     font-weight: 700;
     color: #0f172a;
     text-align: left;
+    white-space: nowrap;
 }
 
 .chef_order_row_remove {
@@ -1672,9 +1689,4 @@ body {
     border: 1px solid rgba(15, 23, 42, 0.15);
     box-shadow: none;
 }
-
-.chef_order_new_action--ghost:hover {
-    box-shadow: 0 8px 16px rgba(15, 23, 42, 0.12);
-}
-
 

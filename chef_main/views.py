@@ -1,8 +1,9 @@
 import json
 from datetime import datetime, date
+from decimal import Decimal, InvalidOperation, ROUND_HALF_UP
 
 from django.http import JsonResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.decorators.http import require_POST
 
 from admin_main.models import BuyOrder
@@ -17,17 +18,30 @@ def chef(request):
     if request.method == "POST":
         post = request.POST
         print(post)
-        for i in range(len(post.getlist('products[]'))):
-            t = post.getlist('products[]')[i]
-            g = Ingredient.objects.get(name=t)
-            s = BuyOrder.objects.create(items=g, user_id=request.user)
-            s.save()
+        products = post.getlist('products[]')
+        quantities = post.getlist('quantities[]')
+        prices = post.getlist('prices[]')
+        limit = min(len(products), len(quantities), len(prices))
+        for i in range(limit):
+            product_id = products[i].strip()
+            if not product_id:
+                continue
+            try:
+                quantity = Decimal(quantities[i])
+                price = Decimal(prices[i])
+            except (InvalidOperation, TypeError, ValueError):
+                continue
+            total_cents = (quantity * price * Decimal('100')).quantize(Decimal('1'), rounding=ROUND_HALF_UP)
+            ingredient = Ingredient.objects.get(id=product_id)
+            BuyOrder.objects.create(items=ingredient, user_id=request.user, summ=int(total_cents))
+        return redirect('chef_main')
     a, b = meals_view()
     context = {
         'orders': BuyOrder.objects.all(),
         'meals_b': a,
         'meals_l': b,
         'today': '2026-02-05',
+        'ingredients': Ingredient.objects.all(),
 
     }
     for i in a:
@@ -49,11 +63,6 @@ def meals_view():
             for j in m.meals.all():
                 ans2.append(j)
     return ans1, ans2
-
- # Ваша модель
-
-
-# views.py
 
 
 
