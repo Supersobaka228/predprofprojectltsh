@@ -41,6 +41,45 @@ document.addEventListener('DOMContentLoaded', () => {
   let CurrentDataKey = serverDataKeys[0];
   let currentIndex = 0;
 
+  const parseISODate = (value) => {
+    const parts = value.split('-').map(Number);
+    if (parts.length !== 3 || parts.some(Number.isNaN)) {
+      return null;
+    }
+    return new Date(parts[0], parts[1] - 1, parts[2]);
+  };
+
+  const findCurrentWeekIndex = () => {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    let fallbackIndex = -1;
+
+    for (let i = 0; i < serverDataKeys.length; i += 1) {
+      const [startStr, endStr] = serverDataKeys[i].split(' ');
+      const startDate = parseISODate(startStr);
+      const endDate = parseISODate(endStr);
+      if (!startDate || !endDate) {
+        continue;
+      }
+      if (startDate <= today && today <= endDate) {
+        return i;
+      }
+      if (startDate <= today) {
+        fallbackIndex = i;
+      }
+    }
+
+    return fallbackIndex !== -1 ? fallbackIndex : serverDataKeys.length - 1;
+  };
+
+  if (serverDataKeys.length) {
+    currentIndex = findCurrentWeekIndex();
+    if (currentIndex < 0) {
+      currentIndex = 0;
+    }
+    CurrentDataKey = serverDataKeys[currentIndex];
+  }
+
   const data = {
     labels: ['Пн', 'Вт', 'Ср', 'Чт', 'Пт'],
     datasets: [

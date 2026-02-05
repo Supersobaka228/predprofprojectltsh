@@ -192,21 +192,47 @@ def sum_comes():
         summ.add(order.price)
     return len(summ)
 
+def _current_workweek_bounds(today=None):
+    if today is None:
+        today = datetime.today().date()
+    start_date = today - timedelta(days=today.weekday())
+    end_date = start_date + timedelta(days=4)
+    return start_date, end_date
+
 def orders_by_date():
+    start_date, end_date = _current_workweek_bounds()
     dates = [0] * 5
-    for order in Order.objects.all():
-        date_obj_1 = datetime.strptime(order.day, "%Y-%m-%d").date()  # .date() убирает время
-        dates[date_obj_1.weekday()] += order.price
+    orders = Order.objects.filter(
+        day__gte=start_date.isoformat(),
+        day__lte=end_date.isoformat(),
+    )
+    for order in orders:
+        try:
+            date_obj_1 = datetime.strptime(order.day, "%Y-%m-%d").date()
+        except ValueError:
+            continue
+        weekday_index = date_obj_1.weekday()
+        if 0 <= weekday_index < 5:
+            dates[weekday_index] += order.price
 
     return dates
 
 
 def comes_by_date():
+    start_date, end_date = _current_workweek_bounds()
     dates = [set(), set(), set(), set(), set()]
-    for order in Order.objects.all():
-        date_obj_1 = datetime.strptime(order.day, "%Y-%m-%d").date().weekday()
-        dates[date_obj_1].add(order.user)
-    return list(map(lambda x: len(x), dates))
+    orders = Order.objects.filter(
+        day__gte=start_date.isoformat(),
+        day__lte=end_date.isoformat(),
+    )
+    for order in orders:
+        try:
+            weekday_index = datetime.strptime(order.day, "%Y-%m-%d").date().weekday()
+        except ValueError:
+            continue
+        if 0 <= weekday_index < 5:
+            dates[weekday_index].add(order.user)
+    return [len(day_users) for day_users in dates]
 
 
 def orders_by_day():

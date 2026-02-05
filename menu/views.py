@@ -222,11 +222,18 @@ def order(request, day_d):
             st = m.meals
             if st.all():
                 for gh in st.all():
-                    if str(datetime.today().date()) not in gh.count_by_days.keys():
-                        print(87)
-                        gh.count_by_days[str(datetime.today().date())] = {'o': 1, 'g': 0}
-                    else:
-                        gh.count_by_days[str(datetime.today().date())]['o'] += 1
+                    day_key = str(datetime.today().date())
+                    count_by_days = gh.count_by_days
+                    if not isinstance(count_by_days, dict):
+                        count_by_days = {}
+                    day_entry = count_by_days.get(day_key)
+                    if isinstance(day_entry, int):
+                        day_entry = {'o': day_entry, 'g': 0}
+                    elif not isinstance(day_entry, dict):
+                        day_entry = {'o': 0, 'g': 0}
+                    day_entry['o'] = int(day_entry.get('o', 0)) + 1
+                    count_by_days[day_key] = day_entry
+                    gh.count_by_days = count_by_days
                     gh.save(update_fields=['count_by_days'])
                     print(gh.__dict__)
                     for ui in gh.ingredients.all():
