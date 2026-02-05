@@ -35,6 +35,7 @@
                     data-time="{{ item.time }}"
                     data-icon="{% static item.icon %}"
                     data-max-des='{{ item.max_des_list|join:"||" }}'
+                    data-composition='{{ item.composition_list|join:"||" }}'
                     data-allergens='{{ item.allergens_list|join:"||" }}'
                     data-date="{{ current_date }}">
 

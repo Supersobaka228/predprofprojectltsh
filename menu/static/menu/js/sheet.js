@@ -53,6 +53,7 @@ document.addEventListener("DOMContentLoaded", () => {
       price: button.getAttribute('data-price'),
       icon: button.getAttribute('data-icon'),
       maxDes: button.getAttribute('data-max-des'),
+      composition: button.getAttribute('data-composition'),
       allergens: button.getAttribute('data-allergens')
     };
 
@@ -113,8 +114,8 @@ document.addEventListener("DOMContentLoaded", () => {
       sheetImage.src = currentItemData.icon;
     }
 
-    // Состав: используем data-max-des (строки description) — это "Состав" для sheet
-    fillList(compositionList, splitDataset(currentItemData.maxDes), 'li');
+    // Состав: берём из data-composition
+    fillList(compositionList, splitDataset(currentItemData.composition), 'li');
 
     // Аллергены
     fillList(allergensList, splitDataset(currentItemData.allergens), 'li');

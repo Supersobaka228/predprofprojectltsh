@@ -42,6 +42,18 @@ class MenuItem(models.Model):
         return [m.description for m in self.meals_limit3]
 
     @property
+    def composition_list(self):
+        """Состав для sheet: 'Meal.name: ingredient1, ingredient2' (максимум 3 блюда)."""
+        items = []
+        for meal in self.meals_limit3:
+            ingredient_names = list(meal.ingredients.values_list('name', flat=True))
+            if ingredient_names:
+                items.append(f"{meal.name}: {', '.join(ingredient_names)}")
+            else:
+                items.append(meal.name)
+        return items
+
+    @property
     def allergens_list(self):
         """Уникальные названия аллергенов (Allergen.name) из Meal.allergens для первых 3 Meal."""
         names = []
