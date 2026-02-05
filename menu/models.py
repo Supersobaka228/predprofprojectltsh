@@ -1,5 +1,6 @@
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
+from django.utils import timezone
 
 from users.models import User
 from chef_main.models import Ingredient
@@ -81,7 +82,7 @@ class Review(models.Model):
     ]
     item = models.ForeignKey(MenuItem, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
-    day = models.CharField()
+    day = models.DateTimeField(default=timezone.now)
     text = models.TextField()
     stars_count = models.IntegerField(default=3)
     reviewer_name = models.CharField(max_length=150, blank=True)

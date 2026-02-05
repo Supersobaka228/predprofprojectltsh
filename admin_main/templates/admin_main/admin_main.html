@@ -270,15 +270,16 @@
                             {% for item in all_reviews %}
                             <div class="review_meta" data-review-item-id="{{ item.id }}">
                                 <div class="review_meta_text">
-                                    <div class="review_date">{{ item.day }}</div>
-                                    <div class="review_target">К: Каша рисовая</div>
+                                    <div class="review_date_row">
+                                        <div class="review_date">{{ item.day }}</div>
+                                        <div class="review_user">{{ item.reviewer }}</div>
+                                    </div>
+                                    <div class="review_target">{{ item.target }}</div>
                                 </div>
-                                <div class="review_stars" aria-label="Рейтинг 5 из 5">
-                                    <img src="/static/icon/Star 1.svg" alt="">
-                                    <img src="/static/icon/Star 1.svg" alt="">
-                                    <img src="/static/icon/Star 1.svg" alt="">
-                                    <img src="/static/icon/Star 1.svg" alt="">
-                                    <img src="/static/icon/Star 1.svg" alt="">
+                                <div class="review_stars" aria-label="Рейтинг {{ item.stars_count }} из 5">
+                                    {% for i in "12345"|make_list %}
+                                    <img src="/static/icon/Star 1.svg" alt="" class="{% if forloop.counter > item.stars_count %}review_star--empty{% endif %}">
+                                    {% endfor %}
                                 </div>
                                 <div class="review_text">{{ item.text }}</div>
                             </div>
@@ -709,6 +710,8 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </body>
 </html>
+
+
 
 
 
