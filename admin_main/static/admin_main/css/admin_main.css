@@ -1111,13 +1111,16 @@ body {
 }
 
 .orders_status {
-    padding: 6px 12px;
-    border-radius: 999px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    padding: 6px 12px;
+    border-radius: 999px;
     font-weight: 700;
-    font-size: 0.9rem;
+    font-size: clamp(0.7rem, 0.85vw, 0.95rem);
+    background: #2b9bff;
+    color: #ffffff;
+    white-space: nowrap;
 }
 
 .orders_status--approved {
@@ -1371,6 +1374,7 @@ body {
     scrollbar-width: thin;
     scrollbar-color: rgba(31, 35, 40, 0.25) transparent;
 }
+
 
 .orders_bg::-webkit-scrollbar {
     width: 6px;

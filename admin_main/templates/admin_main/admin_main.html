@@ -115,7 +115,7 @@
                                         <th>Создатель</th>
                                         <th>Товары</th>
                                         <th>Сумма</th>
-                                        <th>Действие</th>
+                                        <th>Статус</th>
                                     </tr>
                                 </thead>
 
@@ -127,7 +127,15 @@
                                         <td>{{ item.user_id }}</td>
                                         <td>{{ item.items }}</td>
                                         <td>{{ item.summ_rub|floatformat:2 }} ₽</td>
-                                        <td><button class="orders_action" type="button">Перейти к заявке</button></td>
+                                        <td>
+                                            {% if item.status == "allowed" %}
+                                            <span class="orders_status orders_status--approved">Одобрено</span>
+                                            {% elif item.status == "rejected" %}
+                                            <span class="orders_status orders_status--rejected">Отклонено</span>
+                                            {% else %}
+                                            <span class="orders_status">Ожидает</span>
+                                            {% endif %}
+                                        </td>
                                     </tr>
                                     {% endfor %}
                                 </tbody>
@@ -701,6 +709,8 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </body>
 </html>
+
+
 
 
 

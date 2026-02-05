@@ -166,7 +166,7 @@
                                                 <th>Дата</th>
                                                 <th>Товары</th>
                                                 <th>Сумма</th>
-                                                <th>Действие</th>
+                                                <th>Статус</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -176,7 +176,15 @@
                                                 <td>{{ item.date|date:"d.m.y" }}</td>
                                                 <td>{{ item.items }}</td>
                                                 <td>{{ item.summ_rub|floatformat:2 }} ₽</td>
-                                                <td><button class="orders_action" type="button">Перейти к заявке</button></td>
+                                                <td>
+                                                    {% if item.status == "allowed" %}
+                                                    <span class="chef_orders_status_badge chef_orders_status_badge--ok">Одобрено</span>
+                                                    {% elif item.status == "rejected" %}
+                                                    <span class="chef_orders_status_badge chef_orders_status_badge--reject">Отклонено</span>
+                                                    {% else %}
+                                                    <span class="chef_orders_status_badge">Ожидает</span>
+                                                    {% endif %}
+                                                </td>
                                             </tr>
                                             {% empty %}
                                             <tr>
