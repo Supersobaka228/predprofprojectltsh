@@ -32,5 +32,6 @@ urlpatterns = [
     path('chef_main/', chef_main.views.chef, name='chef_main'),
     path('admin/', admin.site.urls),
     path('update-order-status/', admin_main.views.update_order_status, name='update_order_status'),
+path('api/update-issued-count/', chef_main.views.update_issued_count, name='update_issued_count'),
 
 ]

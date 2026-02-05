@@ -30,6 +30,9 @@ def chef(request):
         'today': '2026-02-05',
 
     }
+    for i in a:
+        print(i.count_by_days['2026-02-05'])
+
     print(meals_view())
     return render(request, 'chef_main/chef_main.html', context)
 
@@ -50,40 +53,28 @@ def meals_view():
  # Ваша модель
 
 
-'''@require_POST
-def update_meal_delivery(request):
-    data = json.loads(request.body)
-    meal_id = data.get('id')
-    delta = data.get('delta')
+# views.py
 
+
+
+@require_POST
+def update_issued_count(request):
+    """Обновление количества выданных порций"""
     try:
-        meal = Meal.objects.get(id=meal_id)
-
-        # Предположим, count_by_days это JSONField
-        # Нам нужно изменить значение 'v' (выдано) внутри 'today'
-        current_data = meal.count_by_days
-
-        if '2026-02-05' not in current_data:
-            current_data['2026-02-05'] = {'o': 0, 'g': 0}
-
-        # Обновляем количество
-        old_v = current_data['2026-02-05'].get('g', 0)
-        new_v = old_v + delta
-
-        # Защита от отрицательных выдач
-        if new_v < 0: new_v = 0
-
-        current_data['2026-02-05']['g'] = new_v
-
-        # Сохраняем (для JSONField важно принудительно сказать о сохранении)
-        meal.count_by_days = current_data
-        meal.save()
-
+        data = json.loads(request.body)
+        print(data)
+        g = Meal.objects.get(id=data['meal_id'])
+        g.count_by_days['2026-02-05']['g'] += int(data['amount'])
+        g.save()
+        print(g.count_by_days)
         return JsonResponse({
-            'status': 'ok',
-            'new_given': new_v
+            'success': True,
+            'message': 'Данные получены успешно',
+            'received_data': data,
+            'test_response': {
+                'issued_count': 15,
+                'available_count': 25
+            }
         })
-    except Exception as e:
-        return JsonResponse({'status': 'error', 'message': str(e)}, status=400)'''
-
-
+    except:
+        print(23)
