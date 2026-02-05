@@ -194,6 +194,8 @@
             {{ orders_by_day|json_script:"my-chart-data" }}
             {{ comes_by_day|json_script:"my-chart-data2" }}
             {{ reviews_by_day|json_script:"my-chart-data3" }}
+            {{ avg_orders_weekday|json_script:"my-chart-avg-orders" }}
+            {{ avg_comes_weekday|json_script:"my-chart-avg-comes" }}
 
 
             <script>
@@ -536,22 +538,12 @@
                             <label class="reports_picker_option">
                                 <input class="reports_picker_input" type="radio" name="report_type" value="general">
                                 <span class="reports_picker_mark" aria-hidden="true"></span>
-                                <span class="reports_picker_text">Общий отчёт</span>
-                            </label>
-                            <label class="reports_picker_option">
-                                <input class="reports_picker_input" type="radio" name="report_type" value="nutrition">
-                                <span class="reports_picker_mark" aria-hidden="true"></span>
                                 <span class="reports_picker_text">Отчёт по питанию</span>
                             </label>
                             <label class="reports_picker_option">
                                 <input class="reports_picker_input" type="radio" name="report_type" value="costs">
                                 <span class="reports_picker_mark" aria-hidden="true"></span>
                                 <span class="reports_picker_text">Отчёт по затратам</span>
-                            </label>
-                            <label class="reports_picker_option">
-                                <input class="reports_picker_input" type="radio" name="report_type" value="stocks">
-                                <span class="reports_picker_mark" aria-hidden="true"></span>
-                                <span class="reports_picker_text">Отчёт по остаткам</span>
                             </label>
                         </div>
                         <div class="reports_picker_actions">
@@ -562,8 +554,12 @@
 
                 <div class="reports_panel" data-stage="general">
                     <div class="reports_page_body">
-                        <form class="reports_form" aria-label="Общий отчёт">
-                            <div class="reports_picker_title">Общий отчёт</div>
+                        <form class="reports_form" aria-label="Общий отчёт" method="post" action="{% url 'admin_report_general' %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="report_start" value="">
+                            <input type="hidden" name="report_end" value="">
+
+                            <div class="reports_picker_title">Отчёт по питанию</div>
 
                             <div class="reports_form_section">
                                 <div class="reports_form_label">Период</div>
@@ -597,22 +593,6 @@
                                 </div>
                             </div>
 
-                            <div class="reports_form_section">
-                                <div class="reports_form_label">Формирование отчёта в другом формате (Doc/Docx по умолчанию)</div>
-                                <div class="reports_checkbox_list">
-                                    <label class="reports_checkbox_option">
-                                        <input class="reports_checkbox_input" type="checkbox" name="export_pdf">
-                                        <span class="reports_checkbox_mark" aria-hidden="true"></span>
-                                        <span class="reports_checkbox_text">Дополнительно сформировать в PDF</span>
-                                    </label>
-                                    <label class="reports_checkbox_option">
-                                        <input class="reports_checkbox_input" type="checkbox" name="export_png">
-                                        <span class="reports_checkbox_mark" aria-hidden="true"></span>
-                                        <span class="reports_checkbox_text">Дополнительно сформировать в PNG</span>
-                                    </label>
-                                </div>
-                            </div>
-
                             <div class="reports_page_actions">
                                 <button class="reports_generate" type="submit">Сформировать</button>
                             </div>
@@ -621,58 +601,7 @@
                     <button class="reports_back" type="button">Назад к отчётам</button>
                 </div>
 
-                <div class="reports_panel" data-stage="nutrition">
-                    <div class="reports_page_body">
-                        <form class="reports_form" aria-label="Отчёт по питанию">
-                            <div class="reports_picker_title">Отчёт по питанию</div>
 
-                            <div class="reports_form_section">
-                                <div class="reports_form_label">Период</div>
-                                <div class="reports_period">
-                                    <div class="reports_period_options" role="radiogroup" aria-label="Период">
-                                        <label class="reports_radio_option">
-                                            <input class="reports_radio_input" type="radio" name="nutrition_period" value="week" checked>
-                                            <span class="reports_radio_mark" aria-hidden="true"></span>
-                                            <span class="reports_radio_text">Неделя</span>
-                                        </label>
-                                        <label class="reports_radio_option">
-                                            <input class="reports_radio_input" type="radio" name="nutrition_period" value="month">
-                                            <span class="reports_radio_mark" aria-hidden="true"></span>
-                                            <span class="reports_radio_text">Месяц</span>
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="reports_form_section">
-                                <div class="reports_form_label">Список питающихся (Дополнительно)</div>
-                                <div class="reports_checkbox_list">
-                                    <label class="reports_checkbox_option">
-                                        <input class="reports_checkbox_input" type="checkbox" name="nutrition_with_main">
-                                        <span class="reports_checkbox_mark" aria-hidden="true"></span>
-                                        <span class="reports_checkbox_text">Сформировать совместно с основным отчётом</span>
-                                    </label>
-                                </div>
-                            </div>
-
-                            <div class="reports_form_section">
-                                <div class="reports_form_label">Список всех блюд за период (Дополнительно)</div>
-                                <div class="reports_checkbox_list">
-                                    <label class="reports_checkbox_option">
-                                        <input class="reports_checkbox_input" type="checkbox" name="nutrition_dishes">
-                                        <span class="reports_checkbox_mark" aria-hidden="true"></span>
-                                        <span class="reports_checkbox_text">Сформировать совместно с основным отчётом</span>
-                                    </label>
-                                </div>
-                            </div>
-
-                            <div class="reports_page_actions">
-                                <button class="reports_generate" type="submit">Сформировать</button>
-                            </div>
-                        </form>
-                    </div>
-                    <button class="reports_back" type="button">Назад к отчётам</button>
-                </div>
 
                 <div class="reports_panel" data-stage="costs">
                     <div class="reports_page_body">
@@ -727,58 +656,6 @@
                     <button class="reports_back" type="button">Назад к отчётам</button>
                 </div>
 
-                <div class="reports_panel" data-stage="stocks">
-                    <div class="reports_page_body">
-                        <form class="reports_form" aria-label="Отчёт по остаткам">
-                            <div class="reports_picker_title">Отчёт по остаткам</div>
-
-                            <div class="reports_form_section">
-                                <div class="reports_form_label">Период</div>
-                                <div class="reports_period">
-                                    <div class="reports_period_options" role="radiogroup" aria-label="Период">
-                                        <label class="reports_radio_option">
-                                            <input class="reports_radio_input" type="radio" name="stocks_period" value="week" checked>
-                                            <span class="reports_radio_mark" aria-hidden="true"></span>
-                                            <span class="reports_radio_text">Неделя</span>
-                                        </label>
-                                        <label class="reports_radio_option">
-                                            <input class="reports_radio_input" type="radio" name="stocks_period" value="month">
-                                            <span class="reports_radio_mark" aria-hidden="true"></span>
-                                            <span class="reports_radio_text">Месяц</span>
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="reports_form_section">
-                                <div class="reports_form_label">Список питающихся (Дополнительно)</div>
-                                <div class="reports_checkbox_list">
-                                    <label class="reports_checkbox_option">
-                                        <input class="reports_checkbox_input" type="checkbox" name="stocks_with_main">
-                                        <span class="reports_checkbox_mark" aria-hidden="true"></span>
-                                        <span class="reports_checkbox_text">Сформировать совместно с основным отчётом</span>
-                                    </label>
-                                </div>
-                            </div>
-
-                            <div class="reports_form_section">
-                                <div class="reports_form_label">Список всех блюд за период (Дополнительно)</div>
-                                <div class="reports_checkbox_list">
-                                    <label class="reports_checkbox_option">
-                                        <input class="reports_checkbox_input" type="checkbox" name="stocks_dishes">
-                                        <span class="reports_checkbox_mark" aria-hidden="true"></span>
-                                        <span class="reports_checkbox_text">Сформировать совместно с основным отчётом</span>
-                                    </label>
-                                </div>
-                            </div>
-
-                            <div class="reports_page_actions">
-                                <button class="reports_generate" type="submit">Сформировать</button>
-                            </div>
-                        </form>
-                    </div>
-                    <button class="reports_back" type="button">Назад к отчётам</button>
-                </div>
 
             </section>
         </div>
@@ -820,7 +697,7 @@
     <script src="../../static/admin_main/js/customersTraffic.js"></script>
     <script src="../../static/admin_main/js/statsPaymentsDynamics.js"></script>
     <script src="../../static/admin_main/js/statsCustomersTraffic.js"></script>
-    <script src="../../static/admin_main/js/admin_reports.js"></script>
+    <script src="{% static 'admin_main/js/admin_reports.js' %}"></script>
     <script src="../../static/admin_main/js/admin_menu.js"></script>
     <script src="../../static/admin_main/js/admin_mealsadd.js"></script>
     <script src="../../static/admin_main/js/admin_orders.js"></script>

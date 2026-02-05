@@ -31,6 +31,8 @@ def admin(request):
         'comes_by_date': comes_by_date(),
         'orders_by_day': orders_by_day(),
         'comes_by_day': comes_by_day(),
+        'avg_orders_weekday': avg_orders_weekday_recent(),
+        'avg_comes_weekday': avg_comes_weekday_recent(),
         'reviews_by_day': reviews_by_day(),
         'all_reviews': list(Review.objects.all()),
         'ingredients': Ingredient.objects.all(),
@@ -348,3 +350,186 @@ def reviews_by_day(queryset=None):
     return ans
 
 
+@login_required
+@require_POST
+def admin_report_general(request):
+    start_str = request.POST.get("report_start")
+    end_str = request.POST.get("report_end")
+
+    if not start_str or not end_str:
+        return render(request, "admin_main/report_general.html", {
+            "labels": [],
+            "values_breakfast": [],
+            "values_lunch": [],
+            "avg_breakfast": [],
+            "avg_lunch": [],
+            "range_label": "",
+            "error": "Не задан период отчета.",
+        })
+
+    try:
+        start_date = datetime.strptime(start_str, "%Y-%m-%d").date()
+        end_date = datetime.strptime(end_str, "%Y-%m-%d").date()
+    except ValueError:
+        return render(request, "admin_main/report_general.html", {
+            "labels": [],
+            "values_breakfast": [],
+            "values_lunch": [],
+            "avg_breakfast": [],
+            "avg_lunch": [],
+            "range_label": "",
+            "error": "Неверный формат даты.",
+        })
+
+    if start_date > end_date:
+        start_date, end_date = end_date, start_date
+
+    orders = Order.objects.select_related("name").filter(
+        day__gte=start_date.isoformat(),
+        day__lte=end_date.isoformat(),
+    )
+
+    sums_by_day_breakfast = {}
+    sums_by_day_lunch = {}
+    for order in orders:
+        try:
+            day_key = datetime.strptime(order.day, "%Y-%m-%d").date()
+        except ValueError:
+            continue
+        category = getattr(order.name, "category", None)
+        if category == "breakfast":
+            sums_by_day_breakfast[day_key] = sums_by_day_breakfast.get(day_key, 0) + (order.price or 0)
+        elif category == "lunch":
+            sums_by_day_lunch[day_key] = sums_by_day_lunch.get(day_key, 0) + (order.price or 0)
+
+    avg_totals_breakfast = [0] * 7
+    avg_counts_breakfast = [0] * 7
+    avg_totals_lunch = [0] * 7
+    avg_counts_lunch = [0] * 7
+
+    today = datetime.today().date()
+    cutoff = today - timedelta(days=365)
+    avg_orders = Order.objects.select_related("name").filter(
+        day__gte=cutoff.isoformat(),
+        day__lte=today.isoformat(),
+    )
+
+    daily_breakfast = {}
+    daily_lunch = {}
+    for order in avg_orders:
+        try:
+            day_key = datetime.strptime(order.day, "%Y-%m-%d").date()
+        except ValueError:
+            continue
+        category = getattr(order.name, "category", None)
+        if category == "breakfast":
+            daily_breakfast[day_key] = daily_breakfast.get(day_key, 0) + (order.price or 0)
+        elif category == "lunch":
+            daily_lunch[day_key] = daily_lunch.get(day_key, 0) + (order.price or 0)
+
+    for day_key, total in daily_breakfast.items():
+        if total <= 0:
+            continue
+        weekday = day_key.weekday()
+        avg_totals_breakfast[weekday] += total
+        avg_counts_breakfast[weekday] += 1
+
+    for day_key, total in daily_lunch.items():
+        if total <= 0:
+            continue
+        weekday = day_key.weekday()
+        avg_totals_lunch[weekday] += total
+        avg_counts_lunch[weekday] += 1
+
+    avg_by_weekday_breakfast = [
+        (avg_totals_breakfast[i] / avg_counts_breakfast[i]) if avg_counts_breakfast[i] else 0
+        for i in range(7)
+    ]
+    avg_by_weekday_lunch = [
+        (avg_totals_lunch[i] / avg_counts_lunch[i]) if avg_counts_lunch[i] else 0
+        for i in range(7)
+    ]
+
+    labels = []
+    values_breakfast = []
+    values_lunch = []
+    avg_breakfast = []
+    avg_lunch = []
+    cursor = start_date
+    while cursor <= end_date:
+        labels.append(cursor.strftime("%d.%m"))
+        values_breakfast.append(sums_by_day_breakfast.get(cursor, 0))
+        values_lunch.append(sums_by_day_lunch.get(cursor, 0))
+        weekday = cursor.weekday()
+        avg_breakfast.append(avg_by_weekday_breakfast[weekday])
+        avg_lunch.append(avg_by_weekday_lunch[weekday])
+        cursor += timedelta(days=1)
+
+    range_label = f"{start_date.strftime('%d.%m.%Y')} - {end_date.strftime('%d.%m.%Y')}"
+
+    return render(request, "admin_main/report_general.html", {
+        "labels": labels,
+        "values_breakfast": values_breakfast,
+        "values_lunch": values_lunch,
+        "avg_breakfast": avg_breakfast,
+        "avg_lunch": avg_lunch,
+        "range_label": range_label,
+        "error": "",
+    })
+
+
+def avg_orders_weekday_recent(days_back=180):
+    today = datetime.today().date()
+    cutoff = today - timedelta(days=days_back)
+
+    daily_totals = {}
+    orders = Order.objects.filter(day__gte=cutoff.isoformat(), day__lte=today.isoformat())
+    for order in orders:
+        try:
+            day_key = datetime.strptime(order.day, "%Y-%m-%d").date()
+        except ValueError:
+            continue
+        daily_totals[day_key] = daily_totals.get(day_key, 0) + (order.price or 0)
+
+    totals = [0] * 7
+    counts = [0] * 7
+    for day_key, total in daily_totals.items():
+        if total <= 0:
+            continue
+        weekday = day_key.weekday()
+        totals[weekday] += total
+        counts[weekday] += 1
+
+    return [
+        (totals[i] / counts[i]) if counts[i] else 0
+        for i in range(5)
+    ]
+
+
+def avg_comes_weekday_recent(days_back=180):
+    today = datetime.today().date()
+    cutoff = today - timedelta(days=days_back)
+
+    daily_users = {}
+    orders = Order.objects.filter(day__gte=cutoff.isoformat(), day__lte=today.isoformat())
+    for order in orders:
+        try:
+            day_key = datetime.strptime(order.day, "%Y-%m-%d").date()
+        except ValueError:
+            continue
+        daily_users.setdefault(day_key, set()).add(order.user_id)
+
+    totals = [0] * 7
+    counts = [0] * 7
+    for day_key, users in daily_users.items():
+        value = len(users)
+        if value <= 0:
+            continue
+        weekday = day_key.weekday()
+        totals[weekday] += value
+        counts[weekday] += 1
+
+    return [
+        (totals[i] / counts[i]) if counts[i] else 0
+        for i in range(5)
+    ]
