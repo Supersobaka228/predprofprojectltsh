@@ -22,7 +22,7 @@ def admin(request):
     context = {
         'current_user': user,
         'notifications': Notification.objects.all(),
-        'buyorders': BuyOrder.objects.all(),
+        'buyorders': BuyOrder.objects.order_by('-date'),
         'buyorders_count': len(BuyOrder.objects.all()),
         'data': orders_by_date(),
         'menu': len(menu),

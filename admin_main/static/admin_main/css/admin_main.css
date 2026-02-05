@@ -1363,7 +1363,7 @@ body {
     border-radius: clamp(10px, 1vw, 16px);
     padding: clamp(6px, 0.9vw, 12px);
     padding-right: clamp(1px, 0.2vw, 5px);
-    overflow: hidden;
+    overflow: auto;
     display: flex;
     flex-direction: column;
     flex: 1;

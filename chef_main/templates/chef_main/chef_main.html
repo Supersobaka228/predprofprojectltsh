@@ -629,6 +629,14 @@
                                             <td>42 тыс. ₽</td>
                                             <td><span class="chef_orders_status_badge chef_orders_status_badge--ok">Одобрено</span></td>
                                         </tr>
+                                        <tr>
+                                            <td>101</td>
+                                            <td>10.01.26</td>
+                                            <td>Лоренцо Росиелла</td>
+                                            <td>Картофель</td>
+                                            <td>42 тыс. ₽</td>
+                                            <td><span class="chef_orders_status_badge chef_orders_status_badge--ok">Одобрено</span></td>
+                                        </tr>
                                     </tbody>
                                 </table>
                             </div>
@@ -838,28 +846,34 @@
                         </div>
                         <template id="chefOrderRowTemplate">
                             <div class="chef_order_new_row" data-order-row="__INDEX__">
-                                <label class="chef_order_new_label" for="order_product___INDEX__">Продукт</label>
-                                <div class="chef_product_picker">
-                                    <button class="chef_product_add" type="button" aria-haspopup="listbox" aria-expanded="false">
-                                        <span>Выберите продукт</span>
-                                        <img class="chef_product_add_icon" src="{% static 'icon/arrow_back_ios_new.svg' %}" alt="">
-                                    </button>
-                                    <div class="chef_product_menu" role="listbox" aria-label="Продукты">
-                                        {% for ingredient in ingredients %}
-                                            <button class="chef_product_option" type="button" data-value="{{ ingredient.id }}">{{ ingredient.name }}</button>
-                                        {% endfor %}
-                                    </div>
-                                    <input class="chef_product_input" id="order_product___INDEX__" name="products[]" type="hidden" value="">
-                                </div>
-                                <label class="chef_order_new_label" for="order_price___INDEX__">Цена</label>
                                 <div class="chef_order_new_field">
+                                    <label class="chef_order_new_label" for="order_product___INDEX__">Продукт</label>
+                                    <div class="chef_product_picker">
+                                        <button class="chef_product_add" type="button" aria-haspopup="listbox" aria-expanded="false">
+                                            <span>Выберите продукт</span>
+                                            <img class="chef_product_add_icon" src="{% static 'icon/arrow_back_ios_new.svg' %}" alt="">
+                                        </button>
+                                        <div class="chef_product_menu" role="listbox" aria-label="Продукты">
+                                           {% for ingredient in ingredients %}
+                                            <button class="chef_product_option" type="button" data-value="{{ ingredient.id }}">{{ ingredient.name }}</button>
+                                            {% endfor %}
+                                        </div>
+                                        <input class="chef_product_input" id="order_product___INDEX__" name="products[]" type="hidden" value="">
+                                    </div>
+                                </div>
+
+                                <div class="chef_order_new_field">
+                                    <label class="chef_order_new_label" for="order_price___INDEX__">Цена</label>
                                     <input class="chef_order_new_input chef_order_new_input--price" id="order_price___INDEX__" name="prices[]" type="number" min="0" step="0.01" value="" required>
                                     <span class="chef_order_new_unit">₽/кг</span>
                                 </div>
-                                <label class="chef_order_new_label" for="order_qty___INDEX__">Количество</label>
+
                                 <div class="chef_order_new_field">
-                                    <input class="chef_order_new_input" id="order_qty___INDEX__" name="quantities[]" type="number" min="1" step="0.01" value="10" required>
-                                    <span class="chef_order_new_unit">кг</span>
+                                    <label class="chef_order_new_label" for="order_qty___INDEX__">Количество</label>
+                                    <div class="chef_order_new_field">
+                                        <input class="chef_order_new_input" id="order_qty___INDEX__" name="quantities[]" type="number" min="1" step="0.01" value="10" required>
+                                        <span class="chef_order_new_unit">кг</span>
+                                    </div>
                                 </div>
                                 <button class="chef_order_row_remove" type="button" aria-label="Удалить продукт">×</button>
                             </div>
