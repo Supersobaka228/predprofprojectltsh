@@ -1,5 +1,6 @@
 from django.db import models
 from decimal import Decimal
+from django.utils import timezone
 
 from menu.models import Meal
 from users.models import User
@@ -14,7 +15,7 @@ class BuyOrder(models.Model):
     items = models.ForeignKey(Ingredient, on_delete=models.CASCADE)
     user_id = models.ForeignKey(User, on_delete=models.CASCADE)
 
-    date = models.DateTimeField(auto_now_add=True)
+    date = models.DateTimeField(default=timezone.now)
     status = models.CharField(default='ns', max_length=10)
 
     @property
@@ -31,4 +32,3 @@ class Food_count(models.Model):
     id = models.AutoField(primary_key=True)
     food_id = models.ForeignKey(Meal, on_delete=models.CASCADE)
     num = models.IntegerField()
-

@@ -533,3 +533,26 @@ def avg_comes_weekday_recent(days_back=180):
         (totals[i] / counts[i]) if counts[i] else 0
         for i in range(5)
     ]
+
+
+def buyorders_by_date(request):
+    date_str = request.GET.get('date')
+    if not date_str:
+        return JsonResponse({'orders': []})
+    try:
+        target_date = datetime.strptime(date_str, "%Y-%m-%d").date()
+    except ValueError:
+        return JsonResponse({'orders': []}, status=400)
+
+    orders = BuyOrder.objects.filter(date__date=target_date).order_by('-date')
+    data = []
+    for order in orders:
+        data.append({
+            'id': order.id,
+            'date': order.date.strftime('%d.%m.%y'),
+            'user': str(order.user_id),
+            'items': str(order.items),
+            'summ': f"{order.summ_rub:.2f}",
+            'status': order.status,
+        })
+    return JsonResponse({'orders': data})
