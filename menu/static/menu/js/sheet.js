@@ -130,27 +130,28 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function setRating(value) {
-    const starsBox = document.getElementById('sheet-rating-stars-box');
-    const valueEl = document.getElementById('sheet-rating-value');
+    const starsBoxes = Array.from(document.querySelectorAll('.sheet-rating-stars-box'));
+    const valueEls = Array.from(document.querySelectorAll('.sheet-rating-value'));
     const rating = Number(value);
     const safeRating = Number.isFinite(rating) ? Math.max(0, Math.min(5, rating)) : 0;
 
-    if (starsBox) {
+    const display = safeRating.toFixed(1).replace('.', ',');
+
+    starsBoxes.forEach(starsBox => {
       ensureRatingMarkup(starsBox);
       const percent = (safeRating / 5) * 100;
       starsBox.style.setProperty('--rating-percent', `${percent}%`);
-    }
 
-    if (valueEl) {
-      const display = safeRating.toFixed(1).replace('.', ',');
+      const container = starsBox.closest('.sheet-rating-stars');
+      if (container) {
+        container.setAttribute('aria-label', `Рейтинг ${display} из 5`);
+      }
+      starsBox.setAttribute('aria-label', `Рейтинг ${display} из 5`);
+    });
+
+    valueEls.forEach(valueEl => {
       valueEl.textContent = `${display}/5`;
-    }
-
-    const ratingContainer = starsBox?.closest('.sheet-rating-stars');
-    if (ratingContainer) {
-      const label = safeRating.toFixed(1).replace('.', ',');
-      ratingContainer.setAttribute('aria-label', `Рейтинг ${label} из 5`);
-    }
+    });
   }
 
   function openSheet() {
