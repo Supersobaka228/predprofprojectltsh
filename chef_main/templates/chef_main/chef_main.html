@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -47,15 +48,15 @@
                 <div class="admin_stats_grid">
                     <article class="admin_stat_card">
                         <div class="admin_stat_label">Оплаты сегодня</div>
-                        <div class="admin_stat_value">42 497₽</div>
+                        <div class="admin_stat_value">{{ summ }} ₽</div>
                     </article>
                     <article class="admin_stat_card">
                         <div class="admin_stat_label">Посещения</div>
-                        <div class="admin_stat_value">384 ученика</div>
+                        <div class="admin_stat_value">{{ sum_comes }} учеников</div>
                     </article>
                     <article class="admin_stat_card">
                         <div class="admin_stat_label">Заявки на закупку</div>
-                        <div class="admin_stat_value">5 позиций</div>
+                        <div class="admin_stat_value">{{ buyorders_count }} позиций</div>
                     </article>
                     <article class="admin_stat_card">
                         <div class="admin_stat_label">Низкие остатки</div>
@@ -63,7 +64,7 @@
                     </article>
                     <article class="admin_stat_card">
                         <div class="admin_stat_label">Приёмов пищи</div>
-                        <div class="admin_stat_value">4 позиции</div>
+                        <div class="admin_stat_value">{{ menu }} позиций</div>
                     </article>
                 </div>
             </section>
@@ -185,6 +186,7 @@
                                                     {% endif %}
                                                 </td>
                                             </tr>
+                                            {% endfor %}
                                             <tr data-order-id="98">
                                                 <td>98</td>
                                                 <td>09.01.26</td>

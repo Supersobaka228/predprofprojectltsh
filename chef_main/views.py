@@ -7,6 +7,7 @@ from django.shortcuts import render, redirect
 from django.views.decorators.http import require_POST
 
 from admin_main.models import BuyOrder
+from admin_main.views import sum_orders_count, sum_comes
 from chef_main.models import Ingredient
 from menu.models import Meal, DayOrder, MenuItem
 
@@ -38,20 +39,21 @@ def chef(request):
     a, b = meals_view()
     user_buyorders = BuyOrder.objects.filter(user_id=request.user).order_by('-date')
     all_buyorders = BuyOrder.objects.order_by('-date')[:100]
+    menu = MenuItem.objects.all()
+    today_str = date.today().isoformat()
     context = {
         'orders': BuyOrder.objects.all(),
         'user_buyorders': user_buyorders,
         'all_buyorders': all_buyorders,
         'meals_b': a,
         'meals_l': b,
-        'today': '2026-02-05',
+        'today': today_str,
         'ingredients': Ingredient.objects.all(),
-
+        'buyorders_count': len(BuyOrder.objects.all()),
+        'menu': len(menu),
+        'summ': sum_orders_count(),
+        'sum_comes': sum_comes(),
     }
-    for i in a:
-        print(i.count_by_days['2026-02-05'])
-
-    print(meals_view())
     return render(request, 'chef_main/chef_main.html', context)
 
 
@@ -77,7 +79,9 @@ def update_issued_count(request):
         data = json.loads(request.body)
         print(data)
         g = Meal.objects.get(id=data['meal_id'])
-        g.count_by_days['2026-02-05']['g'] += int(data['amount'])
+        day_key = data.get('day') or date.today().isoformat()
+        g.count_by_days.setdefault(day_key, {'g': 0, 'o': 0, 'l': 0})
+        g.count_by_days[day_key]['g'] += int(data['amount'])
         g.save()
         print(g.count_by_days)
         return JsonResponse({
