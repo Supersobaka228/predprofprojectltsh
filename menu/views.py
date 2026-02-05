@@ -80,7 +80,25 @@ def menu(request):
             s['day'] = str(format_russian_date(datetime.strptime(date_str, '%Y-%m-%d').date()))
             form = ReviewForm(s)
             if form.is_valid():
-                review = form.save()
+                existing = Review.objects.filter(item_id=form.cleaned_data.get('item'), user=request.user).first()
+                review = form.save(commit=False)
+                if existing:
+                    review = existing
+                    review.text = form.cleaned_data.get('text')
+                    review.day = form.cleaned_data.get('day')
+                    review.stars_count = form.cleaned_data.get('stars_count')
+
+                user_obj = request.user
+                email = getattr(user_obj, 'email', '') or ''
+                if '@' in email:
+                    reviewer_name = email.split('@', 1)[0]
+                elif email.strip():
+                    reviewer_name = email.strip()
+                else:
+                    reviewer_name = 'Ученик'
+                review.user = request.user
+                review.reviewer_name = reviewer_name
+                review.save()
                 if is_ajax:
                     agg = Review.objects.filter(item_id=review.item_id).aggregate(
                         avg=Avg('stars_count'),
@@ -90,9 +108,11 @@ def menu(request):
                     rating_count = int(agg.get('count') or 0)
                     return JsonResponse({'success': True, 'action': 'review', 'review': {
                         'item_id': getattr(review, 'item_id', None),
+                        'user_id': getattr(review, 'user_id', None),
                         'day': getattr(review, 'day', ''),
                         'text': getattr(review, 'text', ''),
                         'stars_count': getattr(review, 'stars_count', 0),
+                        'reviewer_name': getattr(review, 'reviewer_name', ''),
                     }, 'rating_avg': rating_avg, 'rating_count': rating_count})
             else:
                 if is_ajax:

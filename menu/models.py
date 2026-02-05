@@ -80,9 +80,16 @@ class Review(models.Model):
         ('Обед', 'Обед'),
     ]
     item = models.ForeignKey(MenuItem, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     day = models.CharField()
     text = models.TextField()
     stars_count = models.IntegerField(default=3)
+    reviewer_name = models.CharField(max_length=150, blank=True)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['item', 'user'], name='uniq_review_per_user_item'),
+        ]
 
 
 class Order(models.Model):

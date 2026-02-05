@@ -286,10 +286,10 @@
 
                         {% for item in review_items %}
 
-                        <div class="sheet-review" data-review-item-id="{{ item.item_id }}">
+                        <div class="sheet-review" data-review-item-id="{{ item.item_id }}" data-review-user-id="{{ item.user_id|default:'' }}">
                             <div class="sheet-review-top">
                                 <div class="sheet-review-date">{{ item.day }}</div>
-                                <div class="sheet-review-user">ученик</div>
+                                <div class="sheet-review-user">{{ item.reviewer_name|default:"Ученик" }}</div>
                                 <div class="sheet-review-stars">
                                     {% for i in "12345"|make_list %}
                                     <img src="../../static/menu/icon/Star 1.svg" alt="" class="sheet-rating-star{% if forloop.counter > item.stars_count %} sheet-rating-star--empty{% endif %}">
