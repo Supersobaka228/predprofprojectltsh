@@ -170,55 +170,19 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr data-order-id="101">
-                                                <td>101</td>
-                                                <td>10.01.26</td>
-                                                <td>Молоко, йогурт клубн...</td>
-                                                <td>9200 руб.</td>
+                                            {% for item in user_buyorders %}
+                                            <tr data-order-id="{{ item.id }}">
+                                                <td>{{ item.id }}</td>
+                                                <td>{{ item.date|date:"d.m.y" }}</td>
+                                                <td>{{ item.items }}</td>
+                                                <td>{{ item.summ_rub|floatformat:2 }} ₽</td>
                                                 <td><button class="orders_action" type="button">Перейти к заявке</button></td>
                                             </tr>
-                                            <tr data-order-id="100">
-                                                <td>100</td>
-                                                <td>10.01.26</td>
-                                                <td>Говядина, хлеб, вода...</td>
-                                                <td>17450 руб.</td>
-                                                <td><button class="orders_action" type="button">Перейти к заявке</button></td>
+                                            {% empty %}
+                                            <tr>
+                                                <td colspan="5">Заявок пока нет</td>
                                             </tr>
-                                            <tr data-order-id="99">
-                                                <td>99</td>
-                                                <td>09.01.26</td>
-                                                <td>Огурцы, помидор, лук...</td>
-                                                <td>6970 руб.</td>
-                                                <td><button class="orders_action" type="button">Перейти к заявке</button></td>
-                                            </tr>
-                                            <tr data-order-id="98">
-                                                <td>98</td>
-                                                <td>09.01.26</td>
-                                                <td>Чай чёрный пакетир...</td>
-                                                <td>13224 руб.</td>
-                                                <td><button class="orders_action" type="button">Перейти к заявке</button></td>
-                                            </tr>
-                                            <tr data-order-id="98">
-                                                <td>98</td>
-                                                <td>09.01.26</td>
-                                                <td>Чай чёрный пакетир...</td>
-                                                <td>13224 руб.</td>
-                                                <td><button class="orders_action" type="button">Перейти к заявке</button></td>
-                                            </tr>
-                                            <tr data-order-id="98">
-                                                <td>98</td>
-                                                <td>09.01.26</td>
-                                                <td>Чай чёрный пакетир...</td>
-                                                <td>13224 руб.</td>
-                                                <td><button class="orders_action" type="button">Перейти к заявке</button></td>
-                                            </tr>
-                                            <tr data-order-id="98">
-                                                <td>98</td>
-                                                <td>09.01.26</td>
-                                                <td>Чай чёрный пакетир...</td>
-                                                <td>13224 руб.</td>
-                                                <td><button class="orders_action" type="button">Перейти к заявке</button></td>
-                                            </tr>
+                                            {% endfor %}
                                         </tbody>
                                     </table>
                                 </div>
@@ -485,158 +449,28 @@
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        {% for item in all_buyorders %}
                                         <tr>
-                                            <td>105</td>
-                                            <td>10.01.26</td>
-                                            <td>Мауро Лоренцо</td>
-                                            <td>Картофель</td>
-                                            <td>42 тыс. ₽</td>
-                                            <td><span class="chef_orders_status_badge">Ожидает</span></td>
+                                            <td>{{ item.id }}</td>
+                                            <td>{{ item.date|date:"d.m.y" }}</td>
+                                            <td>{{ item.user_id }}</td>
+                                            <td>{{ item.items }}</td>
+                                            <td>{{ item.summ_rub|floatformat:2 }} ₽</td>
+                                            <td>
+                                                {% if item.status == "allowed" %}
+                                                <span class="chef_orders_status_badge chef_orders_status_badge--ok">Одобрено</span>
+                                                {% elif item.status == "rejected" %}
+                                                <span class="chef_orders_status_badge chef_orders_status_badge--reject">Отклонено</span>
+                                                {% else %}
+                                                <span class="chef_orders_status_badge">Ожидает</span>
+                                                {% endif %}
+                                            </td>
                                         </tr>
+                                        {% empty %}
                                         <tr>
-                                            <td>104</td>
-                                            <td>10.01.26</td>
-                                            <td>Мауро Росиелла</td>
-                                            <td>Картофель</td>
-                                            <td>42 тыс. ₽</td>
-                                            <td><span class="chef_orders_status_badge chef_orders_status_badge--ok">Одобрено</span></td>
+                                            <td colspan="6">Заявок пока нет</td>
                                         </tr>
-                                        <tr>
-                                            <td>103</td>
-                                            <td>10.01.26</td>
-                                            <td>Мауро Мауро</td>
-                                            <td>Картофель</td>
-                                            <td>42 тыс. ₽</td>
-                                            <td><span class="chef_orders_status_badge chef_orders_status_badge--reject">Отклонено</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td>102</td>
-                                            <td>10.01.26</td>
-                                            <td>Лоренцо Лоренцо</td>
-                                            <td>Картофель</td>
-                                            <td>42 тыс. ₽</td>
-                                            <td><span class="chef_orders_status_badge chef_orders_status_badge--ok">Одобрено</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td>101</td>
-                                            <td>10.01.26</td>
-                                            <td>Лоренцо Росиелла</td>
-                                            <td>Картофель</td>
-                                            <td>42 тыс. ₽</td>
-                                            <td><span class="chef_orders_status_badge chef_orders_status_badge--ok">Одобрено</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td>101</td>
-                                            <td>10.01.26</td>
-                                            <td>Лоренцо Росиелла</td>
-                                            <td>Картофель</td>
-                                            <td>42 тыс. ₽</td>
-                                            <td><span class="chef_orders_status_badge chef_orders_status_badge--ok">Одобрено</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td>101</td>
-                                            <td>10.01.26</td>
-                                            <td>Лоренцо Росиелла</td>
-                                            <td>Картофель</td>
-                                            <td>42 тыс. ₽</td>
-                                            <td><span class="chef_orders_status_badge chef_orders_status_badge--ok">Одобрено</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td>101</td>
-                                            <td>10.01.26</td>
-                                            <td>Лоренцо Росиелла</td>
-                                            <td>Картофель</td>
-                                            <td>42 тыс. ₽</td>
-                                            <td><span class="chef_orders_status_badge chef_orders_status_badge--ok">Одобрено</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td>101</td>
-                                            <td>10.01.26</td>
-                                            <td>Лоренцо Росиелла</td>
-                                            <td>Картофель</td>
-                                            <td>42 тыс. ₽</td>
-                                            <td><span class="chef_orders_status_badge chef_orders_status_badge--ok">Одобрено</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td>101</td>
-                                            <td>10.01.26</td>
-                                            <td>Лоренцо Росиелла</td>
-                                            <td>Картофель</td>
-                                            <td>42 тыс. ₽</td>
-                                            <td><span class="chef_orders_status_badge chef_orders_status_badge--ok">Одобрено</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td>101</td>
-                                            <td>10.01.26</td>
-                                            <td>Лоренцо Росиелла</td>
-                                            <td>Картофель</td>
-                                            <td>42 тыс. ₽</td>
-                                            <td><span class="chef_orders_status_badge chef_orders_status_badge--ok">Одобрено</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td>101</td>
-                                            <td>10.01.26</td>
-                                            <td>Лоренцо Росиелла</td>
-                                            <td>Картофель</td>
-                                            <td>42 тыс. ₽</td>
-                                            <td><span class="chef_orders_status_badge chef_orders_status_badge--ok">Одобрено</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td>101</td>
-                                            <td>10.01.26</td>
-                                            <td>Лоренцо Росиелла</td>
-                                            <td>Картофель</td>
-                                            <td>42 тыс. ₽</td>
-                                            <td><span class="chef_orders_status_badge chef_orders_status_badge--ok">Одобрено</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td>101</td>
-                                            <td>10.01.26</td>
-                                            <td>Лоренцо Росиелла</td>
-                                            <td>Картофель</td>
-                                            <td>42 тыс. ₽</td>
-                                            <td><span class="chef_orders_status_badge chef_orders_status_badge--ok">Одобрено</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td>101</td>
-                                            <td>10.01.26</td>
-                                            <td>Лоренцо Росиелла</td>
-                                            <td>Картофель</td>
-                                            <td>42 тыс. ₽</td>
-                                            <td><span class="chef_orders_status_badge chef_orders_status_badge--ok">Одобрено</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td>101</td>
-                                            <td>10.01.26</td>
-                                            <td>Лоренцо Росиелла</td>
-                                            <td>Картофель</td>
-                                            <td>42 тыс. ₽</td>
-                                            <td><span class="chef_orders_status_badge chef_orders_status_badge--ok">Одобрено</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td>101</td>
-                                            <td>10.01.26</td>
-                                            <td>Лоренцо Росиелла</td>
-                                            <td>Картофель</td>
-                                            <td>42 тыс. ₽</td>
-                                            <td><span class="chef_orders_status_badge chef_orders_status_badge--ok">Одобрено</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td>101</td>
-                                            <td>10.01.26</td>
-                                            <td>Лоренцо Росиелла</td>
-                                            <td>Картофель</td>
-                                            <td>42 тыс. ₽</td>
-                                            <td><span class="chef_orders_status_badge chef_orders_status_badge--ok">Одобрено</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td>101</td>
-                                            <td>10.01.26</td>
-                                            <td>Лоренцо Росиелла</td>
-                                            <td>Картофель</td>
-                                            <td>42 тыс. ₽</td>
-                                            <td><span class="chef_orders_status_badge chef_orders_status_badge--ok">Одобрено</span></td>
-                                        </tr>
+                                        {% endfor %}
                                     </tbody>
                                 </table>
                             </div>

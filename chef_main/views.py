@@ -36,8 +36,12 @@ def chef(request):
             BuyOrder.objects.create(items=ingredient, user_id=request.user, summ=int(total_cents))
         return redirect('chef_main')
     a, b = meals_view()
+    user_buyorders = BuyOrder.objects.filter(user_id=request.user).order_by('-date')
+    all_buyorders = BuyOrder.objects.order_by('-date')[:100]
     context = {
         'orders': BuyOrder.objects.all(),
+        'user_buyorders': user_buyorders,
+        'all_buyorders': all_buyorders,
         'meals_b': a,
         'meals_l': b,
         'today': '2026-02-05',
