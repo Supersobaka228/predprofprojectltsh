@@ -1,0 +1,140 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Отчёт по затратам</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+    <style>
+        body { font-family: "M PLUS Rounded 1c", sans-serif; }
+        .report-wrap { max-width: 900px; margin: 0 auto; }
+        .report-title { font-size: 20px; margin-bottom: 8px; }
+        .report-range { color: #666; margin-bottom: 16px; }
+        .report-error { color: #b00020; margin-bottom: 12px; }
+    </style>
+</head>
+<body>
+    <div class="report-wrap" id="report-root">
+        <div class="report-title">Отчёт по затратам</div>
+        <div class="report-range">{{ range_label }}</div>
+        {% if error %}
+            <div class="report-error">{{ error }}</div>
+        {% endif %}
+        <canvas id="reportChart" height="160"></canvas>
+    </div>
+
+    <script>
+        const labels = {{ labels|safe }};
+        const values = {{ values|safe }};
+        const avgValues = {{ avg_values|safe }};
+        const hasError = {{ error|yesno:"true,false" }};
+        const isSingleDay = labels.length === 1;
+
+        const valueLabelPlugin = {
+            id: 'valueLabels',
+            afterDatasetsDraw(chart) {
+                const { ctx } = chart;
+                ctx.save();
+                ctx.fillStyle = '#333';
+                ctx.font = '12px "M PLUS Rounded 1c", sans-serif';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'bottom';
+
+                chart.data.datasets.forEach((dataset, datasetIndex) => {
+                    if (dataset.skipValueLabels) return;
+                    const meta = chart.getDatasetMeta(datasetIndex);
+                    meta.data.forEach((element, index) => {
+                        const value = dataset.data[index];
+                        if (value === null || value === undefined) return;
+                        const x = element.x;
+                        const y = element.y - 6;
+                        ctx.fillText(String(Math.round(value)), x, y);
+                    });
+                });
+                ctx.restore();
+            }
+        };
+
+        const ctx = document.getElementById('reportChart').getContext('2d');
+        new Chart(ctx, {
+            type: isSingleDay ? 'bar' : 'line',
+            data: {
+                labels,
+                datasets: [
+                    {
+                        label: 'Затраты, ₽',
+                        data: values,
+                        borderColor: '#4b77ff',
+                        backgroundColor: 'rgba(75,119,255,0.35)',
+                        fill: !isSingleDay,
+                        tension: 0.2,
+                        borderWidth: isSingleDay ? 1 : 2
+                    },
+                    {
+                        label: 'Среднее, ₽',
+                        data: avgValues,
+                        type: isSingleDay ? 'bar' : 'line',
+                        borderColor: '#2f56cc',
+                        backgroundColor: isSingleDay ? 'rgba(47,86,204,0.35)' : 'transparent',
+                        borderDash: isSingleDay ? [] : [6, 4],
+                        pointRadius: isSingleDay ? 0 : 0,
+                        pointHoverRadius: isSingleDay ? 0 : 0,
+                        fill: false,
+                        skipValueLabels: true
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                animation: false,
+                devicePixelRatio: 2,
+                plugins: {
+                    legend: { display: true }
+                },
+                scales: {
+                    y: { beginAtZero: true }
+                }
+            },
+            plugins: [valueLabelPlugin]
+        });
+
+        if (!hasError) {
+            setTimeout(() => {
+                const { jsPDF } = window.jspdf;
+                const pdf = new jsPDF('l', 'pt', 'a4');
+                const pageWidth = pdf.internal.pageSize.getWidth();
+                const pageHeight = pdf.internal.pageSize.getHeight();
+                const margin = 24;
+
+                const root = document.getElementById('report-root');
+                html2canvas(root, { scale: 3, backgroundColor: '#ffffff' }).then((canvas) => {
+                    const maxWidth = pageWidth - margin * 2;
+                    const maxHeight = pageHeight - margin * 2;
+                    const scale = Math.min(maxWidth / canvas.width, maxHeight / canvas.height);
+                    const imgWidth = canvas.width * scale;
+                    const imgHeight = canvas.height * scale;
+                    const imgX = margin + (maxWidth - imgWidth) / 2;
+                    const imgY = margin + (maxHeight - imgHeight) / 2;
+
+                    pdf.addImage(canvas.toDataURL('image/png'), 'PNG', imgX, imgY, imgWidth, imgHeight);
+                    pdf.save('report_costs.pdf');
+
+                    setTimeout(() => {
+                        if (window.opener) {
+                            window.close();
+                            return;
+                        }
+                        window.location.href = "{% url 'admin_main' %}";
+                    }, 500);
+                });
+            }, 0);
+        }
+    </script>
+</body>
+</html>

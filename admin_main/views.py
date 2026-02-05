@@ -478,6 +478,96 @@ def admin_report_general(request):
     })
 
 
+@login_required
+@require_POST
+def admin_report_costs(request):
+    start_str = request.POST.get("costs_start")
+    end_str = request.POST.get("costs_end")
+
+    if not start_str or not end_str:
+        return render(request, "admin_main/report_costs.html", {
+            "labels": [],
+            "values": [],
+            "avg_values": [],
+            "range_label": "",
+            "error": "Не задан период отчета.",
+        })
+
+    try:
+        start_date = datetime.strptime(start_str, "%Y-%m-%d").date()
+        end_date = datetime.strptime(end_str, "%Y-%m-%d").date()
+    except ValueError:
+        return render(request, "admin_main/report_costs.html", {
+            "labels": [],
+            "values": [],
+            "avg_values": [],
+            "range_label": "",
+            "error": "Неверный формат даты.",
+        })
+
+    if start_date > end_date:
+        start_date, end_date = end_date, start_date
+
+    orders = BuyOrder.objects.filter(
+        status="allowed",
+        date__date__gte=start_date,
+        date__date__lte=end_date,
+    )
+
+    sums_by_day = {}
+    for order in orders:
+        day_key = order.date.date()
+        sums_by_day[day_key] = sums_by_day.get(day_key, 0) + float(order.summ_rub)
+
+    today = datetime.today().date()
+    cutoff = today - timedelta(days=365)
+    avg_orders = BuyOrder.objects.filter(
+        status="allowed",
+        date__date__gte=cutoff,
+        date__date__lte=today,
+    )
+
+    daily_totals = {}
+    for order in avg_orders:
+        day_key = order.date.date()
+        daily_totals[day_key] = daily_totals.get(day_key, 0) + float(order.summ_rub)
+
+    avg_totals = [0.0] * 7
+    avg_counts = [0] * 7
+    for day_key, total in daily_totals.items():
+        if total <= 0:
+            continue
+        weekday = day_key.weekday()
+        avg_totals[weekday] += total
+        avg_counts[weekday] += 1
+
+    avg_by_weekday = [
+        (avg_totals[i] / avg_counts[i]) if avg_counts[i] else 0
+        for i in range(7)
+    ]
+
+    labels = []
+    values = []
+    avg_values = []
+    cursor = start_date
+    while cursor <= end_date:
+        labels.append(cursor.strftime("%d.%m"))
+        values.append(sums_by_day.get(cursor, 0))
+        weekday = cursor.weekday()
+        avg_values.append(avg_by_weekday[weekday])
+        cursor += timedelta(days=1)
+
+    range_label = f"{start_date.strftime('%d.%m.%Y')} - {end_date.strftime('%d.%m.%Y')}"
+
+    return render(request, "admin_main/report_costs.html", {
+        "labels": labels,
+        "values": values,
+        "avg_values": avg_values,
+        "range_label": range_label,
+        "error": "",
+    })
+
+
 def avg_orders_weekday_recent(days_back=180):
     today = datetime.today().date()
     cutoff = today - timedelta(days=days_back)
