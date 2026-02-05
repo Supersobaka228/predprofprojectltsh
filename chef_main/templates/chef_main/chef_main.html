@@ -1,4 +1,3 @@
-{% load static %}
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -186,11 +185,13 @@
                                                     {% endif %}
                                                 </td>
                                             </tr>
-                                            {% empty %}
-                                            <tr>
-                                                <td colspan="5">Заявок пока нет</td>
+                                            <tr data-order-id="98">
+                                                <td>98</td>
+                                                <td>09.01.26</td>
+                                                <td>Чай чёрный пакетир...</td>
+                                                <td>13224 руб.</td>
+                                                <td><button class="orders_action" type="button">Перейти к заявке</button></td>
                                             </tr>
-                                            {% endfor %}
                                         </tbody>
                                     </table>
                                 </div>
@@ -267,34 +268,38 @@
                         <div class="admin_user_name">Имя Фамилия</div>
                         <div class="admin_user_role">Повар</div>
                     </div>
-                    <img src="{% static 'icon/photo_2026-01-14_11-19-22.jpg' %}" class="admin_user_avatar" alt="">
+                    <img src="resources/photo_2026-01-14_11-19-22.jpg" class="admin_user_avatar" alt="">
                 </div>
             </header>
 
             <section class="admin_stats_panel">
-                <div class="chef_serving_datebar" data-role="datebar" data-date="2026-01-19" data-week-start="2026-01-19" data-week-end="2026-01-23">
-                    <div class="chef_serving_date_left">
-                        <span class="chef_serving_date_label">Понедельник,</span>
-                        <span class="chef_serving_date_value" data-role="date-display">19.01.2026</span>
-                    </div>
-                    <div class="chef_serving_days" role="group" aria-label="Дни недели" data-role="weekday-switch">
-                        <button class="chef_serving_day is-active" type="button" data-day="1" data-date="2026-01-19">Пн</button>
-                        <button class="chef_serving_day" type="button" data-day="2" data-date="2026-01-20">Вт</button>
-                        <button class="chef_serving_day" type="button" data-day="3" data-date="2026-01-21">Ср</button>
-                        <button class="chef_serving_day" type="button" data-day="4" data-date="2026-01-22">Чт</button>
-                        <button class="chef_serving_day" type="button" data-day="5" data-date="2026-01-23">Пт</button>
-                    </div>
-                    <div class="chef_serving_week_switch" aria-label="Переключение недели">
-                        <button class="chef_serving_week_btn" type="button" data-action="week-prev" aria-label="Предыдущая неделя">
-                            <img src="{% static 'icon/left_arrow_stats.svg' %}" alt="">
-                        </button>
-                        <span class="chef_serving_week_label" data-role="week-label">19.01 - 23.01</span>
-                        <button class="chef_serving_week_btn chef_serving_week_btn--next" type="button" data-action="week-next" aria-label="Следующая неделя">
-                            <img src="{% static 'icon/left_arrow_stats.svg' %}" alt="">
-                        </button>
-                    </div>
-                </div>
-            </section>
+            <div class="chef_serving_datebar"
+            data-role="datebar"
+            data-date="2026-01-19"
+            data-week-start="2026-01-19"
+            data-week-end="2026-01-23">
+            <div class="chef_serving_date_left">
+                <span class="chef_serving_date_label">Понедельник,</span>
+                <span class="chef_serving_date_value" data-role="date-display">19.01.2026</span>
+            </div>
+            <div class="chef_serving_days" role="group" aria-label="Дни недели" data-role="weekday-switch">
+                <button class="chef_serving_day is-active" type="button" data-day="1" data-date="2026-01-19">Пн</button>
+                <button class="chef_serving_day" type="button" data-day="2" data-date="2026-01-20">Вт</button>
+                <button class="chef_serving_day" type="button" data-day="3" data-date="2026-01-21">Ср</button>
+                <button class="chef_serving_day" type="button" data-day="4" data-date="2026-01-22">Чт</button>
+                <button class="chef_serving_day" type="button" data-day="5" data-date="2026-01-23">Пт</button>
+            </div>
+            <div class="chef_serving_week_switch" aria-label="Переключение недели">
+                <button class="chef_serving_week_btn" type="button" data-action="week-prev" aria-label="Предыдущая неделя">
+                    <img src="resources/left_arrow_stats.svg" alt="">
+                </button>
+                <span class="chef_serving_week_label" data-role="week-label">19.01 - 23.01</span>
+                <button class="chef_serving_week_btn chef_serving_week_btn--next" type="button" data-action="week-next" aria-label="Следующая неделя">
+                    <img src="resources/left_arrow_stats.svg" alt="">
+                </button>
+            </div>
+        </div>
+    </section>
 
 
             <section class="chef_page_body">
@@ -474,7 +479,6 @@
                                                 {% endif %}
                                             </td>
                                         </tr>
-                                        {% empty %}
                                         <tr>
                                             <td colspan="6">Заявок пока нет</td>
                                         </tr>
