@@ -1,4 +1,6 @@
 <!DOCTYPE html>
+{% load static %}
+{% load dict_filters %}
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
@@ -93,66 +95,118 @@
             <div>Выдачи</div>
             <div></div>
         </div>
-        <div class="day_menu_table_body day_menu_table_body--active" data-meal="meal_breakfast">
-            {% for item in meals_b %}
-            {% csrf_token %}
-            <div class="day_menu_row" data-meal-id="{{ item.id }}" data-meal-name="{{ item.name }}">
-                <div>{{ item.name }}</div>
-                {% for i in item.count_by_days %}
-                {% if i == today %}
-                <div class="ordered-count" data-field="ordered">{{ i }}</div>
-                <div class="issued-count" data-field="issued">{{ i }}</div>
-                <div class="available-count" data-field="available">30</div>
-                {% endif %}
-                {% endfor %}
-                <div>
-                    <button class="day_menu_btn issue-btn" type="button" data-action="issue" data-amount="1" data-meal-id="{{ item.id }}">
-                        +1
-                    </button>
-                </div>
-                <div>
-                    <button class="day_menu_btn issue-btn" type="button" data-action="issue" data-amount="5" data-meal-id="{{ item.id }}">
-                        +5
-                    </button>
-                </div>
-                <div>
-                    <button class="day_menu_btn day_menu_btn--danger return-btn" type="button" data-action="return" data-amount="-1" data-meal-id="{{ item.id }}">
-                        -1
-                    </button>
-                </div>
-            </div>
-            {% endfor %}
-        </div>
 
-        <div class="day_menu_table_body" data-meal="meal_lunch">
-            {% for item in meals_l %}
-            <div class="day_menu_row" data-meal-id="{{ item.id }}" data-meal-name="{{ item.name }}">
-                <div>{{ item.name }}</div>
-                <div class="ordered-count" data-field="ordered">{{ item.count_by_days.today.o }}</div>
-                <div class="issued-count" data-field="issued">{{ item.count_by_days.today.l }}</div>
-                <div class="available-count" data-field="available">30</div>
-                <div>
-                    <button class="day_menu_btn issue-btn" type="button" data-action="issue" data-amount="1" data-meal-id="{{ item.id }}">
-                        +1
-                    </button>
-                </div>
-                <div>
-                    <button class="day_menu_btn issue-btn" type="button" data-action="issue" data-amount="5" data-meal-id="{{ item.id }}">
-                        +5
-                    </button>
-                </div>
-                <div>
-                    <button class="day_menu_btn day_menu_btn--danger return-btn" type="button" data-action="return" data-amount="1" data-meal-id="{{ item.id }}">
-                        -1
-                    </button>
-                </div>
-            </div>
-            {% endfor %}
-                        </div>
+
+        <script>
+
+        const mealsData = JSON.parse(document.getElementById('meals-data').textContent);
+        console.log(mealsData);
+        const date = {
+                {% for item in meals_b %}
+                "{{ item|safe }}"{% if not forloop.last %},{% endif %}
+                {% endfor %}
+                };
+        window.mealsData = mealsData;
+</script>
+
+
+        <div class="day_menu_table_body day_menu_table_body--active" data-meal="meal_breakfast">
+    {% for item in meals_b %}
+    {% csrf_token %}
+    <div class="day_menu_row" data-meal-id="{{ item.id }}" data-meal-name="{{ item.name }}">
+        <div>{{ item.name }}</div>
+        {% with item.count_by_days|get_item:today as day_data %}
+        <div class="ordered-count" data-field="ordered">
+            {% if day_data and day_data.o %}
+                {{ day_data.o }}
+            {% else %}
+                0
+            {% endif %}
         </div>
-                                        </div>
-                                    </div>
+        <div class="issued-count" data-field="issued">
+            {% if day_data and day_data.g %}
+                {{ day_data.g }}
+            {% else %}
+                0
+            {% endif %}
+        </div>
+        <div class="available-count" data-field="available">
+            {% if day_data and day_data.available %}
+                {{ day_data.available }}
+            {% else %}
+                {{ item.weight }}
+            {% endif %}
+        </div>
+        {% endwith %}
+        <div>
+            <button class="day_menu_btn issue-btn" type="button" data-action="issue" data-amount="1" data-meal-id="{{ item.id }}">
+                +1
+            </button>
+        </div>
+        <div>
+            <button class="day_menu_btn issue-btn" type="button" data-action="issue" data-amount="5" data-meal-id="{{ item.id }}">
+                +5
+            </button>
+        </div>
+        <div>
+            <button class="day_menu_btn day_menu_btn--danger return-btn" type="button" data-action="return" data-amount="1" data-meal-id="{{ item.id }}">
+                -1
+            </button>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<div class="day_menu_table_body" data-meal="meal_lunch">
+    {% for item in meals_l %}
+    <div class="day_menu_row" data-meal-id="{{ item.id }}" data-meal-name="{{ item.name }}">
+        <div>{{ item.name }}</div>
+        {% with item.count_by_days|get_item:today as day_data %}
+        <div class="ordered-count" data-field="ordered">
+            {% if day_data and day_data.ordered %}
+                {{ day_data.ordered }}
+            {% else %}
+                0
+            {% endif %}
+        </div>
+        <div class="issued-count" data-field="issued">
+            {% if day_data and day_data.g %}
+                {{ day_data.g }}
+            {% else %}
+                0
+            {% endif %}
+        </div>
+        <div class="available-count" data-field="available">
+            {% if day_data and day_data.available %}
+                {{ day_data.available }}
+            {% else %}
+                {{ item.weight }}
+            {% endif %}
+        </div>
+        {% endwith %}
+        <div>
+            <button class="day_menu_btn issue-btn" type="button" data-action="issue" data-amount="1" data-meal-id="{{ item.id }}">
+                +1
+            </button>
+        </div>
+        <div>
+            <button class="day_menu_btn issue-btn" type="button" data-action="issue" data-amount="5" data-meal-id="{{ item.id }}">
+                +5
+            </button>
+        </div>
+        <div>
+            <button class="day_menu_btn day_menu_btn--danger return-btn" type="button" data-action="return" data-amount="1" data-meal-id="{{ item.id }}">
+                -1
+            </button>
+        </div>
+    </div>
+    {% endfor %}
+    </div>
+        </div>
                                 </div>
+                                </div>
+                                    </div>
+
                         </section>
                         <section class="main_orders_panel">
                             <p>Ваши заявки на закупку</p>
@@ -185,6 +239,7 @@
                                                     {% endif %}
                                                 </td>
                                             </tr>
+                                            {% endfor %}
                                             <tr data-order-id="98">
                                                 <td>98</td>
                                                 <td>09.01.26</td>
@@ -526,90 +581,18 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                {% for item in ingredients %}
                                 <tr>
-                                    <td>Макароны</td>
-                                    <td>20 кг</td>
-                                    <td>01.01.01</td>
+                                    <td>{{ item.name }}</td>
+                                    <td>{{ item.remains }}</td>
+                                    {% if item.remains > 10000 %}
+                                    <td>Наличие достаточно</td>
+                                    {% else %}
                                     <td>Осталось мало</td>
                                     <td><button class="chef_stocks_action" type="button">Составить заявку</button></td>
+                                    {% endif %}
                                 </tr>
-                                <tr>
-                                    <td>Картофель</td>
-                                    <td>20 кг</td>
-                                    <td>01.01.01</td>
-                                    <td>Осталось мало</td>
-                                    <td><button class="chef_stocks_action" type="button">Составить заявку</button></td>
-                                </tr>
-                                <tr>
-                                    <td>Гречневая крупа</td>
-                                    <td>20 кг</td>
-                                    <td>01.01.01</td>
-                                    <td>Осталось мало</td>
-                                    <td><button class="chef_stocks_action" type="button">Составить заявку</button></td>
-                                </tr>
-                                <tr>
-                                    <td>Молоко</td>
-                                    <td>20 кг</td>
-                                    <td>01.01.01</td>
-                                    <td>Осталось мало</td>
-                                    <td><button class="chef_stocks_action" type="button">Составить заявку</button></td>
-                                </tr>
-                                <tr>
-                                    <td>Макароны</td>
-                                    <td>20 кг</td>
-                                    <td>01.01.01</td>
-                                    <td>Осталось мало</td>
-                                    <td><button class="chef_stocks_action" type="button">Составить заявку</button></td>
-                                </tr>
-                                <tr>
-                                    <td>Картофель</td>
-                                    <td>20 кг</td>
-                                    <td>01.01.01</td>
-                                    <td>Осталось мало</td>
-                                    <td><button class="chef_stocks_action" type="button">Составить заявку</button></td>
-                                </tr>
-                                <tr>
-                                    <td>Гречневая крупа</td>
-                                    <td>20 кг</td>
-                                    <td>01.01.01</td>
-                                    <td>Осталось мало</td>
-                                    <td><button class="chef_stocks_action" type="button">Составить заявку</button></td>
-                                </tr>
-                                <tr>
-                                    <td>Молоко</td>
-                                    <td>20 кг</td>
-                                    <td>01.01.01</td>
-                                    <td>Осталось мало</td>
-                                    <td><button class="chef_stocks_action" type="button">Составить заявку</button></td>
-                                </tr>
-                                <tr>
-                                    <td>Макароны</td>
-                                    <td>20 кг</td>
-                                    <td>01.01.01</td>
-                                    <td>Осталось мало</td>
-                                    <td><button class="chef_stocks_action" type="button">Составить заявку</button></td>
-                                </tr>
-                                <tr>
-                                    <td>Картофель</td>
-                                    <td>20 кг</td>
-                                    <td>01.01.01</td>
-                                    <td>Осталось мало</td>
-                                    <td><button class="chef_stocks_action" type="button">Составить заявку</button></td>
-                                </tr>
-                                <tr>
-                                    <td>Гречневая крупа</td>
-                                    <td>20 кг</td>
-                                    <td>01.01.01</td>
-                                    <td>Осталось мало</td>
-                                    <td><button class="chef_stocks_action" type="button">Составить заявку</button></td>
-                                </tr>
-                                <tr>
-                                    <td>Молоко</td>
-                                    <td>20 кг</td>
-                                    <td>01.01.01</td>
-                                    <td>Осталось мало</td>
-                                    <td><button class="chef_stocks_action" type="button">Составить заявку</button></td>
-                                </tr>
+                                {% endfor %}
                             </tbody>
                                 </table>
                             </div>

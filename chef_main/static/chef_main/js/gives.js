@@ -1,5 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
     // Получаем CSRF токен для Django
+
+
     function getCookie(name) {
         let cookieValue = null;
         if (document.cookie && document.cookie !== '') {
@@ -122,13 +124,23 @@ function updateMealCount(mealId, action, amount) {
 
             try {
                 // Отправляем запрос на сервер
-                const result = await updateMealCount(mealId, action, amount);
+                const response = await updateMealCount(mealId, action, amount);
 
-                // Обновляем отображение
-                updateDisplay(row, result.issued_count, result.available_count);
+                if (!response.ok) {
+                    throw new Error('Ошибка сервера');
+                }
 
-                // Показываем уведомление об успехе
-                showNotification(`${action === 'issue' ? 'Выдано' : 'Возвращено'} ${amount} порций: ${mealName}`, 'success');
+                const result = await response.json();
+
+                if (result.success) {
+                    // Обновляем отображение с новыми данными из сервера
+                    updateDisplay(row, result.issued_count, result.available_count, result.ordered_count);
+
+                    // Показываем уведомление об успехе
+                    showNotification(`${action === 'issue' ? 'Выдано' : 'Возвращено'} ${amount} порций: ${mealName}`, 'success');
+                } else {
+                    throw new Error(result.error || 'Ошибка при обновлении');
+                }
 
             } catch (error) {
                 // Показываем ошибку
@@ -176,7 +188,7 @@ function updateMealCount(mealId, action, amount) {
         }, 3000);
     }
 
-    // Стили для анимаций (можно добавить в CSS)
+    // Стили для анимаций
     const style = document.createElement('style');
     style.textContent = `
         @keyframes slideIn {
@@ -214,7 +226,8 @@ function updateMealCount(mealId, action, amount) {
         }
 
         .issued-count.updated,
-        .available-count.updated {
+        .available-count.updated,
+        .ordered-count.updated {
             animation: pulse 0.3s ease;
         }
 
@@ -256,7 +269,7 @@ function updateMealCount(mealId, action, amount) {
         data.meals.forEach(meal => {
             const row = tableBody.querySelector(`[data-meal-id="${meal.id}"]`);
             if (row) {
-                updateDisplay(row, meal.issued_count, meal.available_count);
+                updateDisplay(row, meal.issued, meal.available, meal.ordered);
             }
         });
     }
