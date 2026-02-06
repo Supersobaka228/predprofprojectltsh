@@ -911,6 +911,10 @@ body {
     margin-left: auto;
 }
 
+.menu_config_actions--global {
+    margin-top: 1rem;
+}
+
 .menu_config_btn {
     border: none;
     padding: 8px 18px;
