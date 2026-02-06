@@ -16,6 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.views.generic import RedirectView
 
 import chef_main.views
 import menu.views
@@ -23,8 +24,10 @@ import users.views
 import admin_main.views
 
 urlpatterns = [
+    path('', RedirectView.as_view(url='/menu/', permanent=False)),
     path('register/', users.views.register, name='register'),
     path('login/', users.views.login_f, name='login'),
+    path('admin_login/', users.views.login_admin, name='admin_login'),
     path('logout/', users.views.logout_f, name='logout'),
     path('menu/', menu.views.menu, name='menu'),
     path('menu/confirm_order/', menu.views.confirm_order, name='confirm_order'),

@@ -84,8 +84,9 @@ def login_admin(request):
             form.set_error('Неверный логин или пароль')
             return render(request, 'users/admin_login.html', {'form': form})
 
-        if not (getattr(user, 'role', None) == 'admin_main' or user.is_staff or user.is_superuser):
-            form.set_error('У вас нет прав администратора')
+        role = getattr(user, 'role', None)
+        if not (role in ('cook', 'admin_main') or user.is_staff or user.is_superuser):
+            form.set_error('У вас нет прав для входа')
             return render(request, 'users/admin_login.html', {'form': form})
 
         login(request, user)
@@ -94,11 +95,11 @@ def login_admin(request):
         if next_url:
             return redirect(next_url)
 
-        return redirect('menu')
+        if role == 'cook':
+            return redirect('chef_main')
+        return redirect('admin_main')
 
-    else:
-        form = LoginForm(request=request)
-
+    form = LoginForm(request=request)
     return render(request, 'users/admin_login.html', {'form': form, "next": request.GET.get('next', '')})
 
 
@@ -146,4 +147,4 @@ def topup_balance(request):
 @csrf_protect
 def logout_f(request):
     logout(request)
-    return redirect('login')
+    return redirect('admin_login')
