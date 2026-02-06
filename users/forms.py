@@ -87,28 +87,12 @@ class LoginForm(forms.Form):
 
     def authenticate(self, username, password):
         from django.db.models import Q
-        user = User.objects.get(Q(email=username))
         try:
-            # Ищем пользователя по username ИЛИ email
-            user = User.objects.get(
-                Q(username=username) | Q(email=username)
-            )
-        except User.DoesNotExist:
-            # Также пробуем по email, если username содержит @
-            if '@' in username:
-                try:
-                    user = User.objects.get(email=username)
-                except User.DoesNotExist:
-                    return None
-            else:
-                return None
-        try:
-            user = User.objects.get(password=password, email=username)
-            p = User.objects.get(Q(email=username))
-            return user
+            user = User.objects.get(Q(username=username) | Q(email=username))
         except User.DoesNotExist:
             return None
-
+        if user.check_password(password):
+            return user
         return None
 
 
