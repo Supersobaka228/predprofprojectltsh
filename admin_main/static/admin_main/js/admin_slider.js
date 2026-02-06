@@ -296,59 +296,70 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const titleSelects = document.querySelectorAll('.menu_config_title_select');
   if (titleSelects.length > 0) {
-    const closeTitleMenus = () => {
-      titleSelects.forEach((select) => {
-        select.classList.remove('is-open');
+    const initTitleSelects = (root = document) => {
+      const selects = root.querySelectorAll('.menu_config_title_select');
+      const closeTitleMenus = () => {
+        document.querySelectorAll('.menu_config_title_select').forEach((select) => {
+          select.classList.remove('is-open');
+          const button = select.querySelector('.menu_config_title_btn');
+          if (button) {
+            button.setAttribute('aria-expanded', 'false');
+          }
+        });
+      };
+
+      selects.forEach((select) => {
+        if (select.dataset.titleSelectReady) {
+          return;
+        }
+        select.dataset.titleSelectReady = 'true';
+
         const button = select.querySelector('.menu_config_title_btn');
-        if (button) {
-          button.setAttribute('aria-expanded', 'false');
+        const label = select.querySelector('.menu_config_title_label');
+        const items = select.querySelectorAll('.menu_config_title_item');
+        const titleInput = select.closest('form')?.querySelector('input[name="category"]');
+
+        if (!button || !label) {
+          return;
+        }
+
+        if (titleInput && !titleInput.value && items.length > 0) {
+          const first = items[0];
+          label.textContent = first.textContent.trim();
+          titleInput.value = first.dataset.value || '';
+        }
+
+        button.addEventListener('click', (event) => {
+          event.stopPropagation();
+          const isOpen = select.classList.contains('is-open');
+          closeTitleMenus();
+          select.classList.toggle('is-open', !isOpen);
+          button.setAttribute('aria-expanded', String(!isOpen));
+        });
+
+        items.forEach((item) => {
+          item.addEventListener('click', () => {
+            label.textContent = item.textContent.trim();
+            if (titleInput) {
+              titleInput.value = item.dataset.value || '';
+            }
+            closeTitleMenus();
+          });
+        });
+      });
+
+      document.addEventListener('click', () => {
+        closeTitleMenus();
+      });
+
+      document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') {
+          closeTitleMenus();
         }
       });
     };
 
-    titleSelects.forEach((select) => {
-      const button = select.querySelector('.menu_config_title_btn');
-      const label = select.querySelector('.menu_config_title_label');
-      const items = select.querySelectorAll('.menu_config_title_item');
-      const titleInput = document.getElementById('title_value');
-
-      if (!button || !label) {
-        return;
-      }
-
-      if (titleInput && !titleInput.value && items.length > 0) {
-        const first = items[0];
-        label.textContent = first.textContent.trim();
-        titleInput.value = first.dataset.value || '';
-      }
-
-      button.addEventListener('click', (event) => {
-        event.stopPropagation();
-        const isOpen = select.classList.contains('is-open');
-        closeTitleMenus();
-        select.classList.toggle('is-open', !isOpen);
-        button.setAttribute('aria-expanded', String(!isOpen));
-      });
-
-      items.forEach((item) => {
-        item.addEventListener('click', () => {
-          label.textContent = item.textContent.trim();
-          if (titleInput) {
-            titleInput.value = item.dataset.value || '';
-          }
-          closeTitleMenus();
-        });
-      });
-    });
-
-    document.addEventListener('click', () => {
-      closeTitleMenus();
-    });
-
-    document.addEventListener('keydown', (event) => {
-      if (event.key === 'Escape') {
-        closeTitleMenus();
-      }
-    });
+    window.initMenuTitleSelects = initTitleSelects;
+    initTitleSelects();
   }
 });
