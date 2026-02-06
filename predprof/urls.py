@@ -25,6 +25,7 @@ import admin_main.views
 urlpatterns = [
     path('register/', users.views.register, name='register'),
     path('login/', users.views.login_f, name='login'),
+    path('logout/', users.views.logout_f, name='logout'),
     path('menu/', menu.views.menu, name='menu'),
     path('menu/confirm_order/', menu.views.confirm_order, name='confirm_order'),
     path('menu/update_allergens/', menu.views.update_allergens, name='update_allergens'),

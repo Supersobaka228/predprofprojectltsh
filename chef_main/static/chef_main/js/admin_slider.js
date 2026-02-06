@@ -288,6 +288,70 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  const avatarWraps = document.querySelectorAll('.admin_avatar_wrap');
+  const sharedLogoutOverlay = document.querySelector('#adminLogoutOverlay');
+
+  const closeAllLogouts = () => {
+    avatarWraps.forEach((wrap) => {
+      wrap.classList.remove('is-open');
+    });
+    if (sharedLogoutOverlay) {
+      sharedLogoutOverlay.setAttribute('aria-hidden', 'true');
+    }
+  };
+
+  const closeAllOverlays = () => {
+    closeAllNotifications();
+    closeAllLogouts();
+  };
+
+  if (avatarWraps.length > 0 && sharedLogoutOverlay) {
+    avatarWraps.forEach((wrap) => {
+      const avatar = wrap.querySelector('.admin_user_avatar');
+      if (!avatar) {
+        return;
+      }
+
+      const openOverlay = () => {
+        const willOpen = !wrap.classList.contains('is-open');
+        closeAllOverlays();
+        if (willOpen) {
+          wrap.appendChild(sharedLogoutOverlay);
+          wrap.classList.add('is-open');
+          sharedLogoutOverlay.setAttribute('aria-hidden', 'false');
+        }
+      };
+
+      avatar.addEventListener('click', (event) => {
+        event.stopPropagation();
+        openOverlay();
+      });
+
+      avatar.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          event.stopPropagation();
+          openOverlay();
+        }
+      });
+    });
+
+    document.addEventListener('click', (event) => {
+      const targetWrap = event.target instanceof Element
+        ? event.target.closest('.admin_avatar_wrap')
+        : null;
+      if (!targetWrap) {
+        closeAllLogouts();
+      }
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') {
+        closeAllOverlays();
+      }
+    });
+  }
+
   const classSelect = document.querySelector('.admin_menu_class_select');
   if (classSelect) {
     const classButton = classSelect.querySelector('.admin_menu_class_btn');

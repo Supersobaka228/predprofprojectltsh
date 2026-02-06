@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_protect
-from django.contrib.auth import login
+from django.contrib.auth import login, logout
 
 from django.contrib.auth.decorators import login_required
 from django.db import transaction
@@ -140,3 +140,10 @@ def topup_balance(request):
         return JsonResponse({'success': True, 'balance_cents': user.balance_cents, 'balance_display': balance_display})
 
     return redirect('menu')
+
+
+@require_POST
+@csrf_protect
+def logout_f(request):
+    logout(request)
+    return redirect('login')
