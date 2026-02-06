@@ -184,7 +184,7 @@ def admin(request):
             proteins=0,
             fats=0,
             carbs=0,
-            icon='',
+            icon='menu/icon/meal1.svg',
         )
         menuitem.meals.set(meals)
         menuitem.save()
