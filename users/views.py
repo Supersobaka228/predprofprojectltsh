@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_protect
-from django.contrib.auth import login
+from django.contrib.auth import login, logout
 
 from django.contrib.auth.decorators import login_required
 from django.db import transaction
@@ -70,6 +70,14 @@ def login_f(request):
 
         
 def login_admin(request):
+    if request.user.is_authenticated:
+        role = getattr(request.user, 'role', None)
+        if role == 'cook':
+            return redirect('chef_main')
+        if role == 'admin_main' or request.user.is_staff or request.user.is_superuser:
+            return redirect('admin_main')
+        return redirect('menu')
+
     if request.method == "POST":
         form = LoginForm(request=request, data=request.POST)
         form.error_messages = []
@@ -84,8 +92,9 @@ def login_admin(request):
             form.set_error('Неверный логин или пароль')
             return render(request, 'users/admin_login.html', {'form': form})
 
-        if not (getattr(user, 'role', None) == 'admin_main' or user.is_staff or user.is_superuser):
-            form.set_error('У вас нет прав администратора')
+        role = getattr(user, 'role', None)
+        if not (role in ('cook', 'admin_main') or user.is_staff or user.is_superuser):
+            form.set_error('У вас нет прав для входа')
             return render(request, 'users/admin_login.html', {'form': form})
 
         login(request, user)
@@ -94,11 +103,11 @@ def login_admin(request):
         if next_url:
             return redirect(next_url)
 
-        return redirect('menu')
+        if role == 'cook':
+            return redirect('chef_main')
+        return redirect('admin_main')
 
-    else:
-        form = LoginForm(request=request)
-
+    form = LoginForm(request=request)
     return render(request, 'users/admin_login.html', {'form': form, "next": request.GET.get('next', '')})
 
 
@@ -140,3 +149,17 @@ def topup_balance(request):
         return JsonResponse({'success': True, 'balance_cents': user.balance_cents, 'balance_display': balance_display})
 
     return redirect('menu')
+
+
+@require_POST
+@csrf_protect
+def logout_f(request):
+    logout(request)
+    return redirect('admin_login')
+
+
+@require_POST
+@csrf_protect
+def logout_menu(request):
+    logout(request)
+    return redirect('login')

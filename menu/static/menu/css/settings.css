@@ -3,10 +3,19 @@
     width: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
-    flex-grow: 1;
+    flex: 1 1 auto;
+    min-height: 0;
+    height: 100%;
     padding: 1rem;
+}
+
+.settings_main > form {
+    margin-top: auto;
+    width: 100%;
+    display: flex;
+    justify-content: center;
 }
 
 .account_info_box {

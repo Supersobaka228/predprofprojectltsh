@@ -42,7 +42,9 @@
                         <div class="admin_user_name">Имя Фамилия</div>
                         <div class="admin_user_role">Повар</div>
                     </div>
-                    <img src="{% static 'icon/photo_2026-01-14_11-19-22.jpg' %}" class="admin_user_avatar" alt="">
+                    <div class="admin_avatar_wrap">
+                        <img src="{% static 'icon/photo_2026-01-14_11-19-22.jpg' %}" class="admin_user_avatar" alt="" role="button" tabindex="0" aria-label="Аккаунт">
+                    </div>
                 </div>
             </header>
 
@@ -324,7 +326,9 @@
                         <div class="admin_user_name">Имя Фамилия</div>
                         <div class="admin_user_role">Повар</div>
                     </div>
-                    <img src="resources/photo_2026-01-14_11-19-22.jpg" class="admin_user_avatar" alt="">
+                    <div class="admin_avatar_wrap">
+                        <img src="{% static 'icon/photo_2026-01-14_11-19-22.jpg' %}" class="admin_user_avatar" alt="" role="button" tabindex="0" aria-label="Аккаунт">
+                    </div>
                 </div>
             </header>
 
@@ -486,7 +490,9 @@
                         <div class="admin_user_name">Имя Фамилия</div>
                         <div class="admin_user_role">Повар</div>
                     </div>
-                    <img src="{% static 'icon/photo_2026-01-14_11-19-22.jpg' %}" class="admin_user_avatar" alt="">
+                    <div class="admin_avatar_wrap">
+                        <img src="{% static 'icon/photo_2026-01-14_11-19-22.jpg' %}" class="admin_user_avatar" alt="" role="button" tabindex="0" aria-label="Аккаунт">
+                    </div>
                 </div>
             </header>
 
@@ -535,9 +541,7 @@
                                                 {% endif %}
                                             </td>
                                         </tr>
-                                        <tr>
-                                            <td colspan="6">Заявок пока нет</td>
-                                        </tr>
+
                                         {% endfor %}
                                     </tbody>
                                 </table>
@@ -561,7 +565,9 @@
                         <div class="admin_user_name">Имя Фамилия</div>
                         <div class="admin_user_role">Повар</div>
                     </div>
-                    <img src="{% static 'icon/photo_2026-01-14_11-19-22.jpg' %}" class="admin_user_avatar" alt="">
+                    <div class="admin_avatar_wrap">
+                        <img src="{% static 'icon/photo_2026-01-14_11-19-22.jpg' %}" class="admin_user_avatar" alt="" role="button" tabindex="0" aria-label="Аккаунт">
+                    </div>
                 </div>
             </header>
 
@@ -616,7 +622,9 @@
                         <div class="admin_user_name">Имя Фамилия</div>
                         <div class="admin_user_role">Повар</div>
                     </div>
-                    <img src="{% static 'icon/photo_2026-01-14_11-19-22.jpg' %}" class="admin_user_avatar" alt="">
+                    <div class="admin_avatar_wrap">
+                        <img src="{% static 'icon/photo_2026-01-14_11-19-22.jpg' %}" class="admin_user_avatar" alt="" role="button" tabindex="0" aria-label="Аккаунт">
+                    </div>
                 </div>
             </header>
 
@@ -730,6 +738,12 @@
                 <p>Новая заявка от 09.01.26!</p>
             </div>
         </div>
+    </div>
+    <div id="adminLogoutOverlay" class="admin_logout_overlay" aria-hidden="true">
+        <form action="{% url 'logout' %}" method="post">
+            {% csrf_token %}
+            <button class="admin_logout_button" type="submit">выйти из аккаунта</button>
+        </form>
     </div>
 
     <script src="../../static/chef_main/js/admin_slider.js"></script>

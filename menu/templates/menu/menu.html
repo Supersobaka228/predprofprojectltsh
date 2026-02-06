@@ -68,7 +68,7 @@
                             <div>
                                 Аллергены:
                             </div>
-                            {% for allergen in item.allergens_list %}
+                            {% for allergen in item.allergens_list_display %}
                                 <li class="{% if allergen in selected_allergen_names %}allergen-hit{% endif %}">{{ allergen }}</li>
                             {% endfor %}
                         </ul>
@@ -159,7 +159,10 @@
                         </div>
                     </div>
                     <button class="user_add_aller">Добавить аллергены</button>
-                    <button class="st_logout">Выйти из аккаунта</button>
+                    <form action="{% url 'logout_menu' %}" method="post">
+                        {% csrf_token %}
+                        <button class="st_logout" type="submit">Выйти из аккаунта</button>
+                    </form>
                 </section>
 
                 <section class="allergens_main main_screen">

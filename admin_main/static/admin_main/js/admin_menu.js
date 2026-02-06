@@ -24,6 +24,13 @@ document.addEventListener('DOMContentLoaded', () => {
             dayInput.value = dayMap[dayOfWeekText] || '';
         }
 
+        const dayValue = dayInput ? dayInput.value : (dayMap[dayOfWeekText] || '');
+        if (dayValue) {
+            document.dispatchEvent(new CustomEvent('menuDayChange', {
+                detail: { day: dayValue }
+            }));
+        }
+
         switch (dayOfWeekText) {
             case 'Пн':
                 // Находим ближайший понедельник

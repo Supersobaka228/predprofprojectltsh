@@ -5,18 +5,75 @@ from tkinter import Menu
 from django.utils import timezone
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
+from django.db.models import Prefetch
 
 from admin_main.models import BuyOrder, Notification
 from chef_main.models import Ingredient
 from menu.models import MenuItem, Order, Review, Meal, DayOrder, Allergen, MealIngredient
 
 
+def _get_no_allergen():
+    allergen, _ = Allergen.objects.get_or_create(
+        code='no',
+        defaults={'name': 'Без аллергенов', 'sort_order': 0},
+    )
+    return allergen
+
+
+def _should_clear_day(request, day_number):
+    bulk_id = request.POST.get('bulk_save_id')
+    if not bulk_id:
+        return True
+
+    session_key = 'bulk_cleared_days'
+    cleared = request.session.get(session_key, {})
+    if not isinstance(cleared, dict):
+        cleared = {}
+
+    day_key = str(day_number)
+    if cleared.get(day_key) == bulk_id:
+        return False
+
+    cleared[day_key] = bulk_id
+    request.session[session_key] = cleared
+    return True
+
+
+def clear_day_menu(day_number):
+    day_order = DayOrder.objects.filter(day=day_number).first()
+    if not day_order:
+        return
+
+    menuitem_ids = list(day_order.order or [])
+    day_order.delete()
+
+    if not menuitem_ids:
+        return
+
+    meal_ids = list(
+        Meal.objects.filter(menu_items__id__in=menuitem_ids)
+        .values_list('id', flat=True)
+        .distinct()
+    )
+
+    MenuItem.objects.filter(id__in=menuitem_ids).delete()
+
+    if meal_ids:
+        Meal.objects.filter(id__in=meal_ids, menu_items__isnull=True).delete()
+
+
 @csrf_exempt
 @login_required
 def admin(request):
+    role = getattr(request.user, 'role', None)
+    if role == 'cook':
+        return redirect('chef_main')
+    if role != 'admin_main' and not (request.user.is_staff or request.user.is_superuser):
+        return redirect('menu')
+
     menu = MenuItem.objects.all()
     user = request.user
 
@@ -78,9 +135,7 @@ def admin(request):
         'all_reviews': reviews_payload,
         'ingredients': Ingredient.objects.all(),
         'allergens': Allergen.objects.all(),
-
-
-
+        'menu_prefill_data': build_menu_prefill_data(),
     }
     if request.method == 'POST':
         post = request.POST
@@ -109,6 +164,14 @@ def admin(request):
             context['errors'] = errors
             return render(request, 'admin_main/admin_main.html', context)
 
+        try:
+            day_number = int(day_value)
+        except (TypeError, ValueError):
+            day_number = None
+
+        if day_number and _should_clear_day(request, day_number):
+            clear_day_menu(day_number)
+
         meals = []
         total_calories = 0
 
@@ -134,8 +197,6 @@ def admin(request):
             dish_ingredients = post.getlist(f'ingredients_{i}[]')
             dish_ingredients_grams = post.getlist(f'ingredients_grams_{i}[]')
 
-            if not dish_allergens:
-                errors.append(f'Не выбраны аллергены для блюда №{i + 1}.')
             if not dish_ingredients:
                 errors.append(f'Не выбраны ингредиенты для блюда №{i + 1}.')
 
@@ -149,6 +210,8 @@ def admin(request):
             if dish_allergens:
                 allergens = Allergen.objects.filter(code__in=dish_allergens)
                 meal.allergens.set(allergens)
+            else:
+                meal.allergens.set([_get_no_allergen()])
 
             for j, ingredient_code in enumerate(dish_ingredients):
                 ingredient = Ingredient.objects.filter(code=ingredient_code).first()
@@ -189,17 +252,12 @@ def admin(request):
         menuitem.meals.set(meals)
         menuitem.save()
 
-        try:
-            day_number = int(day_value)
-        except (TypeError, ValueError):
-            day_number = None
-
         if day_number:
             day_order, _ = DayOrder.objects.get_or_create(day=day_number, defaults={'order': []})
             day_order.order.append(menuitem.id)
             day_order.save(update_fields=['order'])
 
-        return render(request, 'admin_main/admin_main.html', context)
+        return redirect('admin_main')
     return render(request, 'admin_main/admin_main.html', context)
 
 
@@ -704,3 +762,81 @@ def buyorders_by_date(request):
             'status': order.status,
         })
     return JsonResponse({'orders': data})
+
+def _split_menu_time(time_value):
+    if not time_value:
+        return '', ''
+    if '-' in time_value:
+        parts = time_value.split('-', 1)
+        return parts[0].strip(), parts[1].strip()
+    return time_value.strip(), ''
+
+
+def build_menu_prefill_data():
+    day_orders = DayOrder.objects.filter(day__gte=1, day__lte=5)
+    day_to_ids = {day_order.day: list(day_order.order or []) for day_order in day_orders}
+    menuitem_ids = set()
+    for ids in day_to_ids.values():
+        menuitem_ids.update(ids)
+
+    menuitems_by_id = {}
+    if menuitem_ids:
+        menuitems = (
+            MenuItem.objects.filter(id__in=menuitem_ids)
+            .prefetch_related(
+                Prefetch(
+                    'meals',
+                    queryset=Meal.objects.prefetch_related(
+                        'allergens',
+                        Prefetch('mealingredient_set', queryset=MealIngredient.objects.select_related('ingredient')),
+                    ),
+                )
+            )
+        )
+
+        for menuitem in menuitems:
+            time_start, time_end = _split_menu_time(menuitem.time)
+            meals_payload = []
+            for meal in menuitem.meals.all():
+                ingredients_payload = []
+                for mi in meal.mealingredient_set.all():
+                    ingredient = mi.ingredient
+                    ingredients_payload.append({
+                        'code': ingredient.code,
+                        'name': ingredient.name,
+                        'grams': mi.mass,
+                    })
+
+                meals_payload.append({
+                    'id': meal.id,
+                    'name': meal.name,
+                    'weight': meal.weight,
+                    'calories': meal.calories,
+                    'allergens': [
+                        {'code': allergen.code, 'name': allergen.name}
+                        for allergen in meal.allergens.all()
+                    ],
+                    'ingredients': ingredients_payload,
+                })
+
+            menuitems_by_id[menuitem.id] = {
+                'id': menuitem.id,
+                'category': menuitem.category,
+                'time_start': time_start,
+                'time_end': time_end,
+                'price': menuitem.price,
+                'meals': meals_payload,
+            }
+
+    days_payload = {}
+    for day, ids in day_to_ids.items():
+        day_items = []
+        for menu_id in ids:
+            payload = menuitems_by_id.get(menu_id)
+            if payload:
+                day_items.append(payload)
+        days_payload[str(day)] = day_items
+
+    return {
+        'days': days_payload,
+    }

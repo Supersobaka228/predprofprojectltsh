@@ -66,6 +66,15 @@ class MenuItem(models.Model):
                     names.append(allergen.name)
         return names
 
+    @property
+    def allergens_list_display(self):
+        no_label = 'Без аллергенов'
+        names = list(self.allergens_list)
+        if len(names) <= 1:
+            return names
+        filtered = [name for name in names if name != no_label]
+        return filtered or [no_label]
+
     def __str__(self):
         return f"{self.category} {self.time} - {self.price}₽"
 

@@ -301,6 +301,71 @@ body {
     border-radius: 50%;
     background: #e5e7eb;
     border: 1px solid #d1d5db;
+    cursor: pointer;
+}
+
+.admin_avatar_wrap {
+    position: relative;
+    display: inline-flex;
+}
+
+.admin_logout_overlay {
+    position: absolute;
+    right: 0;
+    top: calc(100% + 10px);
+    width: 220px;
+    background: #ffffff;
+    border-radius: 14px;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 12px 30px rgba(15, 23, 42, 0.12);
+    padding: 12px;
+    opacity: 0;
+    transform: translateY(-6px);
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.18s ease, transform 0.18s ease, visibility 0.18s ease;
+    z-index: 10;
+}
+
+.admin_avatar_wrap.is-open .admin_logout_overlay {
+    opacity: 1;
+    transform: translateY(0);
+    visibility: visible;
+    pointer-events: auto;
+}
+
+.admin_logout_button {
+    width: 100%;
+    border: none;
+    border-radius: 12px;
+    padding: 10px 12px;
+    background: #0090ff;
+    color: #ffffff;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.2s ease;
+}
+
+.admin_logout_button:hover {
+    background: #0187ee;
+    box-shadow: 0 10px 18px rgba(15, 23, 42, 0.16);
+    animation: logoutPulse 0.6s ease;
+}
+
+.admin_logout_button:active {
+    transform: scale(0.98);
+}
+
+@keyframes logoutPulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.03);
+    }
+    100% {
+        transform: scale(1);
+    }
 }
 
 .chef_page_body {
@@ -1689,4 +1754,3 @@ body {
     border: 1px solid rgba(15, 23, 42, 0.15);
     box-shadow: none;
 }
-
