@@ -14,7 +14,7 @@
 </head>
 
 <body>
-    <div class="menu_page">
+    <div class="menu_page" data-user-allergens='{{ selected_allergen_names|join:"||" }}'>
         <!-- Главный вид - Меню -->
         <div class="app_view app_view--active" data-view="menu">
             <header class="menu_header">
@@ -69,7 +69,7 @@
                                 Аллергены:
                             </div>
                             {% for allergen in item.allergens_list %}
-                                <li>{{ allergen }}</li>
+                                <li class="{% if allergen in selected_allergen_names %}allergen-hit{% endif %}">{{ allergen }}</li>
                             {% endfor %}
                         </ul>
                     </div>

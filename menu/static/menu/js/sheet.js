@@ -11,6 +11,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const paymentClose = document.getElementById("paymentClose");
   let currentItemData = {};
 
+  const menuPage = document.querySelector('.menu_page');
+  const userAllergens = new Set(splitDataset(menuPage?.getAttribute('data-user-allergens')));
+
   function splitDataset(value) {
     if (!value) return [];
     return value
@@ -29,12 +32,15 @@ document.addEventListener("DOMContentLoaded", () => {
     if (el) el.value = value ?? '';
   }
 
-  function fillList(listEl, items, tagName = 'li') {
+  function fillList(listEl, items, tagName = 'li', highlightSet = null) {
     if (!listEl) return;
     listEl.innerHTML = '';
     items.forEach(item => {
       const li = document.createElement(tagName);
       li.textContent = item;
+      if (highlightSet && highlightSet.has(item)) {
+        li.classList.add('allergen-hit');
+      }
       listEl.appendChild(li);
     });
   }
@@ -199,7 +205,7 @@ document.addEventListener("DOMContentLoaded", () => {
     fillList(compositionList, splitDataset(currentItemData.composition), 'li');
 
     // Аллергены
-    fillList(allergensList, splitDataset(currentItemData.allergens), 'li');
+    fillList(allergensList, splitDataset(currentItemData.allergens), 'li', userAllergens);
 
     // Средний рейтинг
     setRating(currentItemData.ratingAvg);

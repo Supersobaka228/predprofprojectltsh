@@ -502,6 +502,10 @@ input[type="checkbox"] {
   padding-left: clamp(20px, 2vw, 1.5rem);
 }
 
+.allergen-hit {
+  color: #c0392b;
+}
+
 .menu_pic {
   width: 5em;
 }
