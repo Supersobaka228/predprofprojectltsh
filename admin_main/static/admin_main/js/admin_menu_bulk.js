@@ -1,6 +1,9 @@
 document.addEventListener('DOMContentLoaded', () => {
   const formsContainer = document.getElementById('menu-config-forms');
   const saveAllButton = document.querySelector('.menu_config_save_all');
+  const addMenuButton = document.querySelector('.menu_configurator_add');
+  const formTemplate = document.getElementById('menu-config-template');
+  const dayInput = document.getElementById('day_input_value');
 
   if (!formsContainer || !saveAllButton) {
     return;
@@ -95,6 +98,38 @@ document.addEventListener('DOMContentLoaded', () => {
     return '';
   };
 
+  const appendEmptyForm = () => {
+    if (!formTemplate) {
+      return;
+    }
+    const fragment = formTemplate.content.cloneNode(true);
+    const form = fragment.querySelector('form.menu_configurator_form');
+    if (!form) {
+      return;
+    }
+
+    const dayField = form.querySelector('.menu_config_day_value');
+    if (dayField) {
+      dayField.value = dayInput && dayInput.value ? dayInput.value : '';
+    }
+
+    formsContainer.appendChild(form);
+
+    if (window.initMenuTitleSelects) {
+      window.initMenuTitleSelects(formsContainer);
+    }
+
+    if (window.initMenuConfigForms) {
+      window.initMenuConfigForms(formsContainer);
+    }
+
+    if (window.initMenuPickers) {
+      window.initMenuPickers(formsContainer);
+    }
+
+    form.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  };
+
   formsContainer.addEventListener('click', (event) => {
     const cancelButton = event.target.closest('.menu_config_btn--cancel');
     if (!cancelButton) {
@@ -169,5 +204,11 @@ document.addEventListener('DOMContentLoaded', () => {
       saveAllButton.disabled = false;
     }
   });
-});
 
+  if (addMenuButton) {
+    addMenuButton.addEventListener('click', (event) => {
+      event.preventDefault();
+      appendEmptyForm();
+    });
+  }
+});
