@@ -56,7 +56,8 @@ document.addEventListener("DOMContentLoaded", () => {
       composition: button.getAttribute('data-composition'),
       ratingAvg: button.getAttribute('data-rating-avg'),
       ratingCount: button.getAttribute('data-rating-count'),
-      allergens: button.getAttribute('data-allergens')
+      allergens: button.getAttribute('data-allergens'),
+      orderStatus: button.getAttribute('data-order-status')
     };
 
     openSheet();
@@ -154,6 +155,32 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  function applyOrderButtonState(status) {
+    const orderBtn = document.querySelector('.sheet_order_btn');
+    if (!orderBtn) return;
+    const titleEl = orderBtn.querySelector('.sheet_title');
+    const textEl = orderBtn.querySelector('.sheet_text');
+
+    orderBtn.disabled = false;
+    orderBtn.dataset.orderStatus = status || '';
+
+    if (status === 'confirmed') {
+      if (titleEl) titleEl.textContent = 'Получено';
+      if (textEl) textEl.textContent = '';
+      orderBtn.disabled = true;
+      return;
+    }
+
+    if (status === 'ordered') {
+      if (titleEl) titleEl.textContent = 'Подтвердить получение';
+      if (textEl) textEl.textContent = '';
+      return;
+    }
+
+    if (titleEl) titleEl.textContent = 'Заказать';
+    if (textEl) textEl.textContent = '(для дальнейшего получения на кассе)';
+  }
+
   function openSheet() {
     const compositionList = document.getElementById('sheet-composition');
     const allergensList = document.getElementById('sheet-allergens');
@@ -189,6 +216,8 @@ document.addEventListener("DOMContentLoaded", () => {
     setValue('itemDateField4', currentItemData.price);
     setValue('itemDateField5', currentItemData.date);
     setValue('itemDateField6', currentItemData.item);
+
+    applyOrderButtonState(currentItemData.orderStatus);
 
     lockBody(true);
   }
@@ -290,6 +319,7 @@ document.addEventListener("DOMContentLoaded", () => {
   window.closeRate = closeRate;
   window.resetSheetInteractions = resetSheetInteractions;
   window.setRating = setRating;
+  window.applyOrderButtonState = applyOrderButtonState;
 
   /* Открытие */
   openRateBtn.addEventListener("click", (e) => {

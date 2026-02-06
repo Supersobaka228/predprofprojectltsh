@@ -1,11 +1,12 @@
 from tkinter import Menu
 
 from django.contrib.auth.decorators import login_required
-from django.db import transaction
+from django.db import transaction, IntegrityError
 from django.db.models import Q, Avg, Count
 from django.http import JsonResponse
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_POST
 from django.utils import timezone
 
 from .forms import ReviewForm, OrderForm
@@ -70,7 +71,8 @@ def menu(request):
                     'balance_display': balance_display,
                     'order': order_payload,
                     'date_key': date_key,
-                    'orders_stars': ''
+                    'orders_stars': '',
+                    'order_status': getattr(created_order, 'status', 'ordered'),
                 })
         else:
             # Отзыв
@@ -144,6 +146,12 @@ def menu(request):
     else:
         menu_items = []
 
+    current_date_str = current_date.strftime('%Y-%m-%d')
+    user_orders_today = Order.objects.filter(user_id=request.user.id, day=current_date_str).values('name_id', 'status')
+    order_status_map = {row['name_id']: row['status'] for row in user_orders_today}
+    for item in menu_items:
+        item.order_status = order_status_map.get(item.id, '')
+
     rating_rows = Review.objects.filter(item_id__in=[i.id for i in menu_items]).values('item_id').annotate(
         avg=Avg('stars_count'),
         count=Count('id'),
@@ -170,7 +178,7 @@ def menu(request):
     context = {
         'menu_items': menu_items,
         'date_display': date_display,
-        'current_date': current_date.strftime('%Y-%m-%d'),
+        'current_date': current_date_str,
         'prev_date': prev_date,
         'next_date': next_date,
         'review_items': Review.objects.all(),
@@ -232,18 +240,28 @@ def order(request, day_d):
     if not form.is_valid():
         return None, 'INVALID_FORM', 'Неверные данные заказа'
 
-    # Цена в форме хранится в рублях (int). Баланс — в центах.
-    try:
-        price_rub = int(form.cleaned_data.get('price') or 0)
-    except Exception:
-        price_rub = 0
-    price_cents = price_rub * 100
-
-    if price_cents <= 0:
-        return None, 'INVALID_PRICE', 'Некорректная цена'
-
     with transaction.atomic():
         user = request.user
+        existing_order = Order.objects.filter(
+            user=user,
+            name=form.cleaned_data.get('name'),
+            day=form.cleaned_data.get('day'),
+        ).first()
+        if existing_order:
+            if existing_order.status == 'confirmed':
+                return None, 'ALREADY_CONFIRMED', 'Заказ уже подтвержден'
+            return None, 'ALREADY_ORDERED', 'Заказ уже оформлен'
+
+        # Цена в форме хранится в рублях (int). Баланс — в центах.
+        try:
+            price_rub = int(form.cleaned_data.get('price') or 0)
+        except Exception:
+            price_rub = 0
+        price_cents = price_rub * 100
+
+        if price_cents <= 0:
+            return None, 'INVALID_PRICE', 'Некорректная цена'
+
         current = int(getattr(user, 'balance_cents', 0) or 0)
         if current < price_cents:
             return None, 'INSUFFICIENT_FUNDS', 'Недостаточно средств'
@@ -276,7 +294,10 @@ def order(request, day_d):
                         ui.save()
                         print(ui.__dict__)
 
-        created_order = form.save()
+        try:
+            created_order = form.save()
+        except IntegrityError:
+            return None, 'ALREADY_ORDERED', 'Заказ уже оформлен'
 
         return created_order, None, None
 
@@ -313,6 +334,25 @@ def update_allergens(request):
     # fallback: для обычной отправки формы возвращаемся в меню
     return JsonResponse(payload)
 
+
+@require_POST
+@login_required
+def confirm_order(request):
+    """Подтверждает получение заказа без повторного списания."""
+    item_id = request.POST.get('item_id') or request.POST.get('item')
+    day = request.POST.get('day')
+    if not item_id or not day:
+        return JsonResponse({'success': False, 'error': 'Недостаточно данных'}, status=400)
+
+    order_obj = Order.objects.filter(user=request.user, name_id=item_id, day=day).first()
+    if not order_obj:
+        return JsonResponse({'success': False, 'error': 'Заказ не найден'}, status=404)
+
+    if order_obj.status != 'confirmed':
+        order_obj.status = 'confirmed'
+        order_obj.save(update_fields=['status'])
+
+    return JsonResponse({'success': True, 'status': order_obj.status})
 
 def orders_stars(orders):
     ans = dict()

@@ -142,6 +142,12 @@ document.addEventListener('DOMContentLoaded', () => {
     return data;
   }
 
+  function updateOrderStatusInList(itemId, date, status) {
+    if (!itemId || !date) return;
+    const el = document.querySelector(`.openSheet[data-item="${itemId}"][data-date="${date}"]`);
+    if (el) el.setAttribute('data-order-status', status || '');
+  }
+
   // 1) Пополнение баланса (payment overlay)
   const topupForm = document.querySelector('#paymentOverlay form.payment-card');
   if (topupForm) {
@@ -169,6 +175,50 @@ document.addEventListener('DOMContentLoaded', () => {
   if (orderForm) {
     orderForm.addEventListener('submit', async (e) => {
       e.preventDefault();
+      const orderBtn = orderForm.querySelector('.sheet_order_btn');
+      const currentStatus = orderBtn?.dataset?.orderStatus || '';
+      const itemId = orderForm.querySelector('[name="item"]')?.value || '';
+      const day = orderForm.querySelector('[name="day"]')?.value || '';
+
+      if (currentStatus === 'ordered') {
+        const confirmUrl = orderForm.getAttribute('data-confirm-url') || '';
+        if (!confirmUrl) {
+          showToast('Не удалось подтвердить');
+          return;
+        }
+        try {
+          const csrfToken = getCsrfToken();
+          const fd = new FormData();
+          fd.append('item_id', itemId);
+          fd.append('day', day);
+
+          const resp = await fetch(confirmUrl, {
+            method: 'POST',
+            body: fd,
+            headers: {
+              'X-Requested-With': 'XMLHttpRequest',
+              'X-CSRFToken': csrfToken,
+            },
+            credentials: 'same-origin'
+          });
+
+          const data = await resp.json();
+          if (!resp.ok || !data?.success) {
+            showToast(data?.error || 'Не удалось подтвердить');
+            return;
+          }
+
+          updateOrderStatusInList(itemId, day, data.status || 'confirmed');
+          if (typeof window.applyOrderButtonState === 'function') {
+            window.applyOrderButtonState(data.status || 'confirmed');
+          }
+          showToast('Получение подтверждено');
+        } catch (err) {
+          showToast('Ошибка подтверждения');
+        }
+        return;
+      }
+
       try {
         const data = await postFormAjax(orderForm);
         if (data?.success && data.action === 'order') {
@@ -176,13 +226,33 @@ document.addEventListener('DOMContentLoaded', () => {
           if (data.order && data.date_key) {
             appendHistoryRow(data.date_key, data.order);
           }
+          updateOrderStatusInList(itemId, day, data.order_status || 'ordered');
+          if (typeof window.applyOrderButtonState === 'function') {
+            window.applyOrderButtonState(data.order_status || 'ordered');
+          }
           showToast('Заказ оформлен');
           closeOverlayById('overlay');
         } else {
           showToast('Не удалось заказать');
         }
       } catch (err) {
-        // err может быть JSON-объектом от сервера
+        const errorCode = err?.error_code || '';
+        if (errorCode === 'ALREADY_ORDERED') {
+          updateOrderStatusInList(itemId, day, 'ordered');
+          if (typeof window.applyOrderButtonState === 'function') {
+            window.applyOrderButtonState('ordered');
+          }
+          showToast('Заказ уже оформлен');
+          return;
+        }
+        if (errorCode === 'ALREADY_CONFIRMED') {
+          updateOrderStatusInList(itemId, day, 'confirmed');
+          if (typeof window.applyOrderButtonState === 'function') {
+            window.applyOrderButtonState('confirmed');
+          }
+          showToast('Заказ уже получен');
+          return;
+        }
         const msg = (err && (err.error || err.message)) ? (err.error || err.message) : 'Ошибка заказа';
         showToast(msg);
       }

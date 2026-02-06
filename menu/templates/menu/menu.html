@@ -39,7 +39,8 @@
                     data-allergens='{{ item.allergens_list|join:"||" }}'
                     data-rating-avg="{{ item.rating_avg|default:0 }}"
                     data-rating-count="{{ item.rating_count|default:0 }}"
-                    data-date="{{ current_date }}">
+                    data-date="{{ current_date }}"
+                    data-order-status="{{ item.order_status|default:'' }}">
 
                     <div class="menu_section_head">
                         <h3>
@@ -56,7 +57,7 @@
                     </div>
 
                     <div class="menu_section_main">
-                        <img src="{% static item.icon %}" alt="" class="menu_pic">
+                        <img src="../../static/menu/icon/meal1.svg" alt="" class="menu_pic">
                         <ul class="menu_items">
                             {% for desc in item.min_des_list %}
                                 <li>{{ desc }}</li>
@@ -226,7 +227,7 @@
 
                 <section class="sheet_main">
                     <img src="../../static/menu/icon/meal1.svg" alt="" class="sheet_main_img" id="sheet-image">
-                    <form method="post" id="order-form">
+                    <form method="post" id="order-form" data-confirm-url="{% url 'confirm_order' %}">
                         {% csrf_token %}
                         <input type="hidden" name="name" id="itemDateField2">
                         <input type="hidden" name="time" id="itemDateField3">

@@ -760,10 +760,16 @@ input[type="checkbox"] {
 .sheet_title {
   font-size: clamp(14px, 5vw, 26px);
   margin: 0;
+  line-height: 1.15;
+  white-space: nowrap;
+  word-break: normal;
+  padding: 0 8px;
+
 }
 
 .sheet_text {
   font-size: clamp(6px, 2.5vw, 14px);
+  margin: 0;
 }
 
 .sheet_main_img {
@@ -913,7 +919,7 @@ input[type="checkbox"] {
   box-sizing: border-box;
   color: #000000;
   cursor: pointer;
-  display: inline-block;
+  display: inline-flex;
   line-height: normal;
   margin: auto;
   min-height: 60px;
@@ -925,8 +931,12 @@ input[type="checkbox"] {
   user-select: none;
   -webkit-user-select: none;
   touch-action: manipulation;
-  width: 80%;
-  height: 100%;
+  width: max-content;
+  max-width: 95%;
+  min-width: 80%;
+  height: auto;
+  padding: 8px 16px;
+  white-space: nowrap;
   will-change: transform;
   box-shadow: rgba(0, 0, 0, 0.25) 0 8px 15px;
 
@@ -941,7 +951,20 @@ input[type="checkbox"] {
   transform: translateY(2px);
 }
 
+.sheet_order_btn[data-order-status="ordered"] .sheet_title,
+.sheet_order_btn[data-order-status="confirmed"] .sheet_title {
+  font-size: clamp(11px, 4.2vw, 20px);
+}
 
+.sheet_order_btn[data-order-status="confirmed"] {
+  box-shadow: none;
+  opacity: 0.65;
+  transform: translateY(2px);
+}
+
+.sheet_order_btn[data-order-status="confirmed"] .sheet_title {
+  line-height: 1.1;
+}
 
 /* ===== RATE OVERLAY ===== */
 
@@ -1247,4 +1270,3 @@ input[type="checkbox"] {
   transform: translateY(0);
   min-height: 0;
 }
-

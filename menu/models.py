@@ -99,6 +99,16 @@ class Order(models.Model):
     price = models.IntegerField()
     day = models.CharField()
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=False, blank=False)
+    status = models.CharField(
+        max_length=12,
+        choices=[('ordered', 'Заказано'), ('confirmed', 'Подтверждено')],
+        default='ordered',
+    )
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['user', 'name', 'day'], name='uniq_order_user_item_day'),
+        ]
 
 
 # ИЗМЕНЕНИЯ, НОВЫЕ МОДЕЛИ
