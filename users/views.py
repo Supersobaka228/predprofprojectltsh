@@ -70,6 +70,14 @@ def login_f(request):
 
         
 def login_admin(request):
+    if request.user.is_authenticated:
+        role = getattr(request.user, 'role', None)
+        if role == 'cook':
+            return redirect('chef_main')
+        if role == 'admin_main' or request.user.is_staff or request.user.is_superuser:
+            return redirect('admin_main')
+        return redirect('menu')
+
     if request.method == "POST":
         form = LoginForm(request=request, data=request.POST)
         form.error_messages = []

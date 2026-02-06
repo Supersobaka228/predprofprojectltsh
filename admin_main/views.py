@@ -68,6 +68,12 @@ def clear_day_menu(day_number):
 @csrf_exempt
 @login_required
 def admin(request):
+    role = getattr(request.user, 'role', None)
+    if role == 'cook':
+        return redirect('chef_main')
+    if role != 'admin_main' and not (request.user.is_staff or request.user.is_superuser):
+        return redirect('menu')
+
     menu = MenuItem.objects.all()
     user = request.user
 

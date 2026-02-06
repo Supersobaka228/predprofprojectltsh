@@ -5,6 +5,7 @@ from decimal import Decimal, InvalidOperation, ROUND_HALF_UP
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.views.decorators.http import require_POST
+from django.contrib.auth.decorators import login_required
 
 from admin_main.models import BuyOrder
 from admin_main.views import sum_orders_count, sum_comes
@@ -15,7 +16,11 @@ from menu.models import Meal, DayOrder, MenuItem
 # Create your views here.
 
 
+@login_required
 def chef(request):
+    role = getattr(request.user, 'role', None)
+    if role != 'cook' and not (request.user.is_staff or request.user.is_superuser or role == 'admin_main'):
+        return redirect('menu')
     if request.method == "POST":
         post = request.POST
         print(post)

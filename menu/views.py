@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.db import transaction, IntegrityError
 from django.db.models import Q, Avg, Count
 from django.http import JsonResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 from django.utils import timezone
@@ -23,6 +23,10 @@ except locale.Error:
 @csrf_exempt
 @login_required
 def menu(request):
+    role = getattr(request.user, 'role', None)
+    if role == 'cook':
+        return redirect('chef_main')
+
     date_str = request.GET.get('date')
 
     # Если пришёл POST без ?date=..., не пытаемся парсить None
