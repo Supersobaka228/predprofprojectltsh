@@ -172,6 +172,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
 
+    const bulkSaveId = `${Date.now()}-${Math.random().toString(16).slice(2)}`;
     saveAllButton.disabled = true;
 
     try {
@@ -184,6 +185,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         const formData = new FormData(form);
+        formData.append('bulk_save_id', bulkSaveId);
         const actionUrl = form.getAttribute('action') || window.location.href;
 
         const response = await fetch(actionUrl, {

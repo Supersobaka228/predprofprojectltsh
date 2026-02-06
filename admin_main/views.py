@@ -15,6 +15,48 @@ from chef_main.models import Ingredient
 from menu.models import MenuItem, Order, Review, Meal, DayOrder, Allergen, MealIngredient
 
 
+def _should_clear_day(request, day_number):
+    bulk_id = request.POST.get('bulk_save_id')
+    if not bulk_id:
+        return True
+
+    session_key = 'bulk_cleared_days'
+    cleared = request.session.get(session_key, {})
+    if not isinstance(cleared, dict):
+        cleared = {}
+
+    day_key = str(day_number)
+    if cleared.get(day_key) == bulk_id:
+        return False
+
+    cleared[day_key] = bulk_id
+    request.session[session_key] = cleared
+    return True
+
+
+def clear_day_menu(day_number):
+    day_order = DayOrder.objects.filter(day=day_number).first()
+    if not day_order:
+        return
+
+    menuitem_ids = list(day_order.order or [])
+    day_order.delete()
+
+    if not menuitem_ids:
+        return
+
+    meal_ids = list(
+        Meal.objects.filter(menu_items__id__in=menuitem_ids)
+        .values_list('id', flat=True)
+        .distinct()
+    )
+
+    MenuItem.objects.filter(id__in=menuitem_ids).delete()
+
+    if meal_ids:
+        Meal.objects.filter(id__in=meal_ids, menu_items__isnull=True).delete()
+
+
 @csrf_exempt
 @login_required
 def admin(request):
@@ -108,6 +150,14 @@ def admin(request):
             context['errors'] = errors
             return render(request, 'admin_main/admin_main.html', context)
 
+        try:
+            day_number = int(day_value)
+        except (TypeError, ValueError):
+            day_number = None
+
+        if day_number and _should_clear_day(request, day_number):
+            clear_day_menu(day_number)
+
         meals = []
         total_calories = 0
 
@@ -187,11 +237,6 @@ def admin(request):
         )
         menuitem.meals.set(meals)
         menuitem.save()
-
-        try:
-            day_number = int(day_value)
-        except (TypeError, ValueError):
-            day_number = None
 
         if day_number:
             day_order, _ = DayOrder.objects.get_or_create(day=day_number, defaults={'order': []})
