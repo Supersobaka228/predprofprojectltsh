@@ -68,7 +68,7 @@
                             <div>
                                 Аллергены:
                             </div>
-                            {% for allergen in item.allergens_list %}
+                            {% for allergen in item.allergens_list_display %}
                                 <li class="{% if allergen in selected_allergen_names %}allergen-hit{% endif %}">{{ allergen }}</li>
                             {% endfor %}
                         </ul>

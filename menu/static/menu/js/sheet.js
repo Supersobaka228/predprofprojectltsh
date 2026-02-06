@@ -22,6 +22,16 @@ document.addEventListener("DOMContentLoaded", () => {
       .filter(Boolean);
   }
 
+  function normalizeAllergens(items) {
+    const noLabel = 'Без аллергенов';
+    const trimmed = (items || []).filter(Boolean);
+    if (trimmed.length <= 1) {
+      return trimmed;
+    }
+    const filtered = trimmed.filter(item => item !== noLabel);
+    return filtered.length > 0 ? filtered : [noLabel];
+  }
+
   function setText(id, value) {
     const el = document.getElementById(id);
     if (el) el.textContent = value ?? '';
@@ -205,7 +215,8 @@ document.addEventListener("DOMContentLoaded", () => {
     fillList(compositionList, splitDataset(currentItemData.composition), 'li');
 
     // Аллергены
-    fillList(allergensList, splitDataset(currentItemData.allergens), 'li', userAllergens);
+    const allergens = normalizeAllergens(splitDataset(currentItemData.allergens));
+    fillList(allergensList, allergens, 'li', userAllergens);
 
     // Средний рейтинг
     setRating(currentItemData.ratingAvg);
