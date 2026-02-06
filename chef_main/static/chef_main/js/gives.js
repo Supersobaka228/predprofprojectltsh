@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
     // Получаем CSRF токен для Django
 
+    const remains = JSON.parse(document.getElementById('remains_id').textContent);
 
     function getCookie(name) {
         let cookieValue = null;
@@ -22,6 +23,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Функция для отправки AJAX запроса
     // Убедитесь что все переменные определены
 function updateMealCount(mealId, action, amount) {
+
     // Проверяем входные данные
     if (!mealId) {
         console.error('mealId не определен:', mealId);
@@ -34,7 +36,7 @@ function updateMealCount(mealId, action, amount) {
     }
 
     const amountNum = parseInt(amount);
-    if (isNaN(amountNum) || amountNum <= 0) {
+    if (isNaN(amountNum)) {
         console.error('Некорректное количество:', amount);
         throw new Error('Некорректное количество');
     }
@@ -53,7 +55,7 @@ function updateMealCount(mealId, action, amount) {
         date: date
     });
 
-    return fetch('/api/update-issued-count/', {
+    return fetch('api/update-issued-count/', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -92,9 +94,9 @@ function updateMealCount(mealId, action, amount) {
         }
 
         if (availableElement) {
-            const current = parseInt(availableElement.textContent) || 0;
-            availableElement.textContent = newAvailable !== undefined ? newAvailable : current;
-
+            const current2 = parseInt(availableElement.textContent) || 0;
+            availableElement.textContent = newAvailable !== undefined ? newAvailable : current2;
+            console.log(newAvailable);
             // Анимация обновления
             availableElement.classList.add('updated');
             setTimeout(() => {
@@ -124,8 +126,9 @@ function updateMealCount(mealId, action, amount) {
 
             try {
                 // Отправляем запрос на сервер
-                const response = await updateMealCount(mealId, action, amount);
 
+                const response = await updateMealCount(mealId, action, amount);
+                console.log(response);
                 if (!response.ok) {
                     throw new Error('Ошибка сервера');
                 }
@@ -134,7 +137,8 @@ function updateMealCount(mealId, action, amount) {
 
                 if (result.success) {
                     // Обновляем отображение с новыми данными из сервера
-                    updateDisplay(row, result.issued_count, result.available_count, result.ordered_count);
+                    console.log(result.available_count);
+                    updateDisplay(row, result.issued_count, result.available_count);
 
                     // Показываем уведомление об успехе
                     showNotification(`${action === 'issue' ? 'Выдано' : 'Возвращено'} ${amount} порций: ${mealName}`, 'success');
@@ -251,7 +255,7 @@ function updateMealCount(mealId, action, amount) {
                     'X-Requested-With': 'XMLHttpRequest'
                 }
             });
-
+            console.log(response);
             if (response.ok) {
                 const data = await response.json();
                 updateAllCounts(mealType, data);

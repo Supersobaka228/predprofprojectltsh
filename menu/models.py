@@ -94,6 +94,7 @@ class Review(models.Model):
 
 
 class Order(models.Model):
+    id = models.AutoField(primary_key=True)
     time = models.CharField(max_length=20)
     name = models.ForeignKey(MenuItem, on_delete=models.CASCADE)
     price = models.IntegerField()

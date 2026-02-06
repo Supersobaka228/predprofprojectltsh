@@ -9,7 +9,7 @@ from django.views.decorators.http import require_POST
 from admin_main.models import BuyOrder
 from admin_main.views import sum_orders_count, sum_comes
 from chef_main.models import Ingredient
-from menu.models import Meal, DayOrder, MenuItem
+from menu.models import Meal, DayOrder, MenuItem, MealIngredient
 
 
 # Create your views here.
@@ -53,6 +53,7 @@ def chef(request):
         'menu': len(menu),
         'summ': sum_orders_count(),
         'sum_comes': sum_comes(),
+        'remains': get_remains_dict()
     }
 
     # Normalize legacy count_by_days payloads (non-dict or malformed items).
@@ -66,6 +67,7 @@ def chef(request):
             for key in bad_keys:
                 del meal.count_by_days[key]
             meal.save(update_fields=["count_by_days"])
+    get_remains_dict()
 
     return render(request, 'chef_main/chef_main.html', context)
 
@@ -85,7 +87,10 @@ def meals_view():
 
 
 
-@require_POST
+
+
+
+
 def update_issued_count(request):
     """Обновление количества выданных порций"""
     try:
@@ -103,17 +108,17 @@ def update_issued_count(request):
         # Инициализируем структуру данных, если её нет
         if date_str not in meal.count_by_days:
             meal.count_by_days[date_str] = {
-                'ordered': 0,  # заказано
-                'g': 0,  # выдано (g - выданные)
-                'available': meal.weight  # доступно
+                'o': 0,  # заказано
+                'g': 0,  # выдано (g - выданные)  # доступно
             }
 
-        day_data = meal.count_by_days[date_str]
 
+        day_data = meal.count_by_days[date_str]
         if action == 'issue':
             # Выдача порций
-            if day_data.get('g', 0) + amount <= day_data.get('available', meal.weight):
+            if day_data.get('g', 0) + amount <= get_remains_dict()[meal.id]:
                 day_data['g'] = day_data.get('g', 0) + amount
+                meals_give(amount, meal_id)
             else:
                 return JsonResponse({
                     'success': False,
@@ -122,13 +127,15 @@ def update_issued_count(request):
 
         elif action == 'return':
             # Возврат порций
+
+            meals_give(amount, meal_id)
             day_data['g'] = max(0, day_data.get('g', 0) - amount)
 
         # Сохраняем обновленные данные
         meal.save()
 
         # Рассчитываем доступное количество
-        available = day_data.get('available', meal.weight) - day_data.get('g', 0)
+        available = get_remains_dict()[meal.id] - amount
 
         print(f"Обновлено: {meal.name}, дата: {date_str}")
         print(
@@ -139,7 +146,7 @@ def update_issued_count(request):
             'success': True,
             'message': 'Количество обновлено успешно',
             'issued_count': day_data['g'],
-            'available_count': available,
+            'available_count': get_remains_dict()[meal.id],
             'ordered_count': day_data.get('ordered', 0)
         })
 
@@ -157,7 +164,7 @@ def update_issued_count(request):
 
 
 # Дополнительная функция для получения данных о блюдах
-def get_meal_data_for_date(request):
+def get_meal_data(request):
     """API для получения данных о блюдах на конкретную дату"""
     date_str = request.GET.get('date') or date.today().strftime('%Y-%m-%d')
     meal_type = request.GET.get('meal_type')  # 'breakfast' или 'lunch'
@@ -173,9 +180,9 @@ def get_meal_data_for_date(request):
         meals_data.append({
             'id': meal.id,
             'name': meal.name,
-            'ordered': day_data.get('ordered', 0),
-            'issued': day_data.get('g', 0),
-            'available': day_data.get('available', meal.weight),
+            'o': day_data.get('o', 0),
+            'g': day_data.get('g', 0),
+            'available': get_remains_dict()[meal.id],
             'total_weight': meal.weight
         })
 
@@ -184,3 +191,28 @@ def get_meal_data_for_date(request):
         'meals': meals_data,
         'success': True
     })
+
+
+def get_remains_dict():
+    s = Meal.objects.all()
+    ans = {}
+    for i in s:
+        r_d = []
+        for j in i.ingredients.all():
+            g = MealIngredient.objects.get(ingredient=j.id, meal=i.id)
+
+            d = int(j.remains) // int(g.mass)
+            r_d.append(d)
+        ans[i.id] = min(r_d)
+
+    return ans
+
+
+def meals_give(amount, meal_id):
+    f = Meal.objects.get(id=meal_id)
+
+    for i in f.ingredients.all():
+        d = MealIngredient.objects.get(meal=f.id, ingredient=i.id)
+        i.remains -= amount * d.mass
+        i.save()
+        print(i.remains)

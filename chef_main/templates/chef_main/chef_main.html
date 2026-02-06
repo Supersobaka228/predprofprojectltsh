@@ -97,7 +97,7 @@
             <div></div>
         </div>
 
-
+        {{ remains|json_script:"remains_id" }}
         <script>
 
         const mealsData = JSON.parse(document.getElementById('meals-data').textContent);
@@ -131,12 +131,17 @@
                 0
             {% endif %}
         </div>
+
+        {% load dict_filters %}
         <div class="available-count" data-field="available">
-            {% if day_data and day_data.available %}
-                {{ day_data.available }}
+            {% if remains|has_key:item.id %}
+    <!-- Ключ существует -->
+            {{ remains|get_item:item.id }}
             {% else %}
-                {{ item.weight }}
+    <!-- Ключ не существует -->
+            Значение отсутствует
             {% endif %}
+
         </div>
         {% endwith %}
         <div>
@@ -178,10 +183,12 @@
             {% endif %}
         </div>
         <div class="available-count" data-field="available">
-            {% if day_data and day_data.available %}
-                {{ day_data.available }}
+            {% if remains|has_key:item.id %}
+    <!-- Ключ существует -->
+            {{ remains|get_item:item.id }}
             {% else %}
-                {{ item.weight }}
+    <!-- Ключ не существует -->
+            Значение отсутствует
             {% endif %}
         </div>
         {% endwith %}
@@ -196,7 +203,7 @@
             </button>
         </div>
         <div>
-            <button class="day_menu_btn day_menu_btn--danger return-btn" type="button" data-action="return" data-amount="1" data-meal-id="{{ item.id }}">
+            <button class="day_menu_btn day_menu_btn--danger return-btn" type="button" data-action="return" data-amount="-1" data-meal-id="{{ item.id }}">
                 -1
             </button>
         </div>
