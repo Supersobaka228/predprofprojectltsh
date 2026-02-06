@@ -148,3 +148,10 @@ def topup_balance(request):
 def logout_f(request):
     logout(request)
     return redirect('admin_login')
+
+
+@require_POST
+@csrf_protect
+def logout_menu(request):
+    logout(request)
+    return redirect('login')

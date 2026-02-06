@@ -159,7 +159,10 @@
                         </div>
                     </div>
                     <button class="user_add_aller">Добавить аллергены</button>
-                    <button class="st_logout">Выйти из аккаунта</button>
+                    <form action="{% url 'logout_menu' %}" method="post">
+                        {% csrf_token %}
+                        <button class="st_logout" type="submit">Выйти из аккаунта</button>
+                    </form>
                 </section>
 
                 <section class="allergens_main main_screen">

@@ -25,6 +25,13 @@ class RegisterForm(ModelForm):
                    "password2": PasswordInput(attrs={"class": "field__input"}),
                    }
 
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        user.set_password(self.cleaned_data['password'])
+        if commit:
+            user.save()
+        return user
+
 class LoginForm(forms.Form):
     username = forms.CharField(
         label='Имя пользователя или Email',
