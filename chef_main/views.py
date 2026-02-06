@@ -54,10 +54,19 @@ def chef(request):
         'summ': sum_orders_count(),
         'sum_comes': sum_comes(),
     }
-    for i in a:
-        print(i.count_by_days['2026-02-05'])
 
-    print(meals_view())
+    # Normalize legacy count_by_days payloads (non-dict or malformed items).
+    for meal in a + b:
+        if not isinstance(meal.count_by_days, dict):
+            meal.count_by_days = {}
+            meal.save(update_fields=["count_by_days"])
+            continue
+        bad_keys = [k for k, v in meal.count_by_days.items() if not isinstance(v, dict)]
+        if bad_keys:
+            for key in bad_keys:
+                del meal.count_by_days[key]
+            meal.save(update_fields=["count_by_days"])
+
     return render(request, 'chef_main/chef_main.html', context)
 
 
@@ -122,7 +131,9 @@ def update_issued_count(request):
         available = day_data.get('available', meal.weight) - day_data.get('g', 0)
 
         print(f"Обновлено: {meal.name}, дата: {date_str}")
-        print(f"Выдано: {day_data['g']}, Заказано: {day_data['o']}, Доступно: {available}")
+        print(
+            f"Выдано: {day_data['g']}, Заказано: {day_data.get('ordered', 0)}, Доступно: {available}"
+        )
 
         return JsonResponse({
             'success': True,

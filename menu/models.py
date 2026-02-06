@@ -130,7 +130,7 @@ class Meal(models.Model):
         blank=True,
     )
     description = models.TextField()
-    count_by_days = models.JSONField(default={})
+    count_by_days = models.JSONField(default=dict)
 
     def __str__(self):
         return self.name
