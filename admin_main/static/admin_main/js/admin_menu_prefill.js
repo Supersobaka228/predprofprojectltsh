@@ -238,6 +238,10 @@ document.addEventListener('DOMContentLoaded', () => {
     if (window.initMenuConfigForms) {
       window.initMenuConfigForms(formsContainer);
     }
+
+    if (window.initMenuPickers) {
+      window.initMenuPickers(formsContainer);
+    }
   };
 
   const initialDay = dayInput && dayInput.value ? dayInput.value : '1';

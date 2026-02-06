@@ -5,7 +5,7 @@ from tkinter import Menu
 from django.utils import timezone
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 from django.db.models import Prefetch
@@ -198,7 +198,7 @@ def admin(request):
             day_order.order.append(menuitem.id)
             day_order.save(update_fields=['order'])
 
-        return render(request, 'admin_main/admin_main.html', context)
+        return redirect('admin_main')
     return render(request, 'admin_main/admin_main.html', context)
 
 
