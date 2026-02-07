@@ -61,8 +61,6 @@ def chef(request):
         'remains': get_remains_dict()
     }
 
-    gives_stats(1)
-
     # Normalize legacy count_by_days payloads (non-dict or malformed items).
     for meal in a + b:
         if not isinstance(meal.count_by_days, dict):
@@ -81,7 +79,12 @@ def chef(request):
 
 def meals_view():
     ans1, ans2 = [], []
-    menu_t = DayOrder.objects.get(day=1)
+    today_weekday = date.today().isoweekday()
+    day_key = today_weekday if 1 <= today_weekday <= 5 else 5 # ВОЗМОЖНЫЙ НЕДОЧЁТ, тут можно менять для тестов днеи недели. Сейчас если сб-вс то отображает пятницу
+    try:
+        menu_t = DayOrder.objects.get(day=day_key)
+    except DayOrder.DoesNotExist:
+        return ans1, ans2
     for i in menu_t.order:
         m = MenuItem.objects.get(id=i)
         if m.category in 'breakfastЗавтрак':
@@ -223,47 +226,5 @@ def meals_give(amount, meal_id):
         i.remains -= amount * d.mass
         i.save()
         print(i.remains)
-
-
-def gives_stats(currentday):
-    s=  DayOrder.objects.get(day=currentday)
-    data = {}
-    for i in s.order:
-        g = MenuItem.objects.get(id=i)
-        c = g.category
-        ans = []
-        for j in g.meals.all():
-            print(j.count_by_days)
-            f1 = j.count_by_days[str(datetime.today().date())]['g']
-            f2 = j.count_by_days[str(datetime.today().date())]['o']
-            ans.append((j.name, c,  f1, f2))
-        data[g.id] = ans
-    print(data)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
