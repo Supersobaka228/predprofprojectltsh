@@ -14,4 +14,14 @@ class BuyOrderAdmin(admin.ModelAdmin):
 
 @admin.register(Notification)
 class NotificationAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('id', 'recipient_type', 'recipient_user', 'title', 'created_at')
+    list_filter = ('recipient_type', 'created_at')
+    search_fields = ('title', 'body')
+    fields = (
+        'recipient_type',
+        'recipient_user',
+        'title',
+        'body',
+        'created_at',
+    )
+    readonly_fields = ('created_at',)

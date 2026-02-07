@@ -420,7 +420,7 @@ def reviews_by_day(queryset=None):
     """
     Возвращает словарь вида:
       { "YYYY-MM-DD YYYY-MM-DD": [ {review1}, {review2}, ... ], ... }
-    где для каждого 5-дневного рабочего интервала возвращаются все отзывы,
+    где для каждой недели (Пн-Вс) возвращаются все отзывы,
     оставленные в этот интервал (включая первые и последние дни интервала).
     """
     if queryset is None:
@@ -441,21 +441,20 @@ def reviews_by_day(queryset=None):
     max_date = max(dates)
 
     # Выравниваем диапазон так же, как в comes_by_day
-    start_date = min_date - timedelta(days=(min_date.weekday()))
-    end_date = max_date + timedelta(days=(5 - max_date.isoweekday()))
+    start_date = min_date - timedelta(days=min_date.weekday())
+    end_date = max_date + timedelta(days=(6 - max_date.weekday()))
 
-    # Собираем последовательность рабочих дат (Mon-Fri) в диапазоне
-    workday_dates = []
+    # Собираем последовательность дат недели (Mon-Sun) в диапазоне
+    week_dates = []
     cur = start_date
     while cur <= end_date:
-        if cur.weekday() < 5:  # 0..4 -> Пн..Пт
-            workday_dates.append(cur)
+        week_dates.append(cur)
         cur += timedelta(days=1)
 
     ans = {}
-    # Группируем по блокам по 5 рабочих дней
-    for i in range(0, len(workday_dates), 5):
-        block = workday_dates[i:i + 5]
+    # Группируем по блокам по 7 дней
+    for i in range(0, len(week_dates), 7):
+        block = week_dates[i:i + 7]
         if not block:
             continue
 

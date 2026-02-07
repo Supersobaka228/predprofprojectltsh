@@ -23,9 +23,33 @@ class BuyOrder(models.Model):
         return Decimal(self.summ) / Decimal('100')
 
 class Notification(models.Model):
-    text = models.CharField(max_length=255)
-    user_id = models.ForeignKey(User, on_delete=models.CASCADE)
-    date = models.DateTimeField(auto_now_add=True)
+    RECIPIENT_ALL = "all"
+    RECIPIENT_ADMIN = "admin"
+    RECIPIENT_CHEF = "chef"
+    RECIPIENT_USER = "user"
+
+    RECIPIENT_CHOICES = (
+        (RECIPIENT_ALL, "All"),
+        (RECIPIENT_ADMIN, "Admin"),
+        (RECIPIENT_CHEF, "Chef"),
+        (RECIPIENT_USER, "User"),
+    )
+
+    recipient_type = models.CharField(
+        max_length=10,
+        choices=RECIPIENT_CHOICES,
+        default=RECIPIENT_ALL,
+    )
+    recipient_user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        related_name="notifications",
+    )
+    title = models.CharField(max_length=120)
+    body = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
 
 
 class Food_count(models.Model):
