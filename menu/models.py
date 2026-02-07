@@ -16,6 +16,7 @@ class MenuItem(models.Model):
     time = models.CharField(max_length=20)
     price = models.IntegerField()
     id = models.AutoField(primary_key=True)
+    low_rating_notified = models.BooleanField(default=False)
 
     # Связка с блюдами
     meals = models.ManyToManyField('Meal', blank=True, related_name='menu_items')

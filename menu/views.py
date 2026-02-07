@@ -9,6 +9,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 from django.utils import timezone
 
+from admin_main.models import Notification
 from .forms import ReviewForm, OrderForm
 from .models import MenuItem, DayOrder, Review, Order, Allergen
 from datetime import datetime, timedelta
@@ -112,6 +113,21 @@ def menu(request):
                     rating_avg = round(float(agg.get('avg') or 0), 1)
                     rating_count = int(agg.get('count') or 0)
                     day_display = timezone.localtime(review.day).strftime('%d.%m.%y %H:%M')
+                    menu_item = MenuItem.objects.filter(id=review.item_id).first()
+                    if menu_item:
+                        if rating_avg < 3.0 and not menu_item.low_rating_notified:
+                            user_label = request.user.get_full_name() or getattr(request.user, 'email', '') or str(request.user.id)
+                            Notification.objects.create(
+                                recipient_type=Notification.RECIPIENT_ADMIN,
+                                recipient_user=None,
+                                title='low_rating',
+                                body=f'Рейтинг "{menu_item}" опустился ниже 3.0.',
+                            )
+                            menu_item.low_rating_notified = True
+                            menu_item.save(update_fields=['low_rating_notified'])
+                        elif rating_avg >= 3.0 and menu_item.low_rating_notified:
+                            menu_item.low_rating_notified = False
+                            menu_item.save(update_fields=['low_rating_notified'])
                     return JsonResponse({'success': True, 'action': 'review', 'review': {
                         'item_id': getattr(review, 'item_id', None),
                         'user_id': getattr(review, 'user_id', None),
