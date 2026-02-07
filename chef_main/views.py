@@ -7,9 +7,9 @@ from django.shortcuts import render, redirect
 from django.views.decorators.http import require_POST
 from django.contrib.auth.decorators import login_required
 
-from admin_main.models import BuyOrder
+from admin_main.models import BuyOrder, Notification
 from admin_main.views import sum_orders_count, sum_comes
-from chef_main.models import Ingredient
+from chef_main.models import Ingredient, LOW_STOCK_THRESHOLD
 from menu.models import Meal, DayOrder, MenuItem, MealIngredient
 
 
@@ -218,12 +218,25 @@ def get_remains_dict():
     return ans
 
 
+def _notify_low_stock(ingredient, previous_remains):
+    if previous_remains >= LOW_STOCK_THRESHOLD and ingredient.remains < LOW_STOCK_THRESHOLD:
+        if not ingredient.low_stock_notified:
+            Notification.objects.create(
+                recipient_type=Notification.RECIPIENT_ALL,
+                recipient_user=None,
+                title='low_stock',
+                body=f'Низкий остаток: {ingredient.name}',
+            )
+            ingredient.low_stock_notified = True
+
+
 def meals_give(amount, meal_id):
     f = Meal.objects.get(id=meal_id)
 
     for i in f.ingredients.all():
         d = MealIngredient.objects.get(meal=f.id, ingredient=i.id)
+        previous_remains = i.remains
         i.remains -= amount * d.mass
-        i.save()
+        _notify_low_stock(i, previous_remains)
+        i.save(update_fields=['remains', 'low_stock_notified'])
         print(i.remains)
-

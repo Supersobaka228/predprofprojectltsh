@@ -591,8 +591,8 @@
                                 {% for item in ingredients %}
                                 <tr>
                                     <td>{{ item.name }}</td>
-                                    <td>{{ item.remains }}</td>
-                                    {% if item.remains > 10000 %}
+                                    <td>{{ item.remains|to_kg|floatformat:2 }} кг</td>
+                                    {% if item.remains >= 10000 %}
                                     <td>Наличие достаточно</td>
                                     {% else %}
                                     <td>Осталось мало</td>

@@ -24,3 +24,12 @@ def has_key(dictionary, key):
     if isinstance(dictionary, dict):
         return key in dictionary
     return False
+
+@register.filter
+def to_kg(value):
+    """Преобразование граммов в килограммы для отображения"""
+    try:
+        grams = float(value)
+    except (TypeError, ValueError):
+        return 0
+    return grams / 1000.0

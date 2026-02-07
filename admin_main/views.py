@@ -11,7 +11,7 @@ from django.views.decorators.http import require_POST
 from django.db.models import Prefetch
 
 from admin_main.models import BuyOrder, Notification
-from chef_main.models import Ingredient
+from chef_main.models import Ingredient, LOW_STOCK_THRESHOLD
 from menu.models import MenuItem, Order, Review, Meal, DayOrder, Allergen, MealIngredient
 
 
@@ -298,6 +298,8 @@ def update_order_status(request):
 
             g = Ingredient.objects.get(name=f)
             g.remains += order.summ
+            if g.remains >= LOW_STOCK_THRESHOLD and g.low_stock_notified:
+                g.low_stock_notified = False
             g.save()
         order.save()
 
