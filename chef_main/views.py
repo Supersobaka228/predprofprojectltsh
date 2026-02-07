@@ -79,7 +79,12 @@ def chef(request):
 
 def meals_view():
     ans1, ans2 = [], []
-    menu_t = DayOrder.objects.get(day=1)
+    today_weekday = date.today().isoweekday()
+    day_key = today_weekday if 1 <= today_weekday <= 5 else 5 # ВОЗМОЖНЫЙ НЕДОЧЁТ, тут можно менять для тестов днеи недели. Сейчас если сб-вс то отображает пятницу
+    try:
+        menu_t = DayOrder.objects.get(day=day_key)
+    except DayOrder.DoesNotExist:
+        return ans1, ans2
     for i in menu_t.order:
         m = MenuItem.objects.get(id=i)
         if m.category in 'breakfastЗавтрак':
@@ -221,5 +226,4 @@ def meals_give(amount, meal_id):
         i.remains -= amount * d.mass
         i.save()
         print(i.remains)
-
 
