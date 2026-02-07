@@ -267,10 +267,17 @@ def update_order_status(request):
         data = json.loads(request.body)
         order_id = data.get('id')
         new_status = data.get('status') # 'allowed' или 'rejected'
-
+        print(data)
         # Находим заказ в базе и обновляем его
         order = BuyOrder.objects.get(id=order_id)
         order.status = new_status
+        if new_status == 'allowed':
+            print(order.items)
+            f = order.items
+
+            g = Ingredient.objects.get(name=f)
+            g.remains += order.summ
+            g.save()
         order.save()
 
         return JsonResponse({'status': 'ok'})
