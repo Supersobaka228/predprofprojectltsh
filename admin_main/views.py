@@ -303,6 +303,13 @@ def update_order_status(request):
             g.save()
         order.save()
 
+        Notification.objects.create(
+            recipient_type=Notification.RECIPIENT_USER,
+            recipient_user=order.user_id,
+            title='buyorder_status',
+            body=f'Статус вашей заявки изменён.',
+        )
+
         return JsonResponse({'status': 'ok'})
     except BuyOrder.DoesNotExist:
         return JsonResponse({'status': 'error', 'message': 'Заказ не найден'}, status=404)
