@@ -43,5 +43,6 @@ urlpatterns = [
     path('admin_main/report/general/', admin_main.views.admin_report_general, name='admin_report_general'),
     path('admin_main/report/costs/', admin_main.views.admin_report_costs, name='admin_report_costs'),
 path('chef_main/api/get-meal-dat/', chef_main.views.get_meal_data, name='get_meal_data'),
+    path('api/get-serving-stats/', chef_main.views.get_serving_stats, name='get_serving_stats'),
 
 ]

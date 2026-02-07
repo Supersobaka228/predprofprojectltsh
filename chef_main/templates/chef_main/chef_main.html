@@ -171,8 +171,8 @@
         <div>{{ item.name }}</div>
         {% with item.count_by_days|get_item:today as day_data %}
         <div class="ordered-count" data-field="ordered">
-            {% if day_data and day_data.ordered %}
-                {{ day_data.ordered }}
+            {% if day_data and day_data.o %}
+                {{ day_data.o }}
             {% else %}
                 0
             {% endif %}

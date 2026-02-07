@@ -276,9 +276,11 @@ def order(request, day_d):
         menu_t = DayOrder.objects.get(day=1)
         for i in menu_t.order:
             m = MenuItem.objects.get(id=i)
-            st = m.meals
-            if st.all():
-                for gh in st.all():
+            st = m.meals.all()
+            print(st)
+            if st:
+                for gh in st:
+                    print(gh)
                     day_key = str(datetime.today().date())
                     count_by_days = gh.count_by_days
                     if not isinstance(count_by_days, dict):
