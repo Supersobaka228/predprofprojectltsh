@@ -42,6 +42,19 @@ def _should_clear_day(request, day_number):
     return True
 
 
+def _should_create_menu_notification(request):
+    bulk_id = request.POST.get('bulk_save_id')
+    if not bulk_id:
+        return True
+
+    session_key = 'bulk_menu_notification'
+    if request.session.get(session_key) == bulk_id:
+        return False
+
+    request.session[session_key] = bulk_id
+    return True
+
+
 def clear_day_menu(day_number):
     day_order = DayOrder.objects.filter(day=day_number).first()
     if not day_order:
@@ -256,6 +269,14 @@ def admin(request):
             day_order, _ = DayOrder.objects.get_or_create(day=day_number, defaults={'order': []})
             day_order.order.append(menuitem.id)
             day_order.save(update_fields=['order'])
+
+        if _should_create_menu_notification(request):
+            Notification.objects.create(
+                recipient_type=Notification.RECIPIENT_ALL,
+                recipient_user=None,
+                title='menu_change',
+                body='Меню обновлено.',
+            )
 
         return redirect('admin_main')
     return render(request, 'admin_main/admin_main.html', context)
