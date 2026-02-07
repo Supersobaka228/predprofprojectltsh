@@ -221,3 +221,5 @@ def meals_give(amount, meal_id):
         i.remains -= amount * d.mass
         i.save()
         print(i.remains)
+
+
