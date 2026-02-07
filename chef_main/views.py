@@ -2,6 +2,7 @@ import json
 from datetime import datetime, date, timedelta
 from decimal import Decimal, InvalidOperation, ROUND_HALF_UP
 
+from django.db.models import Q
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.views.decorators.http import require_POST
@@ -57,6 +58,11 @@ def chef(request):
     all_buyorders = BuyOrder.objects.order_by('-date')[:100]
     menu = MenuItem.objects.all()
     today_str = date.today().isoformat()
+    notifications = Notification.objects.filter(
+        Q(recipient_type=Notification.RECIPIENT_ALL)
+        | Q(recipient_type=Notification.RECIPIENT_CHEF)
+        | (Q(recipient_type=Notification.RECIPIENT_USER) & Q(recipient_user=request.user))
+    ).order_by('-created_at')
     context = {
         'orders': BuyOrder.objects.all(),
         'user_buyorders': user_buyorders,
@@ -77,7 +83,8 @@ def chef(request):
         'menu': len(menu),
         'summ': sum_orders_count(),
         'sum_comes': sum_comes(),
-        'remains': get_remains_dict()
+        'remains': get_remains_dict(),
+        'notifications': notifications,
     }
 
     # Normalize legacy count_by_days payloads (non-dict or malformed items).

@@ -13,570 +13,566 @@
     <title>MealHub - Меню повара</title>
 </head>
 <body>
-    <div class="menu_page">
-        <div class="lefter">
-            <div class="admin_logo_container">
-                <div class="admin_logo">Meal Hub Chef</div>
-                <div class="admin_logo_sub">Выдача и контроль блюд</div>
-            </div>
-            <div class="admin_divider"></div>
-            <div class="admin_nav">
-                <div class="admin_nav_slider"></div>
-                <button class="admin_nav_button" data-view="chef_main"><img src="{% static 'icon/home.svg' %}" alt="">Главная</button>
-                <button class="admin_nav_button" data-view="chef_serving"><img class="admin_lefter_rest" src="{% static 'icon/restaurant.svg' %}" alt="">Выдачи</button>
-                <button class="admin_nav_button" data-view="chef_orders"><img src="{% static 'icon/note_add.svg' %}" alt="">Заявки на закупку</button>
-                <button class="admin_nav_button" data-view="chef_stocks"><img src="{% static 'icon/assignment.svg' %}" alt="">Остатки</button>
-            </div>
+<div class="menu_page">
+    <div class="lefter">
+        <div class="admin_logo_container">
+            <div class="admin_logo">Meal Hub Chef</div>
+            <div class="admin_logo_sub">Выдача и контроль блюд</div>
         </div>
+        <div class="admin_divider"></div>
+        <div class="admin_nav">
+            <div class="admin_nav_slider"></div>
+            <button class="admin_nav_button" data-view="chef_main"><img src="{% static 'icon/home.svg' %}" alt="">Главная
+            </button>
+            <button class="admin_nav_button" data-view="chef_serving"><img class="admin_lefter_rest"
+                                                                           src="{% static 'icon/restaurant.svg' %}"
+                                                                           alt="">Выдачи
+            </button>
+            <button class="admin_nav_button" data-view="chef_orders"><img src="{% static 'icon/note_add.svg' %}" alt="">Заявки
+                на закупку
+            </button>
+            <button class="admin_nav_button" data-view="chef_stocks"><img src="{% static 'icon/assignment.svg' %}"
+                                                                          alt="">Остатки
+            </button>
+        </div>
+    </div>
 
-        <div class="menu_app_view menu_app_view--active" data-view="chef_main">
-            <header class="admin_main_header">
-                <div class="admin_main_header_left">Главная</div>
-                <div class="admin_main_header_right">
-                    <div class="admin_notify_wrap">
-                        <button class="admin_notify_button" type="button" aria-label="Уведомления">
-                            <img src="{% static 'icon/notifications.svg' %}" alt="">
-                        </button>
-                    </div>
-                    <div class="admin_user_meta">
-                        <div class="admin_user_name">Имя Фамилия</div>
-                        <div class="admin_user_role">Повар</div>
-                    </div>
-                    <div class="admin_avatar_wrap">
-                        <img src="{% static 'icon/photo_2026-01-14_11-19-22.jpg' %}" class="admin_user_avatar" alt="" role="button" tabindex="0" aria-label="Аккаунт">
-                    </div>
+    <div class="menu_app_view menu_app_view--active" data-view="chef_main">
+        <header class="admin_main_header">
+            <div class="admin_main_header_left">Главная</div>
+            <div class="admin_main_header_right">
+                <div class="admin_notify_wrap">
+                    <button class="admin_notify_button" type="button" aria-label="Уведомления">
+                        <img src="{% static 'icon/notifications.svg' %}" alt="">
+                    </button>
                 </div>
-            </header>
-
-            <section class="admin_stats_panel">
-                <div class="admin_stats_grid">
-                    <article class="admin_stat_card">
-                        <div class="admin_stat_label">Оплаты сегодня</div>
-                        <div class="admin_stat_value">{{ summ }} ₽</div>
-                    </article>
-                    <article class="admin_stat_card">
-                        <div class="admin_stat_label">Посещения</div>
-                        <div class="admin_stat_value">{{ sum_comes }} учеников</div>
-                    </article>
-                    <article class="admin_stat_card">
-                        <div class="admin_stat_label">Заявки на закупку</div>
-                        <div class="admin_stat_value">{{ buyorders_count }} позиций</div>
-                    </article>
-                    <article class="admin_stat_card">
-                        <div class="admin_stat_label">Низкие остатки</div>
-                        <div class="admin_stat_value">5 позиций</div>
-                    </article>
-                    <article class="admin_stat_card">
-                        <div class="admin_stat_label">Приёмов пищи</div>
-                        <div class="admin_stat_value">{{ menu }} позиций</div>
-                    </article>
+                <div class="admin_user_meta">
+                    <div class="admin_user_name">Имя Фамилия</div>
+                    <div class="admin_user_role">Повар</div>
                 </div>
-            </section>
+                <div class="admin_avatar_wrap">
+                    <img src="{% static 'icon/photo_2026-01-14_11-19-22.jpg' %}" class="admin_user_avatar" alt=""
+                         role="button" tabindex="0" aria-label="Аккаунт">
+                </div>
+            </div>
+        </header>
 
-            <section class="chef_page_body">
-                <section class="main_main_panel">
-                    <div class="main_main_graphs_orders_panel">
-                        <section class="main_graphs_panel">
-                            <div class="graph_holder">
-                                <p>Меню на день</p>
-                                <div class="day_menu_panel">
-                                    <div class="day_menu_body">
-    <div class="day_menu_tabs" role="tablist" aria-label="Выбор приёма пищи">
-        <input class="day_menu_tab_input" type="radio" name="meal_tab" id="meal_breakfast" checked>
-        <label class="day_menu_tab" for="meal_breakfast" role="tab">Завтрак</label>
-        <input class="day_menu_tab_input" type="radio" name="meal_tab" id="meal_lunch">
-        <label class="day_menu_tab" for="meal_lunch" role="tab">Обед</label>
-    </div>
+        <section class="admin_stats_panel">
+            <div class="admin_stats_grid">
+                <article class="admin_stat_card">
+                    <div class="admin_stat_label">Оплаты сегодня</div>
+                    <div class="admin_stat_value">{{ summ }} ₽</div>
+                </article>
+                <article class="admin_stat_card">
+                    <div class="admin_stat_label">Посещения</div>
+                    <div class="admin_stat_value">{{ sum_comes }} учеников</div>
+                </article>
+                <article class="admin_stat_card">
+                    <div class="admin_stat_label">Заявки на закупку</div>
+                    <div class="admin_stat_value">{{ buyorders_count }} позиций</div>
+                </article>
+                <article class="admin_stat_card">
+                    <div class="admin_stat_label">Низкие остатки</div>
+                    <div class="admin_stat_value">5 позиций</div>
+                </article>
+                <article class="admin_stat_card">
+                    <div class="admin_stat_label">Приёмов пищи</div>
+                    <div class="admin_stat_value">{{ menu }} позиций</div>
+                </article>
+            </div>
+        </section>
 
-    <div class="day_menu_table">
-        <div class="day_menu_row day_menu_row--head">
-            <div>Блюдо</div>
-            <div>Заказано</div>
-            <div>Выдано</div>
-            <div>Наличие</div>
-            <div></div>
-            <div>Выдачи</div>
-            <div></div>
-        </div>
-
-        {{ remains|json_script:"remains_id" }}
-        <script>
-
-        const mealsData = JSON.parse(document.getElementById('meals-data').textContent);
-        console.log(mealsData);
-        const date = {
-                {% for item in meals_b %}
-                "{{ item|safe }}"{% if not forloop.last %},{% endif %}
-                {% endfor %}
-                };
-        window.mealsData = mealsData;
-</script>
-
-
-        <div class="day_menu_table_body day_menu_table_body--active" data-meal="meal_breakfast">
-    {% for item in meals_b %}
-    {% csrf_token %}
-    <div class="day_menu_row" data-meal-id="{{ item.id }}" data-meal-name="{{ item.name }}">
-        <div>{{ item.name }}</div>
-        {% with item.count_by_days|get_item:today as day_data %}
-        <div class="ordered-count" data-field="ordered">
-            {% if day_data and day_data.o %}
-                {{ day_data.o }}
-            {% else %}
-                0
-            {% endif %}
-        </div>
-        <div class="issued-count" data-field="issued">
-            {% if day_data and day_data.g %}
-                {{ day_data.g }}
-            {% else %}
-                0
-            {% endif %}
-        </div>
-
-        {% load dict_filters %}
-        <div class="available-count" data-field="available">
-            {% if remains|has_key:item.id %}
-    <!-- Ключ существует -->
-            {{ remains|get_item:item.id }}
-            {% else %}
-    <!-- Ключ не существует -->
-            Значение отсутствует
-            {% endif %}
-
-        </div>
-        {% endwith %}
-        <div>
-            <button class="day_menu_btn issue-btn" type="button" data-action="issue" data-amount="1" data-meal-id="{{ item.id }}">
-                +1
-            </button>
-        </div>
-        <div>
-            <button class="day_menu_btn issue-btn" type="button" data-action="issue" data-amount="5" data-meal-id="{{ item.id }}">
-                +5
-            </button>
-        </div>
-        <div>
-            <button class="day_menu_btn day_menu_btn--danger return-btn" type="button" data-action="return" data-amount="1" data-meal-id="{{ item.id }}">
-                -1
-            </button>
-        </div>
-    </div>
-    {% endfor %}
-</div>
-
-<div class="day_menu_table_body" data-meal="meal_lunch">
-    {% for item in meals_l %}
-    <div class="day_menu_row" data-meal-id="{{ item.id }}" data-meal-name="{{ item.name }}">
-        <div>{{ item.name }}</div>
-        {% with item.count_by_days|get_item:today as day_data %}
-        <div class="ordered-count" data-field="ordered">
-            {% if day_data and day_data.o %}
-                {{ day_data.o }}
-            {% else %}
-                0
-            {% endif %}
-        </div>
-        <div class="issued-count" data-field="issued">
-            {% if day_data and day_data.g %}
-                {{ day_data.g }}
-            {% else %}
-                0
-            {% endif %}
-        </div>
-        <div class="available-count" data-field="available">
-            {% if remains|has_key:item.id %}
-    <!-- Ключ существует -->
-            {{ remains|get_item:item.id }}
-            {% else %}
-    <!-- Ключ не существует -->
-            Значение отсутствует
-            {% endif %}
-        </div>
-        {% endwith %}
-        <div>
-            <button class="day_menu_btn issue-btn" type="button" data-action="issue" data-amount="1" data-meal-id="{{ item.id }}">
-                +1
-            </button>
-        </div>
-        <div>
-            <button class="day_menu_btn issue-btn" type="button" data-action="issue" data-amount="5" data-meal-id="{{ item.id }}">
-                +5
-            </button>
-        </div>
-        <div>
-            <button class="day_menu_btn day_menu_btn--danger return-btn" type="button" data-action="return" data-amount="-1" data-meal-id="{{ item.id }}">
-                -1
-            </button>
-        </div>
-    </div>
-    {% endfor %}
-    </div>
-        </div>
-                                </div>
-                                </div>
+        <section class="chef_page_body">
+            <section class="main_main_panel">
+                <div class="main_main_graphs_orders_panel">
+                    <section class="main_graphs_panel">
+                        <div class="graph_holder">
+                            <p>Меню на день</p>
+                            <div class="day_menu_panel">
+                                <div class="day_menu_body">
+                                    <div class="day_menu_tabs" role="tablist" aria-label="Выбор приёма пищи">
+                                        <input class="day_menu_tab_input" type="radio" name="meal_tab"
+                                               id="meal_breakfast" checked>
+                                        <label class="day_menu_tab" for="meal_breakfast" role="tab">Завтрак</label>
+                                        <input class="day_menu_tab_input" type="radio" name="meal_tab" id="meal_lunch">
+                                        <label class="day_menu_tab" for="meal_lunch" role="tab">Обед</label>
                                     </div>
 
-                        </section>
-                        <section class="main_orders_panel">
-                            <p>Ваши заявки на закупку</p>
-                            <div class="orders_bg">
-                                <div class="orders_list">
-                                    <table class="orders_table">
-                                        <thead>
-                                            <tr>
-                                                <th>№</th>
-                                                <th>Дата</th>
-                                                <th>Товары</th>
-                                                <th>Сумма</th>
-                                                <th>Статус</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {% for item in user_buyorders %}
-                                            <tr data-order-id="{{ item.id }}">
-                                                <td>{{ item.id }}</td>
-                                                <td>{{ item.date|date:"d.m.y" }}</td>
-                                                <td>{{ item.items }}</td>
-                                                <td>{{ item.summ_rub|floatformat:2 }} ₽</td>
-                                                <td>
-                                                    {% if item.status == "allowed" %}
-                                                    <span class="chef_orders_status_badge chef_orders_status_badge--ok">Одобрено</span>
-                                                    {% elif item.status == "rejected" %}
-                                                    <span class="chef_orders_status_badge chef_orders_status_badge--reject">Отклонено</span>
+                                    <div class="day_menu_table">
+                                        <div class="day_menu_row day_menu_row--head">
+                                            <div>Блюдо</div>
+                                            <div>Заказано</div>
+                                            <div>Выдано</div>
+                                            <div>Наличие</div>
+                                            <div></div>
+                                            <div>Выдачи</div>
+                                            <div></div>
+                                        </div>
+
+                                        {{ remains|json_script:"remains_id" }}
+                                        <script>
+
+                                            const mealsData = JSON.parse(document.getElementById('meals-data').textContent);
+                                            console.log(mealsData);
+                                            const date = {
+                                                    {% for item in meals_b %}
+                                                    "{{ item|safe }}"{% if not forloop.last %},{% endif %}
+                                                    {% endfor %}
+                                                    };
+                                            window.mealsData = mealsData;
+                                        </script>
+
+
+                                        <div class="day_menu_table_body day_menu_table_body--active"
+                                             data-meal="meal_breakfast">
+                                            {% for item in meals_b %}
+                                            {% csrf_token %}
+                                            <div class="day_menu_row" data-meal-id="{{ item.id }}"
+                                                 data-meal-name="{{ item.name }}">
+                                                <div>{{ item.name }}</div>
+                                                {% with item.count_by_days|get_item:today as day_data %}
+                                                <div class="ordered-count" data-field="ordered">
+                                                    {% if day_data and day_data.o %}
+                                                    {{ day_data.o }}
                                                     {% else %}
-                                                    <span class="chef_orders_status_badge">Ожидает</span>
+                                                    0
                                                     {% endif %}
-                                                </td>
-                                            </tr>
+                                                </div>
+                                                <div class="issued-count" data-field="issued">
+                                                    {% if day_data and day_data.g %}
+                                                    {{ day_data.g }}
+                                                    {% else %}
+                                                    0
+                                                    {% endif %}
+                                                </div>
+
+                                                {% load dict_filters %}
+                                                <div class="available-count" data-field="available">
+                                                    {% if remains|has_key:item.id %}
+                                                    <!-- Ключ существует -->
+                                                    {{ remains|get_item:item.id }}
+                                                    {% else %}
+                                                    <!-- Ключ не существует -->
+                                                    Значение отсутствует
+                                                    {% endif %}
+
+                                                </div>
+                                                {% endwith %}
+                                                <div>
+                                                    <button class="day_menu_btn issue-btn" type="button"
+                                                            data-action="issue" data-amount="1"
+                                                            data-meal-id="{{ item.id }}">
+                                                        +1
+                                                    </button>
+                                                </div>
+                                                <div>
+                                                    <button class="day_menu_btn issue-btn" type="button"
+                                                            data-action="issue" data-amount="5"
+                                                            data-meal-id="{{ item.id }}">
+                                                        +5
+                                                    </button>
+                                                </div>
+                                                <div>
+                                                    <button class="day_menu_btn day_menu_btn--danger return-btn"
+                                                            type="button" data-action="return" data-amount="1"
+                                                            data-meal-id="{{ item.id }}">
+                                                        -1
+                                                    </button>
+                                                </div>
+                                            </div>
                                             {% endfor %}
-                                        </tbody>
-                                    </table>
+                                        </div>
+
+                                        <div class="day_menu_table_body" data-meal="meal_lunch">
+                                            {% for item in meals_l %}
+                                            <div class="day_menu_row" data-meal-id="{{ item.id }}"
+                                                 data-meal-name="{{ item.name }}">
+                                                <div>{{ item.name }}</div>
+                                                {% with item.count_by_days|get_item:today as day_data %}
+                                                <div class="ordered-count" data-field="ordered">
+                                                    {% if day_data and day_data.o %}
+                                                    {{ day_data.o }}
+                                                    {% else %}
+                                                    0
+                                                    {% endif %}
+                                                </div>
+                                                <div class="issued-count" data-field="issued">
+                                                    {% if day_data and day_data.g %}
+                                                    {{ day_data.g }}
+                                                    {% else %}
+                                                    0
+                                                    {% endif %}
+                                                </div>
+                                                <div class="available-count" data-field="available">
+                                                    {% if remains|has_key:item.id %}
+                                                    <!-- Ключ существует -->
+                                                    {{ remains|get_item:item.id }}
+                                                    {% else %}
+                                                    <!-- Ключ не существует -->
+                                                    Значение отсутствует
+                                                    {% endif %}
+                                                </div>
+                                                {% endwith %}
+                                                <div>
+                                                    <button class="day_menu_btn issue-btn" type="button"
+                                                            data-action="issue" data-amount="1"
+                                                            data-meal-id="{{ item.id }}">
+                                                        +1
+                                                    </button>
+                                                </div>
+                                                <div>
+                                                    <button class="day_menu_btn issue-btn" type="button"
+                                                            data-action="issue" data-amount="5"
+                                                            data-meal-id="{{ item.id }}">
+                                                        +5
+                                                    </button>
+                                                </div>
+                                                <div>
+                                                    <button class="day_menu_btn day_menu_btn--danger return-btn"
+                                                            type="button" data-action="return" data-amount="-1"
+                                                            data-meal-id="{{ item.id }}">
+                                                        -1
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                        </section>
-                    </div>
-                    <div class="main_main_notifications_panel">
-                        <p>Уведомления</p>
-                        <div class="notifications_list">
-                            <div class="notif_element">
-                                <p>Новая заявка от 10.01.26!</p>
-                            </div>
-                            <div class="notif_element">
-                                <p>Отчёт по затратам сформирован!</p>
-                            </div>
-                            <div class="notif_element">
-                                <p>Низкий остаток: пельмени</p>
-                            </div>
-                            <div class="notif_element">
-                                <p>Новая заявка от 09.01.26!</p>
-                            </div>
-                            <div class="notif_element">
-                                <p>Новая заявка от 10.01.26!</p>
-                            </div>
-                            <div class="notif_element">
-                                <p>Отчёт по затратам сформирован!</p>
-                            </div>
-                            <div class="notif_element">
-                                <p>Низкий остаток: пельмени</p>
-                            </div>
-                            <div class="notif_element">
-                                <p>Новая заявка от 09.01.26!</p>
-                            </div>
-                            <div class="notif_element">
-                                <p>Новая заявка от 10.01.26!</p>
-                            </div>
-                            <div class="notif_element">
-                                <p>Отчёт по затратам сформирован!</p>
-                            </div>
-                            <div class="notif_element">
-                                <p>Низкий остаток: пельмени</p>
-                            </div>
-                            <div class="notif_element">
-                                <p>Новая заявка от 09.01.26!</p>
-                            </div>
-                            <div class="notif_element">
-                                <p>Новая заявка от 10.01.26!</p>
-                            </div>
-                            <div class="notif_element">
-                                <p>Отчёт по затратам сформирован!</p>
-                            </div>
-                            <div class="notif_element">
-                                <p>Низкий остаток: пельмени</p>
-                            </div>
-                            <div class="notif_element">
-                                <p>Новая заявка от 09.01.26!</p>
                             </div>
                         </div>
-                    </div>
-                </section>
-            </section>
-        </div>
 
-        <div class="menu_app_view" data-view="chef_serving">
-            <header class="admin_main_header">
-                <div class="admin_main_header_left">Выдачи</div>
-                <div class="admin_main_header_right">
-                    <div class="admin_notify_wrap">
-                        <button class="admin_notify_button" type="button" aria-label="Уведомления">
-                            <img src="{% static 'icon/notifications.svg' %}" alt="">
-                        </button>
-                    </div>
-                    <div class="admin_user_meta">
-                        <div class="admin_user_name">Имя Фамилия</div>
-                        <div class="admin_user_role">Повар</div>
-                    </div>
-                    <div class="admin_avatar_wrap">
-                        <img src="{% static 'icon/photo_2026-01-14_11-19-22.jpg' %}" class="admin_user_avatar" alt="" role="button" tabindex="0" aria-label="Аккаунт">
-                    </div>
-                </div>
-            </header>
-
-            <section class="admin_stats_panel">
-            <div class="chef_serving_datebar"
-            data-role="datebar"
-            data-date="{{ selected_date }}"
-            data-week-start="{{ week_start }}"
-            data-week-end="{{ week_end }}">
-            <div class="chef_serving_date_left">
-                <span class="chef_serving_date_label">{{ selected_day_label }},</span>
-                <span class="chef_serving_date_value" data-role="date-display">{{ selected_date_display }}</span>
-            </div>
-            <div class="chef_serving_days" role="group" aria-label="Дни недели" data-role="weekday-switch">
-                {% for day in day_buttons %}
-                <button class="chef_serving_day{% if day.day == day_key %} is-active{% endif %}" type="button" data-day="{{ day.day }}" data-date="{{ day.date }}">{{ day.label }}</button>
-                {% endfor %}
-            </div>
-            <div class="chef_serving_week_switch" aria-label="Переключение недели">
-                <button class="chef_serving_week_btn" type="button" data-action="week-prev" aria-label="Предыдущая неделя">
-                    <img src="resources/left_arrow_stats.svg" alt="">
-                </button>
-                <span class="chef_serving_week_label" data-role="week-label">{{ week_label }}</span>
-                <button class="chef_serving_week_btn chef_serving_week_btn--next" type="button" data-action="week-next" aria-label="Следующая неделя">
-                    <img src="resources/left_arrow_stats.svg" alt="">
-                </button>
-            </div>
-        </div>
-    </section>
-
-
-            <section class="chef_page_body">
-                <section class="chef_serving_page">
-                    <div class="chef_meal_list" aria-label="Список приёмов пищи">
-                        <article class="chef_meal_block">
-                            <div class="chef_meal_block_header">
-                                <span class="chef_meal_title">Завтрак</span>
-                                <span class="chef_meal_count">870 порций</span>
-                            </div>
-                            <div class="chef_meal_cards">
-                                <div class="chef_meal_card">
-                                    <div class="chef_meal_card_label">1-е блюдо</div>
-                                    <div class="chef_meal_card_body">
-                                        <img src="{% static 'icon/meal1.svg' %}" alt="">
-                                        <div class="chef_meal_card_name">Каша гречневая</div>
-                                        <div class="chef_meal_card_amount">230/400 порций</div>
-                                    </div>
-                                </div>
-                                <div class="chef_meal_card">
-                                    <div class="chef_meal_card_label">1-е блюдо</div>
-                                    <div class="chef_meal_card_body">
-                                        <img src="{% static 'icon/meal1.svg' %}" alt="">
-                                        <div class="chef_meal_card_name">Сырники с джемом</div>
-                                        <div class="chef_meal_card_amount">270/450 порций</div>
-                                    </div>
-                                </div>
-                                <div class="chef_meal_card">
-                                    <div class="chef_meal_card_label">1-е блюдо</div>
-                                    <div class="chef_meal_card_body">
-                                        <img src="{% static 'icon/meal1.svg' %}" alt="">
-                                        <div class="chef_meal_card_name">Чай чёрный</div>
-                                        <div class="chef_meal_card_amount">370/500 порций</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </article>
-
-                        <article class="chef_meal_block">
-                            <div class="chef_meal_block_header">
-                                <span class="chef_meal_title">Обед</span>
-                                <span class="chef_meal_count">920 порций</span>
-                            </div>
-                            <div class="chef_meal_cards">
-                                <div class="chef_meal_card">
-                                    <div class="chef_meal_card_label">1-е блюдо</div>
-                                    <div class="chef_meal_card_body">
-                                        <img src="{% static 'icon/meal1.svg' %}" alt="">
-                                        <div class="chef_meal_card_name">Суп куриный</div>
-                                        <div class="chef_meal_card_amount">280/400 порций</div>
-                                    </div>
-                                </div>
-                                <div class="chef_meal_card">
-                                    <div class="chef_meal_card_label">2-е блюдо</div>
-                                    <div class="chef_meal_card_body">
-                                        <img src="{% static 'icon/meal1.svg' %}" alt="">
-                                        <div class="chef_meal_card_name">Котлета с пюре</div>
-                                        <div class="chef_meal_card_amount">260/350 порций</div>
-                                    </div>
-                                </div>
-                                <div class="chef_meal_card">
-                                    <div class="chef_meal_card_label">Напиток</div>
-                                    <div class="chef_meal_card_body">
-                                        <img src="{% static 'icon/meal1.svg' %}" alt="">
-                                        <div class="chef_meal_card_name">Компот</div>
-                                        <div class="chef_meal_card_amount">380/520 порций</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </article>
-
-                        <article class="chef_meal_block">
-                            <div class="chef_meal_block_header">
-                                <span class="chef_meal_title">Полдник</span>
-                                <span class="chef_meal_count">540 порций</span>
-                            </div>
-                            <div class="chef_meal_cards">
-                                <div class="chef_meal_card">
-                                    <div class="chef_meal_card_label">Перекус</div>
-                                    <div class="chef_meal_card_body">
-                                        <img src="{% static 'icon/meal1.svg' %}" alt="">
-                                        <div class="chef_meal_card_name">Йогурт</div>
-                                        <div class="chef_meal_card_amount">180/240 порций</div>
-                                    </div>
-                                </div>
-                                <div class="chef_meal_card">
-                                    <div class="chef_meal_card_label">Фрукт</div>
-                                    <div class="chef_meal_card_body">
-                                        <img src="{% static 'icon/meal1.svg' %}" alt="">
-                                        <div class="chef_meal_card_name">Яблоко</div>
-                                        <div class="chef_meal_card_amount">200/250 порций</div>
-                                    </div>
-                                </div>
-                                <div class="chef_meal_card">
-                                    <div class="chef_meal_card_label">Напиток</div>
-                                    <div class="chef_meal_card_body">
-                                        <img src="{% static 'icon/meal1.svg' %}" alt="">
-                                        <div class="chef_meal_card_name">Морс</div>
-                                        <div class="chef_meal_card_amount">160/220 порций</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </article>
-                    </div>
-                    <aside class="chef_serving_side" aria-label="Сводка выдач">
-                        <div class="chef_serving_card">
-                            <div class="chef_serving_metric">Завтраков выдано: 130</div>
-                            <div class="chef_serving_divider"></div>
-                            <div class="chef_serving_metric">Обедов выдано: 200</div>
-                            <div class="chef_serving_divider"></div>
-                            <button class="chef_serving_cta" type="button" data-open-view="chef_stocks">Перейти к остаткам</button>
-                        </div>
-                    </aside>
-                </section>
-            </section>
-        </div>
-
-        <div class="menu_app_view" data-view="chef_orders">
-            <header class="admin_main_header">
-                <div class="admin_main_header_left">Заявки на закупку</div>
-                <div class="admin_main_header_right">
-                    <div class="admin_notify_wrap">
-                        <button class="admin_notify_button" type="button" aria-label="Уведомления">
-                            <img src="{% static 'icon/notifications.svg' %}" alt="">
-                        </button>
-                    </div>
-                    <div class="admin_user_meta">
-                        <div class="admin_user_name">Имя Фамилия</div>
-                        <div class="admin_user_role">Повар</div>
-                    </div>
-                    <div class="admin_avatar_wrap">
-                        <img src="{% static 'icon/photo_2026-01-14_11-19-22.jpg' %}" class="admin_user_avatar" alt="" role="button" tabindex="0" aria-label="Аккаунт">
-                    </div>
-                </div>
-            </header>
-
-            <section class="chef_page_body">
-                <section class="chef_orders_page">
-                    <div class="chef_orders_header">
-                        <div class="chef_orders_status">
-                            <span>3 активные</span>
-                            <span>124 завершенные</span>
-                        </div>
-                        <button class="chef_orders_new" type="button" data-open-view="chef_order_new">
-                            <img class="chef_orders_new_icon" src="{% static 'icon/add_2.svg' %}" alt="">
-                            Новая заявка
-                        </button>
-                    </div>
-                    <section class="chef_orders_panel">
-                        <h2 class="chef_orders_title">История заявок</h2>
-                        <div class="chef_orders_table_padder">
-                            <div class="chef_orders_table_wrap">
-                                <table class="chef_orders_table">
+                    </section>
+                    <section class="main_orders_panel">
+                        <p>Ваши заявки на закупку</p>
+                        <div class="orders_bg">
+                            <div class="orders_list">
+                                <table class="orders_table">
                                     <thead>
-                                        <tr>
-                                            <th>№</th>
-                                            <th>Дата</th>
-                                            <th>Создатель</th>
-                                            <th>Товары</th>
-                                            <th>Сумма</th>
-                                            <th>Статус</th>
-                                        </tr>
+                                    <tr>
+                                        <th>№</th>
+                                        <th>Дата</th>
+                                        <th>Товары</th>
+                                        <th>Сумма</th>
+                                        <th>Статус</th>
+                                    </tr>
                                     </thead>
                                     <tbody>
-                                        {% for item in all_buyorders %}
-                                        <tr>
-                                            <td>{{ item.id }}</td>
-                                            <td>{{ item.date|date:"d.m.y" }}</td>
-                                            <td>{{ item.user_id }}</td>
-                                            <td>{{ item.items }}</td>
-                                            <td>{{ item.summ_rub|floatformat:2 }} ₽</td>
-                                            <td>
-                                                {% if item.status == "allowed" %}
-                                                <span class="chef_orders_status_badge chef_orders_status_badge--ok">Одобрено</span>
-                                                {% elif item.status == "rejected" %}
-                                                <span class="chef_orders_status_badge chef_orders_status_badge--reject">Отклонено</span>
-                                                {% else %}
-                                                <span class="chef_orders_status_badge">Ожидает</span>
-                                                {% endif %}
-                                            </td>
-                                        </tr>
-
-                                        {% endfor %}
+                                    {% for item in user_buyorders %}
+                                    <tr data-order-id="{{ item.id }}">
+                                        <td>{{ item.id }}</td>
+                                        <td>{{ item.date|date:"d.m.y" }}</td>
+                                        <td>{{ item.items }}</td>
+                                        <td>{{ item.summ_rub|floatformat:2 }} ₽</td>
+                                        <td>
+                                            {% if item.status == "allowed" %}
+                                            <span class="chef_orders_status_badge chef_orders_status_badge--ok">Одобрено</span>
+                                            {% elif item.status == "rejected" %}
+                                            <span class="chef_orders_status_badge chef_orders_status_badge--reject">Отклонено</span>
+                                            {% else %}
+                                            <span class="chef_orders_status_badge">Ожидает</span>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
                                     </tbody>
                                 </table>
                             </div>
                         </div>
                     </section>
-                </section>
-            </section>
-        </div>
-
-        <div class="menu_app_view" data-view="chef_stocks">
-            <header class="admin_main_header">
-                <div class="admin_main_header_left">Остатки</div>
-                <div class="admin_main_header_right">
-                    <div class="admin_notify_wrap">
-                        <button class="admin_notify_button" type="button" aria-label="Уведомления">
-                            <img src="{% static 'icon/notifications.svg' %}" alt="">
-                        </button>
-                    </div>
-                    <div class="admin_user_meta">
-                        <div class="admin_user_name">Имя Фамилия</div>
-                        <div class="admin_user_role">Повар</div>
-                    </div>
-                    <div class="admin_avatar_wrap">
-                        <img src="{% static 'icon/photo_2026-01-14_11-19-22.jpg' %}" class="admin_user_avatar" alt="" role="button" tabindex="0" aria-label="Аккаунт">
+                </div>
+                <div class="main_main_notifications_panel">
+                    <p>Уведомления</p>
+                    <div class="notifications_list">
+                        {% if notifications %}
+                        {% for notification in notifications %}
+                        <div class="notif_element">
+                            <p>{{ notification.body }}</p>
+                        </div>
+                        {% endfor %}
+                        {% else %}
+                        <div class="notif_element">
+                            <p>Уведомлений нет</p>
+                        </div>
+                        {% endif %}
                     </div>
                 </div>
-            </header>
+            </section>
+        </section>
+    </div>
 
-            <section class="chef_page_body">
-                <section class="chef_stocks_outer">
-                    <section class="chef_stocks_panel">
-                        <h2 class="chef_stocks_title">Остатки по продуктам</h2>
-                        <div class="chef_stocks_list_outer">
-                            <div class="chef_stocks_table_wrap">
-                                <table class="chef_stocks_table">
-                            <thead>
+    <div class="menu_app_view" data-view="chef_serving">
+        <header class="admin_main_header">
+            <div class="admin_main_header_left">Выдачи</div>
+            <div class="admin_main_header_right">
+                <div class="admin_notify_wrap">
+                    <button class="admin_notify_button" type="button" aria-label="Уведомления">
+                        <img src="{% static 'icon/notifications.svg' %}" alt="">
+                    </button>
+                </div>
+                <div class="admin_user_meta">
+                    <div class="admin_user_name">Имя Фамилия</div>
+                    <div class="admin_user_role">Повар</div>
+                </div>
+                <div class="admin_avatar_wrap">
+                    <img src="{% static 'icon/photo_2026-01-14_11-19-22.jpg' %}" class="admin_user_avatar" alt=""
+                         role="button" tabindex="0" aria-label="Аккаунт">
+                </div>
+            </div>
+        </header>
+
+        <section class="admin_stats_panel">
+            <div class="chef_serving_datebar"
+                 data-role="datebar"
+                 data-date="{{ selected_date }}"
+                 data-week-start="{{ week_start }}"
+                 data-week-end="{{ week_end }}">
+                <div class="chef_serving_date_left">
+                    <span class="chef_serving_date_label">{{ selected_day_label }},</span>
+                    <span class="chef_serving_date_value" data-role="date-display">{{ selected_date_display }}</span>
+                </div>
+                <div class="chef_serving_days" role="group" aria-label="Дни недели" data-role="weekday-switch">
+                    {% for day in day_buttons %}
+                    <button class="chef_serving_day{% if day.day == day_key %} is-active{% endif %}" type="button"
+                            data-day="{{ day.day }}" data-date="{{ day.date }}">{{ day.label }}
+                    </button>
+                    {% endfor %}
+                </div>
+                <div class="chef_serving_week_switch" aria-label="Переключение недели">
+                    <button class="chef_serving_week_btn" type="button" data-action="week-prev"
+                            aria-label="Предыдущая неделя">
+                        <img src="resources/left_arrow_stats.svg" alt="">
+                    </button>
+                    <span class="chef_serving_week_label" data-role="week-label">{{ week_label }}</span>
+                    <button class="chef_serving_week_btn chef_serving_week_btn--next" type="button"
+                            data-action="week-next" aria-label="Следующая неделя">
+                        <img src="resources/left_arrow_stats.svg" alt="">
+                    </button>
+                </div>
+            </div>
+        </section>
+
+
+        <section class="chef_page_body">
+            <section class="chef_serving_page">
+                <div class="chef_meal_list" aria-label="Список приёмов пищи">
+                    <article class="chef_meal_block">
+                        <div class="chef_meal_block_header">
+                            <span class="chef_meal_title">Завтрак</span>
+                            <span class="chef_meal_count">870 порций</span>
+                        </div>
+                        <div class="chef_meal_cards">
+                            <div class="chef_meal_card">
+                                <div class="chef_meal_card_label">1-е блюдо</div>
+                                <div class="chef_meal_card_body">
+                                    <img src="{% static 'icon/meal1.svg' %}" alt="">
+                                    <div class="chef_meal_card_name">Каша гречневая</div>
+                                    <div class="chef_meal_card_amount">230/400 порций</div>
+                                </div>
+                            </div>
+                            <div class="chef_meal_card">
+                                <div class="chef_meal_card_label">1-е блюдо</div>
+                                <div class="chef_meal_card_body">
+                                    <img src="{% static 'icon/meal1.svg' %}" alt="">
+                                    <div class="chef_meal_card_name">Сырники с джемом</div>
+                                    <div class="chef_meal_card_amount">270/450 порций</div>
+                                </div>
+                            </div>
+                            <div class="chef_meal_card">
+                                <div class="chef_meal_card_label">1-е блюдо</div>
+                                <div class="chef_meal_card_body">
+                                    <img src="{% static 'icon/meal1.svg' %}" alt="">
+                                    <div class="chef_meal_card_name">Чай чёрный</div>
+                                    <div class="chef_meal_card_amount">370/500 порций</div>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="chef_meal_block">
+                        <div class="chef_meal_block_header">
+                            <span class="chef_meal_title">Обед</span>
+                            <span class="chef_meal_count">920 порций</span>
+                        </div>
+                        <div class="chef_meal_cards">
+                            <div class="chef_meal_card">
+                                <div class="chef_meal_card_label">1-е блюдо</div>
+                                <div class="chef_meal_card_body">
+                                    <img src="{% static 'icon/meal1.svg' %}" alt="">
+                                    <div class="chef_meal_card_name">Суп куриный</div>
+                                    <div class="chef_meal_card_amount">280/400 порций</div>
+                                </div>
+                            </div>
+                            <div class="chef_meal_card">
+                                <div class="chef_meal_card_label">2-е блюдо</div>
+                                <div class="chef_meal_card_body">
+                                    <img src="{% static 'icon/meal1.svg' %}" alt="">
+                                    <div class="chef_meal_card_name">Котлета с пюре</div>
+                                    <div class="chef_meal_card_amount">260/350 порций</div>
+                                </div>
+                            </div>
+                            <div class="chef_meal_card">
+                                <div class="chef_meal_card_label">Напиток</div>
+                                <div class="chef_meal_card_body">
+                                    <img src="{% static 'icon/meal1.svg' %}" alt="">
+                                    <div class="chef_meal_card_name">Компот</div>
+                                    <div class="chef_meal_card_amount">380/520 порций</div>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="chef_meal_block">
+                        <div class="chef_meal_block_header">
+                            <span class="chef_meal_title">Полдник</span>
+                            <span class="chef_meal_count">540 порций</span>
+                        </div>
+                        <div class="chef_meal_cards">
+                            <div class="chef_meal_card">
+                                <div class="chef_meal_card_label">Перекус</div>
+                                <div class="chef_meal_card_body">
+                                    <img src="{% static 'icon/meal1.svg' %}" alt="">
+                                    <div class="chef_meal_card_name">Йогурт</div>
+                                    <div class="chef_meal_card_amount">180/240 порций</div>
+                                </div>
+                            </div>
+                            <div class="chef_meal_card">
+                                <div class="chef_meal_card_label">Фрукт</div>
+                                <div class="chef_meal_card_body">
+                                    <img src="{% static 'icon/meal1.svg' %}" alt="">
+                                    <div class="chef_meal_card_name">Яблоко</div>
+                                    <div class="chef_meal_card_amount">200/250 порций</div>
+                                </div>
+                            </div>
+                            <div class="chef_meal_card">
+                                <div class="chef_meal_card_label">Напиток</div>
+                                <div class="chef_meal_card_body">
+                                    <img src="{% static 'icon/meal1.svg' %}" alt="">
+                                    <div class="chef_meal_card_name">Морс</div>
+                                    <div class="chef_meal_card_amount">160/220 порций</div>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+                <aside class="chef_serving_side" aria-label="Сводка выдач">
+                    <div class="chef_serving_card">
+                        <div class="chef_serving_metric">Завтраков выдано: 130</div>
+                        <div class="chef_serving_divider"></div>
+                        <div class="chef_serving_metric">Обедов выдано: 200</div>
+                        <div class="chef_serving_divider"></div>
+                        <button class="chef_serving_cta" type="button" data-open-view="chef_stocks">Перейти к остаткам
+                        </button>
+                    </div>
+                </aside>
+            </section>
+        </section>
+    </div>
+
+    <div class="menu_app_view" data-view="chef_orders">
+        <header class="admin_main_header">
+            <div class="admin_main_header_left">Заявки на закупку</div>
+            <div class="admin_main_header_right">
+                <div class="admin_notify_wrap">
+                    <button class="admin_notify_button" type="button" aria-label="Уведомления">
+                        <img src="{% static 'icon/notifications.svg' %}" alt="">
+                    </button>
+                </div>
+                <div class="admin_user_meta">
+                    <div class="admin_user_name">Имя Фамилия</div>
+                    <div class="admin_user_role">Повар</div>
+                </div>
+                <div class="admin_avatar_wrap">
+                    <img src="{% static 'icon/photo_2026-01-14_11-19-22.jpg' %}" class="admin_user_avatar" alt=""
+                         role="button" tabindex="0" aria-label="Аккаунт">
+                </div>
+            </div>
+        </header>
+
+        <section class="chef_page_body">
+            <section class="chef_orders_page">
+                <div class="chef_orders_header">
+                    <div class="chef_orders_status">
+                        <span>3 активные</span>
+                        <span>124 завершенные</span>
+                    </div>
+                    <button class="chef_orders_new" type="button" data-open-view="chef_order_new">
+                        <img class="chef_orders_new_icon" src="{% static 'icon/add_2.svg' %}" alt="">
+                        Новая заявка
+                    </button>
+                </div>
+                <section class="chef_orders_panel">
+                    <h2 class="chef_orders_title">История заявок</h2>
+                    <div class="chef_orders_table_padder">
+                        <div class="chef_orders_table_wrap">
+                            <table class="chef_orders_table">
+                                <thead>
+                                <tr>
+                                    <th>№</th>
+                                    <th>Дата</th>
+                                    <th>Создатель</th>
+                                    <th>Товары</th>
+                                    <th>Сумма</th>
+                                    <th>Статус</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for item in all_buyorders %}
+                                <tr>
+                                    <td>{{ item.id }}</td>
+                                    <td>{{ item.date|date:"d.m.y" }}</td>
+                                    <td>{{ item.user_id }}</td>
+                                    <td>{{ item.items }}</td>
+                                    <td>{{ item.summ_rub|floatformat:2 }} ₽</td>
+                                    <td>
+                                        {% if item.status == "allowed" %}
+                                        <span class="chef_orders_status_badge chef_orders_status_badge--ok">Одобрено</span>
+                                        {% elif item.status == "rejected" %}
+                                        <span class="chef_orders_status_badge chef_orders_status_badge--reject">Отклонено</span>
+                                        {% else %}
+                                        <span class="chef_orders_status_badge">Ожидает</span>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+            </section>
+        </section>
+    </div>
+
+    <div class="menu_app_view" data-view="chef_stocks">
+        <header class="admin_main_header">
+            <div class="admin_main_header_left">Остатки</div>
+            <div class="admin_main_header_right">
+                <div class="admin_notify_wrap">
+                    <button class="admin_notify_button" type="button" aria-label="Уведомления">
+                        <img src="{% static 'icon/notifications.svg' %}" alt="">
+                    </button>
+                </div>
+                <div class="admin_user_meta">
+                    <div class="admin_user_name">Имя Фамилия</div>
+                    <div class="admin_user_role">Повар</div>
+                </div>
+                <div class="admin_avatar_wrap">
+                    <img src="{% static 'icon/photo_2026-01-14_11-19-22.jpg' %}" class="admin_user_avatar" alt=""
+                         role="button" tabindex="0" aria-label="Аккаунт">
+                </div>
+            </div>
+        </header>
+
+        <section class="chef_page_body">
+            <section class="chef_stocks_outer">
+                <section class="chef_stocks_panel">
+                    <h2 class="chef_stocks_title">Остатки по продуктам</h2>
+                    <div class="chef_stocks_list_outer">
+                        <div class="chef_stocks_table_wrap">
+                            <table class="chef_stocks_table">
+                                <thead>
                                 <tr>
                                     <th>Продукт</th>
                                     <th>Остаток</th>
@@ -584,8 +580,8 @@
                                     <th>Оповещение</th>
                                     <th>Заявка</th>
                                 </tr>
-                            </thead>
-                            <tbody>
+                                </thead>
+                                <tbody>
                                 {% for item in ingredients %}
                                 <tr>
                                     <td>{{ item.name }}</td>
@@ -594,157 +590,175 @@
                                     <td>Наличие достаточно</td>
                                     {% else %}
                                     <td>Осталось мало</td>
-                                    <td><button class="chef_stocks_action" type="button">Составить заявку</button></td>
+                                    <td>
+                                        <button class="chef_stocks_action" type="button">Составить заявку</button>
+                                    </td>
                                     {% endif %}
                                 </tr>
                                 {% endfor %}
-                            </tbody>
-                                </table>
-                            </div>
+                                </tbody>
+                            </table>
                         </div>
-                    </section>
+                    </div>
                 </section>
             </section>
-        </div>
+        </section>
+    </div>
 
-        <div class="menu_app_view" data-view="chef_order_new">
-            <header class="admin_main_header">
-                <div class="admin_main_header_left">Новая заявка</div>
-                <div class="admin_main_header_right">
-                    <div class="admin_notify_wrap">
-                        <button class="admin_notify_button" type="button" aria-label="Уведомления">
-                            <img src="{% static 'icon/notifications.svg' %}" alt="">
-                        </button>
-                    </div>
-                    <div class="admin_user_meta">
-                        <div class="admin_user_name">Имя Фамилия</div>
-                        <div class="admin_user_role">Повар</div>
-                    </div>
-                    <div class="admin_avatar_wrap">
-                        <img src="{% static 'icon/photo_2026-01-14_11-19-22.jpg' %}" class="admin_user_avatar" alt="" role="button" tabindex="0" aria-label="Аккаунт">
-                    </div>
+    <div class="menu_app_view" data-view="chef_order_new">
+        <header class="admin_main_header">
+            <div class="admin_main_header_left">Новая заявка</div>
+            <div class="admin_main_header_right">
+                <div class="admin_notify_wrap">
+                    <button class="admin_notify_button" type="button" aria-label="Уведомления">
+                        <img src="{% static 'icon/notifications.svg' %}" alt="">
+                    </button>
                 </div>
-            </header>
+                <div class="admin_user_meta">
+                    <div class="admin_user_name">Имя Фамилия</div>
+                    <div class="admin_user_role">Повар</div>
+                </div>
+                <div class="admin_avatar_wrap">
+                    <img src="{% static 'icon/photo_2026-01-14_11-19-22.jpg' %}" class="admin_user_avatar" alt=""
+                         role="button" tabindex="0" aria-label="Аккаунт">
+                </div>
+            </div>
+        </header>
 
-            <section class="chef_page_body">
-                <section class="chef_order_new_page">
-                    <form class="chef_order_new_panel" id="chefOrderForm" action="#" method="post">
-                        {% csrf_token %}
-                        <div class="chef_order_new_header">
-                            <h3 class="chef_order_new_title">Состав заявки</h3>
-                            <span class="chef_order_new_sub">Выберите продукт и количество</span>
-                        </div>
+        <section class="chef_page_body">
+            <section class="chef_order_new_page">
+                <form class="chef_order_new_panel" id="chefOrderForm" action="#" method="post">
+                    {% csrf_token %}
+                    <div class="chef_order_new_header">
+                        <h3 class="chef_order_new_title">Состав заявки</h3>
+                        <span class="chef_order_new_sub">Выберите продукт и количество</span>
+                    </div>
 
-                        <div class="chef_order_new_body">
-                            <div class="chef_order_new_row" data-order-row="1">
-                                <div class="chef_order_new_field">
-                                    <label class="chef_order_new_label" for="order_product_1">Продукт</label>
-                                    <div class="chef_product_picker">
-                                        <button class="chef_product_add" type="button" aria-haspopup="listbox" aria-expanded="false">
-                                            <span>Выберите продукт</span>
-                                            <img class="chef_product_add_icon" src="{% static 'icon/arrow_back_ios_new.svg' %}" alt="">
+                    <div class="chef_order_new_body">
+                        <div class="chef_order_new_row" data-order-row="1">
+                            <div class="chef_order_new_field">
+                                <label class="chef_order_new_label" for="order_product_1">Продукт</label>
+                                <div class="chef_product_picker">
+                                    <button class="chef_product_add" type="button" aria-haspopup="listbox"
+                                            aria-expanded="false">
+                                        <span>Выберите продукт</span>
+                                        <img class="chef_product_add_icon"
+                                             src="{% static 'icon/arrow_back_ios_new.svg' %}" alt="">
+                                    </button>
+                                    <div class="chef_product_menu" role="listbox" aria-label="Продукты">
+                                        {% for ingredient in ingredients %}
+                                        <button class="chef_product_option" type="button"
+                                                data-value="{{ ingredient.id }}">{{ ingredient.name }}
                                         </button>
-                                        <div class="chef_product_menu" role="listbox" aria-label="Продукты">
-                                           {% for ingredient in ingredients %}
-                                            <button class="chef_product_option" type="button" data-value="{{ ingredient.id }}">{{ ingredient.name }}</button>
-                                            {% endfor %}
-                                        </div>
-                                        <input class="chef_product_input" id="order_product_1" name="products[]" type="hidden" value="">
+                                        {% endfor %}
                                     </div>
+                                    <input class="chef_product_input" id="order_product_1" name="products[]"
+                                           type="hidden" value="">
                                 </div>
-
-                                <div class="chef_order_new_field">
-                                    <label class="chef_order_new_label" for="order_price_1">Цена</label>
-                                    <input class="chef_order_new_input chef_order_new_input--price" id="order_price_1" name="prices[]" type="number" min="0" step="0.01" value="" required>
-                                    <span class="chef_order_new_unit">₽/кг</span>
-                                </div>
-
-                                <div class="chef_order_new_field">
-                                    <label class="chef_order_new_label" for="order_qty_1">Количество</label>
-                                    <div class="chef_order_new_field">
-                                        <input class="chef_order_new_input" id="order_qty_1" name="quantities[]" type="number" min="1" step="0.01" value="10" required>
-                                        <span class="chef_order_new_unit">кг</span>
-                                    </div>
-                                </div>
-                                <button class="chef_order_row_remove" type="button" aria-label="Удалить продукт">×</button>
                             </div>
-                        </div>
 
-                        <div class="chef_order_new_add">
-                            <button class="chef_order_new_add_btn" type="button">+ Добавить ещё продукт</button>
-                        </div>
+                            <div class="chef_order_new_field">
+                                <label class="chef_order_new_label" for="order_price_1">Цена</label>
+                                <input class="chef_order_new_input chef_order_new_input--price" id="order_price_1"
+                                       name="prices[]" type="number" min="0" step="0.01" value="" required>
+                                <span class="chef_order_new_unit">₽/кг</span>
+                            </div>
 
-                        <div class="chef_order_new_actions">
-                            <button class="chef_order_new_action chef_order_new_action--ghost" type="button" data-open-view="chef_orders">
-                                Отменить
-                            </button>
-                            <button class="chef_order_new_action" type="submit">Отправить заявку</button>
-                        </div>
-                        <template id="chefOrderRowTemplate">
-                            <div class="chef_order_new_row" data-order-row="__INDEX__">
+                            <div class="chef_order_new_field">
+                                <label class="chef_order_new_label" for="order_qty_1">Количество</label>
                                 <div class="chef_order_new_field">
-                                    <label class="chef_order_new_label" for="order_product___INDEX__">Продукт</label>
-                                    <div class="chef_product_picker">
-                                        <button class="chef_product_add" type="button" aria-haspopup="listbox" aria-expanded="false">
-                                            <span>Выберите продукт</span>
-                                            <img class="chef_product_add_icon" src="{% static 'icon/arrow_back_ios_new.svg' %}" alt="">
+                                    <input class="chef_order_new_input" id="order_qty_1" name="quantities[]"
+                                           type="number" min="1" step="0.01" value="10" required>
+                                    <span class="chef_order_new_unit">кг</span>
+                                </div>
+                            </div>
+                            <button class="chef_order_row_remove" type="button" aria-label="Удалить продукт">×</button>
+                        </div>
+                    </div>
+
+                    <div class="chef_order_new_add">
+                        <button class="chef_order_new_add_btn" type="button">+ Добавить ещё продукт</button>
+                    </div>
+
+                    <div class="chef_order_new_actions">
+                        <button class="chef_order_new_action chef_order_new_action--ghost" type="button"
+                                data-open-view="chef_orders">
+                            Отменить
+                        </button>
+                        <button class="chef_order_new_action" type="submit">Отправить заявку</button>
+                    </div>
+                    <template id="chefOrderRowTemplate">
+                        <div class="chef_order_new_row" data-order-row="__INDEX__">
+                            <div class="chef_order_new_field">
+                                <label class="chef_order_new_label" for="order_product___INDEX__">Продукт</label>
+                                <div class="chef_product_picker">
+                                    <button class="chef_product_add" type="button" aria-haspopup="listbox"
+                                            aria-expanded="false">
+                                        <span>Выберите продукт</span>
+                                        <img class="chef_product_add_icon"
+                                             src="{% static 'icon/arrow_back_ios_new.svg' %}" alt="">
+                                    </button>
+                                    <div class="chef_product_menu" role="listbox" aria-label="Продукты">
+                                        {% for ingredient in ingredients %}
+                                        <button class="chef_product_option" type="button"
+                                                data-value="{{ ingredient.id }}">{{ ingredient.name }}
                                         </button>
-                                        <div class="chef_product_menu" role="listbox" aria-label="Продукты">
-                                           {% for ingredient in ingredients %}
-                                            <button class="chef_product_option" type="button" data-value="{{ ingredient.id }}">{{ ingredient.name }}</button>
-                                            {% endfor %}
-                                        </div>
-                                        <input class="chef_product_input" id="order_product___INDEX__" name="products[]" type="hidden" value="">
+                                        {% endfor %}
                                     </div>
+                                    <input class="chef_product_input" id="order_product___INDEX__" name="products[]"
+                                           type="hidden" value="">
                                 </div>
-
-                                <div class="chef_order_new_field">
-                                    <label class="chef_order_new_label" for="order_price___INDEX__">Цена</label>
-                                    <input class="chef_order_new_input chef_order_new_input--price" id="order_price___INDEX__" name="prices[]" type="number" min="0" step="0.01" value="" required>
-                                    <span class="chef_order_new_unit">₽/кг</span>
-                                </div>
-
-                                <div class="chef_order_new_field">
-                                    <label class="chef_order_new_label" for="order_qty___INDEX__">Количество</label>
-                                    <div class="chef_order_new_field">
-                                        <input class="chef_order_new_input" id="order_qty___INDEX__" name="quantities[]" type="number" min="1" step="0.01" value="10" required>
-                                        <span class="chef_order_new_unit">кг</span>
-                                    </div>
-                                </div>
-                                <button class="chef_order_row_remove" type="button" aria-label="Удалить продукт">×</button>
                             </div>
-                        </template>
-                    </form>
-                </section>
+
+                            <div class="chef_order_new_field">
+                                <label class="chef_order_new_label" for="order_price___INDEX__">Цена</label>
+                                <input class="chef_order_new_input chef_order_new_input--price"
+                                       id="order_price___INDEX__" name="prices[]" type="number" min="0" step="0.01"
+                                       value="" required>
+                                <span class="chef_order_new_unit">₽/кг</span>
+                            </div>
+
+                            <div class="chef_order_new_field">
+                                <label class="chef_order_new_label" for="order_qty___INDEX__">Количество</label>
+                                <div class="chef_order_new_field">
+                                    <input class="chef_order_new_input" id="order_qty___INDEX__" name="quantities[]"
+                                           type="number" min="1" step="0.01" value="10" required>
+                                    <span class="chef_order_new_unit">кг</span>
+                                </div>
+                            </div>
+                            <button class="chef_order_row_remove" type="button" aria-label="Удалить продукт">×</button>
+                        </div>
+                    </template>
+                </form>
             </section>
-        </div>
+        </section>
     </div>
+</div>
 
-    <div id="adminNotifyOverlay" class="admin_notify_overlay" aria-hidden="true">
-        <div class="admin_notify_title">Уведомления</div>
-        <div class="admin_notify_list" aria-live="polite">
-            <div class="notif_element">
-                <p>Новая заявка от 10.01.26!</p>
-            </div>
-            <div class="notif_element">
-                <p>Отчёт по затратам сформирован!</p>
-            </div>
-            <div class="notif_element">
-                <p>Низкий остаток: пельмени</p>
-            </div>
-            <div class="notif_element">
-                <p>Новая заявка от 09.01.26!</p>
-            </div>
+<div id="adminNotifyOverlay" class="admin_notify_overlay" aria-hidden="true">
+    <div class="admin_notify_title">Уведомления</div>
+    <div class="admin_notify_list" aria-live="polite">
+        {% if notifications %}
+        {% for notification in notifications %}
+        <div class="notif_element">
+            <p>{{ notification.body }}</p>
         </div>
+        {% endfor %}
+        {% else %}
+        <div class="notif_element">
+            <p>Уведомлений нет</p>
+        </div>
+        {% endif %}
     </div>
-    <div id="adminLogoutOverlay" class="admin_logout_overlay" aria-hidden="true">
-        <form action="{% url 'logout' %}" method="post">
-            {% csrf_token %}
-            <button class="admin_logout_button" type="submit">выйти из аккаунта</button>
-        </form>
-    </div>
+</div>
+<div id="adminLogoutOverlay" class="admin_logout_overlay" aria-hidden="true">
+    <form action="{% url 'logout' %}" method="post">
+        {% csrf_token %}
+        <button class="admin_logout_button" type="submit">выйти из аккаунта</button>
+    </form>
+</div>
 
-    <script src="../../static/chef_main/js/admin_slider.js"></script>
-    <script src="../../static/chef_main/js/gives.js"></script>
+<script src="../../static/chef_main/js/admin_slider.js"></script>
+<script src="../../static/chef_main/js/gives.js"></script>
 </body>
 </html>

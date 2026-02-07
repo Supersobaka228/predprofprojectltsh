@@ -267,6 +267,14 @@ body {
     display: inline-flex;
 }
 
+.main_main_notifications_panel > p {
+    margin: 0;
+    font-weight: 700;
+    font-size: clamp(0.88rem, 1vw, 1.1rem);
+    text-align: center;
+    margin-bottom: 0.5rem;
+}
+
 .admin_logout_overlay {
     position: absolute;
     right: 0;

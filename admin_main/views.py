@@ -8,7 +8,7 @@ from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
-from django.db.models import Prefetch
+from django.db.models import Prefetch, Q
 
 from admin_main.models import BuyOrder, Notification
 from chef_main.models import Ingredient, LOW_STOCK_THRESHOLD
@@ -132,7 +132,9 @@ def admin(request):
 
     context = {
         'current_user': user,
-        'notifications': Notification.objects.all(),
+        'notifications': Notification.objects.filter(
+            Q(recipient_type=Notification.RECIPIENT_ALL) | Q(recipient_type=Notification.RECIPIENT_ADMIN)
+        ).order_by('-created_at'),
         'buyorders': BuyOrder.objects.order_by('-date'),
         'buyorders_count': len(BuyOrder.objects.all()),
         'data': orders_by_date(),
