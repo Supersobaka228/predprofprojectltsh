@@ -28,6 +28,7 @@ def chef(request):
         quantities = post.getlist('quantities[]')
         prices = post.getlist('prices[]')
         limit = min(len(products), len(quantities), len(prices))
+        buyorders_created = []
         for i in range(limit):
             product_id = products[i].strip()
             if not product_id:
@@ -39,7 +40,15 @@ def chef(request):
                 continue
             total_cents = (quantity * price * Decimal('100')).quantize(Decimal('1'), rounding=ROUND_HALF_UP)
             ingredient = Ingredient.objects.get(id=product_id)
-            BuyOrder.objects.create(items=ingredient, user_id=request.user, summ=int(total_cents))
+            buyorders_created.append(BuyOrder.objects.create(items=ingredient, user_id=request.user, summ=int(total_cents)))
+        if buyorders_created:
+            user_label = request.user.get_full_name() or getattr(request.user, 'email', '') or str(request.user.id)
+            Notification.objects.create(
+                recipient_type=Notification.RECIPIENT_ADMIN,
+                recipient_user=None,
+                title='buyorder_created',
+                body=f'Новая заявка на закупку от {user_label}.',
+            )
         return redirect('chef_main')
     day_key = _get_day_key()
     week_context = _build_week_context(day_key)
