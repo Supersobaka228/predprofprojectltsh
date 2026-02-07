@@ -1,5 +1,5 @@
 import json
-from datetime import datetime, date
+from datetime import datetime, date, timedelta
 from decimal import Decimal, InvalidOperation, ROUND_HALF_UP
 
 from django.http import JsonResponse
@@ -41,7 +41,9 @@ def chef(request):
             ingredient = Ingredient.objects.get(id=product_id)
             BuyOrder.objects.create(items=ingredient, user_id=request.user, summ=int(total_cents))
         return redirect('chef_main')
-    a, b = meals_view()
+    day_key = _get_day_key()
+    week_context = _build_week_context(day_key)
+    a, b = meals_view(day_key=day_key)
     user_buyorders = BuyOrder.objects.filter(user_id=request.user).order_by('-date')
     all_buyorders = BuyOrder.objects.order_by('-date')[:100]
     menu = MenuItem.objects.all()
@@ -52,7 +54,15 @@ def chef(request):
         'all_buyorders': all_buyorders,
         'meals_b': a,
         'meals_l': b,
-        'today': today_str,
+        'today': week_context['selected_date'],
+        'day_key': week_context['day_key'],
+        'week_start': week_context['week_start'],
+        'week_end': week_context['week_end'],
+        'week_label': week_context['week_label'],
+        'selected_date': week_context['selected_date'],
+        'selected_date_display': week_context['selected_date_display'],
+        'selected_day_label': week_context['selected_day_label'],
+        'day_buttons': week_context['day_buttons'],
         'ingredients': Ingredient.objects.all(),
         'buyorders_count': len(BuyOrder.objects.all()),
         'menu': len(menu),
@@ -77,10 +87,10 @@ def chef(request):
     return render(request, 'chef_main/chef_main.html', context)
 
 
-def meals_view():
+def meals_view(day_key=None):
     ans1, ans2 = [], []
-    today_weekday = date.today().isoweekday()
-    day_key = today_weekday if 1 <= today_weekday <= 5 else 5 # ВОЗМОЖНЫЙ НЕДОЧЁТ, тут можно менять для тестов днеи недели. Сейчас если сб-вс то отображает пятницу
+    if day_key is None:
+        day_key = _get_day_key()
     try:
         menu_t = DayOrder.objects.get(day=day_key)
     except DayOrder.DoesNotExist:
@@ -110,7 +120,9 @@ def update_issued_count(request):
         meal_id = data.get('meal_id')
         action = data.get('action')  # 'issue' или 'return'
         amount = int(data.get('amount', 0))
-        date_str = data.get('date') or date.today().strftime('%Y-%m-%d')
+        received_day_key = data.get('day_key')
+        sanitized_day_key = _sanitize_day_key(received_day_key)
+        date_str = _date_str_for_day_key(sanitized_day_key)
 
         # Получаем блюдо
         meal = Meal.objects.get(id=meal_id)
@@ -126,7 +138,8 @@ def update_issued_count(request):
         day_data = meal.count_by_days[date_str]
         if action == 'issue':
             # Выдача порций
-            if day_data.get('g', 0) + amount <= get_remains_dict()[meal.id]:
+            available_servings = get_remains_dict()[meal.id]
+            if amount <= available_servings:
                 day_data['g'] = day_data.get('g', 0) + amount
                 meals_give(amount, meal_id)
             else:
@@ -138,7 +151,7 @@ def update_issued_count(request):
         elif action == 'return':
             # Возврат порций
 
-            meals_give(amount, meal_id)
+            meals_give(amount, meal_id, release=False)
             day_data['g'] = max(0, day_data.get('g', 0) - amount)
 
         # Сохраняем обновленные данные
@@ -164,7 +177,7 @@ def update_issued_count(request):
         return JsonResponse({
             'success': False,
             'error': 'Блюдо не найдено'
-        }, status=404)
+         }, status=404)
     except Exception as e:
         print(f"Ошибка: {e}")
         return JsonResponse({
@@ -230,13 +243,87 @@ def _notify_low_stock(ingredient, previous_remains):
             ingredient.low_stock_notified = True
 
 
-def meals_give(amount, meal_id):
+def meals_give(amount, meal_id, *, release=True):
     f = Meal.objects.get(id=meal_id)
 
     for i in f.ingredients.all():
         d = MealIngredient.objects.get(meal=f.id, ingredient=i.id)
+        delta = amount * d.mass
         previous_remains = i.remains
-        i.remains -= amount * d.mass
-        _notify_low_stock(i, previous_remains)
-        i.save(update_fields=['remains', 'low_stock_notified'])
+        if release:
+            i.remains = max(0, i.remains - delta)
+            _notify_low_stock(i, previous_remains)
+            update_fields = ['remains', 'low_stock_notified']
+        else:
+            i.remains += delta
+            if i.remains >= LOW_STOCK_THRESHOLD and i.low_stock_notified:
+                i.low_stock_notified = False
+            update_fields = ['remains', 'low_stock_notified']
+        i.save(update_fields=update_fields)
         print(i.remains)
+
+
+def _get_day_key(today=None):
+    if today is None:
+        today = date.today()
+    weekday = today.isoweekday()
+    return weekday if 1 <= weekday <= 5 else 5
+
+
+def _sanitize_day_key(day_key):
+    try:
+        value = int(day_key)
+    except (TypeError, ValueError):
+        value = _get_day_key()
+    if value < 1:
+        value = 1
+    if value > 5:
+        value = 5
+    return value
+
+
+def _date_str_for_day_key(day_key, today=None):
+    if today is None:
+        today = date.today()
+    week_start = today - timedelta(days=today.weekday())
+    target_date = week_start + timedelta(days=day_key - 1)
+    return target_date.strftime('%Y-%m-%d')
+
+
+def _build_week_context(day_key, today=None):
+    if today is None:
+        today = date.today()
+    week_start = today - timedelta(days=today.weekday())
+    week_end = week_start + timedelta(days=4)
+    selected_date = week_start + timedelta(days=day_key - 1)
+
+    full_names = [
+        'Понедельник',
+        'Вторник',
+        'Среда',
+        'Четверг',
+        'Пятница',
+        'Суббота',
+        'Воскресенье',
+    ]
+    short_names = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт']
+
+    day_buttons = []
+    for index in range(5):
+        day_date = week_start + timedelta(days=index)
+        day_buttons.append({
+            'day': index + 1,
+            'date': day_date.isoformat(),
+            'label': short_names[index],
+        })
+
+    return {
+        'day_key': day_key,
+        'week_start': week_start.isoformat(),
+        'week_end': week_end.isoformat(),
+        'selected_date': selected_date.isoformat(),
+        'selected_date_display': selected_date.strftime('%d.%m.%Y'),
+        'selected_day_label': full_names[day_key - 1] if 1 <= day_key <= 7 else '',
+        'week_label': f"{week_start.strftime('%d.%m')} - {week_end.strftime('%d.%m')}",
+        'day_buttons': day_buttons,
+    }

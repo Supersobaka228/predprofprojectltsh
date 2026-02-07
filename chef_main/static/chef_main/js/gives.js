@@ -66,15 +66,26 @@ function updateMealCount(mealId, action, amount) {
             meal_id: String(mealId),  // Преобразуем в строку на всякий случай
             action: String(action),
             amount: amountNum,
-            date: String(date)
+            date: String(date),
+            day_key: getActiveDayKey()
         })
     });
 }
 
     // Получение текущей даты в формате YYYY-MM-DD
     function getCurrentDate() {
+        const datebar = document.querySelector('[data-role="datebar"]');
+        const selected = datebar && datebar.dataset && datebar.dataset.date;
+        if (selected) {
+            return selected;
+        }
         const now = new Date();
         return now.toISOString().split('T')[0];
+    }
+
+    function getActiveDayKey() {
+        const activeButton = document.querySelector('.chef_serving_day.is-active');
+        return activeButton ? activeButton.dataset.day : null;
     }
 
     // Обновление отображения счетчиков

@@ -291,10 +291,10 @@ def order(request, day_d):
             gh.count_by_days = count_by_days
             gh.save(update_fields=['count_by_days'])
             print(gh.__dict__)
-            for ui in gh.ingredients.all():
-                ui.remains -= gh.weight
-                ui.save()
-                print(ui.__dict__)
+            # NOTE: inventory decrement moved to chef_main.meals_give (actual issuance)
+            # If you want orders to reserve/decrease stock at payment time,
+            # re-enable subtraction here. For now we do not touch Ingredient.remains
+            # when a student creates an order to keep decrements only on issuance.
 
         try:
             created_order = form.save()
