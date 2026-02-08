@@ -353,7 +353,7 @@
         <section class="admin_menu_configurator_main">
             <input type="hidden" id="day_input_value">
             {{ menu_prefill_data|json_script:"menu-prefill-data" }}
-            <div id="menu-config-forms"></div>
+            <div id="menu-config-forms" data-delete-icon="{% static 'icon/delete.svg' %}"></div>
             <template id="menu-config-template">
                 <form class="menu_configurator_form" method="post">
                     {% csrf_token %}
@@ -782,6 +782,8 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </body>
 </html>
+
+
 
 
 
