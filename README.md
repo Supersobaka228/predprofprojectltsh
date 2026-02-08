@@ -39,9 +39,10 @@ python manage.py createsuperuser
 python manage.py runserver
 ```
 
-Документация: https://disk.yandex.ru/i/Kogrd9_-RcOVuA
+Документация: Лежит в корне проекта
 
 Видеоролик: https://rutube.ru/video/private/e05e7d99b7901a16dfe843aa6d769e13/?p=3fOUpA_k8Zgigie6fgerhA
+
 
 
 
