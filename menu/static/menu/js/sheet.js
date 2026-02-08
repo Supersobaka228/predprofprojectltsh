@@ -326,31 +326,25 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function closeRate() {
-    // делаем идемпотентно: можно вызывать сколько угодно раз
     isRateOpen = false;
     if (rateOverlay) rateOverlay.classList.remove("active");
 
-    // снимаем любые блокировки свайпа
     resetSheetInteractions();
   }
 
-  // делаем доступным для других скриптов (например, ajax_menu.js)
   window.openRate = openRate;
   window.closeRate = closeRate;
   window.resetSheetInteractions = resetSheetInteractions;
   window.setRating = setRating;
   window.applyOrderButtonState = applyOrderButtonState;
 
-  /* Открытие */
   openRateBtn.addEventListener("click", (e) => {
     e.preventDefault();
     openRate(e);
   });
 
-  /* Закрытие по кнопке */
   rateCancel.addEventListener("click", closeRate);
 
-  /* Закрытие по фону */
   rateOverlay.addEventListener("click", e => {
     if (e.target === rateOverlay) {
       closeRate();

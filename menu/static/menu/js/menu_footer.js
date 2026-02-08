@@ -4,7 +4,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const highlight = document.querySelector('.footer_highlight');
   const buttons = locator.querySelectorAll('.footer_container');
 
-  // Добавим выборку экранов (плашек)
   const views = document.querySelectorAll('.app_view');
 
   function moveHighlight(button) {
@@ -20,7 +19,6 @@ document.addEventListener('DOMContentLoaded', () => {
     highlight.style.left = `${left}px`;
   }
 
-  // Функция переключения видимой плашки
   function openView(name) {
   views.forEach(view => {
     view.classList.toggle('app_view--active', view.dataset.view === name);
@@ -28,7 +26,6 @@ document.addEventListener('DOMContentLoaded', () => {
 }
 
 
-  // Инициализация: подсветка и активный экран
   moveHighlight(buttons[0]);
   buttons[0].classList.add('active');
   openView(buttons[0].dataset.view);
@@ -40,7 +37,6 @@ document.addEventListener('DOMContentLoaded', () => {
       buttons.forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
 
-      // Переключаем плашки
       openView(btn.dataset.view);
     });
   });

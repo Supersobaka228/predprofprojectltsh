@@ -1,5 +1,4 @@
-// Универсальная AJAX-обвязка для menu.html
-// Исключение: аллергенов (aller.js / update_allergens) пока не трогаем.
+
 
 document.addEventListener('DOMContentLoaded', () => {
   const balanceEls = [
@@ -55,7 +54,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const paymentLabel = document.querySelector('#paymentOverlay .payment-label');
     if (paymentLabel) {
-      // там строка вида "Текущий баланс: ...₽"
       paymentLabel.textContent = 'Текущий баланс: ' + balanceDisplay + '₽';
     }
   }
@@ -148,7 +146,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (el) el.setAttribute('data-order-status', status || '');
   }
 
-  // 1) Пополнение баланса (payment overlay)
   const topupForm = document.querySelector('#paymentOverlay form.payment-card');
   if (topupForm) {
     topupForm.addEventListener('submit', async (e) => {
@@ -204,7 +201,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // 2) Заказ блюда из sheet (order-form)
   const orderForm = document.getElementById('order-form');
   if (orderForm) {
     orderForm.addEventListener('submit', async (e) => {
@@ -293,14 +289,11 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // 3) Отзыв (review-form)
   const reviewForm = document.getElementById('review-form');
   if (reviewForm) {
     reviewForm.addEventListener('submit', async (e) => {
       e.preventDefault();
 
-      // Сначала закрываем оверлей отзыва тем же кодом, что и «Отмена»,
-      // чтобы гарантированно разблокировать sheet до любых async-операций.
       if (typeof window.closeRate === 'function') {
         window.closeRate();
       } else {
@@ -313,7 +306,6 @@ document.addEventListener('DOMContentLoaded', () => {
       try {
         const data = await postFormAjax(reviewForm);
         if (data?.success && data.action === 'review') {
-          // Добавим отзыв в DOM, чтобы он появился без перезагрузки
           const r = data.review;
           const container = document.getElementById('reviews-container');
           if (container && r) {
@@ -363,7 +355,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
           showToast('Отзыв отправлен');
 
-          // На всякий случай ещё раз сбрасываем блокировки, если какие-то события залипли
           if (typeof window.resetSheetInteractions === 'function') {
             window.resetSheetInteractions();
           }
@@ -378,7 +369,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // 4) Аллергены (allergens-form) — отдельный AJAX, чтобы не было полного перехода/ошибки ссылки
   const allergensForm = document.getElementById('allergens-form');
   if (allergensForm) {
     allergensForm.addEventListener('submit', async (e) => {
@@ -386,7 +376,6 @@ document.addEventListener('DOMContentLoaded', () => {
       try {
         const data = await postFormAjax(allergensForm);
         if (data?.success) {
-          // Обновляем список в настройках
           const ul = document.getElementById('user-allergens-list');
           if (ul) {
             ul.innerHTML = '';
@@ -405,11 +394,9 @@ document.addEventListener('DOMContentLoaded', () => {
             }
           }
 
-          // Плавно возвращаемся на settings экран (логика как в aller.js)
           const settings = document.querySelector('.settings_main');
           const allergens = document.querySelector('.allergens_main');
           if (settings && allergens) {
-            // resetScreens + showSettings
             [settings, allergens].forEach(screen => {
               screen.classList.remove('is-active', 'is-exit-left');
               screen.style.transform = 'translateX(100%)';
