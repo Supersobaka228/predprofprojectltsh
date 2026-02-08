@@ -24,10 +24,7 @@
             <div class="admin_nav_slider"></div>
             <button class="admin_nav_button" data-view="chef_main"><img src="{% static 'icon/home.svg' %}" alt="">Главная
             </button>
-            <button class="admin_nav_button" data-view="chef_serving"><img class="admin_lefter_rest"
-                                                                           src="{% static 'icon/restaurant.svg' %}"
-                                                                           alt="">Выдачи
-            </button>
+
             <button class="admin_nav_button" data-view="chef_orders"><img src="{% static 'icon/note_add.svg' %}" alt="">Заявки
                 на закупку
             </button>
@@ -47,11 +44,11 @@
                     </button>
                 </div>
                 <div class="admin_user_meta">
-                    <div class="admin_user_name">Имя Фамилия</div>
-                    <div class="admin_user_role">Повар</div>
+                    <div class="admin_user_name">{{ profile_display_name }}</div>
+                    <div class="admin_user_role">{{ profile_role_label }}</div>
                 </div>
                 <div class="admin_avatar_wrap">
-                    <img src="{% static 'icon/photo_2026-01-14_11-19-22.jpg' %}" class="admin_user_avatar" alt=""
+                    <img src="{% static 'icon/Default_pfp.svg' %}" class="admin_user_avatar" alt=""
                          role="button" tabindex="0" aria-label="Аккаунт">
                 </div>
             </div>
@@ -311,11 +308,11 @@
                     </button>
                 </div>
                 <div class="admin_user_meta">
-                    <div class="admin_user_name">Имя Фамилия</div>
-                    <div class="admin_user_role">Повар</div>
+                    <div class="admin_user_name">{{ profile_display_name }}</div>
+                    <div class="admin_user_role">{{ profile_role_label }}</div>
                 </div>
                 <div class="admin_avatar_wrap">
-                    <img src="{% static 'icon/photo_2026-01-14_11-19-22.jpg' %}" class="admin_user_avatar" alt=""
+                    <img src="{% static 'icon/Default_pfp.svg' %}" class="admin_user_avatar" alt=""
                          role="button" tabindex="0" aria-label="Аккаунт">
                 </div>
             </div>
@@ -479,11 +476,11 @@
                     </button>
                 </div>
                 <div class="admin_user_meta">
-                    <div class="admin_user_name">Имя Фамилия</div>
-                    <div class="admin_user_role">Повар</div>
+                    <div class="admin_user_name">{{ profile_display_name }}</div>
+                    <div class="admin_user_role">{{ profile_role_label }}</div>
                 </div>
                 <div class="admin_avatar_wrap">
-                    <img src="{% static 'icon/photo_2026-01-14_11-19-22.jpg' %}" class="admin_user_avatar" alt=""
+                    <img src="{% static 'icon/Default_pfp.svg' %}" class="admin_user_avatar" alt=""
                          role="button" tabindex="0" aria-label="Аккаунт">
                 </div>
             </div>
@@ -555,11 +552,11 @@
                     </button>
                 </div>
                 <div class="admin_user_meta">
-                    <div class="admin_user_name">Имя Фамилия</div>
-                    <div class="admin_user_role">Повар</div>
+                    <div class="admin_user_name">{{ profile_display_name }}</div>
+                    <div class="admin_user_role">{{ profile_role_label }}</div>
                 </div>
                 <div class="admin_avatar_wrap">
-                    <img src="{% static 'icon/photo_2026-01-14_11-19-22.jpg' %}" class="admin_user_avatar" alt=""
+                    <img src="{% static 'icon/Default_pfp.svg' %}" class="admin_user_avatar" alt=""
                          role="button" tabindex="0" aria-label="Аккаунт">
                 </div>
             </div>
@@ -576,9 +573,7 @@
                                 <tr>
                                     <th>Продукт</th>
                                     <th>Остаток</th>
-                                    <th>Срок годности</th>
-                                    <th>Оповещение</th>
-                                    <th>Заявка</th>
+                                    <th>Статус</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -590,9 +585,6 @@
                                     <td>Наличие достаточно</td>
                                     {% else %}
                                     <td>Осталось мало</td>
-                                    <td>
-                                        <button class="chef_stocks_action" type="button">Составить заявку</button>
-                                    </td>
                                     {% endif %}
                                 </tr>
                                 {% endfor %}
@@ -615,11 +607,11 @@
                     </button>
                 </div>
                 <div class="admin_user_meta">
-                    <div class="admin_user_name">Имя Фамилия</div>
-                    <div class="admin_user_role">Повар</div>
+                    <div class="admin_user_name">{{ profile_display_name }}</div>
+                    <div class="admin_user_role">{{ profile_role_label }}</div>
                 </div>
                 <div class="admin_avatar_wrap">
-                    <img src="{% static 'icon/photo_2026-01-14_11-19-22.jpg' %}" class="admin_user_avatar" alt=""
+                    <img src="{% static 'icon/Default_pfp.svg' %}" class="admin_user_avatar" alt=""
                          role="button" tabindex="0" aria-label="Аккаунт">
                 </div>
             </div>

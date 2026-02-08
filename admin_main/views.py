@@ -13,6 +13,7 @@ from django.db.models import Prefetch, Q
 from admin_main.models import BuyOrder, Notification
 from chef_main.models import Ingredient, LOW_STOCK_THRESHOLD
 from menu.models import MenuItem, Order, Review, Meal, DayOrder, Allergen, MealIngredient
+from users.utils import get_profile_display_name, get_profile_role_label
 
 
 def _should_clear_day(request, day_number):
@@ -143,6 +144,8 @@ def admin(request):
         'ingredients': Ingredient.objects.all(),
         'allergens': Allergen.objects.all(),
         'menu_prefill_data': build_menu_prefill_data(),
+        'profile_display_name': get_profile_display_name(user),
+        'profile_role_label': get_profile_role_label(user),
     }
     if request.method == 'POST':
         post = request.POST

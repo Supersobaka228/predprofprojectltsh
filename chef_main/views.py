@@ -7,11 +7,13 @@ from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.views.decorators.http import require_POST
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import get_user_model
 
 from admin_main.models import BuyOrder, Notification
 from admin_main.views import sum_orders_count, sum_comes
 from chef_main.models import Ingredient, LOW_STOCK_THRESHOLD
 from menu.models import Meal, DayOrder, MenuItem, MealIngredient
+from users.utils import get_profile_display_name, get_profile_role_label
 
 
 # Create your views here.
@@ -85,6 +87,9 @@ def chef(request):
         'sum_comes': sum_comes(),
         'remains': get_remains_dict(),
         'notifications': notifications,
+        'user_model': get_user_model(),
+        'profile_display_name': get_profile_display_name(request.user),
+        'profile_role_label': get_profile_role_label(request.user),
     }
 
     # Normalize legacy count_by_days payloads (non-dict or malformed items).
