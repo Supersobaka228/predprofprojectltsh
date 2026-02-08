@@ -126,7 +126,7 @@
                                             {% csrf_token %}
                                             <div class="day_menu_row" data-meal-id="{{ item.id }}"
                                                  data-meal-name="{{ item.name }}">
-                                                <div>{{ item.name }}</div>
+                                                <div class="day_menu_dish_name" title="{{ item.name }}">{{ item.name|truncatechars:10 }}</div>
                                                 {% with item.count_by_days|get_item:today as day_data %}
                                                 <div class="ordered-count" data-field="ordered">
                                                     {% if day_data and day_data.o %}
@@ -184,7 +184,7 @@
                                             {% for item in meals_l %}
                                             <div class="day_menu_row" data-meal-id="{{ item.id }}"
                                                  data-meal-name="{{ item.name }}">
-                                                <div>{{ item.name }}</div>
+                                                <div class="day_menu_dish_name" title="{{ item.name }}">{{ item.name|truncatechars:10 }}</div>
                                                 {% with item.count_by_days|get_item:today as day_data %}
                                                 <div class="ordered-count" data-field="ordered">
                                                     {% if day_data and day_data.o %}
