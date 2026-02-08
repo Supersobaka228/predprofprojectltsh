@@ -18,6 +18,8 @@ document.addEventListener('DOMContentLoaded', () => {
     return dishBlock.getAttribute('data-dish-index') || '0';
   };
 
+  const deleteIconSrc = document.getElementById('menu-config-forms')?.dataset?.deleteIcon || '/static/icon/delete.svg';
+
   const buildChip = ({ label, id, type, dishIndex }) => {
     const chip = document.createElement('span');
     chip.className = 'menu_config_chip';
@@ -46,7 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
     removeButton.setAttribute('aria-label', `Удалить ${type === 'ingredient' ? 'ингредиент' : 'аллерген'} ${label}`);
 
     const removeIcon = document.createElement('img');
-    removeIcon.src = 'resources/delete.svg';
+    removeIcon.src = deleteIconSrc;
     removeIcon.alt = '';
     removeButton.appendChild(removeIcon);
 
