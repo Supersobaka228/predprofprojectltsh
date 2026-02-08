@@ -546,14 +546,14 @@ input[type="checkbox"] {
   font-size: clamp(0.85em, 2vh, 1em);
   align-self: center;
   font-weight: 500;
-  margin-bottom: 0.2rem;
+  margin: 0.2rem;
 }
 
 .balance_money {
   margin-left: clamp(0.2rem, 4vw, 4rem);
   font-size: clamp(1.05em, 3vh, 1.25em);
   font-weight: 600;
-  margin-bottom: 0.2rem;
+  margin: 0.2rem;
 }
 
 .subscription-expires {
@@ -1098,7 +1098,7 @@ input[type="checkbox"] {
 }
 
 .payment-card {
-  width: 90%;
+  width: 80%;
   max-width: 440px;
   background: var(--4-color);
   border-radius: 16px;
@@ -1131,11 +1131,13 @@ input[type="checkbox"] {
 
 .payment-row {
   display: flex;
+  flex-direction: column;
   gap: 12px;
   align-items: center;
 }
 
 .payment-input {
+  width: 100%;
   flex: 1;
   background-color: var(--secondary-color);
   border: 1px solid var(--secondary-color);

@@ -374,7 +374,7 @@
     <form class="payment-card" method="post" action="{% url 'topup_balance' %}">
         {% csrf_token %}
 
-        <div class="payment-card">
+
             <div class="payment-header">Оплата</div>
             <div class="payment-body">
                 <label class="payment-label" for="paymentAmount">Сумма</label>
@@ -396,7 +396,7 @@
                 </button>
                 <button class="payment-close" id="paymentClose" type="button">Закрыть</button>
             </div>
-        </div>
+
 
 
     </form>
