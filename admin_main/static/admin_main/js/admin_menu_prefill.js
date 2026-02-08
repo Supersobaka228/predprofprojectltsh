@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const formsContainer = document.getElementById('menu-config-forms');
   const formTemplate = document.getElementById('menu-config-template');
   const dayInput = document.getElementById('day_input_value');
+  const deleteIconSrc = formsContainer?.dataset?.deleteIcon || '/static/icon/delete.svg';
 
   if (!formsContainer || !formTemplate) {
     return;
@@ -50,7 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
     removeButton.setAttribute('aria-label', `Удалить ${type === 'ingredient' ? 'ингредиент' : 'аллерген'} ${label}`);
 
     const removeIcon = document.createElement('img');
-    removeIcon.src = 'resources/delete.svg';
+    removeIcon.src = deleteIconSrc;
     removeIcon.alt = '';
     removeButton.appendChild(removeIcon);
 

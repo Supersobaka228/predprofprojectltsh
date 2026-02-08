@@ -1304,3 +1304,10 @@ input[type="checkbox"] {
     display: flex;
     justify-content: center;
 }
+
+
+.empty_no_dishes {
+  text-align: center;
+  font-weight: 800;
+
+}
