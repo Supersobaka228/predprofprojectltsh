@@ -14,351 +14,364 @@
 </head>
 
 <body>
-    <div class="menu_page" data-user-allergens='{{ selected_allergen_names|join:"||" }}'>
-        <!-- Главный вид - Меню -->
-        <div class="app_view app_view--active" data-view="menu">
-            <header class="menu_header">
-                <a href="?date={{ prev_date }}"><img class="arrow_right" src="../../static/menu/icon/arrow.svg" alt=""></a>
-                <h1 class="menu_date">
-                    {{ date_display }}
-                </h1>
-                <a href="?date={{ next_date }}"><img class="arrow_left" src="../../static/menu/icon/arrow.svg" alt=""></a>
-            </header>
+<div class="menu_page" data-user-allergens='{{ selected_allergen_names|join:"||" }}'>
+    <!-- Главный вид - Меню -->
+    <div class="app_view app_view--active" data-view="menu">
+        <header class="menu_header">
+            <a href="?date={{ prev_date }}"><img class="arrow_right" src="../../static/menu/icon/arrow.svg" alt=""></a>
+            <h1 class="menu_date">
+                {{ date_display }}
+            </h1>
+            <a href="?date={{ next_date }}"><img class="arrow_left" src="../../static/menu/icon/arrow.svg" alt=""></a>
+        </header>
 
-            <main class="menu_main">
-                {% for item in menu_items %}
-                <section class="menu_section openSheet"
-                    data-item="{{ item.id }}"
-                    data-name="{{ item.category }}"
-                    data-category="{% if item.category == 'breakfast' %}Завтрак{% elif item.category == 'lunch' %}Обед{% else %}{{ item.category }}{% endif %}"
-                    data-price="{{ item.price }}"
-                    data-time="{{ item.time }}"
-                    data-icon="{% if item.icon %}{% static item.icon %}{% else %}{% static 'menu/icon/meal1.svg' %}{% endif %}"
-                    data-max-des='{{ item.max_des_list|join:"||" }}'
-                    data-composition='{{ item.composition_list|join:"||" }}'
-                    data-allergens='{{ item.allergens_list|join:"||" }}'
-                    data-rating-avg="{{ item.rating_avg|default:0 }}"
-                    data-rating-count="{{ item.rating_count|default:0 }}"
-                    data-date="{{ current_date }}"
-                    data-order-status="{{ item.order_status|default:'' }}">
+        <main class="menu_main">
+            {% for item in menu_items %}
+            <section class="menu_section openSheet"
+                     data-item="{{ item.id }}"
+                     data-name="{{ item.category }}"
+                     data-category="{% if item.category == 'breakfast' %}Завтрак{% elif item.category == 'lunch' %}Обед{% else %}{{ item.category }}{% endif %}"
+                     data-price="{{ item.price }}"
+                     data-time="{{ item.time }}"
+                     data-icon="{% if item.icon %}{% static item.icon %}{% else %}{% static 'menu/icon/meal1.svg' %}{% endif %}"
+                     data-max-des='{{ item.max_des_list|join:"||" }}'
+                     data-composition='{{ item.composition_list|join:"||" }}'
+                     data-allergens='{{ item.allergens_list|join:"||" }}'
+                     data-rating-avg="{{ item.rating_avg|default:0 }}"
+                     data-rating-count="{{ item.rating_count|default:0 }}"
+                     data-date="{{ current_date }}"
+                     data-order-status="{{ item.order_status|default:'' }}">
 
-                    <div class="menu_section_head">
-                        <h3>
-                            {% if item.category == 'breakfast' %}
-                                Завтрак
-                            {% elif item.category == 'lunch' %}
-                                Обед
-                            {% else %}
-                                {{ item.category }}
-                            {% endif %}
-                        </h3>
-                        <h3>{{ item.time }}</h3>
-                        <h3>{{ item.price }}₽</h3>
-                    </div>
+                <div class="menu_section_head">
+                    <h3>
+                        {% if item.category == 'breakfast' %}
+                        Завтрак
+                        {% elif item.category == 'lunch' %}
+                        Обед
+                        {% else %}
+                        {{ item.category }}
+                        {% endif %}
+                    </h3>
+                    <h3>{{ item.time }}</h3>
+                    <h3>{{ item.price }}₽</h3>
+                </div>
 
-                    <div class="menu_section_main">
-                        <img src="../../static/menu/icon/meal1.svg" alt="" class="menu_pic">
-                        <ul class="menu_items">
-                            {% for desc in item.min_des_list %}
-                                <li>{{ desc }}</li>
-                            {% endfor %}
-                        </ul>
+                <div class="menu_section_main">
+                    <img src="../../static/menu/icon/meal1.svg" alt="" class="menu_pic">
+                    <ul class="menu_items">
+                        {% for desc in item.min_des_list %}
+                        <li>{{ desc }}</li>
+                        {% endfor %}
+                    </ul>
 
-                        <ul class="menu_allergens">
-                            <div>
-                                Аллергены:
-                            </div>
-                            {% for allergen in item.allergens_list_display %}
-                                <li class="{% if allergen in selected_allergen_names %}allergen-hit{% endif %}">{{ allergen }}</li>
-                            {% endfor %}
-                        </ul>
-                    </div>
-                </section>
-                {% empty %}
-                <p>На сегодня нет блюд.</p>
-                {% endfor %}
-            </main>
-        </div>
+                    <ul class="menu_allergens">
+                        <div>
+                            Аллергены:
+                        </div>
+                        {% for allergen in item.allergens_list_display %}
+                        <li class="{% if allergen in selected_allergen_names %}allergen-hit{% endif %}">{{ allergen }}
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </section>
+            {% empty %}
+            <p>На сегодня нет блюд.</p>
+            {% endfor %}
+        </main>
+    </div>
 
-        <!-- Вид - Кошелёк -->
-        <div class="app_view" data-view="wallet">
-            <header class="menu_header">
-                <h1 class="menu_date">
-                    Кошелёк
-                </h1>
-            </header>
+    <!-- Вид - Кошелёк -->
+    <div class="app_view" data-view="wallet">
+        <header class="menu_header">
+            <h1 class="menu_date">
+                Кошелёк
+            </h1>
+        </header>
 
-            <main class="wallet_main">
-                <section class="balance">
+        <main class="wallet_main">
+            <section class="balance">
+                <div class="balance_top_div">
                     <div class="balance_box">
                         <p class="balance_text">Баланс:</p>
                         <p class="balance_money">{{ balance_display }}₽</p>
                     </div>
-                    <button class="add_money_box" id="openPayment" type="button">
-                        <img src="resources/add.svg" alt="" class="add_money_img">
-                        <p class="balance_text">Пополнить</p>
-                    </button>
-                </section>
-
-                <section class="history">
-    <h1 class="history_title">История покупок</h1>
-    <div class="history_container">
-        <!-- Итерируемся сразу по ключу (дата) и значению (список заказов) -->
-        {% for date_key, orders_list in orders.items %}
-        <div class="history_day">
-            <p class="history_day_title">{{ date_key }}</p>
-            <section class="history_section">
-                <!-- Теперь берем список заказов напрямую -->
-                {% for order in orders_list %}
-                <div class="history_row">
-                    <p class="history_time">{{ order.time|default:"--:--" }}</p>
-                    <p class="history_item">{{ order.name|default:"Без категории" }}</p>
-                    <p class="history_price">{{ order.price|default:"0" }}₽</p>
+                    {% if subscription_expiry_display %}
+                    <p class="subscription-expires">Абонемент действует до {{ subscription_expiry_display }}</p>
+                    {% endif %}
                 </div>
-                {% empty %}
-                <p class="no-orders">Нет заказов на эту дату</p>
-                {% endfor %}
+                <button class="add_money_box" id="openPayment" type="button">
+                    <img src="{% static 'icon/add.svg' %}" alt="" class="add_money_img">
+                    <p class="balance_text">Пополнить</p>
+                </button>
             </section>
-        </div>
-        {% empty %}
-        <p class="no-history">История покупок пуста</p>
-        {% endfor %}
+
+            <section class="history">
+                <h1 class="history_title">История покупок</h1>
+                <div class="history_container">
+                    <!-- Итерируемся сразу по ключу (дата) и значению (список заказов) -->
+                    {% for date_key, orders_list in orders.items %}
+                    <div class="history_day">
+                        <p class="history_day_title">{{ date_key }}</p>
+                        <section class="history_section">
+                            <!-- Теперь берем список заказов напрямую -->
+                            {% for order in orders_list %}
+                            <div class="history_row">
+                                <p class="history_time">{{ order.time|default:"--:--" }}</p>
+                                <p class="history_item">{{ order.name|default:"Без категории" }}</p>
+                                <p class="history_price">{{ order.price|default:"0" }}₽</p>
+                            </div>
+                            {% empty %}
+                            <p class="no-orders">Нет заказов на эту дату</p>
+                            {% endfor %}
+                        </section>
+                    </div>
+                    {% empty %}
+                    <p class="no-history">История покупок пуста</p>
+                    {% endfor %}
+                </div>
+            </section>
+
+
+        </main>
     </div>
-</section>
 
+    <!-- Вид - Настройки -->
+    <div class="app_view" data-view="settings">
+        <header class="menu_header">
+            <h1 class="menu_date">
+                Настройки
+            </h1>
+        </header>
 
-            </main>
+        <main class="settings_container">
+            <section class="settings_main main_screen is-active">
+                <div class="account_info_box">
+                    <img class="st_acc_pfp" src="../../static/menu/icon/photo_2026-01-14_11-19-22.jpg"
+                         alt="Фото профиля">
+                    <div>
+                        <p class="st_user_name">{{ display_name|default:"Ученик" }}</p>
+                        <p class="st_balance_text">Баланс:</p>
+                        <p class="st_balance">{{ balance_display }}₽</p>
+                    </div>
+                    <div>
+                        <p class="st_aller_head">Аллергены:</p>
+                        <ul id="user-allergens-list">
+                            {% for a_name in selected_allergen_names %}
+                            <li>{{ a_name }}</li>
+                            {% empty %}
+                            <li class="st_allergens_empty">Не выбраны</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+                <button class="user_add_aller">Добавить аллергены</button>
+                <form action="{% url 'logout_menu' %}" method="post">
+                    {% csrf_token %}
+                    <button class="st_logout" type="submit">Выйти из аккаунта</button>
+                </form>
+            </section>
+
+            <section class="allergens_main main_screen">
+                <div class="allergens_select">
+                    <h2 class="allergens_title">Выберите аллергены</h2>
+
+                    <form class="allergens-form" method="post" id="allergens-form"
+                          action="{% url 'update_allergens' %}">
+                        {% csrf_token %}
+                        <div class="allergens_list">
+                            {% for allergen in all_allergens %}
+                            <label class="allergen_item">
+                                <input
+                                        type="checkbox"
+                                        name="allergens"
+                                        value="{{ allergen.code }}"
+                                        {% if allergen.code in selected_allergen_codes %}checked{% endif %}
+                                >
+                                <span>{{ allergen.name }}</span>
+                            </label>
+                            {% empty %}
+                            <p class="st_allergens_empty">Справочник аллергенов пуст</p>
+                            {% endfor %}
+                        </div>
+                        <button class="back_to_settings" type="submit">Готово</button>
+                    </form>
+
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Футер с навигацией -->
+    <footer class="menu_footer">
+        <div class="footer_background"></div>
+        <div class="footer_highlight"></div>
+        <div class="footer_locator">
+            <button class="footer_container" data-view="menu">
+                <img class="menu_footer_button_img" src="../../static/menu/icon/menu.svg" alt="Меню">
+                <p class="menu_footer_button_text">Меню</p>
+            </button>
+            <button class="footer_container" data-view="wallet">
+                <img class="menu_footer_button_img" src="../../static/menu/icon/wallet.svg" alt="Кошелёк">
+                <p class="menu_footer_button_text">Кошелёк</p>
+            </button>
+            <button class="footer_container" data-view="settings">
+                <img class="menu_footer_button_img" src="../../static/menu/icon/options.svg" alt="Настройки">
+                <p class="menu_footer_button_text">Настройки</p>
+            </button>
         </div>
+    </footer>
+</div>
 
-        <!-- Вид - Настройки -->
-        <div class="app_view" data-view="settings">
-            <header class="menu_header">
-                <h1 class="menu_date">
-                    Настройки
-                </h1>
+<!-- Оверлей для детальной информации о блюде -->
+<div class="sheet-overlay" id="overlay">
+    <div class="sheet" id="sheet">
+        <div class="sheet_pipslide"></div>
+        <button class="sheet-close" id="closeSheet"></button>
+
+        <div class="sheet-content">
+            <header class="sheet_header">
+                <p class="sheet_title_left" id="sheet-time">9:10-9:30</p>
+                <p class="sheet_name" id="sheet-name">Завтрак</p>
+                <p class="sheet_title_right" id="sheet-price">170₽</p>
             </header>
 
-            <main class="settings_container">
-                <section class="settings_main main_screen is-active">
-                    <div class="account_info_box">
-                        <img class="st_acc_pfp" src="../../static/menu/icon/photo_2026-01-14_11-19-22.jpg" alt="Фото профиля">
-                        <div>
-                            <p class="st_user_name">{{ display_name|default:"Ученик" }}</p>
-                            <p class="st_balance_text">Баланс:</p>
-                            <p class="st_balance">{{ balance_display }}₽</p>
-                        </div>
-                        <div>
-                            <p class="st_aller_head">Аллергены:</p>
-                            <ul id="user-allergens-list">
-                                {% for a_name in selected_allergen_names %}
-                                    <li>{{ a_name }}</li>
-                                {% empty %}
-                                    <li class="st_allergens_empty">Не выбраны</li>
-                                {% endfor %}
-                            </ul>
-                        </div>
-                    </div>
-                    <button class="user_add_aller">Добавить аллергены</button>
-                    <form action="{% url 'logout_menu' %}" method="post">
-                        {% csrf_token %}
-                        <button class="st_logout" type="submit">Выйти из аккаунта</button>
-                    </form>
-                </section>
-
-                <section class="allergens_main main_screen">
-                    <div class="allergens_select">
-                        <h2 class="allergens_title">Выберите аллергены</h2>
-
-                        <form class="allergens-form" method="post" id="allergens-form" action="{% url 'update_allergens' %}">
-                            {% csrf_token %}
-                            <div class="allergens_list">
-                                {% for allergen in all_allergens %}
-                                    <label class="allergen_item">
-                                        <input
-                                            type="checkbox"
-                                            name="allergens"
-                                            value="{{ allergen.code }}"
-                                            {% if allergen.code in selected_allergen_codes %}checked{% endif %}
-                                        >
-                                        <span>{{ allergen.name }}</span>
-                                    </label>
-                                {% empty %}
-                                    <p class="st_allergens_empty">Справочник аллергенов пуст</p>
-                                {% endfor %}
-                            </div>
-                            <button class="back_to_settings" type="submit">Готово</button>
-                        </form>
-
-                    </div>
-                </section>
-            </main>
-        </div>
-
-        <!-- Футер с навигацией -->
-        <footer class="menu_footer">
-            <div class="footer_background"></div>
-            <div class="footer_highlight"></div>
-            <div class="footer_locator">
-                <button class="footer_container" data-view="menu">
-                    <img class="menu_footer_button_img" src="../../static/menu/icon/menu.svg" alt="Меню">
-                    <p class="menu_footer_button_text">Меню</p>
-                </button>
-                <button class="footer_container" data-view="wallet">
-                    <img class="menu_footer_button_img" src="../../static/menu/icon/wallet.svg" alt="Кошелёк">
-                    <p class="menu_footer_button_text">Кошелёк</p>
-                </button>
-                <button class="footer_container" data-view="settings">
-                    <img class="menu_footer_button_img" src="../../static/menu/icon/options.svg" alt="Настройки">
-                    <p class="menu_footer_button_text">Настройки</p>
-                </button>
-            </div>
-        </footer>
-    </div>
-
-    <!-- Оверлей для детальной информации о блюде -->
-    <div class="sheet-overlay" id="overlay">
-        <div class="sheet" id="sheet">
-            <div class="sheet_pipslide"></div>
-            <button class="sheet-close" id="closeSheet"></button>
-
-            <div class="sheet-content">
-                <header class="sheet_header">
-                    <p class="sheet_title_left" id="sheet-time">9:10-9:30</p>
-                    <p class="sheet_name" id="sheet-name">Завтрак</p>
-                    <p class="sheet_title_right" id="sheet-price">170₽</p>
-                </header>
-
-                <section class="sheet_main">
-                    <img src="../../static/menu/icon/meal1.svg" alt="" class="sheet_main_img" id="sheet-image">
-                    <form method="post" id="order-form" data-confirm-url="{% url 'confirm_order' %}" class="menu_order_form_btn">
-                        {% csrf_token %}
-                        <input type="hidden" name="name" id="itemDateField2">
-                        <input type="hidden" name="time" id="itemDateField3">
-                        <input type="hidden" name="price" id="itemDateField4">
-                        <input type="hidden" name="day" id="itemDateField5">
-                        <input type="hidden" name="item" id="itemDateField6">
+            <section class="sheet_main">
+                <img src="../../static/menu/icon/meal1.svg" alt="" class="sheet_main_img" id="sheet-image">
+                <form method="post" id="order-form" data-confirm-url="{% url 'confirm_order' %}"
+                      class="menu_order_form_btn">
+                    {% csrf_token %}
+                    <input type="hidden" name="name" id="itemDateField2">
+                    <input type="hidden" name="time" id="itemDateField3">
+                    <input type="hidden" name="price" id="itemDateField4">
+                    <input type="hidden" name="day" id="itemDateField5">
+                    <input type="hidden" name="item" id="itemDateField6">
                     <button class="sheet_order_btn" type="submit">
                         <p class="sheet_title">Заказать</p>
                         <p class="sheet_text">(для дальнейшего получения на кассе)</p>
                     </button>
-                    </form>
-                </section>
+                </form>
+            </section>
 
-                <section class="sheet_info">
-                    <div class="sheet_info_1">
-                        <h3 class="sheet_title_sost">Состав:</h3>
-                        <ol class="sostav_list" id="sheet-composition"></ol>
-                    </div>
-                    <div class="sheet_info_2">
-                        <h3 class="sheet_title">Аллергены:</h3>
-                        <ul id="sheet-allergens"></ul>
-                    </div>
-                </section>
-
-                <section class="sheet_rating">
-                    <p class="sheet_title">Отзывы</p>
-                    <div class="rate_container">
-
-                        <button id="openOverlay" class="rating_box">
-                            <div class="sheet-rating-stars" aria-label="Рейтинг 0,0 из 5">
-                                <div class="sheet-rating-stars-box" id="sheet-rating-stars-box-inline" role="img" aria-label="Рейтинг 0,0 из 5"></div>
-                                <div class="sheet-rating-value" id="sheet-rating-value-inline">0,0/5</div>
-                            </div>
-                        </button>
-                        <button class="rate_button" id="openRate">
-                            <p class="sheet_rating_text">Оставить отзыв</p>
-                        </button>
-                    </div>
-                </section>
-            </div>
-        </div>
-
-        <!-- Оверлей для просмотра отзывов -->
-        <div class="sheet-rating-overlay" id="sheetRatingOverlay">
-            <div class="sheet-rating-backdrop" aria-hidden="true"></div>
-            <div class="sheet-rating-card">
-                <div class="sheet-rating-header">Отзывы</div>
-
-                <div class="sheet-rating-body">
-                    <div class="sheet-rating-stars" aria-label="Рейтинг 0,0 из 5">
-                        <div class="sheet-rating-stars-box" id="sheet-rating-stars-box" role="img" aria-label="Рейтинг 0,0 из 5"></div>
-                        <div class="sheet-rating-value" id="sheet-rating-value">0,0/5</div>
-                    </div>
-
-                    <div class="reviews_overflow" id="reviews-container">
-                        <!-- Отзывы будут загружаться динамически -->
-
-                        {% for item in review_items %}
-
-                        <div class="sheet-review" data-review-item-id="{{ item.item_id }}" data-review-user-id="{{ item.user_id|default:'' }}">
-                            <div class="sheet-review-top">
-                                <div class="sheet-review-date">{{ item.day|date:"d.m.y H:i" }}</div>
-                                <div class="sheet-review-user">{{ item.reviewer_name|default:"Ученик" }}</div>
-                                <div class="sheet-review-stars">
-                                    {% for i in "12345"|make_list %}
-                                    <img src="../../static/menu/icon/Star 1.svg" alt="" class="sheet-rating-star{% if forloop.counter > item.stars_count %} sheet-rating-star--empty{% endif %}">
-                                    {% endfor %}
-                                </div>
-                            </div>
-                            <div class="sheet-review-text">{{ item.text }}</div>
-                        </div>
-                        {% endfor %}
-
-                    </div>
-
-
-                        <button id="closeOverlay">Закрыть</button>
-                    </div>
-            </div>
-        </div>
-    </div>
-
-
-    <!-- Оверлей для добавления отзыва -->
-    <div class="rate-overlay" id="rateOverlay">
-        <form class="rate-card" method="post" id="review-form">
-            {% csrf_token %}
-            <input type="hidden" name="day" id="itemDateField">
-            <input type="hidden" name="item" id="itemCategoryField">
-
-            <div class="rating-stars-box">
-                <div class="rating" id="star-rating">
-                    <input type="radio" id="star5" name="stars_count" value="5">
-                    <label for="star5" title="5 звезд">★</label>
-
-                    <input type="radio" id="star4" name="stars_count" value="4">
-                    <label for="star4" title="4 звезды">★</label>
-
-                    <input type="radio" id="star3" name="stars_count" value="3">
-                    <label for="star3" title="3 звезды">★</label>
-
-                    <input type="radio" id="star2" name="stars_count" value="2">
-                    <label for="star2" title="2 звезды">★</label>
-
-                    <input type="radio" id="star1" name="stars_count" value="1">
-                    <label for="star1" title="1 звезда">★</label>
+            <section class="sheet_info">
+                <div class="sheet_info_1">
+                    <h3 class="sheet_title_sost">Состав:</h3>
+                    <ol class="sostav_list" id="sheet-composition"></ol>
                 </div>
-                <div id="rating-value">0/5</div>
-            </div>
+                <div class="sheet_info_2">
+                    <h3 class="sheet_title">Аллергены:</h3>
+                    <ul id="sheet-allergens"></ul>
+                </div>
+            </section>
 
-            <h2 class="rate-title">Оставить отзыв</h2>
-            <textarea name="text" class="rate-textarea" placeholder="Ваш отзыв..." required></textarea>
+            <section class="sheet_rating">
+                <p class="sheet_title">Отзывы</p>
+                <div class="rate_container">
 
-            <div class="rate-actions">
-                <button type="button" class="rate-cancel" id="rateCancel">Отмена</button>
-                <button type="submit" class="rate-submit">Отправить</button>
-            </div>
-        </form>
+                    <button id="openOverlay" class="rating_box">
+                        <div class="sheet-rating-stars" aria-label="Рейтинг 0,0 из 5">
+                            <div class="sheet-rating-stars-box" id="sheet-rating-stars-box-inline" role="img"
+                                 aria-label="Рейтинг 0,0 из 5"></div>
+                            <div class="sheet-rating-value" id="sheet-rating-value-inline">0,0/5</div>
+                        </div>
+                    </button>
+                    <button class="rate_button" id="openRate">
+                        <p class="sheet_rating_text">Оставить отзыв</p>
+                    </button>
+                </div>
+            </section>
+        </div>
     </div>
 
-    <!-- Подключение JavaScript -->
-    <script src="../../static/menu/js/menu_footer.js"></script>
-    <script src="../../static/menu/js/sheet.js"></script>
-    <script src="../../static/menu/js/aller.js"></script>
-    <script src="../../static/menu/js/rating.js"></script>
-    <script src="../../static/menu/js/ajax_menu.js"></script>
-    <div class="payment-overlay" id="paymentOverlay">
-        <form class="payment-card" method="post" action="{% url 'topup_balance' %}">
+    <!-- Оверлей для просмотра отзывов -->
+    <div class="sheet-rating-overlay" id="sheetRatingOverlay">
+        <div class="sheet-rating-backdrop" aria-hidden="true"></div>
+        <div class="sheet-rating-card">
+            <div class="sheet-rating-header">Отзывы</div>
+
+            <div class="sheet-rating-body">
+                <div class="sheet-rating-stars" aria-label="Рейтинг 0,0 из 5">
+                    <div class="sheet-rating-stars-box" id="sheet-rating-stars-box" role="img"
+                         aria-label="Рейтинг 0,0 из 5"></div>
+                    <div class="sheet-rating-value" id="sheet-rating-value">0,0/5</div>
+                </div>
+
+                <div class="reviews_overflow" id="reviews-container">
+                    <!-- Отзывы будут загружаться динамически -->
+
+                    {% for item in review_items %}
+
+                    <div class="sheet-review" data-review-item-id="{{ item.item_id }}"
+                         data-review-user-id="{{ item.user_id|default:'' }}">
+                        <div class="sheet-review-top">
+                            <div class="sheet-review-date">{{ item.day|date:"d.m.y H:i" }}</div>
+                            <div class="sheet-review-user">{{ item.reviewer_name|default:"Ученик" }}</div>
+                            <div class="sheet-review-stars">
+                                {% for i in "12345"|make_list %}
+                                <img src="../../static/menu/icon/Star 1.svg" alt=""
+                                     class="sheet-rating-star{% if forloop.counter > item.stars_count %} sheet-rating-star--empty{% endif %}">
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="sheet-review-text">{{ item.text }}</div>
+                    </div>
+                    {% endfor %}
+
+                </div>
+
+
+                <button id="closeOverlay">Закрыть</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Оверлей для добавления отзыва -->
+<div class="rate-overlay" id="rateOverlay">
+    <form class="rate-card" method="post" id="review-form">
+        {% csrf_token %}
+        <input type="hidden" name="day" id="itemDateField">
+        <input type="hidden" name="item" id="itemCategoryField">
+
+        <div class="rating-stars-box">
+            <div class="rating" id="star-rating">
+                <input type="radio" id="star5" name="stars_count" value="5">
+                <label for="star5" title="5 звезд">★</label>
+
+                <input type="radio" id="star4" name="stars_count" value="4">
+                <label for="star4" title="4 звезды">★</label>
+
+                <input type="radio" id="star3" name="stars_count" value="3">
+                <label for="star3" title="3 звезды">★</label>
+
+                <input type="radio" id="star2" name="stars_count" value="2">
+                <label for="star2" title="2 звезды">★</label>
+
+                <input type="radio" id="star1" name="stars_count" value="1">
+                <label for="star1" title="1 звезда">★</label>
+            </div>
+            <div id="rating-value">0/5</div>
+        </div>
+
+        <h2 class="rate-title">Оставить отзыв</h2>
+        <textarea name="text" class="rate-textarea" placeholder="Ваш отзыв..." required></textarea>
+
+        <div class="rate-actions">
+            <button type="button" class="rate-cancel" id="rateCancel">Отмена</button>
+            <button type="submit" class="rate-submit">Отправить</button>
+        </div>
+    </form>
+</div>
+
+<!-- Подключение JavaScript -->
+<script src="../../static/menu/js/menu_footer.js"></script>
+<script src="../../static/menu/js/sheet.js"></script>
+<script src="../../static/menu/js/aller.js"></script>
+<script src="../../static/menu/js/rating.js"></script>
+<script src="../../static/menu/js/ajax_menu.js"></script>
+<div class="payment-overlay" id="paymentOverlay">
+    <form class="payment-card" method="post" action="{% url 'topup_balance' %}">
         {% csrf_token %}
 
         <div class="payment-card">
@@ -367,25 +380,27 @@
                 <label class="payment-label" for="paymentAmount">Сумма</label>
                 <div class="payment-row">
                     <input
-                        id="paymentAmount"
-                        name="amount"
-                        class="payment-input"
-                        type="number"
-                        min="0"
-                        step="0.01"
-                        inputmode="decimal"
-                        placeholder="Введите сумму"
+                            id="paymentAmount"
+                            name="amount"
+                            class="payment-input"
+                            type="number"
+                            min="0"
+                            step="0.01"
+                            inputmode="decimal"
+                            placeholder="Введите сумму"
                     >
                     <button class="payment-submit" type="submit">Оплатить</button>
                 </div>
-                <button class="payment-subscribe" type="button">Купить абонемент на месяц</button>
+                <button class="payment-subscribe" type="button" data-subscribe-url="{% url 'purchase_subscription' %}">
+                    Месячный абонемент: 10000р
+                </button>
                 <button class="payment-close" id="paymentClose" type="button">Закрыть</button>
             </div>
         </div>
 
 
     </form>
-    </div>
+</div>
 
 
 </body>

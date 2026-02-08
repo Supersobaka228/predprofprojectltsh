@@ -6,6 +6,8 @@ from django.contrib.auth.decorators import login_required
 from django.db import transaction
 from django.views.decorators.http import require_POST
 from django.http import JsonResponse
+from django.utils import timezone
+from datetime import timedelta
 
 from .forms import RegisterForm, LoginForm, TopUpBalanceForm
 from .models import BalanceTopUp
@@ -149,6 +151,35 @@ def topup_balance(request):
         return JsonResponse({'success': True, 'balance_cents': user.balance_cents, 'balance_display': balance_display})
 
     return redirect('menu')
+
+
+@login_required
+@require_POST
+@csrf_protect
+def purchase_subscription(request):
+    """Оформление месячного абонемента при наличии достаточного баланса."""
+
+    user = request.user
+    now = timezone.now()
+    price_cents = 1_000_000  # 10000₽
+    if user.subscription_expires_at and user.subscription_expires_at > now:
+        return JsonResponse({'success': False, 'error': 'Абонемент ещё действует'}, status=400)
+
+    current_balance = int(user.balance_cents or 0)
+    if current_balance < price_cents:
+        return JsonResponse({'success': False, 'error': 'Недостаточно средств'}, status=400)
+
+    with transaction.atomic():
+        user.balance_cents = current_balance - price_cents
+        user.subscription_expires_at = now + timedelta(days=30)
+        user.save(update_fields=['balance_cents', 'subscription_expires_at'])
+
+    balance_display = f"{user.balance_cents // 100},{user.balance_cents % 100:02d}"
+    return JsonResponse({
+        'success': True,
+        'balance_display': balance_display,
+        'subscription_expires_at': user.subscription_expires_at.isoformat(),
+    })
 
 
 @require_POST

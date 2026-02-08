@@ -195,16 +195,27 @@ def menu(request):
     orders_d = dict_orders(orders)
 
 
+    subscription_expiry_display = None
+    user_subscription = getattr(request.user, 'subscription_expires_at', None)
+    if user_subscription:
+        try:
+            subscription_expiry_display = timezone.localtime(user_subscription).strftime('%d.%m.%Y %H:%M')
+        except Exception:
+            subscription_expiry_display = str(user_subscription)
+
+
     context = {
-        'menu_items': menu_items,
-        'date_display': date_display,
-        'current_date': current_date_str,
-        'prev_date': prev_date,
-        'next_date': next_date,
-        'review_items': Review.objects.all(),
-        'orders': orders_d,
-        'orders_keys': orders_d.keys()
-    }
+         'menu_items': menu_items,
+         'date_display': date_display,
+         'current_date': current_date_str,
+         'prev_date': prev_date,
+         'next_date': next_date,
+         'review_items': Review.objects.all(),
+         'orders': orders_d,
+         'orders_keys': orders_d.keys()
+     }
+
+    context['subscription_expiry_display'] = subscription_expiry_display
 
     # Аллергены: список и выбор пользователя
     try:
@@ -282,13 +293,15 @@ def order(request, day_d):
         if price_cents <= 0:
             return None, 'INVALID_PRICE', 'Некорректная цена'
 
-        current = int(getattr(user, 'balance_cents', 0) or 0)
-        if current < price_cents:
-            return None, 'INSUFFICIENT_FUNDS', 'Недостаточно средств'
+        now = timezone.now()
+        subscription_active = bool(user.subscription_expires_at and user.subscription_expires_at > now)
+        if not subscription_active:
+            current = int(getattr(user, 'balance_cents', 0) or 0)
+            if current < price_cents:
+                return None, 'INSUFFICIENT_FUNDS', 'Недостаточно средств'
+            user.balance_cents = current - price_cents
+            user.save(update_fields=['balance_cents'])
 
-        user.balance_cents = current - price_cents
-
-        user.save(update_fields=['balance_cents'])
         menu_item = form.cleaned_data.get('name')
         order_day = form.cleaned_data.get('day') or str(datetime.today().date())
         meals_qs = menu_item.meals.all() if menu_item else []

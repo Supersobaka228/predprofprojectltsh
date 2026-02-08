@@ -63,6 +63,7 @@ class User(AbstractUser, PermissionsMixin):
     allergies = models.ManyToManyField('menu.Allergen', blank=True, related_name='users')
     not_like = models.CharField(_('not like'), max_length=255, default='')
     abonement = models.IntegerField(_('abonement'), default=0)
+    subscription_expires_at = models.DateTimeField(_('subscription expires'), null=True, blank=True)
 
     @property
     def get_is_auth(self):

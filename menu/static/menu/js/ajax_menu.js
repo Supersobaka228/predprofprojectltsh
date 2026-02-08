@@ -170,6 +170,40 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  const subscribeButton = document.querySelector('.payment-subscribe');
+  if (subscribeButton) {
+    subscribeButton.addEventListener('click', async () => {
+      const url = subscribeButton.dataset.subscribeUrl;
+      if (!url) return;
+      subscribeButton.disabled = true;
+      try {
+        const csrfToken = getCsrfToken();
+        const resp = await fetch(url, {
+          method: 'POST',
+          headers: {
+            'X-CSRFToken': csrfToken,
+            'X-Requested-With': 'XMLHttpRequest',
+          },
+          credentials: 'same-origin',
+        });
+        const data = await resp.json();
+        if (!resp.ok) {
+          throw data;
+        }
+        if (data?.success) {
+          if (data.balance_display) updateBalance(data.balance_display);
+          showToast('Абонемент активирован');
+          closeOverlayById('paymentOverlay');
+        }
+      } catch (err) {
+        const message = err?.error || 'Не удалось оформить абонемент';
+        showToast(message);
+      } finally {
+        subscribeButton.disabled = false;
+      }
+    });
+  }
+
   // 2) Заказ блюда из sheet (order-form)
   const orderForm = document.getElementById('order-form');
   if (orderForm) {
