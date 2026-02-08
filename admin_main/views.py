@@ -289,7 +289,7 @@ def update_order_status(request):
         order_id = data.get('id')
         new_status = data.get('status') # 'allowed' или 'rejected'
         print(data)
-        # Находим заказ в базе и обновляем его
+
         order = BuyOrder.objects.get(id=order_id)
         order.status = new_status
         if new_status == 'allowed':
@@ -402,11 +402,11 @@ def orders_by_day():
 
 def comes_by_day():
     dates = {}
-    # 1. Собираем множества уникальных пользователей для каждой даты
+
     for order in Order.objects.all():
         date_obj_1 = datetime.strptime(order.day, "%Y-%m-%d").date()
         if date_obj_1 not in dates:
-            dates[date_obj_1] = {order.user}  # Используем set для уникальности
+            dates[date_obj_1] = {order.user}
         else:
             dates[date_obj_1].add(order.user)
 
@@ -434,9 +434,7 @@ def comes_by_day():
 
 
 def serialize_review(review):
-    """
-    Простой сериализатор — расширьте под поля вашей модели.
-    """
+
     return {
         "id": review.pk,
         "day_raw": getattr(review, "day", None),
@@ -447,16 +445,11 @@ def serialize_review(review):
 
 
 def reviews_by_day(queryset=None):
-    """
-    Возвращает словарь вида:
-      { "YYYY-MM-DD YYYY-MM-DD": [ {review1}, {review2}, ... ], ... }
-    где для каждой недели (Пн-Вс) возвращаются все отзывы,
-    оставленные в этот интервал (включая первые и последние дни интервала).
-    """
+
     if queryset is None:
         queryset = Review.objects.all()
 
-    # date_obj (datetime.date) -> list[review]
+
     dates = {}
     for review in queryset:
         if not getattr(review, "day", None):
@@ -470,11 +463,9 @@ def reviews_by_day(queryset=None):
     min_date = min(dates)
     max_date = max(dates)
 
-    # Выравниваем диапазон так же, как в comes_by_day
     start_date = min_date - timedelta(days=min_date.weekday())
     end_date = max_date + timedelta(days=(6 - max_date.weekday()))
 
-    # Собираем последовательность дат недели (Mon-Sun) в диапазоне
     week_dates = []
     cur = start_date
     while cur <= end_date:
@@ -482,7 +473,6 @@ def reviews_by_day(queryset=None):
         cur += timedelta(days=1)
 
     ans = {}
-    # Группируем по блокам по 7 дней
     for i in range(0, len(week_dates), 7):
         block = week_dates[i:i + 7]
         if not block:
@@ -492,7 +482,6 @@ def reviews_by_day(queryset=None):
         for d in block:
             reviews_in_block.extend(dates.get(d, []))
 
-        # Сортируем отзывы по дате убыванию
         reviews_in_block.sort(key=lambda r: r.day or timezone.now(), reverse=True)
         reviews_serialized = [serialize_review(r) for r in reviews_in_block]
 

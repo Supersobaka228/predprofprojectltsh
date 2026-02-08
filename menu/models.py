@@ -18,7 +18,6 @@ class MenuItem(models.Model):
     id = models.AutoField(primary_key=True)
     low_rating_notified = models.BooleanField(default=False)
 
-    # Связка с блюдами
     meals = models.ManyToManyField('Meal', blank=True, related_name='menu_items')
 
     icon = models.CharField(max_length=255)
@@ -30,22 +29,20 @@ class MenuItem(models.Model):
 
     @property
     def meals_limit3(self):
-        """Первые 3 связанных Meal."""
+
         return list(self.meals.all()[:3])
 
     @property
     def min_des_list(self):
-        """Список названий блюд (Meal.name), максимум 3."""
+
         return [m.name for m in self.meals_limit3]
 
     @property
     def max_des_list(self):
-        """Список описаний блюд (Meal.description), максимум 3."""
         return [m.description for m in self.meals_limit3]
 
     @property
     def composition_list(self):
-        """Состав для sheet: 'Meal.name: ingredient1, ingredient2' (максимум 3 блюда)."""
         items = []
         for meal in self.meals_limit3:
             ingredient_names = list(meal.ingredients.values_list('name', flat=True))
@@ -57,7 +54,6 @@ class MenuItem(models.Model):
 
     @property
     def allergens_list(self):
-        """Уникальные названия аллергенов (Allergen.name) из Meal.allergens для первых 3 Meal."""
         names = []
         seen = set()
         for meal in self.meals_limit3:

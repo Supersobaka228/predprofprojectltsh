@@ -123,16 +123,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
   document.getElementById('next-btn-so').addEventListener('click', () => {
-    // Проверяем, не дошли ли мы до конца списка
+
     if (currentIndex < serverDataKeys.length - 1) {
-        currentIndex++; // Увеличиваем индекс на 1
-        CurrentDataKey = serverDataKeys[currentIndex]; // Обновляем значение ключа
+        currentIndex++;
+        CurrentDataKey = serverDataKeys[currentIndex];
 
         console.log("Новый ключ:", CurrentDataKey);
 
         data.datasets[0].data = serverData[CurrentDataKey];
 
-        updateUI(); // Обновляем текст в HTML
+        updateUI();
     } else {
         alert("Это последний доступный день!");
     }
@@ -143,9 +143,8 @@ document.getElementById('prev-btn-so').addEventListener('click', () => {
         currentIndex--;
         CurrentDataKey = serverDataKeys[currentIndex];
 
-        // Обновляем данные графика
         data.datasets[0].data = serverData[CurrentDataKey];
-        // myChart.update();
+
 
         updateUI();
     }

@@ -30,8 +30,6 @@ def menu(request):
 
     date_str = request.GET.get('date')
 
-    # Если пришёл POST без ?date=..., не пытаемся парсить None
-    # (например, при сохранении аллергенов со страницы настроек).
     if not date_str:
         date_str = datetime.today().date().strftime('%Y-%m-%d')
 
@@ -39,7 +37,6 @@ def menu(request):
 
     if request.method == 'POST':
         if 'allergens' in request.POST:
-            # аллергенов пока не трогаем
             update_allergens(request)
         elif 'price' in request.POST:
             # Заказ блюда
@@ -227,14 +224,12 @@ def menu(request):
         context['selected_allergen_codes'] = []
         context['selected_allergen_names'] = []
 
-    # Баланс для отображения: 2 знака после запятой, разделитель запятая
     try:
         balance_str = getattr(request.user, 'balance_rub_str', '0.00')
         context['balance_display'] = str(balance_str).replace('.', ',')
     except Exception:
         context['balance_display'] = '0,00'
 
-    # Вычисляем display_name: сначала first_name, иначе часть email до @, иначе 'Ученик'
     try:
         user_obj = request.user
         first = getattr(user_obj, 'first_name', '') or ''
@@ -256,10 +251,7 @@ def menu(request):
 
 @login_required
 def order(request, day_d):
-    """Создаёт заказ и списывает деньги с баланса.
 
-    Возвращает кортеж: (created_order | None, error_code | None, error_message | None)
-    """
     if request.method != 'POST':
         return None, 'BAD_METHOD', 'Неправильный метод запроса'
 
@@ -283,7 +275,6 @@ def order(request, day_d):
                 return None, 'ALREADY_CONFIRMED', 'Заказ уже подтвержден'
             return None, 'ALREADY_ORDERED', 'Заказ уже оформлен'
 
-        # Цена в форме хранится в рублях (int). Баланс — в центах.
         try:
             price_rub = int(form.cleaned_data.get('price') or 0)
         except Exception:
@@ -320,10 +311,7 @@ def order(request, day_d):
             gh.count_by_days = count_by_days
             gh.save(update_fields=['count_by_days'])
             print(gh.__dict__)
-            # NOTE: inventory decrement moved to chef_main.meals_give (actual issuance)
-            # If you want orders to reserve/decrease stock at payment time,
-            # re-enable subtraction here. For now we do not touch Ingredient.remains
-            # when a student creates an order to keep decrements only on issuance.
+
 
         try:
             created_order = form.save()
@@ -336,10 +324,6 @@ def order(request, day_d):
 
 @login_required
 def update_allergens(request):
-    """Обновление аллергенов пользователя (фиксированный список).
-
-    Ожидаем, что форма отправляет список `allergens` со значениями = Allergen.code.
-    """
     is_ajax = request.headers.get('x-requested-with') == 'XMLHttpRequest'
 
     if request.method != 'POST':
@@ -362,14 +346,12 @@ def update_allergens(request):
     if is_ajax:
         return JsonResponse(payload)
 
-    # fallback: для обычной отправки формы возвращаемся в меню
     return JsonResponse(payload)
 
 
 @require_POST
 @login_required
 def confirm_order(request):
-    """Подтверждает получение заказа без повторного списания."""
     item_id = request.POST.get('item_id') or request.POST.get('item')
     day = request.POST.get('day')
     if not item_id or not day:

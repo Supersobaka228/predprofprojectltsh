@@ -32,11 +32,11 @@ document.addEventListener('DOMContentLoaded', () => {
     datasets: [{
       label: 'Продажи',
       data: date2,
-      borderColor: '#000000',  // цвет линии
-      backgroundColor: '#0091ff6f',  // цвет заливки под линией
-      fill: true,  // заливка под линией
-      tension: 0,  // сглаживание линии
-      pointRadius: 4,  // размер точек
+      borderColor: '#000000',
+      backgroundColor: '#0091ff6f',
+      fill: true,
+      tension: 0,
+      pointRadius: 4,
       borderWidth: 2,
       pointBorderWidth: 2,
       pointBackgroundColor: '#ffffff',
@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   const config = {
-    type: 'line',  // тип графика — линия
+    type: 'line',
     data: data,
     options: {
       responsive: true,

@@ -12,10 +12,9 @@ class UserManager(BaseUserManager):
 
         email = self.normalize_email(email)
 
-        # Автоматически создаем username из email
         if 'username' not in extra_fields:
             username = email.split('@')[0]
-            # Делаем username уникальным
+
             base_username = username
             counter = 1
             while self.model.objects.filter(username=username).exists():
@@ -57,9 +56,9 @@ class User(AbstractUser, PermissionsMixin):
     is_active = models.BooleanField(_('active'), default=True)
     role = models.CharField(_('role'), max_length=255, choices=ROLE_CHOICES, default='student')
     grade = models.CharField(_('grade'), max_length=3, default='')
-    # Баланс храним в центах (минимальных единицах), чтобы избежать ошибок округления
+
     balance_cents = models.IntegerField(_('balance (cents)'), default=0)
-    # Выбранные пользователем аллергены (фиксированный список из menu.Allergen)
+
     allergies = models.ManyToManyField('menu.Allergen', blank=True, related_name='users')
     not_like = models.CharField(_('not like'), max_length=255, default='')
     abonement = models.IntegerField(_('abonement'), default=0)

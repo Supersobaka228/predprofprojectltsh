@@ -149,14 +149,12 @@ def update_issued_count(request):
         sanitized_day_key = _sanitize_day_key(received_day_key)
         date_str = _date_str_for_day_key(sanitized_day_key)
 
-        # Получаем блюдо
         meal = Meal.objects.get(id=meal_id)
 
-        # Инициализируем структуру данных, если её нет
         if date_str not in meal.count_by_days:
             meal.count_by_days[date_str] = {
-                'o': 0,  # заказано
-                'g': 0,  # выдано (g - выданные)  # доступно
+                'o': 0,
+                'g': 0,
             }
 
 
@@ -174,15 +172,14 @@ def update_issued_count(request):
                 })
 
         elif action == 'return':
-            # Возврат порций
+
 
             meals_give(amount, meal_id, release=False)
             day_data['g'] = max(0, day_data.get('g', 0) - amount)
 
-        # Сохраняем обновленные данные
+
         meal.save()
 
-        # Рассчитываем доступное количество
         available = get_remains_dict()[meal.id] - amount
 
         print(f"Обновлено: {meal.name}, дата: {date_str}")
@@ -211,11 +208,10 @@ def update_issued_count(request):
         }, status=500)
 
 
-# Дополнительная функция для получения данных о блюдах
 def get_meal_data(request):
-    """API для получения данных о блюдах на конкретную дату"""
+
     date_str = request.GET.get('date') or date.today().strftime('%Y-%m-%d')
-    meal_type = request.GET.get('meal_type')  # 'breakfast' или 'lunch'
+    meal_type = request.GET.get('meal_type')
 
     meals_data = []
     if meal_type == 'breakfast':

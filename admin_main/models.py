@@ -2,7 +2,6 @@ from django.db import models
 from decimal import Decimal
 from django.utils import timezone
 
-from menu.models import Meal
 from users.models import User
 from menu.models import Ingredient
 

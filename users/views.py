@@ -117,25 +117,15 @@ def login_admin(request):
 @require_POST
 @csrf_protect
 def topup_balance(request):
-    """Пополнение баланса пользователя.
-
-    Базовая безопасность:
-    - доступно только авторизованному пользователю
-    - только POST + CSRF
-    - баланс не принимаем из клиента, только сумму пополнения
-    - изменение баланса делаем атомарно
-    """
 
     form = TopUpBalanceForm(request.POST)
     if not form.is_valid():
-        # На этом шаге не ломаем UI: просто возвращаемся в меню.
         return redirect('menu')
 
     amount_cents = form.cleaned_data['amount']
 
     with transaction.atomic():
         user = request.user
-        # SQLite не поддерживает select_for_update полноценно, но atomic всё равно защитит от частичных записей.
         user.balance_cents = int(user.balance_cents or 0) + int(amount_cents)
         user.save(update_fields=['balance_cents'])
 
@@ -157,7 +147,6 @@ def topup_balance(request):
 @require_POST
 @csrf_protect
 def purchase_subscription(request):
-    """Оформление месячного абонемента при наличии достаточного баланса."""
 
     user = request.user
     now = timezone.now()
