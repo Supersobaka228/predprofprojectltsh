@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Получаем CSRF токен для Django
 
     const remains = JSON.parse(document.getElementById('remains_id').textContent);
 
@@ -21,7 +20,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const csrftoken = getCookie('csrftoken');
 
     // Функция для отправки AJAX запроса
-    // Убедитесь что все переменные определены
 function updateMealCount(mealId, action, amount) {
 
     // Проверяем входные данные
@@ -368,20 +366,16 @@ function updateMealCount(mealId, action, amount) {
         return this.selectedDate.toISOString().split('T')[0];
     }
 
-    // Получение даты в формате DD.MM.YYYY
     getSelectedDateFormatted() {
         return this.formatDate(this.selectedDate);
     }
 
-    // Обновление отображения
     updateDisplay() {
-        // Обновляем главную дату
         const dateDisplay = this.container.querySelector('[data-role="date-display"]');
         if (dateDisplay) {
             dateDisplay.textContent = this.formatDate(this.selectedDate);
         }
 
-        // Обновляем активный день
         const dayButtons = this.container.querySelectorAll('[data-role="weekday-switch"] button');
         const selectedDateStr = this.selectedDate.toISOString().split('T')[0];
 
@@ -393,22 +387,18 @@ function updateMealCount(mealId, action, amount) {
             }
         });
 
-        // Обновляем диапазон недели
         const weekLabel = this.container.querySelector('[data-role="week-label"]');
         if (weekLabel) {
             weekLabel.textContent = `${this.formatDate(this.weekStart)} - ${this.formatDate(this.weekEnd)}`;
         }
 
-        // Обновляем data-атрибуты
         this.container.dataset.date = selectedDateStr;
         this.container.dataset.weekStart = this.weekStart.toISOString().split('T')[0];
         this.container.dataset.weekEnd = this.weekEnd.toISOString().split('T')[0];
 
-        // Вызываем событие изменения даты
         this.triggerDateChange();
     }
 
-    // Форматирование даты в DD.MM.YYYY
     formatDate(date) {
         const day = String(date.getDate()).padStart(2, '0');
         const month = String(date.getMonth() + 1).padStart(2, '0');
@@ -416,7 +406,6 @@ function updateMealCount(mealId, action, amount) {
         return `${day}.${month}.${year}`;
     }
 
-    // Переключение на определенный день
     selectDay(dateString) {
         const newDate = new Date(dateString);
         if (!isNaN(newDate.getTime())) {
@@ -425,7 +414,6 @@ function updateMealCount(mealId, action, amount) {
         }
     }
 
-    // Переключение на предыдущую неделю
     prevWeek() {
         this.weekStart.setDate(this.weekStart.getDate() - 7);
         this.weekEnd.setDate(this.weekEnd.getDate() - 7);
@@ -434,7 +422,6 @@ function updateMealCount(mealId, action, amount) {
         this.updateDisplay();
     }
 
-    // Переключение на следующую неделю
     nextWeek() {
         this.weekStart.setDate(this.weekStart.getDate() + 7);
         this.weekEnd.setDate(this.weekEnd.getDate() + 7);
@@ -443,7 +430,6 @@ function updateMealCount(mealId, action, amount) {
         this.updateDisplay();
     }
 
-    // Обновление кнопок дней недели
     updateWeekButtons() {
         const dayButtons = this.container.querySelectorAll('[data-role="weekday-switch"] button');
         const startDate = new Date(this.weekStart);
@@ -455,7 +441,6 @@ function updateMealCount(mealId, action, amount) {
             const dateString = currentDate.toISOString().split('T')[0];
             button.dataset.date = dateString;
 
-            // Обновляем текст кнопки (Пн, Вт, и т.д.)
             const daysOfWeek = ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'];
             const dayIndex = currentDate.getDay();
             const dayName = index < 5 ? button.textContent : daysOfWeek[dayIndex];
@@ -463,7 +448,6 @@ function updateMealCount(mealId, action, amount) {
         });
     }
 
-    // Событие изменения даты
     triggerDateChange() {
         const event = new CustomEvent('dateChange', {
             detail: {
@@ -478,9 +462,7 @@ function updateMealCount(mealId, action, amount) {
         this.container.dispatchEvent(event);
     }
 
-    // Настройка обработчиков событий
     setupEventListeners() {
-        // Обработчики для кнопок дней
         const dayButtons = this.container.querySelectorAll('[data-role="weekday-switch"] button');
         dayButtons.forEach(button => {
             button.addEventListener('click', () => {
@@ -488,7 +470,6 @@ function updateMealCount(mealId, action, amount) {
             });
         });
 
-        // Обработчики для переключения недель
         const prevWeekBtn = this.container.querySelector('[data-action="week-prev"]');
         const nextWeekBtn = this.container.querySelector('[data-action="week-next"]');
 
@@ -501,7 +482,6 @@ function updateMealCount(mealId, action, amount) {
         }
     }
 
-    // Публичные методы для управления извне
     setDate(date) {
         const newDate = new Date(date);
         if (!isNaN(newDate.getTime())) {
@@ -526,27 +506,6 @@ function updateMealCount(mealId, action, amount) {
 const datebar = document.querySelector('[data-role="datebar"]');
     if (datebar) {
         const datePicker = new DatePicker(datebar);
-
-        // Пример использования из JavaScript:
-        // Получение текущей даты
-        console.log('Текущая дата:', datePicker.getSelectedDate());
-        console.log('Текущая дата (строка):', datePicker.getSelectedDateString());
-        console.log('Текущая дата (форматированная):', datePicker.getSelectedDateFormatted());
-
-        // Установка новой даты
-        // datePicker.setDate('2026-01-20');
-
-        // Установка новой недели
-        // datePicker.setWeek('2026-01-26', '2026-01-30');
-
-        // Подписка на события изменения даты
-        datebar.addEventListener('dateChange', (event) => {
-            console.log('Дата изменена:', event.detail);
-            // Здесь можно обновить данные на странице
-            // Например: loadDataForDate(event.detail.dateString);
-        });
-
-        // Сохранение экземпляра для глобального доступа
         window.datePicker = datePicker;
     }
 
