@@ -8,9 +8,13 @@
 
 ```bash
 python -m venv venv
+
+#Linux:
 source venv/bin/activate
+
 # Windows:
 venv\Scripts\activate
+
 pip install --upgrade pip
 pip install -r requirements.txt
 ```
@@ -34,4 +38,5 @@ python manage.py createsuperuser
 ```bash
 python manage.py runserver
 ```
+
 
