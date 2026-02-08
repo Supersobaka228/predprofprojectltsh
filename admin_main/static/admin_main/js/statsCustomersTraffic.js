@@ -207,7 +207,7 @@ const getWeekKey = (dateObj) => {
     const start = new Date(dateObj);
     start.setDate(start.getDate() - diff);
     const end = new Date(start);
-    end.setDate(end.getDate() + 4);
+    end.setDate(end.getDate() + 6);
     return `${toIso(start)} ${toIso(end)}`;
 };
 

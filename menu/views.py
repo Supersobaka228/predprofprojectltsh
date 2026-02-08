@@ -9,6 +9,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 from django.utils import timezone
 
+from admin_main.models import Notification
 from .forms import ReviewForm, OrderForm
 from .models import MenuItem, DayOrder, Review, Order, Allergen
 from datetime import datetime, timedelta
@@ -112,6 +113,21 @@ def menu(request):
                     rating_avg = round(float(agg.get('avg') or 0), 1)
                     rating_count = int(agg.get('count') or 0)
                     day_display = timezone.localtime(review.day).strftime('%d.%m.%y %H:%M')
+                    menu_item = MenuItem.objects.filter(id=review.item_id).first()
+                    if menu_item:
+                        if rating_avg < 3.0 and not menu_item.low_rating_notified:
+                            user_label = request.user.get_full_name() or getattr(request.user, 'email', '') or str(request.user.id)
+                            Notification.objects.create(
+                                recipient_type=Notification.RECIPIENT_ADMIN,
+                                recipient_user=None,
+                                title='low_rating',
+                                body=f'Рейтинг "{menu_item}" опустился ниже 3.0.',
+                            )
+                            menu_item.low_rating_notified = True
+                            menu_item.save(update_fields=['low_rating_notified'])
+                        elif rating_avg >= 3.0 and menu_item.low_rating_notified:
+                            menu_item.low_rating_notified = False
+                            menu_item.save(update_fields=['low_rating_notified'])
                     return JsonResponse({'success': True, 'action': 'review', 'review': {
                         'item_id': getattr(review, 'item_id', None),
                         'user_id': getattr(review, 'user_id', None),
@@ -179,16 +195,27 @@ def menu(request):
     orders_d = dict_orders(orders)
 
 
+    subscription_expiry_display = None
+    user_subscription = getattr(request.user, 'subscription_expires_at', None)
+    if user_subscription:
+        try:
+            subscription_expiry_display = timezone.localtime(user_subscription).strftime('%d.%m.%Y %H:%M')
+        except Exception:
+            subscription_expiry_display = str(user_subscription)
+
+
     context = {
-        'menu_items': menu_items,
-        'date_display': date_display,
-        'current_date': current_date_str,
-        'prev_date': prev_date,
-        'next_date': next_date,
-        'review_items': Review.objects.all(),
-        'orders': orders_d,
-        'orders_keys': orders_d.keys()
-    }
+         'menu_items': menu_items,
+         'date_display': date_display,
+         'current_date': current_date_str,
+         'prev_date': prev_date,
+         'next_date': next_date,
+         'review_items': Review.objects.all(),
+         'orders': orders_d,
+         'orders_keys': orders_d.keys()
+     }
+
+    context['subscription_expiry_display'] = subscription_expiry_display
 
     # Аллергены: список и выбор пользователя
     try:
@@ -266,13 +293,15 @@ def order(request, day_d):
         if price_cents <= 0:
             return None, 'INVALID_PRICE', 'Некорректная цена'
 
-        current = int(getattr(user, 'balance_cents', 0) or 0)
-        if current < price_cents:
-            return None, 'INSUFFICIENT_FUNDS', 'Недостаточно средств'
+        now = timezone.now()
+        subscription_active = bool(user.subscription_expires_at and user.subscription_expires_at > now)
+        if not subscription_active:
+            current = int(getattr(user, 'balance_cents', 0) or 0)
+            if current < price_cents:
+                return None, 'INSUFFICIENT_FUNDS', 'Недостаточно средств'
+            user.balance_cents = current - price_cents
+            user.save(update_fields=['balance_cents'])
 
-        user.balance_cents = current - price_cents
-
-        user.save(update_fields=['balance_cents'])
         menu_item = form.cleaned_data.get('name')
         order_day = form.cleaned_data.get('day') or str(datetime.today().date())
         meals_qs = menu_item.meals.all() if menu_item else []
@@ -291,10 +320,10 @@ def order(request, day_d):
             gh.count_by_days = count_by_days
             gh.save(update_fields=['count_by_days'])
             print(gh.__dict__)
-            for ui in gh.ingredients.all():
-                ui.remains -= gh.weight
-                ui.save()
-                print(ui.__dict__)
+            # NOTE: inventory decrement moved to chef_main.meals_give (actual issuance)
+            # If you want orders to reserve/decrease stock at payment time,
+            # re-enable subtraction here. For now we do not touch Ingredient.remains
+            # when a student creates an order to keep decrements only on issuance.
 
         try:
             created_order = form.save()

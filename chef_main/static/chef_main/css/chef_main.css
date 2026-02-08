@@ -1020,7 +1020,7 @@ body {
 }
 
 .main_orders_panel {
-    flex: 0 0 clamp(200px, 35vh, 500px);
+    flex: 0 0 clamp(150px, 30vh, 500px);
     flex: 1 1 0;
     min-height: 0;
     background: #9ED5FF;
@@ -1245,34 +1245,37 @@ body {
     min-height: 0;
     display: flex;
     flex-direction: column;
+    gap: 6px;
 }
 
 .day_menu_row {
     display: grid;
-    grid-template-columns: max-content minmax(140px, 1.6fr) max-content minmax(80px, 1fr) max-content max-content minmax(80px, 1fr) max-content 32px;
-    column-gap: 8px;
-    row-gap: 8px;
+    grid-template-columns: minmax(0, 2.2fr) repeat(3, minmax(60px, 1fr)) repeat(3, minmax(70px, 0.9fr));
+    column-gap: 4px;
+    row-gap: 6px;
     align-items: center;
     background: #E9F5FF;
     border-radius: 12px;
-    padding: 10px 12px;
+    padding: 8px 10px;
     box-shadow: 0 6px 14px rgba(15, 23, 42, 0.08);
+    position: relative;
 }
 
 .day_menu_row > div {
-    padding: 0 4px;
+    padding: 0 3px;
+    font-size: clamp(0.75rem, 0.88vw, 0.85rem);
+    font-weight: 600;
+    color: #0f172a;
 }
 
 .day_menu_row > div:nth-child(1) {
     text-align: left;
 }
 
-.day_menu_row > div:nth-child(n + 2):nth-child(-n + 4) {
-    text-align: center;
-}
-
-.day_menu_row > div:nth-child(n + 5) {
-    text-align: center;
+.day_menu_dish_name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .day_menu_row::after {
@@ -1292,23 +1295,24 @@ body {
 .day_menu_row--head {
     font-weight: 700;
     color: #0f172a;
-}
-
-.day_menu_row--head::after {
-    background: #9ca3af;
+    font-size: clamp(0.65rem, 0.8vw, 0.75rem);
 }
 
 .day_menu_btn {
     width: 100%;
+    height: 32px;
     border: none;
     background: #2b9bff;
     color: #ffffff;
-    padding: 4px 6px;
     border-radius: 8px;
     font-weight: 700;
-    font-size: clamp(0.65rem, 0.75vw, 0.85rem);
+    font-size: clamp(0.65rem, 0.73vw, 0.85rem);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     cursor: pointer;
     transition: transform 0.15s ease, box-shadow 0.15s ease;
+    gap: 0;
 }
 
 .day_menu_btn:hover {

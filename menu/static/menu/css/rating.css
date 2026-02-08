@@ -73,7 +73,7 @@
 }
 
 .sheet-rating-stars-box {
-  --rating-size: 24px;
+  --rating-size: 18px;
   --rating-gap: 6px;
   --rating-percent: 0%;
   position: relative;

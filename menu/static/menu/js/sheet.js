@@ -25,7 +25,10 @@ document.addEventListener("DOMContentLoaded", () => {
   function normalizeAllergens(items) {
     const noLabel = 'Без аллергенов';
     const trimmed = (items || []).filter(Boolean);
-    if (trimmed.length <= 1) {
+    if (trimmed.length === 0) {
+      return [noLabel];
+    }
+    if (trimmed.length === 1) {
       return trimmed;
     }
     const filtered = trimmed.filter(item => item !== noLabel);

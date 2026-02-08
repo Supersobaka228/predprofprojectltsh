@@ -66,15 +66,26 @@ function updateMealCount(mealId, action, amount) {
             meal_id: String(mealId),  // Преобразуем в строку на всякий случай
             action: String(action),
             amount: amountNum,
-            date: String(date)
+            date: String(date),
+            day_key: getActiveDayKey()
         })
     });
 }
 
     // Получение текущей даты в формате YYYY-MM-DD
     function getCurrentDate() {
+        const datebar = document.querySelector('[data-role="datebar"]');
+        const selected = datebar && datebar.dataset && datebar.dataset.date;
+        if (selected) {
+            return selected;
+        }
         const now = new Date();
         return now.toISOString().split('T')[0];
+    }
+
+    function getActiveDayKey() {
+        const activeButton = document.querySelector('.chef_serving_day.is-active');
+        return activeButton ? activeButton.dataset.day : null;
     }
 
     // Обновление отображения счетчиков
@@ -103,7 +114,30 @@ function updateMealCount(mealId, action, amount) {
                 availableElement.classList.remove('updated');
             }, 300);
         }
+
+        const finalIssued = newIssued !== undefined ? newIssued : (parseInt(issuedElement?.textContent) || 0);
+        updateReturnButtonState(row, finalIssued);
     }
+
+    function updateReturnButtonState(row, issuedCount) {
+        const returnBtn = row.querySelector('.return-btn');
+        if (!returnBtn) {
+            return;
+        }
+
+        if (issuedCount <= 0) {
+            returnBtn.disabled = true;
+            returnBtn.classList.add('disabled');
+        } else {
+            returnBtn.disabled = false;
+            returnBtn.classList.remove('disabled');
+        }
+    }
+
+    document.querySelectorAll('.day_menu_row').forEach(row => {
+        const issuedValue = parseInt(row.querySelector('.issued-count')?.textContent) || 0;
+        updateReturnButtonState(row, issuedValue);
+    });
 
     // Обработчик кликов по кнопкам
     document.addEventListener('click', async function(event) {
@@ -119,6 +153,12 @@ function updateMealCount(mealId, action, amount) {
             const amount = parseInt(button.getAttribute('data-amount'));
             const row = button.closest('.day_menu_row');
             const mealName = row.getAttribute('data-meal-name');
+            const currentIssued = parseInt(row.querySelector('.issued-count')?.textContent) || 0;
+
+            if (action === 'return' && currentIssued <= 0) {
+                showNotification('Нечего возвращать', 'info');
+                return;
+            }
 
             // Блокируем кнопку на время запроса
             button.disabled = true;
@@ -223,6 +263,11 @@ function updateMealCount(mealId, action, amount) {
             border-top-color: transparent;
             border-radius: 50%;
             animation: spin 0.6s linear infinite;
+        }
+
+        .return-btn.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
         }
 
         @keyframes spin {

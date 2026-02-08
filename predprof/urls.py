@@ -33,6 +33,7 @@ urlpatterns = [
     path('menu/', menu.views.menu, name='menu'),
     path('menu/confirm_order/', menu.views.confirm_order, name='confirm_order'),
     path('menu/update_allergens/', menu.views.update_allergens, name='update_allergens'),
+    path('menu/purchase-subscription/', users.views.purchase_subscription, name='purchase_subscription'),
     path('admin_main/', admin_main.views.admin, name='admin_main'),
     path('admin_main/buyorders/', admin_main.views.buyorders_by_date, name='buyorders_by_date'),
     path('balance/topup/', users.views.topup_balance, name='topup_balance'),
@@ -42,7 +43,6 @@ urlpatterns = [
     path('chef_main/api/update-issued-count/', chef_main.views.update_issued_count, name='update_issued_count'),
     path('admin_main/report/general/', admin_main.views.admin_report_general, name='admin_report_general'),
     path('admin_main/report/costs/', admin_main.views.admin_report_costs, name='admin_report_costs'),
-path('chef_main/api/get-meal-dat/', chef_main.views.get_meal_data, name='get_meal_data'),
-    path('api/get-serving-stats/', chef_main.views.get_serving_stats, name='get_serving_stats'),
+    path('chef_main/api/get-meal-dat/', chef_main.views.get_meal_data, name='get_meal_data'),
 
 ]

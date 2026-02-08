@@ -11,725 +11,779 @@
     <title>MealHub - Меню админа</title>
 </head>
 <body>
-    <div class="menu_page">
+<div class="menu_page">
 
-        <div class="lefter">
-            <div class="admin_logo_container">
-                <div class="admin_logo">Meal Hub Admin</div>
-                <div class="admin_logo_sub">Контроль питания учеников</div>
-            </div>
-            <div class="admin_divider"></div>
-            <div class="admin_nav">
-                <div class="admin_nav_slider"></div>
-                <button class="admin_nav_button" data-view="admin_main"><img src="/static/icon/home.svg" alt="">Главная</button>
-                <button class="admin_nav_button" data-view="admin_stats"><img src="/static/icon/leaderboard.svg" alt="">Статистика</button>
-                <button class="admin_nav_button" data-view="admin_menu"><img class="admin_lefter_rest" src="/static/icon/restaurant.svg" alt="">Меню</button>
-                <button class="admin_nav_button" data-view="admin_orders"><img src="/static/icon/note_add.svg" alt="">Заказы</button>
-                <button class="admin_nav_button" data-view="reports"><img src="/static/icon/assignment.svg" alt="">Отчёты</button>
-            </div>
-
+    <div class="lefter">
+        <div class="admin_logo_container">
+            <div class="admin_logo">Meal Hub Admin</div>
+            <div class="admin_logo_sub">Контроль питания учеников</div>
         </div>
-        
+        <div class="admin_divider"></div>
+        <div class="admin_nav">
+            <div class="admin_nav_slider"></div>
+            <button class="admin_nav_button" data-view="admin_main"><img src="/static/icon/home.svg" alt="">Главная
+            </button>
+            <button class="admin_nav_button" data-view="admin_stats"><img src="/static/icon/leaderboard.svg" alt="">Статистика
+            </button>
+            <button class="admin_nav_button" data-view="admin_menu"><img class="admin_lefter_rest"
+                                                                         src="/static/icon/restaurant.svg" alt="">Меню
+            </button>
+            <button class="admin_nav_button" data-view="admin_orders"><img src="/static/icon/note_add.svg" alt="">Заказы
+            </button>
+            <button class="admin_nav_button" data-view="reports"><img src="/static/icon/assignment.svg" alt="">Отчёты
+            </button>
+        </div>
 
-        <div class="menu_app_view menu_app_view--active" data-view="admin_main">
-            <header class="admin_main_header">
-                <div class="admin_main_header_left">Главная</div>
-                <div class="admin_main_header_right">
-                    <div class="admin_notify_wrap">
-                        <button class="admin_notify_button" type="button" aria-label="Уведомления">
-                            <img src="/static/icon/notifications.svg" alt="">
-                        </button>
-                    </div>
-                    <div class="admin_user_meta">
-                        <div class="admin_user_name">Имя Фамилия</div>
-                        <div class="admin_user_role">Должность</div>
-                    </div>
-                    <div class="admin_avatar_wrap">
-                        <div class="admin_user_avatar" role="button" tabindex="0" aria-label="Аккаунт"></div>
-                    </div>
-                </div>
-            </header>
+    </div>
 
-            <section class="admin_stats_panel">
-                <div class="admin_stats_grid">
-                    <article class="admin_stat_card">
-                        <div class="admin_stat_label">Оплаты сегодня</div>
-                        <div class="admin_stat_value">{{ summ }} ₽</div>
-                    </article>
-                    <article class="admin_stat_card">
-                        <div class="admin_stat_label">Посещения</div>
-                        <div class="admin_stat_value">{{ sum_comes }} учеников</div>
-                    </article>
-                    <article class="admin_stat_card">
-                        <div class="admin_stat_label">Заявки на закупку</div>
-                        <div class="admin_stat_value">{{buyorders_count}} позиций</div>
-                    </article>
-                    <article class="admin_stat_card">
-                        <div class="admin_stat_label">Низкие остатки</div>
-                        <div class="admin_stat_value">5 позиций</div>
-                    </article>
-                    <article class="admin_stat_card">
-                        <div class="admin_stat_label">Приёмов пищи</div>
-                        <div class="admin_stat_value">{{ menu }} позиций</div>
-                    </article>
-                </div>
-            </section>
-            <script>
-                const date = [
-                {% for item in data %}
-                "{{ item|safe }}"{% if not forloop.last %},{% endif %}
-                {% endfor %}
-                ];
-                const date2 = [
-                {% for item in comes_by_date %}
-                "{{ item|safe }}"{% if not forloop.last %},{% endif %}
-                {% endfor %}
-                ];
-            </script>
-            <section class="main_main_panel">
-                <div class="main_main_graphs_orders_panel">
-                    <section class="main_graphs_panel">
-                        <div class="graph_holder">
-                            <p>Динамика оплат, руб.</p>
-                            <div class="graph_canvas">
-                                <canvas id="paymentsDynamics"></canvas>
-                            </div>
-                        </div>
-                        <div class="graph_holder">
-                            <p>Динамика посещаемости, чел.</p>
-                            <div class="graph_canvas">
-                                <canvas id="customersTraffic"></canvas>
-                            </div>
-                        </div>
-                    </section>
-                    <section class="main_orders_panel">
-                        <p>Новые заявки на закупку</p>
-                        <div class="orders_bg">
-                            <table class="orders_table">
-                                <thead>
-                                    <tr>
-                                        <th>№</th>
-                                        <th>Дата</th>
-                                        <th>Создатель</th>
-                                        <th>Товары</th>
-                                        <th>Сумма</th>
-                                        <th>Статус</th>
-                                    </tr>
-                                </thead>
 
-                                <tbody>
-                                    {% for item in buyorders %}
-                                    <tr data-order-id="{{ item.id }}">
-                                        <td>{{ item.id }}</td>
-                                        <td>{{ item.date }}</td>
-                                        <td>{{ item.user_id }}</td>
-                                        <td>{{ item.items }}</td>
-                                        <td>{{ item.summ_rub|floatformat:2 }} ₽</td>
-                                        <td>
-                                            {% if item.status == "allowed" %}
-                                            <span class="orders_status orders_status--approved">Одобрено</span>
-                                            {% elif item.status == "rejected" %}
-                                            <span class="orders_status orders_status--rejected">Отклонено</span>
-                                            {% else %}
-                                            <span class="orders_status">Ожидает</span>
-                                            {% endif %}
-                                        </td>
-                                    </tr>
-                                    {% endfor %}
-                                </tbody>
-                            </table>
-                        </div>
-                    </section>
+    <div class="menu_app_view menu_app_view--active" data-view="admin_main">
+        <header class="admin_main_header">
+            <div class="admin_main_header_left">Главная</div>
+            <div class="admin_main_header_right">
+                <div class="admin_notify_wrap">
+                    <button class="admin_notify_button" type="button" aria-label="Уведомления">
+                        <img src="/static/icon/notifications.svg" alt="">
+                    </button>
                 </div>
-                <div class="main_main_notifications_panel">
-                    {% for item in notifications %}
+                <div class="admin_user_meta">
+                    <div class="admin_user_name">{{ profile_display_name }}</div>
+                    <div class="admin_user_role">{{ profile_role_label }}</div>
+                </div>
+                <div class="admin_avatar_wrap">
+                    <img src="/static/icon/Default_pfp.svg" class="admin_user_avatar" alt="" role="button"
+                         tabindex="0" aria-label="Аккаунт">
+                </div>
+            </div>
+        </header>
+
+        <section class="admin_stats_panel">
+            <div class="admin_stats_grid">
+                <article class="admin_stat_card">
+                    <div class="admin_stat_label">Оплаты сегодня</div>
+                    <div class="admin_stat_value">{{ summ }} ₽</div>
+                </article>
+                <article class="admin_stat_card">
+                    <div class="admin_stat_label">Посещения</div>
+                    <div class="admin_stat_value">{{ sum_comes }} учеников</div>
+                </article>
+                <article class="admin_stat_card">
+                    <div class="admin_stat_label">Заявки на закупку</div>
+                    <div class="admin_stat_value">{{buyorders_count}} позиций</div>
+                </article>
+                <article class="admin_stat_card">
+                    <div class="admin_stat_label">Низкие остатки</div>
+                    <div class="admin_stat_value">{{ low_stock_ingredients_count }} позиций</div>
+                </article>
+                <article class="admin_stat_card">
+                    <div class="admin_stat_label">Приёмов пищи</div>
+                    <div class="admin_stat_value">{{ menu }} позиций</div>
+                </article>
+            </div>
+        </section>
+        <script>
+            const date = [
+            {% for item in data %}
+            "{{ item|safe }}"{% if not forloop.last %},{% endif %}
+            {% endfor %}
+            ];
+            const date2 = [
+            {% for item in comes_by_date %}
+            "{{ item|safe }}"{% if not forloop.last %},{% endif %}
+            {% endfor %}
+            ];
+        </script>
+        <section class="main_main_panel">
+            <div class="main_main_graphs_orders_panel">
+                <section class="main_graphs_panel">
+                    <div class="graph_holder">
+                        <p>Динамика оплат, руб.</p>
+                        <div class="graph_canvas">
+                            <canvas id="paymentsDynamics"></canvas>
+                        </div>
+                    </div>
+                    <div class="graph_holder">
+                        <p>Динамика посещаемости, чел.</p>
+                        <div class="graph_canvas">
+                            <canvas id="customersTraffic"></canvas>
+                        </div>
+                    </div>
+                </section>
+                <section class="main_orders_panel">
+                    <p>Новые заявки на закупку</p>
+                    <div class="orders_bg">
+                        <table class="orders_table">
+                            <thead>
+                            <tr>
+                                <th>№</th>
+                                <th>Дата</th>
+                                <th>Создатель</th>
+                                <th>Товары</th>
+                                <th>Сумма</th>
+                                <th>Статус</th>
+                            </tr>
+                            </thead>
+
+                            <tbody>
+                            {% for item in buyorders %}
+                            <tr data-order-id="{{ item.id }}">
+                                <td>{{ item.id }}</td>
+                                <td>{{ item.date }}</td>
+                                <td>{{ item.user_id }}</td>
+                                <td>{{ item.items }}</td>
+                                <td>{{ item.summ_rub|floatformat:2 }} ₽</td>
+                                <td>
+                                    {% if item.status == "allowed" %}
+                                    <span class="orders_status orders_status--approved">Одобрено</span>
+                                    {% elif item.status == "rejected" %}
+                                    <span class="orders_status orders_status--rejected">Отклонено</span>
+                                    {% else %}
+                                    <span class="orders_status">Ожидает</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+            </div>
+            <div class="main_main_notifications_panel">
+                <p>Уведомления</p>
+                <div class="notifications_list">
+                    {% if notifications %}
+                    {% for notification in notifications %}
                     <div class="notif_element">
-                        <p>{{ item.text }}</p>
+                        <p>{{ notification.body }}</p>
                     </div>
                     {% endfor %}
+                    {% else %}
+                    <div class="notif_element">
+                        <p>Уведомлений нет</p>
+                    </div>
+                    {% endif %}
                 </div>
-            </section>
+            </div>
+        </section>
 
-        </div>
+    </div>
 
-        <div class="menu_app_view" data-view="admin_stats">
-            <header class="admin_main_header">
-                <div class="admin_main_header_left">Главная</div>
-                <div class="admin_main_header_right">
-                    <div class="admin_notify_wrap">
-                        <button class="admin_notify_button" type="button" aria-label="Уведомления">
-                            <img src="/static/icon/notifications.svg" alt="">
-                        </button>
+    <div class="menu_app_view" data-view="admin_stats">
+        <header class="admin_main_header">
+            <div class="admin_main_header_left">Главная</div>
+            <div class="admin_main_header_right">
+                <div class="admin_notify_wrap">
+                    <button class="admin_notify_button" type="button" aria-label="Уведомления">
+                        <img src="/static/icon/notifications.svg" alt="">
+                    </button>
 
-                    </div>
-                    <div class="admin_user_meta">
-                        <div class="admin_user_name">Имя Фамилия</div>
-                        <div class="admin_user_role">Должность</div>
-                    </div>
-                    <div class="admin_avatar_wrap">
-                        <div class="admin_user_avatar" role="button" tabindex="0" aria-label="Аккаунт"></div>
-                    </div>
                 </div>
-            </header>
-
-            <section class="admin_stats_panel">
-                <div class="admin_stats_grid">
-                    <article class="admin_stat_card">
-                        <div class="admin_stat_label">Оплаты сегодня</div>
-                        <div class="admin_stat_value">{{ summ }} ₽</div>
-                    </article>
-                    <article class="admin_stat_card">
-                        <div class="admin_stat_label">Посещения</div>
-                        <div class="admin_stat_value">{{ sum_comes }} учеников</div>
-                    </article>
-                    <article class="admin_stat_card">
-                        <div class="admin_stat_label">Заявки на закупку</div>
-                        <div class="admin_stat_value">{{buyorders_count}} позиций</div>
-                    </article>
-                    <article class="admin_stat_card">
-                        <div class="admin_stat_label">Низкие остатки</div>
-                        <div class="admin_stat_value">5 позиций</div>
-                    </article>
-                    <article class="admin_stat_card">
-                        <div class="admin_stat_label">Приёмов пищи</div>
-                        <div class="admin_stat_value">{{ menu }} позиций</div>
-                    </article>
+                <div class="admin_user_meta">
+                    <div class="admin_user_name">{{ profile_display_name }}</div>
+                    <div class="admin_user_role">{{ profile_role_label }}</div>
                 </div>
-            </section>
-            {{ orders_by_day|json_script:"my-chart-data" }}
-            {{ comes_by_day|json_script:"my-chart-data2" }}
-            {{ reviews_by_day|json_script:"my-chart-data3" }}
-            {{ avg_orders_weekday|json_script:"my-chart-avg-orders" }}
-            {{ avg_comes_weekday|json_script:"my-chart-avg-comes" }}
-
-
-            <script>
-                const serverData = JSON.parse(document.getElementById('my-chart-data3').textContent);
-                const serverDataKeys = Object.keys(serverData);
-                let CurrentDataKey = serverDataKeys[0];
-                let currentIndex = 0;
-
-                console.log(serverData);
-            </script>
-            <section class="admin_stats_main">
-                <div class="stats_graph_holder">
-                    <div class="stats_graph_subholder">
-                        <div class="stats_graph_header">
-                            <p>Динамика оплат, руб.</p>
-                            <div class="stats_week_switch" aria-label="Переключение недели">
-                                <button class="stats_week_btn" type="button" id="prev-btn-so" aria-label="Предыдущая неделя">
-                                    <img src="/static/icon/left_arrow_stats.svg" alt="">
-                                </button>
-                                <span class="stats_week_label" id="display-stats-pay"></span>
-                                <button class="stats_week_btn stats_week_btn--next" id="next-btn-so" type="button" aria-label="Следующая неделя">
-                                    <img src="/static/icon/left_arrow_stats.svg" alt="">
-                                </button>
-                            </div>
-                        </div>
-                        <div class="graph_canvas">
-                            <canvas id="stats_paymentDynamics"></canvas>
-                        </div>
-                    </div>
-                    <div class="stats_graph_subholder">
-                        <div class="stats_graph_header">
-                            <p>Динамика посещаемости, чел.</p>
-                            <div class="stats_week_switch" aria-label="Переключение недели">
-                                <button class="stats_week_btn" id="prev-btn-sc" type="button" aria-label="Предыдущая неделя">
-                                    <img src="/static/icon/left_arrow_stats.svg" alt="">
-                                </button>
-                                <span class="stats_week_label" id="display-stats-comes">26.01 - 01.02</span>
-                                <button class="stats_week_btn stats_week_btn--next"  id="next-btn-sc" type="button" aria-label="Следующая неделя">
-                                    <img src="/static/icon/left_arrow_stats.svg" alt="">
-                                </button>
-                            </div>
-                        </div>
-                        <div class="graph_canvas">
-                            <canvas id="stats_customersTraffic"></canvas>
-                        </div>
-                    </div>
+                <div class="admin_avatar_wrap">
+                    <img src="/static/icon/Default_pfp.svg" class="admin_user_avatar" alt="" role="button"
+                         tabindex="0" aria-label="Аккаунт">
                 </div>
-                <div class="reviews_holder">
-                    <div class="reviews_header">
-                        <div class="reviews_title">Отзывы</div>
+            </div>
+        </header>
+
+        <section class="admin_stats_panel">
+            <div class="admin_stats_grid">
+                <article class="admin_stat_card">
+                    <div class="admin_stat_label">Оплаты сегодня</div>
+                    <div class="admin_stat_value">{{ summ }} ₽</div>
+                </article>
+                <article class="admin_stat_card">
+                    <div class="admin_stat_label">Посещения</div>
+                    <div class="admin_stat_value">{{ sum_comes }} учеников</div>
+                </article>
+                <article class="admin_stat_card">
+                    <div class="admin_stat_label">Заявки на закупку</div>
+                    <div class="admin_stat_value">{{buyorders_count}} позиций</div>
+                </article>
+                <article class="admin_stat_card">
+                    <div class="admin_stat_label">Низкие остатки</div>
+                    <div class="admin_stat_value">{{ low_stock_ingredients_count }} позиций</div>
+                </article>
+                <article class="admin_stat_card">
+                    <div class="admin_stat_label">Приёмов пищи</div>
+                    <div class="admin_stat_value">{{ menu }} позиций</div>
+                </article>
+            </div>
+        </section>
+        {{ orders_by_day|json_script:"my-chart-data" }}
+        {{ comes_by_day|json_script:"my-chart-data2" }}
+        {{ reviews_by_day|json_script:"my-chart-data3" }}
+        {{ avg_orders_weekday|json_script:"my-chart-avg-orders" }}
+        {{ avg_comes_weekday|json_script:"my-chart-avg-comes" }}
+
+
+        <script>
+            const serverData = JSON.parse(document.getElementById('my-chart-data3').textContent);
+            const serverDataKeys = Object.keys(serverData);
+            let CurrentDataKey = serverDataKeys[0];
+            let currentIndex = 0;
+
+            console.log(serverData);
+        </script>
+        <section class="admin_stats_main">
+            <div class="stats_graph_holder">
+                <div class="stats_graph_subholder">
+                    <div class="stats_graph_header">
+                        <p>Динамика оплат, руб.</p>
                         <div class="stats_week_switch" aria-label="Переключение недели">
-                            <button class="stats_week_btn" type="button" id='review-next-btn' aria-label="Предыдущая неделя">
+                            <button class="stats_week_btn" type="button" id="prev-btn-so"
+                                    aria-label="Предыдущая неделя">
                                 <img src="/static/icon/left_arrow_stats.svg" alt="">
                             </button>
-                            <span class="stats_week_label" id="display-stats-reviews"></span>
-                            <button class="stats_week_btn stats_week_btn--next" type="button" id="review-before-btn" aria-label="Следующая неделя">
+                            <span class="stats_week_label" id="display-stats-pay"></span>
+                            <button class="stats_week_btn stats_week_btn--next" id="next-btn-so" type="button"
+                                    aria-label="Следующая неделя">
                                 <img src="/static/icon/left_arrow_stats.svg" alt="">
                             </button>
                         </div>
                     </div>
-                    <div class="reviews_list" id="reviews_list">
-                        <article class="review_card">
-                            <div class="sheet-review-empty" id="sheet-review-empty" style="display:none;">Нет отзывов для этой даты</div>
-                            {% for item in all_reviews %}
-                            <div class="review_meta" data-review-item-id="{{ item.id }}">
-                                <div class="review_meta_text">
-                                    <div class="review_date_row">
-                                        <div class="review_date">{{ item.day }}</div>
-                                        <div class="review_user">{{ item.reviewer }}</div>
-                                    </div>
-                                    <div class="review_target">{{ item.target }}</div>
-                                </div>
-                                <div class="review_stars" aria-label="Рейтинг {{ item.stars_count }} из 5">
-                                    {% for i in "12345"|make_list %}
-                                    <img src="/static/icon/Star 1.svg" alt="" class="{% if forloop.counter > item.stars_count %}review_star--empty{% endif %}">
-                                    {% endfor %}
-                                </div>
-                                <div class="review_text">{{ item.text }}</div>
-                            </div>
-
-                            {% endfor %}
-                        </article>
+                    <div class="graph_canvas">
+                        <canvas id="stats_paymentDynamics"></canvas>
                     </div>
                 </div>
-            </section>
-        </div>
-
-        <div class="menu_app_view" data-view="admin_menu">
-            <header class="admin_main_header">
-                <div class="admin_main_header_left">Меню</div>
-                <div class="admin_main_header_right">
-                    <div class="admin_notify_wrap">
-                        <button class="admin_notify_button" type="button" aria-label="Уведомления">
-                            <img src="/static/icon/notifications.svg" alt="">
+                <div class="stats_graph_subholder">
+                    <div class="stats_graph_header">
+                        <p>Динамика посещаемости, чел.</p>
+                        <div class="stats_week_switch" aria-label="Переключение недели">
+                            <button class="stats_week_btn" id="prev-btn-sc" type="button"
+                                    aria-label="Предыдущая неделя">
+                                <img src="/static/icon/left_arrow_stats.svg" alt="">
+                            </button>
+                            <span class="stats_week_label" id="display-stats-comes">26.01 - 01.02</span>
+                            <button class="stats_week_btn stats_week_btn--next" id="next-btn-sc" type="button"
+                                    aria-label="Следующая неделя">
+                                <img src="/static/icon/left_arrow_stats.svg" alt="">
+                            </button>
+                        </div>
+                    </div>
+                    <div class="graph_canvas">
+                        <canvas id="stats_customersTraffic"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="reviews_holder">
+                <div class="reviews_header">
+                    <div class="reviews_title">Отзывы</div>
+                    <div class="stats_week_switch" aria-label="Переключение недели">
+                        <button class="stats_week_btn" type="button" id='review-next-btn'
+                                aria-label="Предыдущая неделя">
+                            <img src="/static/icon/left_arrow_stats.svg" alt="">
+                        </button>
+                        <span class="stats_week_label" id="display-stats-reviews"></span>
+                        <button class="stats_week_btn stats_week_btn--next" type="button" id="review-before-btn"
+                                aria-label="Следующая неделя">
+                            <img src="/static/icon/left_arrow_stats.svg" alt="">
                         </button>
                     </div>
-                    <div class="admin_user_meta">
-                        <div class="admin_user_name">Имя Фамилия</div>
-                        <div class="admin_user_role">Должность</div>
-                    </div>
-                    <div class="admin_avatar_wrap">
-                        <img src="/static/icon/photo_2026-01-14_11-19-22.jpg" class="admin_user_avatar" alt="" role="button" tabindex="0" aria-label="Аккаунт">
-                    </div>
                 </div>
-            </header>
-
-            <section class="admin_stats_panel admin_menu_panel">
-                <div class="admin_menu_filters">
-                    <div class="admin_menu_left">
-                        <div class="admin_menu_date" id="admin_menu_date"></div>
-                        <div class="admin_menu_days" role="group" aria-label="Дни недели">
-                            <button class="admin_menu_day" type="button">Пн</button>
-                            <button class="admin_menu_day" type="button">Вт</button>
-                            <button class="admin_menu_day" type="button">Ср</button>
-                            <button class="admin_menu_day" type="button">Чт</button>
-                            <button class="admin_menu_day" type="button">Пт</button>
+                <div class="reviews_list" id="reviews_list">
+                    <article class="review_card">
+                        <div class="sheet-review-empty" id="sheet-review-empty" style="display:none;">Нет отзывов для
+                            этой даты
                         </div>
-                    </div>
-
-                </div>
-            </section>
-
-            <section class="admin_menu_configurator_main">
-                <input type="hidden" id="day_input_value">
-                {{ menu_prefill_data|json_script:"menu-prefill-data" }}
-                <div id="menu-config-forms"></div>
-                <template id="menu-config-template">
-                    <form class="menu_configurator_form" method="post">
-                        {% csrf_token %}
-                        <input type="hidden" name="category">
-                        <input type="hidden" name="day" class="menu_config_day_value">
-
-                        {% if errors %}
-                        <div class="menu_config_errors" role="alert">
-                            {% for error in errors %}
-                            <div class="menu_config_error_item">{{ error }}</div>
-                            {% endfor %}
-                        </div>
-                        {% endif %}
-
-                        <div class="menu_config_card">
-                            <div class="menu_config_title_select">
-                                    <button class="menu_config_title_btn" type="button" aria-haspopup="listbox" aria-expanded="false">
-                                        <span class="menu_config_title_label">Завтрак</span>
-                                        <img class="menu_config_title_arrow" src="/static/icon/arrow_back_ios_new.svg" alt="">
-                                    </button>
-                                    <div class="menu_config_title_menu" role="listbox" aria-label="Тип приёма пищи">
-                                        <button class="menu_config_title_item" type="button" role="option" data-value="breakfast">Завтрак</button>
-                                        <button class="menu_config_title_item" type="button" role="option" data-value="lunch">Обед</button>
-                                    </div>
+                        {% for item in all_reviews %}
+                        <div class="review_meta" data-review-item-id="{{ item.id }}">
+                            <div class="review_meta_text">
+                                <div class="review_date_row">
+                                    <div class="review_date">{{ item.day }}</div>
+                                    <div class="review_user">{{ item.reviewer }}</div>
+                                </div>
+                                <div class="review_target">{{ item.target }}</div>
                             </div>
+                            <div class="review_stars" aria-label="Рейтинг {{ item.stars_count }} из 5">
+                                {% for i in "12345"|make_list %}
+                                <img src="/static/icon/Star 1.svg" alt=""
+                                     class="{% if forloop.counter > item.stars_count %}review_star--empty{% endif %}">
+                                {% endfor %}
+                            </div>
+                            <div class="review_text">{{ item.text }}</div>
+                        </div>
+
+                        {% endfor %}
+                    </article>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <div class="menu_app_view" data-view="admin_menu">
+        <header class="admin_main_header">
+            <div class="admin_main_header_left">Меню</div>
+            <div class="admin_main_header_right">
+                <div class="admin_notify_wrap">
+                    <button class="admin_notify_button" type="button" aria-label="Уведомления">
+                        <img src="/static/icon/notifications.svg" alt="">
+                    </button>
+                </div>
+                <div class="admin_user_meta">
+                    <div class="admin_user_name">{{ profile_display_name }}</div>
+                    <div class="admin_user_role">{{ profile_role_label }}</div>
+                </div>
+                <div class="admin_avatar_wrap">
+                    <img src="/static/icon/Default_pfp.svg" class="admin_user_avatar" alt="" role="button"
+                         tabindex="0" aria-label="Аккаунт">
+                </div>
+            </div>
+        </header>
+
+        <section class="admin_stats_panel admin_menu_panel">
+            <div class="admin_menu_filters">
+                <div class="admin_menu_left">
+                    <div class="admin_menu_date" id="admin_menu_date"></div>
+                    <div class="admin_menu_days" role="group" aria-label="Дни недели">
+                        <button class="admin_menu_day" type="button">Пн</button>
+                        <button class="admin_menu_day" type="button">Вт</button>
+                        <button class="admin_menu_day" type="button">Ср</button>
+                        <button class="admin_menu_day" type="button">Чт</button>
+                        <button class="admin_menu_day" type="button">Пт</button>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <section class="admin_menu_configurator_main">
+            <input type="hidden" id="day_input_value">
+            {{ menu_prefill_data|json_script:"menu-prefill-data" }}
+            <div id="menu-config-forms"></div>
+            <template id="menu-config-template">
+                <form class="menu_configurator_form" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="category">
+                    <input type="hidden" name="day" class="menu_config_day_value">
+
+                    {% if errors %}
+                    <div class="menu_config_errors" role="alert">
+                        {% for error in errors %}
+                        <div class="menu_config_error_item">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+
+                    <div class="menu_config_card">
+                        <div class="menu_config_title_select">
+                            <button class="menu_config_title_btn" type="button" aria-haspopup="listbox"
+                                    aria-expanded="false">
+                                <span class="menu_config_title_label">Завтрак</span>
+                                <img class="menu_config_title_arrow" src="/static/icon/arrow_back_ios_new.svg" alt="">
+                            </button>
+                            <div class="menu_config_title_menu" role="listbox" aria-label="Тип приёма пищи">
+                                <button class="menu_config_title_item" type="button" role="option"
+                                        data-value="breakfast">Завтрак
+                                </button>
+                                <button class="menu_config_title_item" type="button" role="option" data-value="lunch">
+                                    Обед
+                                </button>
+                            </div>
+                        </div>
 
                         <div class="menu_config_body" data-dishes-container>
-                <!-- Первый блок блюда -->
-                        <div class="menu_config_block dish-block" data-dish-index="0">
-                            <div class="menu_config_dish">
-                                <div class="menu_config_dish_top">
-                                    <span class="menu_config_dish_label">Блюдо <span class="dish-number">1</span></span>
-                                    <button type="button" class="remove-dish-btn" style="display:none;">×</button>
+                            <!-- Первый блок блюда -->
+                            <div class="menu_config_block dish-block" data-dish-index="0">
+                                <div class="menu_config_dish">
+                                    <div class="menu_config_dish_top">
+                                        <span class="menu_config_dish_label">Блюдо <span
+                                                class="dish-number">1</span></span>
+                                        <button type="button" class="remove-dish-btn" style="display:none;">×</button>
+                                    </div>
+
+                                    <div class="menu_config_dish_row">
+                                        <input class="menu_config_input menu_config_input--name" type="text"
+                                               name="dish_name[]" placeholder="Название блюда" required>
+                                        <input class="menu_config_input menu_config_input--small" type="number"
+                                               name="dish_weight[]" placeholder="Вес (г)" min="0">
+                                        <input class="menu_config_input menu_config_input--small" type="number"
+                                               name="dish_kcal[]" placeholder="Ккал" min="0">
+                                    </div>
+
+                                    <div class="menu_config_dish_row">
+                                        <span class="menu_config_dish_label">Аллергены</span>
+                                        <div class="menu_config_allergens" aria-live="polite"></div>
+                                        <div class="menu_config_allergen_picker">
+                                            <button class="menu_config_add" type="button" aria-haspopup="listbox"
+                                                    aria-expanded="false">Добавить
+                                            </button>
+                                            <div class="menu_config_allergen_menu" role="listbox"
+                                                 aria-label="Аллергены">
+                                                {% for allergen in allergens %}
+                                                <button class="menu_config_allergen_option" type="button"
+                                                        data-allergen-id="{{ allergen.code }}">{{ allergen.name }}
+                                                </button>
+                                                {% empty %}
+                                                <button class="menu_config_allergen_option" type="button" disabled>Нет
+                                                    аллергенов
+                                                </button>
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="menu_config_dish_row">
+                                        <span class="menu_config_dish_label">Состав</span>
+                                        <div class="menu_config_ingredients" aria-live="polite"></div>
+                                        <div class="menu_config_ingredient_picker">
+                                            <button class="menu_config_add" type="button" aria-haspopup="listbox"
+                                                    aria-expanded="false">Добавить
+                                            </button>
+                                            <div class="menu_config_ingredient_menu" role="listbox"
+                                                 aria-label="Ингредиенты">
+                                                {% for ingredient in ingredients %}
+                                                <button class="menu_config_ingredient_option" type="button"
+                                                        data-ingredient-id="{{ ingredient.code }}">{{ ingredient.name }}
+                                                </button>
+                                                {% empty %}
+                                                <button class="menu_config_ingredient_option" type="button" disabled>Нет
+                                                    ингредиентов
+                                                </button>
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
 
-                                <div class="menu_config_dish_row">
-                                    <input class="menu_config_input menu_config_input--name" type="text" name="dish_name[]" placeholder="Название блюда" required>
-                                    <input class="menu_config_input menu_config_input--small" type="number" name="dish_weight[]" placeholder="Вес (г)" min="0">
-                                <input class="menu_config_input menu_config_input--small" type="number" name="dish_kcal[]" placeholder="Ккал" min="0">
-                                </div>
-
-                        <div class="menu_config_dish_row">
-                            <span class="menu_config_dish_label">Аллергены</span>
-                            <div class="menu_config_allergens" aria-live="polite"></div>
-                            <div class="menu_config_allergen_picker">
-                                <button class="menu_config_add" type="button" aria-haspopup="listbox" aria-expanded="false">Добавить</button>
-                                <div class="menu_config_allergen_menu" role="listbox" aria-label="Аллергены">
-                                    {% for allergen in allergens %}
-                                    <button class="menu_config_allergen_option" type="button" data-allergen-id="{{ allergen.code }}">{{ allergen.name }}</button>
-                                    {% empty %}
-                                    <button class="menu_config_allergen_option" type="button" disabled>Нет аллергенов</button>
-                                    {% endfor %}
+                                <div class="menu_config_requests">
+                                    <div class="menu_config_requests_title">Заявки, связанные с блюдом</div>
+                                    <div class="menu_config_requests_list">
+                                        <span class="menu_config_requests_item">Молоко пастеризованное</span>
+                                        <span class="menu_config_requests_item">Крупа гречневая</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="menu_config_dish_row">
-                            <span class="menu_config_dish_label">Состав</span>
-                            <div class="menu_config_ingredients" aria-live="polite"></div>
-                            <div class="menu_config_ingredient_picker">
-                                <button class="menu_config_add" type="button" aria-haspopup="listbox" aria-expanded="false">Добавить</button>
-                                <div class="menu_config_ingredient_menu" role="listbox" aria-label="Ингредиенты">
-                                    {% for ingredient in ingredients %}
-                                    <button class="menu_config_ingredient_option" type="button" data-ingredient-id="{{ ingredient.code }}">{{ ingredient.name }}</button>
-                                    {% empty %}
-                                    <button class="menu_config_ingredient_option" type="button" disabled>Нет ингредиентов</button>
-                                    {% endfor %}
-                                </div>
+                        <!-- Кнопка добавления нового блюда -->
+                        <div class="menu_config_actions">
+                            <button type="button" class="menu_config_btn add-dish-btn">
+                                + Добавить блюдо
+                            </button>
+                        </div>
+
+                        <div class="menu_config_footer">
+                            <div class="menu_config_time">
+                                <span class="menu_config_label">Время выдачи</span>
+                                <input class="menu_config_input menu_config_input--time" type="time" name="time_start"
+                                       value="12:00">
+                                <input class="menu_config_input menu_config_input--time" type="time" name="time_end"
+                                       value="14:00">
+                            </div>
+                            <div class="menu_config_price">
+                                <span class="menu_config_label">Цена</span>
+                                <input class="menu_config_input menu_config_input--price" type="number" name="price"
+                                       placeholder="Цена" min="0">
+                                <span class="menu_config_currency">₽</span>
+                            </div>
+                            <div class="menu_config_actions">
+                                <button class="menu_config_btn menu_config_btn--cancel" type="button">Отмена</button>
                             </div>
                         </div>
                     </div>
+                </form>
+            </template>
 
-                    <div class="menu_config_requests">
-                        <div class="menu_config_requests_title">Заявки, связанные с блюдом</div>
-                        <div class="menu_config_requests_list">
-                            <span class="menu_config_requests_item">Молоко пастеризованное</span>
-                            <span class="menu_config_requests_item">Крупа гречневая</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <button class="menu_configurator_add" type="button" aria-label="Добавить меню">
+                <span class="menu_configurator_add_icon">+</span>
+                <span class="menu_configurator_add_text">Добавить меню</span>
+            </button>
 
-            <!-- Кнопка добавления нового блюда -->
-            <div class="menu_config_actions">
-                <button type="button" class="menu_config_btn add-dish-btn">
-                    + Добавить блюдо
+            <div class="menu_config_actions menu_config_actions--global">
+                <button class="menu_config_btn menu_config_btn--save menu_config_save_all" type="button">Сохранить все
                 </button>
             </div>
 
-            <div class="menu_config_footer">
-                <div class="menu_config_time">
-                    <span class="menu_config_label">Время выдачи</span>
-                    <input class="menu_config_input menu_config_input--time" type="time" name="time_start" value="12:00">
-                    <input class="menu_config_input menu_config_input--time" type="time" name="time_end" value="14:00">
+
+        </section>
+
+    </div>
+
+    <div class="menu_app_view" data-view="admin_orders">
+        <header class="admin_main_header">
+            <div class="admin_main_header_left">Заказы</div>
+            <div class="admin_main_header_right">
+                <div class="admin_notify_wrap">
+                    <button class="admin_notify_button" type="button" aria-label="Уведомления">
+                        <img src="/static/icon/notifications.svg" alt="">
+                    </button>
                 </div>
-                <div class="menu_config_price">
-                    <span class="menu_config_label">Цена</span>
-                    <input class="menu_config_input menu_config_input--price" type="number" name="price" placeholder="Цена" min="0">
-                    <span class="menu_config_currency">₽</span>
+                <div class="admin_user_meta">
+                    <div class="admin_user_name">{{ profile_display_name }}</div>
+                    <div class="admin_user_role">{{ profile_role_label }}</div>
                 </div>
-                <div class="menu_config_actions">
-                    <button class="menu_config_btn menu_config_btn--cancel" type="button">Отмена</button>
+                <div class="admin_avatar_wrap">
+                    <img src="/static/icon/Default_pfp.svg" class="admin_user_avatar" alt="" role="button"
+                         tabindex="0" aria-label="Аккаунт">
                 </div>
             </div>
-        </div>
-    </form>
-                </template>
+        </header>
 
-                <button class="menu_configurator_add" type="button" aria-label="Добавить меню">
-                    <span class="menu_configurator_add_icon">+</span>
-                    <span class="menu_configurator_add_text">Добавить меню</span>
-                </button>
-
-                <div class="menu_config_actions menu_config_actions--global">
-                    <button class="menu_config_btn menu_config_btn--save menu_config_save_all" type="button">Сохранить все</button>
-                </div>
-
-
-            </section>
-
-        </div>
-
-        <div class="menu_app_view" data-view="admin_orders">
-            <header class="admin_main_header">
-                <div class="admin_main_header_left">Заказы</div>
-                <div class="admin_main_header_right">
-                    <div class="admin_notify_wrap">
-                        <button class="admin_notify_button" type="button" aria-label="Уведомления">
-                            <img src="/static/icon/notifications.svg" alt="">
-                        </button>
-                    </div>
-                    <div class="admin_user_meta">
-                        <div class="admin_user_name">Имя Фамилия</div>
-                        <div class="admin_user_role">Должность</div>
-                    </div>
-                    <div class="admin_avatar_wrap">
-                        <img src="/static/icon/photo_2026-01-14_11-19-22.jpg" class="admin_user_avatar" alt="" role="button" tabindex="0" aria-label="Аккаунт">
+        <section class="admin_orders_main">
+            <div class="orders_panel">
+                <div class="orders_topbar">
+                    <div class="orders_title">9 заявок</div>
+                    <div class="orders_search">
+                        <img class="orders_search_icon" src="/static/icon/search.svg" alt="">
+                        <input class="orders_search_input" type="search" placeholder="Поиск">
                     </div>
                 </div>
-            </header>
 
-            <section class="admin_orders_main">
-                <div class="orders_panel">
-                    <div class="orders_topbar">
-                        <div class="orders_title">9 заявок</div>
-                        <div class="orders_search">
-                            <img class="orders_search_icon" src="/static/icon/search.svg" alt="">
-                            <input class="orders_search_input" type="search" placeholder="Поиск">
-                        </div>
+                <div class="orders_table_card">
+                    <div class="orders_table_header">
+                        <div class="orders_cell">№</div>
+                        <div class="orders_cell">Дата</div>
+                        <div class="orders_cell">Создатель</div>
+                        <div class="orders_cell">Товары</div>
+                        <div class="orders_cell">Сумма</div>
+                        <div class="orders_cell">Статус</div>
                     </div>
 
-                    <div class="orders_table_card">
-                        <div class="orders_table_header">
-                            <div class="orders_cell">№</div>
-                            <div class="orders_cell">Дата</div>
-                            <div class="orders_cell">Создатель</div>
-                            <div class="orders_cell">Товары</div>
-                            <div class="orders_cell">Сумма</div>
-                            <div class="orders_cell">Статус</div>
-                        </div>
+                    <div class="orders_table_body">
+                        {% for item in buyorders %}
+                        <div class="orders_row" data-order-id="{{ item.id }}">
+                            <div class="orders_cell">{{ item.id }}</div>
+                            <div class="orders_cell">{{ item.date }}</div>
+                            <div class="orders_cell">{{ item.user_id }}</div>
+                            <div class="orders_cell">{{ item.items }}</div>
+                            <div class="orders_cell">{{ item.summ_rub|floatformat:2 }} ₽</div>
 
-                        <div class="orders_table_body">
-                            {% for item in buyorders %}
-                            <div class="orders_row" data-order-id="{{ item.id }}">
-                                <div class="orders_cell">{{ item.id }}</div>
-                                <div class="orders_cell">{{ item.date }}</div>
-                                <div class="orders_cell">{{ item.user_id }}</div>
-                                <div class="orders_cell">{{ item.items }}</div>
-                                <div class="orders_cell">{{ item.summ_rub|floatformat:2 }} ₽</div>
-
-        <!-- Эта ячейка будет меняться динамически -->
+                            <!-- Эта ячейка будет меняться динамически -->
                             <div class="orders_cell orders_cell--actions js-status-cell">
-                            {% if item.status == "ns" %}
-                            <button class="orders_action_btn orders_action_btn--accept js-order-btn"
-                                type="button" data-action="allowed">
-                            <img src="/static/icon/check.svg" alt="">
-                            </button>
-                            <button class="orders_action_btn orders_action_btn--reject js-order-btn"
-                                type="button" data-action="rejected">
-                                <img src="/static/icon/close.svg" alt="">
-                            </button>
-                            {% elif item.status == "allowed" %}
-                            <span class="orders_status orders_status--approved">Одобрено</span>
-                            {% elif item.status == "rejected" %}
+                                {% if item.status == "ns" %}
+                                <button class="orders_action_btn orders_action_btn--accept js-order-btn"
+                                        type="button" data-action="allowed">
+                                    <img src="/static/icon/check.svg" alt="">
+                                </button>
+                                <button class="orders_action_btn orders_action_btn--reject js-order-btn"
+                                        type="button" data-action="rejected">
+                                    <img src="/static/icon/close.svg" alt="">
+                                </button>
+                                {% elif item.status == "allowed" %}
+                                <span class="orders_status orders_status--approved">Одобрено</span>
+                                {% elif item.status == "rejected" %}
                                 <span class="orders_status orders_status--rejected">Отклонено</span>
-                            {% endif %}
+                                {% endif %}
                             </div>
                         </div>
-                    {% endfor %}
+                        {% endfor %}
                     </div>
 
-                        <div class="orders_table_footer">
-                            <div class="orders_pagination">
-                                <button class="orders_nav_btn" type="button" aria-label="Предыдущая дата">
-                                    <img src="/static/icon/left_arrow_stats.svg" alt="">
-                                </button>
-                                <div class="orders_date">10.01.26</div>
-                                <button class="orders_nav_btn orders_nav_btn--next" type="button" aria-label="Следующая дата">
-                                    <img src="/static/icon/left_arrow_stats.svg" alt="">
-                                </button>
-                            </div>
+                    <div class="orders_table_footer">
+                        <div class="orders_pagination">
+                            <button class="orders_nav_btn" type="button" aria-label="Предыдущая дата">
+                                <img src="/static/icon/left_arrow_stats.svg" alt="">
+                            </button>
+                            <div class="orders_date">10.01.26</div>
+                            <button class="orders_nav_btn orders_nav_btn--next" type="button"
+                                    aria-label="Следующая дата">
+                                <img src="/static/icon/left_arrow_stats.svg" alt="">
+                            </button>
                         </div>
                     </div>
                 </div>
-            </section>
-        </div>
+            </div>
+        </section>
+    </div>
 
-        <div class="menu_app_view" data-view="reports">
-            <header class="admin_main_header">
-                <div class="admin_main_header_left">Отчёты</div>
-                <div class="admin_main_header_right">
-                    <div class="admin_notify_wrap">
-                        <button class="admin_notify_button" type="button" aria-label="Уведомления">
-                            <img src="/static/icon/notifications.svg" alt="">
-                        </button>
+    <div class="menu_app_view" data-view="reports">
+        <header class="admin_main_header">
+            <div class="admin_main_header_left">Отчёты</div>
+            <div class="admin_main_header_right">
+                <div class="admin_notify_wrap">
+                    <button class="admin_notify_button" type="button" aria-label="Уведомления">
+                        <img src="/static/icon/notifications.svg" alt="">
+                    </button>
+                </div>
+                <div class="admin_user_meta">
+                    <div class="admin_user_name">{{ profile_display_name }}</div>
+                    <div class="admin_user_role">{{ profile_role_label }}</div>
+                </div>
+                <div class="admin_avatar_wrap">
+                    <img src="/static/icon/Default_pfp.svg" class="admin_user_avatar" alt="" role="button"
+                         tabindex="0" aria-label="Аккаунт">
+                </div>
+            </div>
+        </header>
+        <section class="admin_reports_main">
+            <div class="reports_panel reports_panel--active" data-stage="select">
+                <div class="reports_picker_card">
+                    <div class="reports_picker_title">Выберите отчет</div>
+                    <div class="reports_picker_list" role="radiogroup" aria-label="Тип отчёта">
+                        <label class="reports_picker_option">
+                            <input class="reports_picker_input" type="radio" name="report_type" value="general">
+                            <span class="reports_picker_mark" aria-hidden="true"></span>
+                            <span class="reports_picker_text">Отчёт по питанию</span>
+                        </label>
+                        <label class="reports_picker_option">
+                            <input class="reports_picker_input" type="radio" name="report_type" value="costs">
+                            <span class="reports_picker_mark" aria-hidden="true"></span>
+                            <span class="reports_picker_text">Отчёт по затратам</span>
+                        </label>
                     </div>
-                    <div class="admin_user_meta">
-                        <div class="admin_user_name">Имя Фамилия</div>
-                        <div class="admin_user_role">Должность</div>
-                    </div>
-                    <div class="admin_avatar_wrap">
-                        <img src="/static/icon/photo_2026-01-14_11-19-22.jpg" class="admin_user_avatar" alt="" role="button" tabindex="0" aria-label="Аккаунт">
+                    <div class="reports_picker_actions">
+                        <button class="reports_next" type="button" disabled>Далее</button>
                     </div>
                 </div>
-            </header>
-            <section class="admin_reports_main">
-                <div class="reports_panel reports_panel--active" data-stage="select">
-                    <div class="reports_picker_card">
-                        <div class="reports_picker_title">Выберите отчет</div>
-                        <div class="reports_picker_list" role="radiogroup" aria-label="Тип отчёта">
-                            <label class="reports_picker_option">
-                                <input class="reports_picker_input" type="radio" name="report_type" value="general">
-                                <span class="reports_picker_mark" aria-hidden="true"></span>
-                                <span class="reports_picker_text">Отчёт по питанию</span>
-                            </label>
-                            <label class="reports_picker_option">
-                                <input class="reports_picker_input" type="radio" name="report_type" value="costs">
-                                <span class="reports_picker_mark" aria-hidden="true"></span>
-                                <span class="reports_picker_text">Отчёт по затратам</span>
-                            </label>
-                        </div>
-                        <div class="reports_picker_actions">
-                            <button class="reports_next" type="button" disabled>Далее</button>
-                        </div>
-                    </div>
-                </div>
+            </div>
 
-                <div class="reports_panel" data-stage="general">
-                    <div class="reports_page_body">
-                        <form class="reports_form" aria-label="Общий отчёт" method="post" action="{% url 'admin_report_general' %}">
-                            {% csrf_token %}
-                            <input type="hidden" name="report_start" value="">
-                            <input type="hidden" name="report_end" value="">
+            <div class="reports_panel" data-stage="general">
+                <div class="reports_page_body">
+                    <form class="reports_form" aria-label="Общий отчёт" method="post"
+                          action="{% url 'admin_report_general' %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="report_start" value="">
+                        <input type="hidden" name="report_end" value="">
 
-                            <div class="reports_picker_title">Отчёт по питанию</div>
+                        <div class="reports_picker_title">Отчёт по питанию</div>
 
-                            <div class="reports_form_section">
-                                <div class="reports_form_label">Период</div>
-                                <div class="reports_period">
-                                    <div class="reports_period_options" role="radiogroup" aria-label="Период">
-                                        <label class="reports_radio_option">
-                                            <input class="reports_radio_input" type="radio" name="report_period" value="day">
-                                            <span class="reports_radio_mark" aria-hidden="true"></span>
-                                            <span class="reports_radio_text">День</span>
-                                        </label>
-                                        <label class="reports_radio_option">
-                                            <input class="reports_radio_input" type="radio" name="report_period" value="week" checked>
-                                            <span class="reports_radio_mark" aria-hidden="true"></span>
-                                            <span class="reports_radio_text">Неделя</span>
-                                        </label>
-                                        <label class="reports_radio_option">
-                                            <input class="reports_radio_input" type="radio" name="report_period" value="month">
-                                            <span class="reports_radio_mark" aria-hidden="true"></span>
-                                            <span class="reports_radio_text">Месяц</span>
-                                        </label>
-                                    </div>
-                                    <div class="reports_period_range" aria-label="Выбор периода">
-                                        <button class="reports_date_btn" type="button" aria-label="Предыдущий период">
-                                            <img src="/static/icon/left_arrow_stats.svg" alt="">
-                                        </button>
-                                        <span class="reports_date_value">12.01 - 16.01</span>
-                                        <button class="reports_date_btn reports_date_btn--next" type="button" aria-label="Следующий период">
-                                            <img src="/static/icon/left_arrow_stats.svg" alt="">
-                                        </button>
-                                    </div>
+                        <div class="reports_form_section">
+                            <div class="reports_form_label">Период</div>
+                            <div class="reports_period">
+                                <div class="reports_period_options" role="radiogroup" aria-label="Период">
+                                    <label class="reports_radio_option">
+                                        <input class="reports_radio_input" type="radio" name="report_period"
+                                               value="day">
+                                        <span class="reports_radio_mark" aria-hidden="true"></span>
+                                        <span class="reports_radio_text">День</span>
+                                    </label>
+                                    <label class="reports_radio_option">
+                                        <input class="reports_radio_input" type="radio" name="report_period"
+                                               value="week" checked>
+                                        <span class="reports_radio_mark" aria-hidden="true"></span>
+                                        <span class="reports_radio_text">Неделя</span>
+                                    </label>
+                                    <label class="reports_radio_option">
+                                        <input class="reports_radio_input" type="radio" name="report_period"
+                                               value="month">
+                                        <span class="reports_radio_mark" aria-hidden="true"></span>
+                                        <span class="reports_radio_text">Месяц</span>
+                                    </label>
+                                </div>
+                                <div class="reports_period_range" aria-label="Выбор периода">
+                                    <button class="reports_date_btn" type="button" aria-label="Предыдущий период">
+                                        <img src="/static/icon/left_arrow_stats.svg" alt="">
+                                    </button>
+                                    <span class="reports_date_value">12.01 - 16.01</span>
+                                    <button class="reports_date_btn reports_date_btn--next" type="button"
+                                            aria-label="Следующий период">
+                                        <img src="/static/icon/left_arrow_stats.svg" alt="">
+                                    </button>
                                 </div>
                             </div>
+                        </div>
 
-                            <div class="reports_page_actions">
-                                <button class="reports_generate" type="submit">Сформировать</button>
-                            </div>
-                        </form>
-                    </div>
-                    <button class="reports_back" type="button">Назад к отчётам</button>
+                        <div class="reports_page_actions">
+                            <button class="reports_generate" type="submit">Сформировать</button>
+                        </div>
+                    </form>
                 </div>
+                <button class="reports_back" type="button">Назад к отчётам</button>
+            </div>
 
 
+            <div class="reports_panel" data-stage="costs">
+                <div class="reports_page_body">
+                    <form class="reports_form" aria-label="Отчёт по затратам" method="post"
+                          action="{% url 'admin_report_costs' %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="costs_start" value="">
+                        <input type="hidden" name="costs_end" value="">
 
-                <div class="reports_panel" data-stage="costs">
-                    <div class="reports_page_body">
-                        <form class="reports_form" aria-label="Отчёт по затратам" method="post" action="{% url 'admin_report_costs' %}">
-                            {% csrf_token %}
-                            <input type="hidden" name="costs_start" value="">
-                            <input type="hidden" name="costs_end" value="">
+                        <div class="reports_picker_title">Отчёт по затратам</div>
 
-                            <div class="reports_picker_title">Отчёт по затратам</div>
-
-                            <div class="reports_form_section">
-                                <div class="reports_form_label">Период</div>
-                                <div class="reports_period">
-                                    <div class="reports_period_options" role="radiogroup" aria-label="Период">
-                                        <label class="reports_radio_option">
-                                            <input class="reports_radio_input" type="radio" name="costs_period" value="day">
-                                            <span class="reports_radio_mark" aria-hidden="true"></span>
-                                            <span class="reports_radio_text">День</span>
-                                        </label>
-                                        <label class="reports_radio_option">
-                                            <input class="reports_radio_input" type="radio" name="costs_period" value="week" checked>
-                                            <span class="reports_radio_mark" aria-hidden="true"></span>
-                                            <span class="reports_radio_text">Неделя</span>
-                                        </label>
-                                        <label class="reports_radio_option">
-                                            <input class="reports_radio_input" type="radio" name="costs_period" value="month">
-                                            <span class="reports_radio_mark" aria-hidden="true"></span>
-                                            <span class="reports_radio_text">Месяц</span>
-                                        </label>
-                                    </div>
-                                    <div class="reports_period_range" aria-label="Выбор периода">
-                                        <button class="reports_date_btn" type="button" aria-label="Предыдущий период">
-                                            <img src="/static/icon/left_arrow_stats.svg" alt="">
-                                        </button>
-                                        <span class="reports_date_value">12.01 - 16.01</span>
-                                        <button class="reports_date_btn reports_date_btn--next" type="button" aria-label="Следующий период">
-                                            <img src="/static/icon/left_arrow_stats.svg" alt="">
-                                        </button>
-                                    </div>
+                        <div class="reports_form_section">
+                            <div class="reports_form_label">Период</div>
+                            <div class="reports_period">
+                                <div class="reports_period_options" role="radiogroup" aria-label="Период">
+                                    <label class="reports_radio_option">
+                                        <input class="reports_radio_input" type="radio" name="costs_period" value="day">
+                                        <span class="reports_radio_mark" aria-hidden="true"></span>
+                                        <span class="reports_radio_text">День</span>
+                                    </label>
+                                    <label class="reports_radio_option">
+                                        <input class="reports_radio_input" type="radio" name="costs_period" value="week"
+                                               checked>
+                                        <span class="reports_radio_mark" aria-hidden="true"></span>
+                                        <span class="reports_radio_text">Неделя</span>
+                                    </label>
+                                    <label class="reports_radio_option">
+                                        <input class="reports_radio_input" type="radio" name="costs_period"
+                                               value="month">
+                                        <span class="reports_radio_mark" aria-hidden="true"></span>
+                                        <span class="reports_radio_text">Месяц</span>
+                                    </label>
+                                </div>
+                                <div class="reports_period_range" aria-label="Выбор периода">
+                                    <button class="reports_date_btn" type="button" aria-label="Предыдущий период">
+                                        <img src="/static/icon/left_arrow_stats.svg" alt="">
+                                    </button>
+                                    <span class="reports_date_value">12.01 - 16.01</span>
+                                    <button class="reports_date_btn reports_date_btn--next" type="button"
+                                            aria-label="Следующий период">
+                                        <img src="/static/icon/left_arrow_stats.svg" alt="">
+                                    </button>
                                 </div>
                             </div>
+                        </div>
 
-                            <div class="reports_page_actions">
-                                <button class="reports_generate" type="submit">Сформировать</button>
-                            </div>
-                        </form>
-                    </div>
-                    <button class="reports_back" type="button">Назад к отчётам</button>
+                        <div class="reports_page_actions">
+                            <button class="reports_generate" type="submit">Сформировать</button>
+                        </div>
+                    </form>
                 </div>
+                <button class="reports_back" type="button">Назад к отчётам</button>
+            </div>
 
 
-            </section>
+        </section>
+    </div>
+
+
+</div>
+<div id="adminNotifyOverlay" class="admin_notify_overlay" aria-hidden="true">
+    <div class="admin_notify_title">Уведомления</div>
+    <div class="admin_notify_list" aria-live="polite">
+        {% if notifications %}
+        {% for notification in notifications %}
+        <div class="notif_element">
+            <p>{{ notification.body }}</p>
         </div>
-
-
-    </div>
-    <div id="adminNotifyOverlay" class="admin_notify_overlay" aria-hidden="true">
-        <div class="admin_notify_title">Уведомления</div>
-        <div class="admin_notify_list" aria-live="polite">
-            <div class="notif_element">
-                <p>Новая заявка от 10.01.26!</p>
-            </div>
-            <div class="notif_element">
-                <p>Отчёт по затратам сформирован!</p>
-            </div>
-            <div class="notif_element">
-                <p>Низкий остаток: пельмени</p>
-            </div>
-            <div class="notif_element">
-                <p>Новая заявка от 09.01.26!</p>
-            </div>
-            <div class="notif_element">
-                <p>Новая заявка от 10.01.26!</p>
-            </div>
-            <div class="notif_element">
-                <p>Отчёт по затратам сформирован!</p>
-            </div>
-            <div class="notif_element">
-                <p>Низкий остаток: пельмени</p>
-            </div>
-            <div class="notif_element">
-                <p>Новая заявка от 09.01.26!</p>
-            </div>
+        {% endfor %}
+        {% else %}
+        <div class="notif_element">
+            <p>Уведомлений нет</p>
         </div>
+        {% endif %}
     </div>
-    <div id="adminLogoutOverlay" class="admin_logout_overlay" aria-hidden="true">
-        <form action="{% url 'logout' %}" method="post">
-            {% csrf_token %}
-            <button class="admin_logout_button" type="submit">выйти из аккаунта</button>
-        </form>
-    </div>
-    <script src="../../static/admin_main/js/admin_slider.js"></script>
-    <script src="../../static/admin_main/js/allergen_picker.js"></script>
-    <script src="../../static/admin_main/js/paymentsDynamics.js"></script>
-    <script src="../../static/admin_main/js/customersTraffic.js"></script>
-    <script src="../../static/admin_main/js/statsPaymentsDynamics.js"></script>
-    <script src="../../static/admin_main/js/statsCustomersTraffic.js"></script>
-    <script src="{% static 'admin_main/js/admin_reports.js' %}"></script>
-    <script src="../../static/admin_main/js/admin_menu.js"></script>
-    <script src="../../static/admin_main/js/admin_menu_prefill.js"></script>
-    <script src="../../static/admin_main/js/admin_mealsadd.js"></script>
-    <script src="../../static/admin_main/js/admin_menu_bulk.js"></script>
-    <script src="../../static/admin_main/js/admin_orders.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</div>
+<div id="adminLogoutOverlay" class="admin_logout_overlay" aria-hidden="true">
+    <form action="{% url 'logout' %}" method="post">
+        {% csrf_token %}
+        <button class="admin_logout_button" type="submit">выйти из аккаунта</button>
+    </form>
+</div>
+<script src="../../static/admin_main/js/admin_slider.js"></script>
+<script src="../../static/admin_main/js/allergen_picker.js"></script>
+<script src="../../static/admin_main/js/paymentsDynamics.js"></script>
+<script src="../../static/admin_main/js/customersTraffic.js"></script>
+<script src="../../static/admin_main/js/statsPaymentsDynamics.js"></script>
+<script src="../../static/admin_main/js/statsCustomersTraffic.js"></script>
+<script src="{% static 'admin_main/js/admin_reports.js' %}"></script>
+<script src="../../static/admin_main/js/admin_menu.js"></script>
+<script src="../../static/admin_main/js/admin_menu_prefill.js"></script>
+<script src="../../static/admin_main/js/admin_mealsadd.js"></script>
+<script src="../../static/admin_main/js/admin_menu_bulk.js"></script>
+<script src="../../static/admin_main/js/admin_orders.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </body>
 </html>
+
+
 
 
 

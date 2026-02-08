@@ -267,6 +267,14 @@ body {
     display: inline-flex;
 }
 
+.main_main_notifications_panel > p {
+    margin: 0;
+    font-weight: 700;
+    font-size: clamp(0.88rem, 1vw, 1.1rem);
+    text-align: center;
+    margin-bottom: 0.5rem;
+}
+
 .admin_logout_overlay {
     position: absolute;
     right: 0;
@@ -1397,7 +1405,7 @@ body {
     gap: 8px;
     background: #9ED5FF;
     border-radius: clamp(10px, 1vw, 16px);
-    padding: clamp(8px, 1vw, 14px);
+    padding: clamp(6px, 0.75vw, 10px);
     min-height: 0;
     height: 100%;
     min-width: 0;
@@ -1406,7 +1414,7 @@ body {
 .graph_holder p {
     margin: 0;
     font-weight: 700;
-    font-size: clamp(0.88rem, 1vw, 1.1rem);
+    font-size: clamp(0.95rem, 1.1vw, 1.2rem);
     line-height: 1.1;
 }
 

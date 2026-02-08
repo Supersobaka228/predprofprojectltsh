@@ -9,32 +9,32 @@
     <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c&display=swap" rel="stylesheet">
 </head>
 <body>
-    <header class="admin_login_header">
-        <div class="title_box">
-            <p class="admin_login_title">MealHub</p>
-            <p class="admin_login_sub">Контроль питания учеников</p>
-        </div>
-    </header>
-    <main class="admin_login_main">
-        <p class="admin_login_title">Администратор</p>
-        <form class="admin_login_form" action="{% url 'admin_login' %}" method="post">
-            {% csrf_token %}
-            <section class="admin_login_box">
-                <p class="admin_login_title_1">Войдите в свой аккаунт:</p>
-                <label for="username">Логин/электронная почта</label>
-                <input type="text" id="username" name="username" required autocomplete="username">
-                <label for="password">Пароль</label>
-                <input type="password" id="password" name="password" required autocomplete="current-password">
-                {% if form.error_messages %}
-                <div class="alert alert-danger">
-                    <ul>
-                        <li>Неверный логин или пароль</li>
-                    </ul>
-                </div>
-                {% endif %}
-            </section>
-            <button class="login_button" type="submit">Войти</button>
-        </form>
-    </main>
+<header class="admin_login_header">
+    <div class="title_box">
+        <p class="admin_login_title">MealHub</p>
+        <p class="admin_login_sub">Контроль питания учеников</p>
+    </div>
+</header>
+<main class="admin_login_main">
+    <p class="admin_login_title">Администратор</p>
+    <form class="admin_login_form" action="{% url 'admin_login' %}" method="post">
+        {% csrf_token %}
+        <section class="admin_login_box">
+            <p class="admin_login_title_1">Войдите в свой аккаунт:</p>
+            <label for="username">Логин/электронная почта</label>
+            <input type="text" id="username" name="username" required autocomplete="username">
+            <label for="password">Пароль</label>
+            <input type="password" id="password" name="password" required autocomplete="current-password">
+            {% if form.error_messages %}
+            <div class="alert alert-danger">
+                <ul>
+                    <li>Неверный логин или пароль</li>
+                </ul>
+            </div>
+            {% endif %}
+        </section>
+        <button class="login_button" type="submit">Войти</button>
+    </form>
+</main>
 </body>
 </html>

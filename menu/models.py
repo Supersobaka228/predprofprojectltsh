@@ -16,6 +16,7 @@ class MenuItem(models.Model):
     time = models.CharField(max_length=20)
     price = models.IntegerField()
     id = models.AutoField(primary_key=True)
+    low_rating_notified = models.BooleanField(default=False)
 
     # Связка с блюдами
     meals = models.ManyToManyField('Meal', blank=True, related_name='menu_items')
@@ -70,6 +71,8 @@ class MenuItem(models.Model):
     def allergens_list_display(self):
         no_label = 'Без аллергенов'
         names = list(self.allergens_list)
+        if not names:
+            return [no_label]
         if len(names) <= 1:
             return names
         filtered = [name for name in names if name != no_label]

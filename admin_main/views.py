@@ -8,19 +8,12 @@ from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
-from django.db.models import Prefetch
+from django.db.models import Prefetch, Q
 
 from admin_main.models import BuyOrder, Notification
-from chef_main.models import Ingredient
+from chef_main.models import Ingredient, LOW_STOCK_THRESHOLD
 from menu.models import MenuItem, Order, Review, Meal, DayOrder, Allergen, MealIngredient
-
-
-def _get_no_allergen():
-    allergen, _ = Allergen.objects.get_or_create(
-        code='no',
-        defaults={'name': 'Без аллергенов', 'sort_order': 0},
-    )
-    return allergen
+from users.utils import get_profile_display_name, get_profile_role_label
 
 
 def _should_clear_day(request, day_number):
@@ -39,6 +32,19 @@ def _should_clear_day(request, day_number):
 
     cleared[day_key] = bulk_id
     request.session[session_key] = cleared
+    return True
+
+
+def _should_create_menu_notification(request):
+    bulk_id = request.POST.get('bulk_save_id')
+    if not bulk_id:
+        return True
+
+    session_key = 'bulk_menu_notification'
+    if request.session.get(session_key) == bulk_id:
+        return False
+
+    request.session[session_key] = bulk_id
     return True
 
 
@@ -117,9 +123,13 @@ def admin(request):
             'reviewer': reviewer,
         })
 
+    low_stock_ingredients_count = Ingredient.objects.filter(remains__lt=LOW_STOCK_THRESHOLD).count()
+
     context = {
         'current_user': user,
-        'notifications': Notification.objects.all(),
+        'notifications': Notification.objects.filter(
+            Q(recipient_type=Notification.RECIPIENT_ALL) | Q(recipient_type=Notification.RECIPIENT_ADMIN)
+        ).order_by('-created_at'),
         'buyorders': BuyOrder.objects.order_by('-date'),
         'buyorders_count': len(BuyOrder.objects.all()),
         'data': orders_by_date(),
@@ -136,6 +146,9 @@ def admin(request):
         'ingredients': Ingredient.objects.all(),
         'allergens': Allergen.objects.all(),
         'menu_prefill_data': build_menu_prefill_data(),
+        'profile_display_name': get_profile_display_name(user),
+        'profile_role_label': get_profile_role_label(user),
+        'low_stock_ingredients_count': low_stock_ingredients_count,
     }
     if request.method == 'POST':
         post = request.POST
@@ -211,7 +224,7 @@ def admin(request):
                 allergens = Allergen.objects.filter(code__in=dish_allergens)
                 meal.allergens.set(allergens)
             else:
-                meal.allergens.set([_get_no_allergen()])
+                meal.allergens.set([])
 
             for j, ingredient_code in enumerate(dish_ingredients):
                 ingredient = Ingredient.objects.filter(code=ingredient_code).first()
@@ -257,6 +270,14 @@ def admin(request):
             day_order.order.append(menuitem.id)
             day_order.save(update_fields=['order'])
 
+        if _should_create_menu_notification(request):
+            Notification.objects.create(
+                recipient_type=Notification.RECIPIENT_ALL,
+                recipient_user=None,
+                title='menu_change',
+                body='Меню обновлено.',
+            )
+
         return redirect('admin_main')
     return render(request, 'admin_main/admin_main.html', context)
 
@@ -277,8 +298,17 @@ def update_order_status(request):
 
             g = Ingredient.objects.get(name=f)
             g.remains += order.summ
+            if g.remains >= LOW_STOCK_THRESHOLD and g.low_stock_notified:
+                g.low_stock_notified = False
             g.save()
         order.save()
+
+        Notification.objects.create(
+            recipient_type=Notification.RECIPIENT_USER,
+            recipient_user=order.user_id,
+            title='buyorder_status',
+            body=f'Статус вашей заявки изменён.',
+        )
 
         return JsonResponse({'status': 'ok'})
     except BuyOrder.DoesNotExist:
@@ -420,7 +450,7 @@ def reviews_by_day(queryset=None):
     """
     Возвращает словарь вида:
       { "YYYY-MM-DD YYYY-MM-DD": [ {review1}, {review2}, ... ], ... }
-    где для каждого 5-дневного рабочего интервала возвращаются все отзывы,
+    где для каждой недели (Пн-Вс) возвращаются все отзывы,
     оставленные в этот интервал (включая первые и последние дни интервала).
     """
     if queryset is None:
@@ -441,21 +471,20 @@ def reviews_by_day(queryset=None):
     max_date = max(dates)
 
     # Выравниваем диапазон так же, как в comes_by_day
-    start_date = min_date - timedelta(days=(min_date.weekday()))
-    end_date = max_date + timedelta(days=(5 - max_date.isoweekday()))
+    start_date = min_date - timedelta(days=min_date.weekday())
+    end_date = max_date + timedelta(days=(6 - max_date.weekday()))
 
-    # Собираем последовательность рабочих дат (Mon-Fri) в диапазоне
-    workday_dates = []
+    # Собираем последовательность дат недели (Mon-Sun) в диапазоне
+    week_dates = []
     cur = start_date
     while cur <= end_date:
-        if cur.weekday() < 5:  # 0..4 -> Пн..Пт
-            workday_dates.append(cur)
+        week_dates.append(cur)
         cur += timedelta(days=1)
 
     ans = {}
-    # Группируем по блокам по 5 рабочих дней
-    for i in range(0, len(workday_dates), 5):
-        block = workday_dates[i:i + 5]
+    # Группируем по блокам по 7 дней
+    for i in range(0, len(week_dates), 7):
+        block = week_dates[i:i + 7]
         if not block:
             continue
 
