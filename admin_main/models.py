@@ -52,7 +52,4 @@ class Notification(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
 
-class Food_count(models.Model):
-    id = models.AutoField(primary_key=True)
-    food_id = models.ForeignKey(Meal, on_delete=models.CASCADE)
-    num = models.IntegerField()
+
