@@ -15,14 +15,6 @@ from chef_main.models import Ingredient, LOW_STOCK_THRESHOLD
 from menu.models import MenuItem, Order, Review, Meal, DayOrder, Allergen, MealIngredient
 
 
-def _get_no_allergen():
-    allergen, _ = Allergen.objects.get_or_create(
-        code='no',
-        defaults={'name': 'Без аллергенов', 'sort_order': 0},
-    )
-    return allergen
-
-
 def _should_clear_day(request, day_number):
     bulk_id = request.POST.get('bulk_save_id')
     if not bulk_id:
@@ -226,7 +218,7 @@ def admin(request):
                 allergens = Allergen.objects.filter(code__in=dish_allergens)
                 meal.allergens.set(allergens)
             else:
-                meal.allergens.set([_get_no_allergen()])
+                meal.allergens.set([])
 
             for j, ingredient_code in enumerate(dish_ingredients):
                 ingredient = Ingredient.objects.filter(code=ingredient_code).first()

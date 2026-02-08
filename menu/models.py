@@ -71,6 +71,8 @@ class MenuItem(models.Model):
     def allergens_list_display(self):
         no_label = 'Без аллергенов'
         names = list(self.allergens_list)
+        if not names:
+            return [no_label]
         if len(names) <= 1:
             return names
         filtered = [name for name in names if name != no_label]
