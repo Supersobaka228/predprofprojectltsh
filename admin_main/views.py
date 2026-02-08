@@ -123,6 +123,8 @@ def admin(request):
             'reviewer': reviewer,
         })
 
+    low_stock_ingredients_count = Ingredient.objects.filter(remains__lt=LOW_STOCK_THRESHOLD).count()
+
     context = {
         'current_user': user,
         'notifications': Notification.objects.filter(
@@ -146,6 +148,7 @@ def admin(request):
         'menu_prefill_data': build_menu_prefill_data(),
         'profile_display_name': get_profile_display_name(user),
         'profile_role_label': get_profile_role_label(user),
+        'low_stock_ingredients_count': low_stock_ingredients_count,
     }
     if request.method == 'POST':
         post = request.POST

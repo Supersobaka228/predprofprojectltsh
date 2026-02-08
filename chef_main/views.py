@@ -65,6 +65,9 @@ def chef(request):
         | Q(recipient_type=Notification.RECIPIENT_CHEF)
         | (Q(recipient_type=Notification.RECIPIENT_USER) & Q(recipient_user=request.user))
     ).order_by('-created_at')
+
+    low_stock_ingredients_count = Ingredient.objects.filter(remains__lt=LOW_STOCK_THRESHOLD).count()
+
     context = {
         'orders': BuyOrder.objects.all(),
         'user_buyorders': user_buyorders,
@@ -90,6 +93,7 @@ def chef(request):
         'user_model': get_user_model(),
         'profile_display_name': get_profile_display_name(request.user),
         'profile_role_label': get_profile_role_label(request.user),
+        'low_stock_ingredients_count': low_stock_ingredients_count,
     }
 
     # Normalize legacy count_by_days payloads (non-dict or malformed items).
