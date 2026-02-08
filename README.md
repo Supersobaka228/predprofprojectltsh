@@ -1,4 +1,4 @@
-# Сервер управления столовой для олимпиады (predprofprojectltsh)
+# Сервис управления столовой для олимпиады (MealHub)
 
 Сервер управления столовой для олимпиады. Проект построен на Django и использует SQLite по умолчанию.
 
@@ -34,3 +34,4 @@ python manage.py createsuperuser
 ```bash
 python manage.py runserver
 ```
+
