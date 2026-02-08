@@ -16,15 +16,12 @@ def log(message: str) -> None:
     print(f"{YELLOW}{message}{RESET}")
 
 
-def run_command(command: str, env: dict | None = None, use_bash: bool = False) -> None:
+def run_command(command: str, env: dict | None = None) -> None:
     log(f"{command}")
-    subprocess.run(
-        command,
-        shell=True,
-        check=True,
-        env=env,
-        executable="/bin/bash" if use_bash else None,
-    )
+    if IS_WINDOWS:
+        subprocess.run(["cmd", "/c", command], check=True, env=env)
+    else:
+        subprocess.run(["/bin/bash", "-c", command], check=True, env=env)
 
 
 def run_in_venv(command: str, env: dict | None = None) -> None:
@@ -35,7 +32,7 @@ def run_in_venv(command: str, env: dict | None = None) -> None:
     else:
         activate = VENV_DIR / "bin" / "activate"
         full_command = f'. "{activate}" && {command}'
-        run_command(full_command, env=env, use_bash=True)
+        run_command(full_command, env=env)
 
 
 ROOT_DIR = Path(__file__).resolve().parent
