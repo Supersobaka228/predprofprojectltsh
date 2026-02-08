@@ -1,4 +1,16 @@
 [
-  {"model": "menu.allergen", "pk": 1, "fields": {"code": "gluten", "name": "Глютен", "sort_order": 1}},
-  {"model": "menu.allergen", "pk": 2, "fields": {"code": "milk", "name": "Молоко", "sort_order": 2}}
+  {"model": "menu.allergen", "pk": 1, "fields": {"code": "milk", "name": "Молоко", "sort_order": 1}},
+  {"model": "menu.allergen", "pk": 2, "fields": {"code": "eggs", "name": "Яйца", "sort_order": 2}},
+  {"model": "menu.allergen", "pk": 3, "fields": {"code": "peanuts", "name": "Арахис", "sort_order": 3}},
+  {"model": "menu.allergen", "pk": 4, "fields": {"code": "tree_nuts", "name": "Орехи", "sort_order": 4}},
+  {"model": "menu.allergen", "pk": 5, "fields": {"code": "fish", "name": "Рыба", "sort_order": 5}},
+  {"model": "menu.allergen", "pk": 6, "fields": {"code": "molluscs", "name": "Моллюски", "sort_order": 6}},
+  {"model": "menu.allergen", "pk": 7, "fields": {"code": "crustaceans", "name": "Ракообразные", "sort_order": 7}},
+  {"model": "menu.allergen", "pk": 8, "fields": {"code": "soy", "name": "Соя", "sort_order": 8}},
+  {"model": "menu.allergen", "pk": 9, "fields": {"code": "wheat_gluten", "name": "Пшеница (глютен)", "sort_order": 9}},
+  {"model": "menu.allergen", "pk": 10, "fields": {"code": "celery", "name": "Сельдерей", "sort_order": 10}},
+  {"model": "menu.allergen", "pk": 11, "fields": {"code": "mustard", "name": "Горчица", "sort_order": 11}},
+  {"model": "menu.allergen", "pk": 12, "fields": {"code": "sesame", "name": "Кунжут", "sort_order": 12}},
+  {"model": "menu.allergen", "pk": 13, "fields": {"code": "lupin", "name": "Люпин", "sort_order": 13}},
+  {"model": "menu.allergen", "pk": 14, "fields": {"code": "sulfites", "name": "Сульфиты", "sort_order": 14}}
 ]
